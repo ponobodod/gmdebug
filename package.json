@@ -1,0 +1,76 @@
+{
+	"name": "gmdebug",
+	"description": "gmod debugger using dap",
+	"version": "0.0.1",
+	"publisher": "ooo",
+	"dependencies": {
+		"deasync": "0.1.20",
+		"mocha": "8.0.1",
+		"vscode-debugadapter": "^1.41.0",
+		"vscode-debugadapter-testsupport": "1.41.0",
+		"vscode-debugprotocol": "^1.41.0"
+	},
+	"engines": {
+		"vscode": "^1.34.0"
+	},
+	"main": "./extension.js",
+	"activationEvents": [
+		"onDebug",
+		"onDebugResolve:gmdebug",
+		"*",
+		"onCommand:extension.gmdebug.FilePicker"
+	],
+	"contributes": {
+		"breakpoints": [
+			{
+				"language": "lua"
+			}
+		],
+		"debuggers": [
+			{
+			    "type": "gmdebug",
+			    "label": "Garry's mod debugger - gmdebug",
+			    
+			    "program": "./out/node/main.js",
+			    "runtime": "node",
+			    "configurationAttributes" : {
+				"attach": {
+				    "required" : ["serverFolder"],
+				    "properties" : {
+					"serverFolder" : {
+					    "type" : "string",
+					    "description" : "The path to your garry's mod server (the garrysmod folder specifically)",
+					    "default" : "${command:FilePicker}"
+					}
+				    }
+				}
+				
+			    },
+			    "initialConfigurations": [
+				    {
+					    "type": "gmdebug",
+					    "request": "attach",
+						"name": "gmdebug: Attach to server",
+						"serverFolder" : "${command:FilePicker}"
+					
+				    }
+			    ],
+			    "configurationSnippets": [
+				    {
+					    "label": "gmdebug: Attach to server",
+					    "description": "Attach gmdebug to your garry's mod server.",
+					    "body": {
+						    "type": "gmdebug",
+						    "request": "attach",
+							"name": "gmdebug : Attach to server",
+							"serverFolder" : "${command:FilePicker}"
+					    }
+				    }
+			    ],
+			    "variables" : {
+				"FilePicker" : "extension.gmdebug.FilePicker"
+			    }
+			}
+		]
+	}
+}

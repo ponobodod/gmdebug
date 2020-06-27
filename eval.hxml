@@ -1,0 +1,3 @@
+-cp src
+--main gmdebug.BitShiftTest
+--interp

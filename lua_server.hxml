@@ -1,0 +1,17 @@
+-cp src
+-D server
+-lib gmodhaxe
+-lib safety
+-lib tink_json
+-lib tink_core
+-lib profiler
+-D addonName=debugee
+-D analyzer-optimize
+-D generateLuaInit
+-D haxeJSON
+-D lua-ver=5.1
+-dce full
+--macro nullSafety("gmdebug")
+--macro gmod.macros.InitMacro.init()
+-main gmdebug.lua.Debugee
+-lua out/lua/debugee.lua
