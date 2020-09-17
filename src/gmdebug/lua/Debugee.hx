@@ -58,10 +58,10 @@ class Debugee {
     public static var playerThreads:Array<Null<Player>> = [];
 
     public static var stackOffset = {
-        step : 3, // was 5
-        stepDebugLoop : 4, // was 6
-        except : 4,
-        pause : 4 //was 9
+        step : 4, // was 5
+        stepDebugLoop : 5, // was 6
+        except : 5,
+        pause : 5 //was 9
     };
 
     public static var minheight:Int = 3;
@@ -172,10 +172,10 @@ class Debugee {
     }
     
     static function hookprint() {
-        if (untyped __lua__("_G").__oldprint == null) {
-            untyped __lua__("_G").__oldprint = untyped __lua__("_G.print");
+        if (G.__oldprint == null) {
+            G.__oldprint = G.print;
         }
-        untyped __lua__("_G").print = untyped __lua__("function (...) local succ,err = pcall({0},{1},true,{...}) if not succ then _G.__oldprint(\"Debug output failed: \",err) end _G.__oldprint(...) end",output,OutputEventCategory.Console);
+        G.print = untyped __lua__("function (...) local succ,err = pcall({0},{1},true,...) if not succ then _G.__oldprint(\"Debug output failed: \",err) end _G.__oldprint(...) end",output,OutputEventCategory.Console);
     }
 
     static function output(cat:OutputEventCategory,print:Bool,vargs:Table<Int,Dynamic>) {
@@ -534,6 +534,10 @@ typedef LineMap = Map<Int,Bool>;
 
 //TODO
 @:native("_G") private extern class G {
+
+    static var __oldprint:Null<Function>;
+
+    static var print:Function;
 
     static var previousSocket:Null<DebugIO>;
 }

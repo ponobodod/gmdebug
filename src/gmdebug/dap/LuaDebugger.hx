@@ -20,11 +20,11 @@ import haxe.Json;
 import js.node.net.Socket;
 import js.node.Net;
 import vscode.debugAdapter.DebugSession;
-import gmdebug.Cross.recvMessage;
 import gmdebug.Cross;
 using tink.CoreApi;
 using gmdebug.ComposeTools;
 import haxe.io.Path;
+import js.node.child_process.ChildProcess;
 
 typedef FileSocket = {
     readS : Socket,
@@ -36,6 +36,12 @@ typedef ClientFiles = {
     write : String
 
 }
+
+enum DapMode {
+    ATTACH;
+    LAUNCH(child:ChildProcess);
+}
+    
 
 @:keep @:await class LuaDebugger extends DebugSession {
 
@@ -49,11 +55,12 @@ typedef ClientFiles = {
 
     public static var clientFiles:Array<ClientFiles> = [];
     
+    public static var dapMode:DapMode = ATTACH;
+    
     public static var mapClientName:Map<Int,String> = [];
 
     static var mapClientID:Map<Int,Int> = [];
     
-
     public var serverFolder:String;
 
     public var clientLocations:Array<String>; 
@@ -66,17 +73,17 @@ typedef ClientFiles = {
 	clientLocations = [];
 	serverFolder = null;
 	clientsTaken = [];
-	Node.process.on("uncaughtException", stoopidCompiler);
+	Node.process.on("uncaughtException", uncaughtException);
     }
 
-    function stoopidCompiler(err:js.lib.Error,origin) {
+    function uncaughtException(err:js.lib.Error,origin) {
 	trace(err.message);
 	trace(err.stack);
 	 
 	this.shutdown();
     }
 
-    function recvMussage(input:BytesInput,?remaining:Int):RecvMessageResponse {
+    function recvMessage(input:BytesInput,?remaining:Int):RecvMessageResponse {
         //need to conjoin and parse here, lol....
         if (remaining == null) {remaining = Cross.readHeader(input);}
         var bufRemaining = input.length - input.position;
@@ -144,16 +151,27 @@ typedef ClientFiles = {
 	}).send();
 	clientsTaken.remove(mapClientID.get(x.playerID));
     }
+    function serverInfoMessage(x:GMServerInfoMessage) {
+	final sp = x.ip.split(":");
+	final ip = if (x.isLan) {
+	    js.Ip.address();
+	} else {
+	    sp[0];
+	}
+	final port = sp[1];
+	js.node.ChildProcess.spawn('xdg-open steam://connect/$ip:$port',{shell : true});
+    }
     
     
     function processCustomMessages(x:GmDebugMessage<Dynamic>) {
         trace("custom message");
         switch (x.msg) {
             case playerAdded:
-
                 playerAddedMessage(cast x.body);
             case playerRemoved:
                 playerRemovedMessage(cast x.body);
+	    case serverInfo:
+		serverInfoMessage(cast x.body);
             case clientID | intialInfo:
                 throw "dur";
         }
@@ -164,10 +182,6 @@ typedef ClientFiles = {
         var fd = @:await open(out,cast Fs.constants.O_RDONLY | Fs.constants.O_NONBLOCK).toPromise();
         return {sock : new Socket({fd : fd,writable: false}),file : out};
     }
-
-    static var clientFileDescriptors:Array<Int> = [];
-
-
 
     @:async function aquireWriteSocket(inp:String):{sock : Socket, file : String } {
         final open = Promisify.promisify(Fs.open);
@@ -195,8 +209,13 @@ typedef ClientFiles = {
         gmodOutput.sock.on(Data,(x:Buffer) -> {
             readGmodBuffer(x,0);
         });
-        sendToServer(new ComposedGmDebugMessage(clientID,{id : 0}));
-	sendToServer(new ComposedGmDebugMessage(intialInfo,{location : serverFolder})); 
+	sendToServer(new ComposedGmDebugMessage(clientID,{id : 0}));
+	switch (dapMode) {
+	    case ATTACH:
+		sendToServer(new ComposedGmDebugMessage(intialInfo,{location : serverFolder,dapMode : Attach})); 
+	    case LAUNCH(_):
+		sendToServer(new ComposedGmDebugMessage(intialInfo,{location : serverFolder,dapMode : Launch})); 
+	}
         sys.io.File.saveContent(ready,"");
         trace("beforre suceed");
         return null;
@@ -225,8 +244,8 @@ typedef ClientFiles = {
 
     function makeFifosIfNotExist(input:String,output:String) {
         if (!FileSystem.exists(input) && !FileSystem.exists(output)) {
-            ChildProcess.execSync('mkfifo $input');
-            ChildProcess.execSync('mkfifo $output');
+            js.node.ChildProcess.execSync('mkfifo $input');
+            js.node.ChildProcess.execSync('mkfifo $output');
 	    Fs.chmodSync(input,"744");
 	    Fs.chmodSync(output,"722");
         };
@@ -257,9 +276,9 @@ typedef ClientFiles = {
                 && skipAcks(inp)) {
                 final result = switch (prevResult) {
                     case null | Completed(_):
-                        recvMussage(inp);
+                        recvMessage(inp);
                     case Unfinished(_, remaining):
-                        recvMussage(inp,remaining);
+                        recvMessage(inp,remaining);
                 }
                 prevResults[clientNo] = switch [prevResult,result] {
                     case [Unfinished(prevString,_), x = Completed(curString)]:
@@ -328,6 +347,11 @@ typedef ClientFiles = {
     }
 
     override public function shutdown() {
+	switch (dapMode) {
+	    case LAUNCH(child):
+		child.stdin.write("quit\n");
+	    default:
+	}
         for (ind => client in clients) {
 	    client.writeS.write(composeMessage(new ComposedRequest(disconnect,{})));
 	    client.readS.end();

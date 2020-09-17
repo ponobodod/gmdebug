@@ -13,8 +13,6 @@ import vscode.debugAdapter.DebugSession;
 using Lambda;
 class Main {
     
-    public static var luasocket:Socket;
-
     public static function main() {
         var args = Sys.args().slice(2);
         var port = 0;

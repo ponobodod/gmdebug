@@ -340,6 +340,7 @@ __gmdebug_ComposeTools = _hx_e()
 __gmdebug_ComposedProtocolMessage = _hx_e()
 __gmdebug_ComposedEvent = _hx_e()
 __gmdebug_ComposedResponse = _hx_e()
+__gmdebug_ComposedGmDebugMessage = _hx_e()
 __haxe_io_Path = _hx_e()
 __gmdebug_Cross = _hx_e()
 __gmdebug_CommMethod = _hx_e()
@@ -355,6 +356,8 @@ __gmdebug_lua_DebugLoop = _hx_e()
 __gmdebug_lua_BreakPoint = _hx_e()
 __gmdebug_lua_ProfilingState = _hx_e()
 __gmdebug_lua_DebugLoopProfile = _hx_e()
+__haxe_ds_BalancedTree = _hx_e()
+__haxe_ds_EnumValueMap = _hx_e()
 __gmdebug_lua_DebugState = _hx_e()
 __gmdebug_lua_Debugee = _hx_e()
 __gmdebug_lua_Exceptions = _hx_e()
@@ -370,6 +373,7 @@ __tink_json_Writer0 = _hx_e()
 __tink_core_Annex = _hx_e()
 __safety_SafetyException = _hx_e()
 __safety_NullPointerException = _hx_e()
+__haxe_ds_IntMap = _hx_e()
 __gmdebug_lua_Util = _hx_e()
 __gmdebug_lua_RunResult = _hx_e()
 __tink_json_Writer1 = _hx_e()
@@ -394,10 +398,7 @@ __haxe_EntryPoint = _hx_e()
 __haxe_MainEvent = _hx_e()
 __haxe_MainLoop = _hx_e()
 __haxe_Timer = _hx_e()
-__haxe_ds_BalancedTree = _hx_e()
 __haxe_ds_TreeNode = _hx_e()
-__haxe_ds_EnumValueMap = _hx_e()
-__haxe_ds_IntMap = _hx_e()
 __haxe_ds_Option = _hx_e()
 __haxe_io_Bytes = _hx_e()
 __haxe_io_BytesBuffer = _hx_e()
@@ -1784,6 +1785,25 @@ __gmdebug_ComposedResponse.prototype.__class__ =  __gmdebug_ComposedResponse
 __gmdebug_ComposedResponse.__super__ = __gmdebug_ComposedProtocolMessage
 setmetatable(__gmdebug_ComposedResponse.prototype,{__index=__gmdebug_ComposedProtocolMessage.prototype})
 
+__gmdebug_ComposedGmDebugMessage.new = function(msg,body) 
+  local self = _hx_new(__gmdebug_ComposedGmDebugMessage.prototype)
+  __gmdebug_ComposedGmDebugMessage.super(self,msg,body)
+  return self
+end
+__gmdebug_ComposedGmDebugMessage.super = function(self,msg,body) 
+  __gmdebug_ComposedProtocolMessage.super(self,"gmdebug");
+  self.msg = msg;
+  self.body = body;
+end
+__gmdebug_ComposedGmDebugMessage.__name__ = true
+__gmdebug_ComposedGmDebugMessage.prototype = _hx_e();
+__gmdebug_ComposedGmDebugMessage.prototype.msg= nil;
+__gmdebug_ComposedGmDebugMessage.prototype.body= nil;
+
+__gmdebug_ComposedGmDebugMessage.prototype.__class__ =  __gmdebug_ComposedGmDebugMessage
+__gmdebug_ComposedGmDebugMessage.__super__ = __gmdebug_ComposedProtocolMessage
+setmetatable(__gmdebug_ComposedGmDebugMessage.prototype,{__index=__gmdebug_ComposedProtocolMessage.prototype})
+
 __haxe_io_Path.new = {}
 __haxe_io_Path.__name__ = true
 __haxe_io_Path.join = function(paths) 
@@ -2082,7 +2102,7 @@ __gmdebug_lua_CustomHandlers.new = {}
 __gmdebug_lua_CustomHandlers.__name__ = true
 __gmdebug_lua_CustomHandlers.handle = function(x) 
   local _g = x.msg;
-  if (_g) == 0 or (_g) == 1 then 
+  if (_g) == 0 or (_g) == 1 or (_g) == 4 then 
     _G.error(__haxe_Exception.thrown("dur"),0);
   elseif (_g) == 2 then 
     __gmdebug_lua_CustomHandlers.h_clientID(x);
@@ -2090,11 +2110,20 @@ __gmdebug_lua_CustomHandlers.handle = function(x)
     __gmdebug_lua_CustomHandlers.h_initalInfo(x); end;
 end
 __gmdebug_lua_CustomHandlers.h_clientID = function(x) 
-  __haxe_Log.trace(Std.string("recieved id ") .. Std.string(x.body.id), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/CustomHandlers.hx",lineNumber=22,className="gmdebug.lua.CustomHandlers",methodName="h_clientID"}));
+  __haxe_Log.trace(Std.string("recieved id ") .. Std.string(x.body.id), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/CustomHandlers.hx",lineNumber=25,className="gmdebug.lua.CustomHandlers",methodName="h_clientID"}));
   __gmdebug_lua_Debugee.clientID = x.body.id;
+end
+__gmdebug_lua_CustomHandlers.isLan = function() 
+  do return _G.GetConVar("sv_lan"):GetBool() end;
 end
 __gmdebug_lua_CustomHandlers.h_initalInfo = function(x) 
   __gmdebug_lua_Debugee.dest = x.body.location;
+  if (x.body.dapMode == "Launch") then 
+    local js = __haxe_Json.stringify(__gmdebug_ComposedGmDebugMessage.new(4, _hx_o({__fields__={ip=true,isLan=true},ip=_G.game.GetIPAddress(),isLan=__gmdebug_lua_CustomHandlers.isLan()})));
+    local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+    __gmdebug_lua_Debugee.socket.output:writeString(str);
+    __gmdebug_lua_Debugee.socket.output:flush();
+  end;
 end
 _hxClasses["gmdebug.lua.CatchOut"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="NONE","OUT"},2)}
 __gmdebug_lua_CatchOut = _hxClasses["gmdebug.lua.CatchOut"];
@@ -2459,6 +2488,214 @@ __gmdebug_lua_DebugLoopProfile.report = function()
   __haxe_Log.trace(Std.string("Overall runtime impact ") .. Std.string(percent), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=41,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   __gmdebug_lua_DebugLoopProfile.profileState = __gmdebug_lua_ProfilingState.NOT_PROFILING;
 end
+
+__haxe_ds_BalancedTree.new = function() 
+  local self = _hx_new(__haxe_ds_BalancedTree.prototype)
+  __haxe_ds_BalancedTree.super(self)
+  return self
+end
+__haxe_ds_BalancedTree.super = function(self) 
+end
+__haxe_ds_BalancedTree.__name__ = true
+__haxe_ds_BalancedTree.__interfaces__ = {__haxe_IMap}
+__haxe_ds_BalancedTree.prototype = _hx_e();
+__haxe_ds_BalancedTree.prototype.root= nil;
+__haxe_ds_BalancedTree.prototype.set = function(self,key,value) 
+  self.root = self:setLoop(key, value, self.root);
+end
+__haxe_ds_BalancedTree.prototype.get = function(self,key) 
+  local node = self.root;
+  while (node ~= nil) do 
+    local c = self:compare(key, node.key);
+    if (c == 0) then 
+      do return node.value end;
+    end;
+    if (c < 0) then 
+      node = node.left;
+    else
+      node = node.right;
+    end;
+  end;
+  do return nil end
+end
+__haxe_ds_BalancedTree.prototype.exists = function(self,key) 
+  local node = self.root;
+  while (node ~= nil) do 
+    local c = self:compare(key, node.key);
+    if (c == 0) then 
+      do return true end;
+    else
+      if (c < 0) then 
+        node = node.left;
+      else
+        node = node.right;
+      end;
+    end;
+  end;
+  do return false end
+end
+__haxe_ds_BalancedTree.prototype.keys = function(self) 
+  local ret = _hx_tab_array({}, 0);
+  self:keysLoop(self.root, ret);
+  do return __haxe_iterators_ArrayIterator.new(ret) end
+end
+__haxe_ds_BalancedTree.prototype.setLoop = function(self,k,v,node) 
+  if (node == nil) then 
+    do return __haxe_ds_TreeNode.new(nil, k, v, nil) end;
+  end;
+  local c = self:compare(k, node.key);
+  if (c == 0) then 
+    do return __haxe_ds_TreeNode.new(node.left, k, v, node.right, (function() 
+      local _hx_1
+      if (node == nil) then 
+      _hx_1 = 0; else 
+      _hx_1 = node._height; end
+      return _hx_1
+    end )()) end;
+  else
+    if (c < 0) then 
+      do return self:balance(self:setLoop(k, v, node.left), node.key, node.value, node.right) end;
+    else
+      local nr = self:setLoop(k, v, node.right);
+      do return self:balance(node.left, node.key, node.value, nr) end;
+    end;
+  end;
+end
+__haxe_ds_BalancedTree.prototype.keysLoop = function(self,node,acc) 
+  if (node ~= nil) then 
+    self:keysLoop(node.left, acc);
+    acc:push(node.key);
+    self:keysLoop(node.right, acc);
+  end;
+end
+__haxe_ds_BalancedTree.prototype.balance = function(self,l,k,v,r) 
+  local hl = (function() 
+    local _hx_1
+    if (l == nil) then 
+    _hx_1 = 0; else 
+    _hx_1 = l._height; end
+    return _hx_1
+  end )();
+  local hr = (function() 
+    local _hx_2
+    if (r == nil) then 
+    _hx_2 = 0; else 
+    _hx_2 = r._height; end
+    return _hx_2
+  end )();
+  if (hl > (hr + 2)) then 
+    local _this = l.left;
+    local _this1 = l.right;
+    if ((function() 
+      local _hx_3
+      if (_this == nil) then 
+      _hx_3 = 0; else 
+      _hx_3 = _this._height; end
+      return _hx_3
+    end )() >= (function() 
+      local _hx_4
+      if (_this1 == nil) then 
+      _hx_4 = 0; else 
+      _hx_4 = _this1._height; end
+      return _hx_4
+    end )()) then 
+      do return __haxe_ds_TreeNode.new(l.left, l.key, l.value, __haxe_ds_TreeNode.new(l.right, k, v, r)) end;
+    else
+      do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l.left, l.key, l.value, l.right.left), l.right.key, l.right.value, __haxe_ds_TreeNode.new(l.right.right, k, v, r)) end;
+    end;
+  else
+    if (hr > (hl + 2)) then 
+      local _this = r.right;
+      local _this1 = r.left;
+      if ((function() 
+        local _hx_5
+        if (_this == nil) then 
+        _hx_5 = 0; else 
+        _hx_5 = _this._height; end
+        return _hx_5
+      end )() > (function() 
+        local _hx_6
+        if (_this1 == nil) then 
+        _hx_6 = 0; else 
+        _hx_6 = _this1._height; end
+        return _hx_6
+      end )()) then 
+        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left), r.key, r.value, r.right) end;
+      else
+        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left.left), r.left.key, r.left.value, __haxe_ds_TreeNode.new(r.left.right, r.key, r.value, r.right)) end;
+      end;
+    else
+      do return __haxe_ds_TreeNode.new(l, k, v, r, (function() 
+        local _hx_7
+        if (hl > hr) then 
+        _hx_7 = hl; else 
+        _hx_7 = hr; end
+        return _hx_7
+      end )() + 1) end;
+    end;
+  end;
+end
+__haxe_ds_BalancedTree.prototype.compare = function(self,k1,k2) 
+  do return Reflect.compare(k1, k2) end
+end
+
+__haxe_ds_BalancedTree.prototype.__class__ =  __haxe_ds_BalancedTree
+
+__haxe_ds_EnumValueMap.new = function() 
+  local self = _hx_new(__haxe_ds_EnumValueMap.prototype)
+  __haxe_ds_EnumValueMap.super(self)
+  return self
+end
+__haxe_ds_EnumValueMap.super = function(self) 
+  __haxe_ds_BalancedTree.super(self);
+end
+__haxe_ds_EnumValueMap.__name__ = true
+__haxe_ds_EnumValueMap.__interfaces__ = {__haxe_IMap}
+__haxe_ds_EnumValueMap.prototype = _hx_e();
+__haxe_ds_EnumValueMap.prototype.compare = function(self,k1,k2) 
+  local d = k1[1] - k2[1];
+  if (d ~= 0) then 
+    do return d end;
+  end;
+  local p1 = k1:slice(2);
+  local p2 = k2:slice(2);
+  if ((p1.length == 0) and (p2.length == 0)) then 
+    do return 0 end;
+  end;
+  do return self:compareArgs(p1, p2) end
+end
+__haxe_ds_EnumValueMap.prototype.compareArgs = function(self,a1,a2) 
+  local ld = a1.length - a2.length;
+  if (ld ~= 0) then 
+    do return ld end;
+  end;
+  local _g = 0;
+  local _g1 = a1.length;
+  while (_g < _g1) do 
+    _g = _g + 1;
+    local i = _g - 1;
+    local d = self:compareArg(a1[i], a2[i]);
+    if (d ~= 0) then 
+      do return d end;
+    end;
+  end;
+  do return 0 end
+end
+__haxe_ds_EnumValueMap.prototype.compareArg = function(self,v1,v2) 
+  if (Reflect.isEnumValue(v1) and Reflect.isEnumValue(v2)) then 
+    do return self:compare(v1, v2) end;
+  else
+    if (__lua_Boot.__instanceof(v1, Array) and __lua_Boot.__instanceof(v2, Array)) then 
+      do return self:compareArgs(v1, v2) end;
+    else
+      do return Reflect.compare(v1, v2) end;
+    end;
+  end;
+end
+
+__haxe_ds_EnumValueMap.prototype.__class__ =  __haxe_ds_EnumValueMap
+__haxe_ds_EnumValueMap.__super__ = __haxe_ds_BalancedTree
+setmetatable(__haxe_ds_EnumValueMap.prototype,{__index=__haxe_ds_BalancedTree.prototype})
 _hxClasses["gmdebug.lua.DebugState"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","STEP","OUT"},3)}
 __gmdebug_lua_DebugState = _hxClasses["gmdebug.lua.DebugState"];
 __gmdebug_lua_DebugState.WAIT = _hx_tab_array({[0]="WAIT",0,__enum__ = __gmdebug_lua_DebugState},2)
@@ -2586,7 +2823,7 @@ __gmdebug_lua_Debugee.hookprint = function()
   if (_G.__oldprint == nil) then 
     _G.__oldprint = _G.print;
   end;
-  _G.print = function (...) local succ,err = pcall(__gmdebug_lua_Debugee.output,"console",true,{...}) if not succ then _G.__oldprint("Debug output failed: ",err) end _G.__oldprint(...) end;
+  _G.print = function (...) local succ,err = pcall(__gmdebug_lua_Debugee.output,"console",true,...) if not succ then _G.__oldprint("Debug output failed: ",err) end _G.__oldprint(...) end;
 end
 __gmdebug_lua_Debugee.output = function(cat,print,vargs) 
   if (__gmdebug_lua_Debugee.ignoreTrace or (__gmdebug_lua_Debugee.socket == nil)) then 
@@ -3098,7 +3335,6 @@ __gmdebug_lua_Exceptions.hookEntityHooks = function()
       local ind = _g.key;
       local val = _g.value;
       if ((_G.type(val) == "function") and (__gmdebug_lua_Exceptions.exceptFuncs.k[val] == nil)) then 
-        __haxe_Log.trace(entTbl, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Exceptions.hx",lineNumber=83,className="gmdebug.lua.Exceptions",methodName="hookEntityHooks"}));
         entTbl.t[ind] = __gmdebug_lua_Exceptions.addExcept(val);
       end;
     end;
@@ -4736,6 +4972,40 @@ __safety_NullPointerException.prototype = _hx_e();
 __safety_NullPointerException.prototype.__class__ =  __safety_NullPointerException
 __safety_NullPointerException.__super__ = __safety_SafetyException
 setmetatable(__safety_NullPointerException.prototype,{__index=__safety_SafetyException.prototype})
+
+__haxe_ds_IntMap.new = function() 
+  local self = _hx_new(__haxe_ds_IntMap.prototype)
+  __haxe_ds_IntMap.super(self)
+  return self
+end
+__haxe_ds_IntMap.super = function(self) 
+  self.h = ({});
+end
+__haxe_ds_IntMap.__name__ = true
+__haxe_ds_IntMap.__interfaces__ = {__haxe_IMap}
+__haxe_ds_IntMap.prototype = _hx_e();
+__haxe_ds_IntMap.prototype.h= nil;
+__haxe_ds_IntMap.prototype.get = function(self,key) 
+  local ret = self.h[key];
+  if (ret == __haxe_ds_IntMap.tnull) then 
+    ret = nil;
+  end;
+  do return ret end
+end
+__haxe_ds_IntMap.prototype.keys = function(self) 
+  local _gthis = self;
+  local next = _G.next;
+  local cur = next(self.h, nil);
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local ret = cur;
+    cur = next(_gthis.h, cur);
+    do return ret end;
+  end,hasNext=function(self) 
+    do return cur ~= nil end;
+  end}) end
+end
+
+__haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
 
 __gmdebug_lua_Util.new = {}
 __gmdebug_lua_Util.__name__ = true
@@ -8089,158 +8359,6 @@ end
 
 __haxe_Timer.prototype.__class__ =  __haxe_Timer
 
-__haxe_ds_BalancedTree.new = function() 
-  local self = _hx_new(__haxe_ds_BalancedTree.prototype)
-  __haxe_ds_BalancedTree.super(self)
-  return self
-end
-__haxe_ds_BalancedTree.super = function(self) 
-end
-__haxe_ds_BalancedTree.__name__ = true
-__haxe_ds_BalancedTree.__interfaces__ = {__haxe_IMap}
-__haxe_ds_BalancedTree.prototype = _hx_e();
-__haxe_ds_BalancedTree.prototype.root= nil;
-__haxe_ds_BalancedTree.prototype.set = function(self,key,value) 
-  self.root = self:setLoop(key, value, self.root);
-end
-__haxe_ds_BalancedTree.prototype.get = function(self,key) 
-  local node = self.root;
-  while (node ~= nil) do 
-    local c = self:compare(key, node.key);
-    if (c == 0) then 
-      do return node.value end;
-    end;
-    if (c < 0) then 
-      node = node.left;
-    else
-      node = node.right;
-    end;
-  end;
-  do return nil end
-end
-__haxe_ds_BalancedTree.prototype.exists = function(self,key) 
-  local node = self.root;
-  while (node ~= nil) do 
-    local c = self:compare(key, node.key);
-    if (c == 0) then 
-      do return true end;
-    else
-      if (c < 0) then 
-        node = node.left;
-      else
-        node = node.right;
-      end;
-    end;
-  end;
-  do return false end
-end
-__haxe_ds_BalancedTree.prototype.keys = function(self) 
-  local ret = _hx_tab_array({}, 0);
-  self:keysLoop(self.root, ret);
-  do return __haxe_iterators_ArrayIterator.new(ret) end
-end
-__haxe_ds_BalancedTree.prototype.setLoop = function(self,k,v,node) 
-  if (node == nil) then 
-    do return __haxe_ds_TreeNode.new(nil, k, v, nil) end;
-  end;
-  local c = self:compare(k, node.key);
-  if (c == 0) then 
-    do return __haxe_ds_TreeNode.new(node.left, k, v, node.right, (function() 
-      local _hx_1
-      if (node == nil) then 
-      _hx_1 = 0; else 
-      _hx_1 = node._height; end
-      return _hx_1
-    end )()) end;
-  else
-    if (c < 0) then 
-      do return self:balance(self:setLoop(k, v, node.left), node.key, node.value, node.right) end;
-    else
-      local nr = self:setLoop(k, v, node.right);
-      do return self:balance(node.left, node.key, node.value, nr) end;
-    end;
-  end;
-end
-__haxe_ds_BalancedTree.prototype.keysLoop = function(self,node,acc) 
-  if (node ~= nil) then 
-    self:keysLoop(node.left, acc);
-    acc:push(node.key);
-    self:keysLoop(node.right, acc);
-  end;
-end
-__haxe_ds_BalancedTree.prototype.balance = function(self,l,k,v,r) 
-  local hl = (function() 
-    local _hx_1
-    if (l == nil) then 
-    _hx_1 = 0; else 
-    _hx_1 = l._height; end
-    return _hx_1
-  end )();
-  local hr = (function() 
-    local _hx_2
-    if (r == nil) then 
-    _hx_2 = 0; else 
-    _hx_2 = r._height; end
-    return _hx_2
-  end )();
-  if (hl > (hr + 2)) then 
-    local _this = l.left;
-    local _this1 = l.right;
-    if ((function() 
-      local _hx_3
-      if (_this == nil) then 
-      _hx_3 = 0; else 
-      _hx_3 = _this._height; end
-      return _hx_3
-    end )() >= (function() 
-      local _hx_4
-      if (_this1 == nil) then 
-      _hx_4 = 0; else 
-      _hx_4 = _this1._height; end
-      return _hx_4
-    end )()) then 
-      do return __haxe_ds_TreeNode.new(l.left, l.key, l.value, __haxe_ds_TreeNode.new(l.right, k, v, r)) end;
-    else
-      do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l.left, l.key, l.value, l.right.left), l.right.key, l.right.value, __haxe_ds_TreeNode.new(l.right.right, k, v, r)) end;
-    end;
-  else
-    if (hr > (hl + 2)) then 
-      local _this = r.right;
-      local _this1 = r.left;
-      if ((function() 
-        local _hx_5
-        if (_this == nil) then 
-        _hx_5 = 0; else 
-        _hx_5 = _this._height; end
-        return _hx_5
-      end )() > (function() 
-        local _hx_6
-        if (_this1 == nil) then 
-        _hx_6 = 0; else 
-        _hx_6 = _this1._height; end
-        return _hx_6
-      end )()) then 
-        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left), r.key, r.value, r.right) end;
-      else
-        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left.left), r.left.key, r.left.value, __haxe_ds_TreeNode.new(r.left.right, r.key, r.value, r.right)) end;
-      end;
-    else
-      do return __haxe_ds_TreeNode.new(l, k, v, r, (function() 
-        local _hx_7
-        if (hl > hr) then 
-        _hx_7 = hl; else 
-        _hx_7 = hr; end
-        return _hx_7
-      end )() + 1) end;
-    end;
-  end;
-end
-__haxe_ds_BalancedTree.prototype.compare = function(self,k1,k2) 
-  do return Reflect.compare(k1, k2) end
-end
-
-__haxe_ds_BalancedTree.prototype.__class__ =  __haxe_ds_BalancedTree
-
 __haxe_ds_TreeNode.new = function(l,k,v,r,h) 
   local self = _hx_new(__haxe_ds_TreeNode.prototype)
   __haxe_ds_TreeNode.super(self,l,k,v,r,h)
@@ -8303,96 +8421,6 @@ __haxe_ds_TreeNode.prototype.value= nil;
 __haxe_ds_TreeNode.prototype._height= nil;
 
 __haxe_ds_TreeNode.prototype.__class__ =  __haxe_ds_TreeNode
-
-__haxe_ds_EnumValueMap.new = function() 
-  local self = _hx_new(__haxe_ds_EnumValueMap.prototype)
-  __haxe_ds_EnumValueMap.super(self)
-  return self
-end
-__haxe_ds_EnumValueMap.super = function(self) 
-  __haxe_ds_BalancedTree.super(self);
-end
-__haxe_ds_EnumValueMap.__name__ = true
-__haxe_ds_EnumValueMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_EnumValueMap.prototype = _hx_e();
-__haxe_ds_EnumValueMap.prototype.compare = function(self,k1,k2) 
-  local d = k1[1] - k2[1];
-  if (d ~= 0) then 
-    do return d end;
-  end;
-  local p1 = k1:slice(2);
-  local p2 = k2:slice(2);
-  if ((p1.length == 0) and (p2.length == 0)) then 
-    do return 0 end;
-  end;
-  do return self:compareArgs(p1, p2) end
-end
-__haxe_ds_EnumValueMap.prototype.compareArgs = function(self,a1,a2) 
-  local ld = a1.length - a2.length;
-  if (ld ~= 0) then 
-    do return ld end;
-  end;
-  local _g = 0;
-  local _g1 = a1.length;
-  while (_g < _g1) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    local d = self:compareArg(a1[i], a2[i]);
-    if (d ~= 0) then 
-      do return d end;
-    end;
-  end;
-  do return 0 end
-end
-__haxe_ds_EnumValueMap.prototype.compareArg = function(self,v1,v2) 
-  if (Reflect.isEnumValue(v1) and Reflect.isEnumValue(v2)) then 
-    do return self:compare(v1, v2) end;
-  else
-    if (__lua_Boot.__instanceof(v1, Array) and __lua_Boot.__instanceof(v2, Array)) then 
-      do return self:compareArgs(v1, v2) end;
-    else
-      do return Reflect.compare(v1, v2) end;
-    end;
-  end;
-end
-
-__haxe_ds_EnumValueMap.prototype.__class__ =  __haxe_ds_EnumValueMap
-__haxe_ds_EnumValueMap.__super__ = __haxe_ds_BalancedTree
-setmetatable(__haxe_ds_EnumValueMap.prototype,{__index=__haxe_ds_BalancedTree.prototype})
-
-__haxe_ds_IntMap.new = function() 
-  local self = _hx_new(__haxe_ds_IntMap.prototype)
-  __haxe_ds_IntMap.super(self)
-  return self
-end
-__haxe_ds_IntMap.super = function(self) 
-  self.h = ({});
-end
-__haxe_ds_IntMap.__name__ = true
-__haxe_ds_IntMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_IntMap.prototype = _hx_e();
-__haxe_ds_IntMap.prototype.h= nil;
-__haxe_ds_IntMap.prototype.get = function(self,key) 
-  local ret = self.h[key];
-  if (ret == __haxe_ds_IntMap.tnull) then 
-    ret = nil;
-  end;
-  do return ret end
-end
-__haxe_ds_IntMap.prototype.keys = function(self) 
-  local _gthis = self;
-  local next = _G.next;
-  local cur = next(self.h, nil);
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local ret = cur;
-    cur = next(_gthis.h, cur);
-    do return ret end;
-  end,hasNext=function(self) 
-    do return cur ~= nil end;
-  end}) end
-end
-
-__haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
 _hxClasses["haxe.ds.Option"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Some","None"},2)}
 __haxe_ds_Option = _hxClasses["haxe.ds.Option"];
 __haxe_ds_Option.Some = function(v) local _x = _hx_tab_array({[0]="Some",0,v,__enum__=__haxe_ds_Option}, 3); return _x; end 
@@ -9001,7 +9029,7 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Debugee.playerThreads = _hx_tab_array({}, 0);
   
-  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=3,stepDebugLoop=4,except=4,pause=4});
+  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=4,stepDebugLoop=5,except=5,pause=5});
   
   __gmdebug_lua_Debugee.minheight = 3;
   
@@ -9035,6 +9063,8 @@ local _hx_static_init = function()
   __gmdebug_lua_Exceptions.exceptFuncs = __gmdebug_lua_Exceptions.getexceptFuncs();
   
   __gmdebug_lua_Exceptions.oldFuncs = __gmdebug_lua_Exceptions.getoldFuncs();
+  
+  __haxe_ds_IntMap.tnull = ({});
   
   __gmdebug_lua_Handlers.handlerMap = (function() 
     local _hx_2
@@ -9175,8 +9205,6 @@ local _hx_static_init = function()
   __haxe_EntryPoint.pending = Array.new();
   
   __haxe_EntryPoint.threadCount = 0;
-  
-  __haxe_ds_IntMap.tnull = ({});
   
   __tink_core__Callback_Callback_Impl_.depth = 0;
   

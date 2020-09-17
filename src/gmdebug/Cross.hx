@@ -112,6 +112,13 @@ enum abstract GmMsgType<T>(Int) to Int {
     var clientID:GmMsgType<GMClientID>;
 
     var intialInfo:GmMsgType<GmDebugIntialInfo>;
+
+    var serverInfo:GmMsgType<GMServerInfoMessage>;
+}
+
+enum abstract DapModeStr(String) {
+    var Attach;
+    var Launch;
 }
 
 typedef GmDebugIntialInfo = {
@@ -119,7 +126,9 @@ typedef GmDebugIntialInfo = {
     /**
        Location. Can be server or client.
     **/
-    location:String
+    location:String,
+
+    ?dapMode : DapModeStr 
 
 }
 
@@ -142,12 +151,9 @@ typedef GMClientID = {
     id : Int
 }
 
-// public static final maxLocalScopes = 128;
+typedef GMServerInfoMessage = {
 
-// public static final maxGlobalScopes = 128;
-
-// public static final maxFrames = 128;
-
-// public static final maxClients = 16;
-
-// public static final maxVariables = 2^25;
+    ip : String,
+    isLan : Bool
+ 
+}

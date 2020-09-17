@@ -80,7 +80,7 @@ class Exceptions {
 	    final entTbl = Scripted_entsLib.GetStored(entName);
 	    for (ind => val in entTbl.t) {
 		if (shouldExcept(val)) {
-		    trace(entTbl);
+		    // trace(entTbl);
                     entTbl.t[ind] = addExcept(val);
                 }
 	    }

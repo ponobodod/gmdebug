@@ -1,9 +1,12 @@
 
 package gmdebug.lua;
 
+import gmdebug.ComposedMessage;
+import gmod.libs.GameLib;
 import gmdebug.Cross.GMClientID;
 import gmdebug.Cross.GmDebugMessage;
 import gmdebug.Cross.GmDebugIntialInfo;
+import gmod.Gmod;
 class CustomHandlers {
 
     public static function handle(x:GmDebugMessage<Dynamic>) {
@@ -12,7 +15,7 @@ class CustomHandlers {
                 h_clientID(cast x);
 	    case intialInfo:
 		h_initalInfo(cast x);
-            case playerAdded | playerRemoved:
+            case playerAdded | playerRemoved | serverInfo:
 		throw "dur";
         }
 
@@ -23,7 +26,18 @@ class CustomHandlers {
         Debugee.clientID = x.body.id;
     }
 
+
+    static function isLan() {
+	return Gmod.GetConVar("sv_lan").GetBool();
+    }
+
     static function h_initalInfo(x:GmDebugMessage<GmDebugIntialInfo>) {
 	Debugee.dest = x.body.location;
+	if (x.body.dapMode == Launch) {
+	    new ComposedGmDebugMessage(serverInfo,{
+		ip : GameLib.GetIPAddress(),
+		isLan : isLan() 
+	    }).send();
+	}
     }
 }

@@ -1,5 +1,8 @@
 package gmdebug.dap;
 
+import js.Node;
+import js.node.Buffer;
+import js.node.child_process.ChildProcess;
 import js.node.fs.Stats;
 import js.node.Fs;
 import gmdebug.ComposedMessage;
@@ -10,6 +13,7 @@ import gmdebug.VariableReference;
 using gmdebug.ComposeTools;
 using Lambda;
 using Safety;
+using StringTools;
 
 typedef HasThreadID = {
     arguments : {
@@ -35,6 +39,8 @@ class Handlers {
                 h_attach(req);
             case disconnect:
                 h_disconnect(req);
+	    case launch:
+		h_launch(req);
             case scopes:
                 h_scopes(req);
             case variables:
@@ -102,7 +108,7 @@ class Handlers {
     static function h_variables(x:VariablesRequest) {
         final ref:VariableReference = x.arguments.variablesReference;
 	if ((ref : Int) <= 0) {
-	    trace("cringe");
+	    trace("invalid variable reference");
 	    x.compose(variables,{variables: []}).send();
 	    return;
 	}
@@ -113,6 +119,20 @@ class Handlers {
     }
 
     static function h_evaluate(x:EvaluateRequest) {
+	final expr = x.arguments.expression;
+	if (expr.charAt(0) == "/") {
+	    switch (LuaDebugger.dapMode) {
+		case LAUNCH(child):
+		    final actual = expr.substr(1); 
+		    child.stdin.write(actual + "\n");
+		    x.compose(evaluate,{
+			result : "",
+			variablesReference : 0
+		    }).send();
+		    return;
+		default: 
+	    }
+	}
         final client = switch (x.arguments.frameId) {
             case null:
                 0; //run as server if not in frame context. might cause issues...
@@ -154,6 +174,70 @@ class Handlers {
         LuaDebugger.inst.sendResponse(response);
     }
 
+    
+
+    static function h_launch(x:GmDebugLaunchRequest) {
+	//handle windows stuff here
+       
+	final programPath = x.arguments.programPath;
+	if (!validateProgramPath(programPath,x)) return;
+	final childProcess = js.node.ChildProcess.spawn('script -c \'bash $programPath\' /dev/null',{
+	    cwd : haxe.io.Path.directory(programPath),
+	    env : Node.process.env,
+	    shell : true
+		   
+	});
+	childProcess.stdout.on("data",(str:Buffer) -> {
+	    new ComposedEvent(output,{
+		category: Stdout,
+		output : str.toString().replace("\r",""),
+		data : null
+	    }).send();
+	});
+	childProcess.stderr.on("data",(str:Buffer) -> {
+	    new ComposedEvent(output,{
+		category: Stdout,
+		output : str.toString(),
+		data : null
+	    }).send();
+	});
+	childProcess.on("error",(err) -> {
+	    new ComposedEvent(output,{
+		category: Stderr,
+		output : err.message + "\n" + err.stack,
+		data : null
+	    }).send();
+	    trace("Child process error///");
+	    trace(err.message);
+	    trace(err.stack);
+	    trace("Child process error end///");
+	    LuaDebugger.inst.shutdown();
+	    return;
+	});
+	new ComposedEvent(process,{
+	    name : x.arguments.programPath,
+	    systemProcessId : childProcess.pid,
+	    isLocalProcess : true,
+	    startMethod : Launch
+	}).send();
+	
+	//nodebug?
+	final serverFolder = x.arguments.serverFolder;
+	if (!validateServerFolder(serverFolder,x)) return;
+	final clientFolders = x.arguments.clientFolders.or([]);
+	for (ind => client in clientFolders) {
+	    if (!validateClientFolder(client,x)) {
+		return;
+	    }
+	    clientFolders[ind] = haxe.io.Path.addTrailingSlash(client); 
+	}
+	final serverSlash  = haxe.io.Path.addTrailingSlash(x.arguments.serverFolder);
+	LuaDebugger.inst.serverFolder = serverSlash;
+	LuaDebugger.inst.clientLocations = clientFolders;
+	LuaDebugger.dapMode = LAUNCH(childProcess);
+        LuaDebugger.inst.startServer(LuaDebugger.commMethod,x);
+    }
+
     static function h_scopes(x:ScopesRequest) {
         final client = (x.arguments.frameId : FrameID).getValue().clientID; //mandatory
         LuaDebugger.inst.sendToClient(client,x);
@@ -175,6 +259,36 @@ class Handlers {
         LuaDebugger.inst.startServer(LuaDebugger.commMethod,x);
     }
 
+    static function validateProgramPath(programPath:String,launchReq:GmDebugLaunchRequest) {
+	final valid = if (programPath == null) {
+	    launchReq.composeFail("Gmdebug requires the property \"programPath\" to be specified when launching.",{
+		id: 2,
+		format: "Gmdebug requires the property \"programPath\" to be specified when launching",
+	    }).send();
+	    false;
+	} else {
+	    if (!Fs.existsSync(programPath)) {
+		launchReq.composeFail("The program specified by \"programPath\" does not exist!",{
+		    id: 4,
+		    format: "The program specified by \"programPath\" does not exist!"
+		}).send();
+		false;
+	    } else if (!Fs.statSync(programPath).isFile()) {
+		launchReq.composeFail("The program specified by \"programPath\" is not a file.",{
+		    id: 5,
+		    format: "The program specified by \"programPath\" is not a file.",
+		}).send();
+		false;
+	    } else {
+		true;
+	    }
+	}
+	if (!valid) {
+	    LuaDebugger.inst.shutdown();
+	}
+	return valid;
+    }
+    
     static function validateServerFolder(serverFolder:String,attachReq:GmDebugAttachRequest) {
 	final valid = if (serverFolder == null) {
 	    attachReq.composeFail("Gmdebug requires the property \"serverFolder\" to be specified.",{
@@ -272,7 +386,8 @@ class Handlers {
 
 typedef GmDebugAttachRequest = Request<GmDebugAttachRequestArguments>;
 
-typedef GmDebugAttachRequestArguments = AttachRequestArguments & {
+
+typedef GmDebugBaseRequestArguments = {
     /**
        REQUIRED The path to the servers "garrysmod" folder. Must be fully qualified.
      **/
@@ -281,4 +396,23 @@ typedef GmDebugAttachRequestArguments = AttachRequestArguments & {
        The paths to client(s) "garrysmod" folder. Must be fully qualified.
      **/   
     ?clientFolders : Array<String>
+}
+
+typedef GmDebugAttachRequestArguments = AttachRequestArguments & GmDebugBaseRequestArguments; 
+
+
+typedef GmDebugLaunchRequest = Request<GmDebugLaunchRequestArguments>;
+
+typedef GmDebugLaunchRequestArguments = LaunchRequestArguments & GmDebugBaseRequestArguments & {
+    /**
+       REQUIRED The path to batch file or script used to launch your server
+    **/
+    programPath : String,
+
+    /**
+       If you wish to log the output.
+    **/
+    ?fileOutput : String
+    
+
 }
