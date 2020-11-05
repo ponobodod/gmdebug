@@ -1,5 +1,6 @@
 package gmdebug.lua;
 
+import gmod.Hook.GMHook;
 import lua.Lua;
 import haxe.Constraints.Function;
 import gmod.libs.HookLib;
@@ -13,18 +14,18 @@ private extern class G {
     @:native("__exceptFuncs")
     static var exceptFuncs:haxe.ds.ObjectMap<Dynamic,Int>;
 
-
     @:native("__oldFuncs")
     static var oldFuncs:Array<Function>;
 
     static function __gmdebugTraceback():Void;
 
-	
-
-
 }
 
 class Exceptions {
+
+    public static final exceptFuncs = getexceptFuncs();
+
+    static final oldFuncs = getoldFuncs();
 
     static function getexceptFuncs():haxe.ds.ObjectMap<Dynamic,Int> {
 	if (G.exceptFuncs == null) {
@@ -39,10 +40,22 @@ class Exceptions {
         }
         return G.oldFuncs;
     }
+    
+    static var hookTime:Float = 0; 
 
-    public static final exceptFuncs = getexceptFuncs();
+    static function hookContinously() {
+	if (Gmod.CurTime() > hookTime) {
+	    hookTime = Gmod.CurTime() + 0.5;
+	    hookGamemodeHooks();
+	    hookEntityHooks();
+	}
+    }
 
-    static final oldFuncs = getoldFuncs();
+    public static function hookOnChange() {
+	HookLib.Add(GMHook.Think,"enable-hooks",hookContinously);
+    }
+    
+
     
     public static inline function isExcepted(x:Function):Bool {
         return exceptFuncs.exists(x);
@@ -88,7 +101,7 @@ class Exceptions {
     }
 
     public static function hookPanels() {
-	
+	//TODO
     }
 
     static inline function shouldExcept(x:Dynamic) {
@@ -124,7 +137,6 @@ class Exceptions {
 	    }
         }
     }
-    
 }
 
 

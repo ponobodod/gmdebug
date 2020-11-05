@@ -23,25 +23,10 @@ import vscode.debugAdapter.DebugSession;
 import gmdebug.Cross;
 using tink.CoreApi;
 using gmdebug.ComposeTools;
+import gmdebug.GmDebugMessage;
 import haxe.io.Path;
 import js.node.child_process.ChildProcess;
-
-typedef FileSocket = {
-    readS : Socket,
-    writeS : Socket,
-}
-
-typedef ClientFiles = {
-    read : String,
-    write : String
-
-}
-
-enum DapMode {
-    ATTACH;
-    LAUNCH(child:ChildProcess);
-}
-    
+using Lambda;
 
 @:keep @:await class LuaDebugger extends DebugSession {
 
@@ -49,13 +34,13 @@ enum DapMode {
 
     public static var inst(default,null):LuaDebugger;
 
-    public static var luaServer:Null<Server>;
-
     public static var clients:Array<FileSocket> = []; //0 = server.
 
     public static var clientFiles:Array<ClientFiles> = [];
     
     public static var dapMode:DapMode = ATTACH;
+
+    static var autoLaunch:Bool = false;
     
     public static var mapClientName:Map<Int,String> = [];
 
@@ -67,35 +52,24 @@ enum DapMode {
 
     public var clientsTaken:Map<Int,Bool>;
 
+    var bytesProcessor:BytesProcessor;
+
     public function new(?x,?y) {
 	super(x,y);
 	inst = this;
 	clientLocations = [];
 	serverFolder = null;
 	clientsTaken = [];
+	bytesProcessor = new BytesProcessor();
 	Node.process.on("uncaughtException", uncaughtException);
     }
 
     function uncaughtException(err:js.lib.Error,origin) {
 	trace(err.message);
 	trace(err.stack);
-	 
 	this.shutdown();
     }
 
-    function recvMessage(input:BytesInput,?remaining:Int):RecvMessageResponse {
-        //need to conjoin and parse here, lol....
-        if (remaining == null) {remaining = Cross.readHeader(input);}
-        var bufRemaining = input.length - input.position;
-        if (remaining > bufRemaining) { 
-            var str = input.readString(bufRemaining,UTF8);
-            remaining -= bufRemaining;
-            return Unfinished(str,remaining);
-        } else {
-            var str = input.readString(remaining,UTF8);
-            return Completed(str);
-        }   
-    }
 
     function playerAddedMessage(x:GMPlayerAddedMessage) {
         for (ind => loc in clientLocations) {
@@ -121,24 +95,24 @@ enum DapMode {
 	final write = @:await aquireWriteSocket(input);
 	final number = clients.length;
 	// clientFileDescriptors[number] = write.writeFd;
-	read.sock.on(Data,(x:Buffer) -> {
+	read.on(Data,(x:Buffer) -> {
 	    readGmodBuffer(x,number);
 	});
 	clients.push({
-	    readS: read.sock,
-	    writeS: write.sock,
+	    readS: read,
+	    writeS: write,
 	});
 	
-	clientFiles[number] = {write : write.file,read : read.file}; 
+	clientFiles[number] = {write : input,read : out}; 
 	sys.io.File.saveContent(ready,"");
-	write.sock.write("\004\r\n");
+	write.write("\004\r\n");
 	new ComposedEvent(thread,{
 	    threadId : number,
 	    reason : Started
 	}).send();
 	mapClientName.set(number,playerName);
 	mapClientID.set(number,clientNo);
-	sendToClient(number,new ComposedGmDebugMessage(intialInfo,{location : clientLoc})); 
+	sendToClient(number,new ComposedGmDebugMessage(intialInfo,{location : serverFolder})); 
 	sendToClient(number,new ComposedGmDebugMessage(clientID,{id : number}));
     }
 
@@ -151,6 +125,7 @@ enum DapMode {
 	}).send();
 	clientsTaken.remove(mapClientID.get(x.playerID));
     }
+
     function serverInfoMessage(x:GMServerInfoMessage) {
 	final sp = x.ip.split(":");
 	final ip = if (x.isLan) {
@@ -180,14 +155,14 @@ enum DapMode {
     @:async function aquireReadSocket(out:String) { //
         final open = Promisify.promisify(Fs.open);
         var fd = @:await open(out,cast Fs.constants.O_RDONLY | Fs.constants.O_NONBLOCK).toPromise();
-        return {sock : new Socket({fd : fd,writable: false}),file : out};
+        return new Socket({fd : fd,writable: false});
     }
 
-    @:async function aquireWriteSocket(inp:String):{sock : Socket, file : String } {
+    @:async function aquireWriteSocket(inp:String) {
         final open = Promisify.promisify(Fs.open);
         var fd = @:await open(inp,cast Fs.constants.O_RDWR | Fs.constants.O_NONBLOCK).toPromise();
         trace(fd);
-        return {sock : new Socket({fd : fd,readable: false}),file : inp};
+        return new Socket({fd : fd,readable: false});
     }
 
     @:async function pokeServerNamedPipes(attachReq:AttachRequest) {
@@ -202,11 +177,11 @@ enum DapMode {
         // clientFileDescriptors[0] = gmodInput.writeFd;
         final gmodOutput = @:await aquireReadSocket(output);
         clients[0] = {
-            writeS : gmodInput.sock,
-            readS : gmodOutput.sock
+            writeS : gmodInput,
+            readS : gmodOutput
         };
-	clientFiles[0] = {write : gmodInput.file,read : gmodOutput.file}; 
-        gmodOutput.sock.on(Data,(x:Buffer) -> {
+	clientFiles[0] = {write : input,read : output}; 
+        gmodOutput.on(Data,(x:Buffer) -> {
             readGmodBuffer(x,0);
         });
 	sendToServer(new ComposedGmDebugMessage(clientID,{id : 0}));
@@ -217,30 +192,9 @@ enum DapMode {
 		sendToServer(new ComposedGmDebugMessage(intialInfo,{location : serverFolder,dapMode : Launch})); 
 	}
         sys.io.File.saveContent(ready,"");
-        trace("beforre suceed");
         return null;
     }
 
-    static var oldbuffers:Array<ConjoinedPacket> = [];
-
-    static var prevResults:Array<Null<RecvMessageResponse>> = [];
-
-    static var requestFill = false;
-
-    //Todo : see if skipacks or the cross actually skips bad data
-    function skipAcks(x:BytesInput):Bool {
-        for (_ in x.position...x.length) {
-            final byt = x.readByte();
-            if (byt != 4) {
-                x.position--;
-                return true;
-            } else {
-                requestFill = true;
-            }
-        }
-        return false;
-        
-    }
 
     function makeFifosIfNotExist(input:String,output:String) {
         if (!FileSystem.exists(input) && !FileSystem.exists(output)) {
@@ -251,105 +205,45 @@ enum DapMode {
         };
     }
 
-    function readGmodBuffer(buf:Buffer,clientNo:Int) {
-        requestFill = false;
-        final messages:Array<ProtocolMessage> = [];
-        final bytes = switch oldbuffers[clientNo] {
-            case null:
-                oldbuffers[clientNo] = NONE;
-                buf.hxToBytes();
-            case CONJOIN(old):
-                final curbytes = buf.hxToBytes();
-                final conjoin = Bytes.alloc(old.length + curbytes.length);
-                conjoin.blit(0,old,0,old.length);
-                conjoin.blit(old.length,curbytes,0,curbytes.length);
-                oldbuffers[clientNo] = NONE;
-                conjoin;
-            case NONE:
-                buf.hxToBytes();
-        }
-        final inp:BytesInput = new BytesInput(bytes);
-        var lastgoodpos = 0;
-        final prevResult = prevResults[clientNo];
-        try {
-            while (inp.position != inp.length
-                && skipAcks(inp)) {
-                final result = switch (prevResult) {
-                    case null | Completed(_):
-                        recvMessage(inp);
-                    case Unfinished(_, remaining):
-                        recvMessage(inp,remaining);
-                }
-                prevResults[clientNo] = switch [prevResult,result] {
-                    case [Unfinished(prevString,_), x = Completed(curString)]:
-
-                        trace(prevString + curString);
-                        messages.push(Json.parse(prevString + curString));
-                        x;
-                    case [_,x = Completed(str)]:
-                        trace(str);
-                        messages.push(Json.parse(str));
-                        x;
-                    case [Unfinished(prevString,_),Unfinished(curString,remain)]:
-                        Unfinished(prevString + curString,remain);
-                    case [_,x = Unfinished(_,_)]:
-                        x; 
-                }
-            }
-        } catch (e:haxe.io.Eof) { 
-            lastgoodpos = inp.position; 
-            prevResults[clientNo] = null;
-            oldbuffers[clientNo] = CONJOIN(bytes.sub(lastgoodpos,bytes.length - lastgoodpos));
-            trace("conjoining");
-        } catch (e:String) {
-            lastgoodpos = inp.position; 
-            prevResults[clientNo] = null;
-            oldbuffers[clientNo] = CONJOIN(bytes.sub(lastgoodpos,bytes.length - lastgoodpos));
-            trace(e);
-            trace("conjoining"); 
-        } catch (e) {
-            trace(e.details());
-            trace("could not recieve packet");
-            shutdown();
-            throw e;
-        }
-        if (messages.length > 1) trace("BIG PACKET");
-        for (msg in messages) {
-            msg.seq = 0; //must be done, or implementation has a fit
-            // trace(msg);
-            switch (msg.type) {
-                case Event:
-                    sendEvent(cast msg);
-                case Response:
-                    sendResponse(cast msg);
-                case "gmdebug":
-                    processCustomMessages(cast msg);
-                default:
-                    trace("bad...");
-                    throw "unhandled";
-            }
-        }
-        if (requestFill) {
+    
+    function readGmodBuffer(jsBuf:Buffer,clientNo:Int) {
+	final messages = bytesProcessor.process(jsBuf,clientNo);
+	for (msg in messages) {
+	    processDebugeeMessage(msg,clientNo);
+	}
+	// messages.iter(processDebugeeMessage);
+        if (bytesProcessor.fillRequested) {
             clients[clientNo].writeS.write("\004\r\n");
         }
     }
 
-    /**
-       Kill all clients
-    **/
-    function endAll() {
-        for (client in clients) {
-            client.readS.end();
-            client.writeS.end();
-        }
-	
-        clients.resize(0);
+    function processDebugeeMessage(debugeeMessage:ProtocolMessage,threadId:Int) {
+	debugeeMessage.seq = 0; //must be done, or implementation has a fit
+	// trace(debugeeMessage);
+	switch (debugeeMessage.type) {
+	    case Event:
+		final event:Event<Dynamic> = cast debugeeMessage;
+		final cmd = event.event;
+		trace('evented, $cmd');
+		Intercepter.event(event,threadId);
+		sendEvent(event);
+	    case Response:
+		final cmd = (cast debugeeMessage : Response<Dynamic>).command;
+		trace('responded, $cmd');
+		sendResponse(cast debugeeMessage);
+	    case "gmdebug":
+		processCustomMessages(cast debugeeMessage);
+	    default:
+		trace("bad...");
+		throw "unhandled";
+	}
     }
 
     override public function shutdown() {
 	switch (dapMode) {
 	    case LAUNCH(child):
 		child.stdin.write("quit\n");
+		child.kill();
 	    default:
 	}
         for (ind => client in clients) {
@@ -364,13 +258,15 @@ enum DapMode {
 	
         super.shutdown();
     }
+
+
     /**
      * Async start server. Respond to attach request when attached.
      **/
-    public function startServer(commMethod:CommMethod,attachReq:AttachRequest) {
+    public function startServer(commMethod:CommMethod,attachReq:Request<Dynamic>) {
         switch (commMethod) {
             case Socket:
-                luaServer = Net.createServer((sock) -> {
+                final luaServer = Net.createServer((sock) -> {
                     final luaDebug = sock;
                     sock.setKeepAlive(true);
                     clients[0] = {
@@ -379,7 +275,11 @@ enum DapMode {
                     }
                     var aresp = attachReq.compose(RequestString.attach);
                     aresp.send();
-                    luaDebug.addListener(Error,(list:js.lib.Error) -> {trace(list); trace(list.message); throw "no..";});
+                    luaDebug.addListener(Error,(list:js.lib.Error) -> {
+			trace(list);
+			trace(list.message);
+			throw "Socket error";
+		    });
                     sock.addListener(Error,(x) -> {
                         trace("could not recieve packet");
                         trace(x);
@@ -422,7 +322,6 @@ enum DapMode {
 
     public inline function sendToAll(msg:Dynamic) {
         final msg = composeMessage(msg);
-        trace(clients);
         for (client in clients) {
             client.writeS.write(msg);
         }
@@ -453,14 +352,20 @@ enum DapMode {
     }
 }
 
-enum RecvMessageResponse {
-    Completed(x:String);
-    Unfinished(x:String,remaining:Int);
+
+
+typedef FileSocket = {
+    readS : Socket,
+    writeS : Socket,
 }
 
-enum ConjoinedPacket {
-    NONE;
-    CONJOIN(old:haxe.io.Bytes);
-    // FINISH(remaininglen:Int,prev:String);
+typedef ClientFiles = {
+    read : String,
+    write : String
+
 }
 
+enum DapMode {
+    ATTACH;
+    LAUNCH(child:ChildProcess);
+}

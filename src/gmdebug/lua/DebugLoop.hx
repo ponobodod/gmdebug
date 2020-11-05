@@ -1,5 +1,8 @@
 package gmdebug.lua;
 
+import haxe.Json;
+import lua.NativeStringTools;
+import gmod.libs.FileLib;
 import gmdebug.ComposedMessage;
 import lua.Debug;
 import haxe.Constraints.Function;
@@ -9,6 +12,7 @@ import gmod.Gmod;
 
 using gmod.WeakTools;
 using Safety;
+using tink.CoreApi;
 class DebugLoop {
 
     public static var breakpoints:Map<String,Map<Int,BreakPoint>> = [];
@@ -21,7 +25,7 @@ class DebugLoop {
     **/
     static final activeLinesCheckInterval = 3;
 
-    static final sourceCache = makeSourceCache(); 
+    public static final sourceCache = makeSourceCache(); 
 
     static var lineInfoFuncCache:haxe.ds.ObjectMap<Function,Bool> = new haxe.ds.ObjectMap();
 
@@ -36,6 +40,24 @@ class DebugLoop {
     static var prevStackHeight:Int = 0;
 
     static var activeLinesCheckCount = 0;
+
+    static var mapcache:Map<String,Option<String>> = [];
+
+    static function readMap(x:String):Option<String> {
+        if (mapcache == null) return None;
+        var map = mapcache.get(x);
+        if (map != null) return map;
+        var mapfile = FileLib.Read('${NativeStringTools.sub(x,2)}.map',GAME);
+        if (mapfile == null) {
+            var val = None;
+            mapcache.set(x,val);
+            return val;
+        } 
+        var tbl = Json.parse(mapfile);
+        var newfile = Some('${tbl.sourceroot}${tbl.source[1]}');
+        mapcache.set(x,newfile);
+        return newfile;
+    }
 
     public static function addLineInfo(x:Function) {
         if (lineInfoFuncCache != null && lineInfoFuncCache.exists(x)) return;
@@ -122,8 +144,6 @@ class DebugLoop {
         }
         return stackHeight || isEscape;
     }
-
-
 
     static function currentStackHeight(func:Function) {
         return if (func != prevFunc) {
@@ -231,7 +251,7 @@ class DebugLoop {
             }
         }
         if (lineInfoFuncCache != null && !lineInfoFuncCache.exists(func)) {
-            var lineInfo = DebugLib.getinfo(2,"L");
+            final lineInfo = DebugLib.getinfo(2,"L");
             lineInfoFuncCache.set(func,true);
             for (i in sinfo.linedefined...sinfo.lastlinedefined) {
                 final cache = retrieveSourceLineInfo(sinfo.source);
@@ -255,9 +275,6 @@ class DebugLoop {
             currentFunc = func;
         }
     }
-
-
-    
 
     //TODO if having inline breakpoints, only use instruction count when necessary (i.e when running the line to step through) also granuality ect.
     public static function debugloop(cur:HookState,currentLine:Int) {

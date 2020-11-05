@@ -16,9 +16,10 @@ class LuaSocket extends Socket implements DebugIO {
     override function connect(host:Host, port:Int) {
         super.connect(host, port);
         output = new SimpleLSOutput(cast _socket);
+	final tcpClient:TcpClient = cast _socket;
+	tcpClient.setoption(KeepAlive,true);
+	tcpClient.setoption(TcpNoDelay,true);
     }
-
-
     
 }
 
@@ -26,8 +27,8 @@ class SimpleLSOutput extends haxe.io.Output {
 
     var tcp:TcpClient;
 
-	public function new(tcp:TcpClient) {
-		this.tcp = tcp;
+    public function new(tcp:TcpClient) {
+	    this.tcp = tcp;
     }
 
     override function writeString(s:String, ?encoding:Encoding) {

@@ -11,4 +11,4 @@
 -D haxeJSON
 -debug
 -main gmdebug.dap.Main
--js main.js
+-js bin/main.js

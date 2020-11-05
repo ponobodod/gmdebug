@@ -11,18 +11,17 @@ using tink.CoreApi;
 using Lambda;
 class Extension {
 
-  
     @:expose("activate")
     static function activate(context:vscode.ExtensionContext) {
         trace("gmdebug activated");
 	   
-	Vscode.commands.registerCommand("extension.gmdebug.FilePicker", (config) -> {
-		final selectedFolderP = Vscode.window.showOpenDialog({
-			    canSelectFiles: false,
-			    canSelectFolders: true,
-		});  
-		return selectedFolderP.then((arr) -> {return arr[0].toString();});
-	});
+        Vscode.commands.registerCommand("extension.gmdebug.FilePicker", (config) -> {
+            final selectedFolderP = Vscode.window.showOpenDialog({
+                    canSelectFiles: false,
+                    canSelectFolders: true,
+            });  
+            return selectedFolderP.then((arr) -> {return arr[0].toString();});
+        });
 	    
         final fact:DebugAdapterDescriptorFactory = new InlineDebugAdapterProvide();
         context.subscriptions.push(Vscode.debug.registerDebugAdapterDescriptorFactory("gmdebug",fact));
@@ -35,9 +34,6 @@ class Extension {
     }
     @:expose("runMode")    
     static var runMode = "inline";
-
-
-
 
 }
 

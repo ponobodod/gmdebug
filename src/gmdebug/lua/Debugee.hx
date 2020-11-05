@@ -1,7 +1,10 @@
 package gmdebug.lua;
 
+import gmod.libs.GuiLib;
+import gmod.libs.VguiLib;
+import gmdebug.Cross;
+import gmdebug.GmDebugMessage;
 import gmod.libs.GameLib;
-import gmdebug.Cross.MessageResult;
 import gmod.libs.MathLib;
 import gmdebug.lua.Handlers;
 import gmdebug.ComposedMessage.ComposedGmDebugMessage;
@@ -41,11 +44,14 @@ using gmod.PairTools;
 using tink.CoreApi;
 using Safety;
 using gmod.WeakTools;
+#if client
+import gmod.libs.ChatLib;
+#end
+
 
 @:keep
 class Debugee {
 
-    
     public static var clientID:Int = 0;
 
     public static var state:DebugState = WAIT;
@@ -54,14 +60,15 @@ class Debugee {
 
     public static var inpauseloop = false;
 
+    public static var dapMode:Null<DapModeStr>;
 
     public static var playerThreads:Array<Null<Player>> = [];
 
-    public static var stackOffset = {
-        step : 4, // was 5
-        stepDebugLoop : 5, // was 6
+    public static final stackOffset = {
+        step : 4, 
+        stepDebugLoop : 5, 
         except : 5,
-        pause : 5 //was 9
+        pause : 5 
     };
 
     public static var minheight:Int = 3;
@@ -89,7 +96,7 @@ class Debugee {
         Pipe => true
     ];
 
-    static var socket(default,set):Null<DebugIO>;
+    public static var socket(default,set):Null<DebugIO>;
 
     //SENT BY DEBUG CLIENT
     public static var dest = "";
@@ -99,15 +106,11 @@ class Debugee {
 	G.previousSocket = sock;
 	return socket = sock;
     }
-    
-
-    public static var measure = true;
 
     public static var shouldDebug = true;
 
-    static var ignoreTrace = false;
+    static var outputter = new Outputter();
     
-    @:access(sys.net.Socket)
     public static function start() {
         if (active) return false;
         for (comMethod in methodsPossible.keys()) {
@@ -119,9 +122,6 @@ class Debugee {
                         final sock = new LuaSocket();
                         sock.setTimeout(0);
                         sock.connect(cast {ip : "127.0.0.1",host : "localhost"},56789);
-                        final s_:TcpClient = cast sock._socket;
-                        s_.setoption(KeepAlive,true);
-                        s_.setoption(TcpNoDelay,true);
 			sock;
                 }
             } catch (e) {
@@ -134,7 +134,7 @@ class Debugee {
         }
         trace("attached to server");
         active = true;
-        var ce = new ComposedEvent(initialized);
+        final ce = new ComposedEvent(initialized);
         ce.send();
 	#if debugdump
 	FileLib.CreateDir("gmdebugdump");
@@ -145,10 +145,13 @@ class Debugee {
         hookPlayer();
         new ComposedEvent(continued,{threadId : 0,allThreadsContinued : true}).send();
         #end
-        hookprint();
+	Exceptions.hookOnChange();
+	Exceptions.hookGamemodeHooks();
+	Exceptions.hookEntityHooks();
+	Sources.init();
+        outputter.hookprint();
         getAllBpLines();
         Debug.sethook(DebugLoop.debugloop,"c");
-        // debugLoopState |= Call;
         hooksActive = true;
         return true;
     }
@@ -157,7 +160,7 @@ class Debugee {
         final searchTable:AnyTable = _searchTable.or(untyped __lua__("_G"));
         final depth = _depth.or(0);
         if (depth > 3) {return;}
-        for (_ => p in searchTable) {
+        for (p in searchTable) {
             switch (Lua.type(p)) {
                 case "function":
                     DebugLoop.addLineInfo(cast p);
@@ -169,58 +172,6 @@ class Debugee {
                     }
             }
         }
-    }
-    
-    static function hookprint() {
-        if (G.__oldprint == null) {
-            G.__oldprint = G.print;
-        }
-        G.print = untyped __lua__("function (...) local succ,err = pcall({0},{1},true,...) if not succ then _G.__oldprint(\"Debug output failed: \",err) end _G.__oldprint(...) end",output,OutputEventCategory.Console);
-    }
-
-    static function output(cat:OutputEventCategory,print:Bool,vargs:Table<Int,Dynamic>) {
-        if (ignoreTrace || socket == null) return;
-        ignoreTrace = true;
-        var out:String = "";
-        final arr:Array<Dynamic> = [];
-        for (dyn in vargs) {
-            out += dyn + "\t";
-            final varref = Handlers.generateVariablesReference(dyn);
-            if (varref > -1) {
-                arr.push(dyn);
-            }
-        }
-        out += "\n";
-        final body:TOutputEvent = {
-            category: Stdout,
-            output: out,
-            variablesReference: switch (arr.length) {
-                case 0:
-                    null;
-                default:
-                    Handlers.generateVariablesReference(arr);
-            },
-        }
-        var lineInfo = DebugLib.getinfo(4,"Slf"); //+ 1 for handler functions ect.
-        if (print && lineInfo != null) {
-            final meta = DebugLib.getmetatable(untyped __lua__("lineInfo.func"));
-            if (meta != null) {
-                if (meta.printHandler != null) {
-                    lineInfo = DebugLib.getinfo(6,"Slf");
-                }
-            }
-            if (lineInfo != null && lineInfo.source != "") {
-                final pth = @:nullSafety(Off) lineInfo.source.split("/");
-                body.source = {
-                    name: pth[pth.length - 1],
-                    path: normalPath(lineInfo.source),
-                };
-                body.line = lineInfo.currentline;
-            }
-        }
-        final event = new ComposedEvent(EventString.output,body);
-        event.send();
-        ignoreTrace = false;
     }
 
     @:access(sys.net.Socket)
@@ -246,43 +197,51 @@ class Debugee {
         playerThreads = [];
         HookLib.Add(PlayerInitialSpawn,"debugee-newplayer",(ply,_) -> {
             new ComposedGmDebugMessage(playerAdded,{
-		name : ply.Name(),
-		playerID : ply.UserID()
-	    }).send();
+                name : ply.Name(),
+                playerID : ply.UserID()
+	        }).send();
         });
         HookLib.Add(PlayerDisconnected,"debugee-byeplayer",(ply) -> {
             new ComposedGmDebugMessage(playerRemoved,{
-		playerID : ply.UserID()
-	    }).send();
+		        playerID : ply.UserID()
+	        }).send();
         });
         for (ply in PlayerLib.GetAll()) {
             new ComposedGmDebugMessage(playerAdded,{
-		name : ply.Name(),
-		playerID : ply.UserID()
-	    }).send();
+                name : ply.Name(),
+                playerID : ply.UserID()
+	        }).send();
         }
     }
     #end
 
     @:expose("__gmdebugTraceback")
-    static function traceback(err:String) {
-        var _err = DebugLib.traceback(err,3);
-        var arr = @:nullSafety(Off) _err.split("\n");
-        //getting rid of error handling trace lines
-        arr.splice(-3,2);
-        _err = arr.join("\n");
-        if (checkIgnoreError(err)) return _err;
-        if (Debugee.inpauseloop || tracing) {trace("no..."); return _err;}
-        #if server
-        if (!active && Jit.checkCanActivateJit()) {
-            final result = Jit.jitCheck(err,_err);
-            if (!result) return _err;
-        }
-        #end
-        if (!hooksActive) return _err;
-        if (!active) return _err;
-        tracing = true;
-        startHaltLoop(Exception,stackOffset.except,err);
+    static function traceback(err:Dynamic) {
+	final _err:Dynamic = if (Lua.type(err) == "string") {
+	    var _err = DebugLib.traceback(err,3);
+	    var arr = @:nullSafety(Off) _err.split("\n");
+	    //getting rid of error handling trace lines
+	    arr.splice(-3,2);
+	    arr.join("\n");
+	} else {
+	    err;
+	}
+	if (checkIgnoreError(err)) return _err;
+	if (Debugee.inpauseloop || tracing) {trace("no..."); return _err;}
+	#if server
+	if (!active && Jit.checkCanActivateJit()) {
+	    final result = Jit.jitCheck(err,_err);
+	    if (!result) return _err;
+	}
+	#end
+	if (!hooksActive) return _err;
+	if (!active) return _err;
+	tracing = true;
+	#if client
+	GuiLib.EnableScreenClicker(true);
+	GuiLib.ActivateGameUI();
+	#end
+	startHaltLoop(Exception,stackOffset.except,err);
         tracing = false;
         return DebugLib.traceback(err);
     }
@@ -290,16 +249,13 @@ class Debugee {
 
 
     inline static function recvMessage(x:Input):MessageResult {
-        // trace("reading...");
         socket.unsafe().output.writeString("\004");
         socket.unsafe().output.flush();
-        // trace('reading took ${Gmod.SysTime() - start}');
         return Cross.recvMessage(x);
     }
 
     public static function poll() {
         if (socket == null) return;
-        // if (Debugee.inpauseloop) return;
         var data:Request<Dynamic> ;
         try {
             data = switch ((recvMessage(socket.unsafe().input)) : MessageResult ) {
@@ -319,30 +275,10 @@ class Debugee {
             abortDebugee();
             return;
         }
-        trace(data.command);
         if (chooseHandler(data) == DISCONNECT) {
             abortDebugee();
         }
     }
-
-    static var mapcache:Map<String,Option<String>> = [];
-
-    static function readMap(x:String):Option<String> {
-        if (mapcache == null) return None;
-        var map = mapcache.get(x);
-        if (map != null) return map;
-        var mapfile = FileLib.Read('${NativeStringTools.sub(x,2)}.map',GAME);
-        if (mapfile == null) {
-            var val = None;
-            mapcache.set(x,val);
-            return val;
-        } 
-        var tbl = Json.parse(mapfile);
-        var newfile = Some('${tbl.sourceroot}${tbl.source[1]}');
-        mapcache.set(x,newfile);
-        return newfile;
-    }
-
 
     public static function main() {
         Debug.sethook();
@@ -359,10 +295,9 @@ class Debugee {
             FileLib.CreateDir("gmdebug");
         }
 	#if server
-	GameLib.ConsoleCommand("sv_timeout 99999\n");
-	// GameLib.ConsoleCommand("sv_timeout_signon 99999\n");
+	GameLib.ConsoleCommand("sv_timeout 999999\n");
 	#elseif client
-	Gmod.RunConsoleCommand("cl_timeout",99999);
+	Gmod.RunConsoleCommand("cl_timeout",999999);
 	#end
 	#if client
 	Jit.init();
@@ -370,31 +305,31 @@ class Debugee {
         TimerLib.Create("debugee-start",3,0,() -> {
             #if server
 	    Jit.jitActivate();
-	   
             #end
-	    
-	    
             try {start();
-
 	    }
             catch (ee:String) {
                 socket.run((sock) -> sock.close());
                 trace("closed socket on error");
-		
                 throw ee;
             }
         });
         TimerLib.Create("report-profling",3,0,() -> {
             DebugLoopProfile.report();
         });
-        TimerLib.Create("debugee-poll",0.1,0,() -> {
-            shouldDebug = false;
-	    poll();
-            // Lua.xpcall(,
-            //     (err) -> trace(Debug.traceback(err,3))
-            // );
-            shouldDebug = true;
-        });
+	var pollTime = 0.0;
+	HookLib.Add(GMHook.Think,"debugee-poll",() -> {
+	    if (Gmod.CurTime() > pollTime) {
+		pollTime = Gmod.CurTime() + 0.1;
+		shouldDebug = false;
+		poll();
+		// Lua.xpcall(,
+		//     (err) -> trace(Debug.traceback(err,3))
+		// );
+		shouldDebug = true;
+	    }
+	});
+	
 	HookLib.Remove(GMHook.Think,"woopee");
         // var timer = Gmod.CurTime() + 30;
         // HookLib.Add(GMHook.Think,"woopee",() -> {
@@ -404,14 +339,14 @@ class Debugee {
         //         untyped __lua__("print(x + 5)");
         //     }
         // });
-        var timer2 = 0.0;
-        HookLib.Add(GMHook.Think,"execute-order", () -> {
-            if (Gmod.CurTime() > timer2) {
-                timer2 = Gmod.CurTime() + 4;
-                final x = MathLib.random(1,10);
-                trace(x);
-            }
-        });
+        // var timer2 = 0.0;
+        // HookLib.Add(GMHook.Think,"execute-order", () -> {
+        //     if (Gmod.CurTime() > timer2) {
+        //         timer2 = Gmod.CurTime() + 4;
+        //         final x = MathLib.random(1,10);
+        //         trace(x);
+        //     }
+        // });
     }
 
     public static function normalPath(x:String):String {
@@ -448,7 +383,7 @@ class Debugee {
 
     #end
     
-    public static function abortDebugee() {
+    static function abortDebugee() {
         Debug.sethook();
         socket.run((sock) -> {
             sock.close();
@@ -460,10 +395,9 @@ class Debugee {
         trace("Debugging aborted");
         Exceptions.unhookGamemodeHooks();
 	Exceptions.unhookEntityHooks();
-
     }
 
-    public static function haltLoop() {
+    static function haltLoop() {
         while (true) {
             var msg;
             try {
@@ -508,8 +442,6 @@ class Debugee {
         }
     }
 
-
-
     public static function fullPathToGmod(fullPath:String):Null<String> {
         if (fullPath.contains(Debugee.dest)) {
             var result = fullPath.replace(Debugee.dest,"");
@@ -519,15 +451,6 @@ class Debugee {
             return null;
         }
     }
-
-
-
-}
-
-enum OutputType {
-    Console;
-    Stdout;
-    Stderr;
 }
 
 typedef LineMap = Map<Int,Bool>;
@@ -535,11 +458,8 @@ typedef LineMap = Map<Int,Bool>;
 //TODO
 @:native("_G") private extern class G {
 
-    static var __oldprint:Null<Function>;
-
-    static var print:Function;
-
     static var previousSocket:Null<DebugIO>;
+
 }
 
 enum DebugState {

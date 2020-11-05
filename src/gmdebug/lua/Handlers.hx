@@ -101,44 +101,45 @@ class Handlers {
 
     static function h_sources(req:LoadedSourcesRequest) {
         var resp = req.compose(loadedSources,{
-            sources: getSources(),
+            sources: Sources.sources,
         });
         resp.send();
         return WAIT;
     }
 
-    static function getSources():Array<Source> {
-        var arr:Array<Source> = [];
-        for (i in 1...9999) {
-            var info = DebugLib.getinfo(i + 1,"S");
-            if (info == null) break;
-            var src = switch (info.source.charAt(0)) {
-                case "@":
-                    @:nullSafety(Off) info.source.substr(1);
-                default:
-                    info.source;
-            }
-            var path:String;
-            var hint:Null<SourcePresentationHint>;
-            switch (src) {
-                case "=[C]":
-                    continue;
-                    hint = Deemphasize;
-                case x:
-                    path = Debugee.normalPath(x);
-                    hint = null;
-            }
-            var thing = @:nullSafety(Off) path.split("/");
-            var thing2 = thing[thing.length - 1];
-            arr.push({
-                name: thing2,
-                path: path,
-                presentationHint: hint,
-            });
-            trace(arr);
-        }
-        return arr;
-    }
+    
+    // static function getSources():Array<Source> {
+    //     var arr:Array<Source> = [];
+    //     for (i in 1...9999) {
+    //         var info = DebugLib.getinfo(i + 1,"S");
+    //         if (info == null) break;
+    //         var src = switch (info.source.charAt(0)) {
+    //             case "@":
+    //                 @:nullSafety(Off) info.source.substr(1);
+    //             default:
+    //                 info.source;
+    //         }
+    //         var path:String;
+    //         var hint:Null<SourcePresentationHint>;
+    //         switch (src) {
+    //             case "=[C]":
+    //                 continue;
+    //                 hint = Deemphasize;
+    //             case x:
+    //                 path = Debugee.normalPath(x);
+    //                 hint = null;
+    //         }
+    //         var thing = @:nullSafety(Off) path.split("/");
+    //         var thing2 = thing[thing.length - 1];
+    //         arr.push({
+    //             name: thing2,
+    //             path: path,
+    //             presentationHint: hint,
+    //         });
+    //         trace(arr);
+    //     }
+    //     return arr;
+    // }
 
     static function h_continue(req:ContinueRequest) {
         var resp = req.compose(_continue,{allThreadsContinued: false});
@@ -317,18 +318,18 @@ class Handlers {
                 case Error(err):
                     {
                         verified : false,
-                        message : "Failed to compile" //TODO add error message lazy fucker
+                        message : "Failed to compile" 
                     };
                 case Success(Util.runCompiledFunction(_) => Error(err)):
                     {
                         verified : false,
-                        message : "Failed to run" //TODO add error message lazy fucker
+                        message : "Failed to run" 
                     };
                 case Success(Util.runCompiledFunction(_) => Success(result))
                     if (Lua.type(result) != "function"):
                     {
                         verified : false,
-                        message : "Result is not a function" //TODO add error message lazy fucker
+                        message : "Result is not a function" //TODO add error message 
                     };
                 case Success(Util.runCompiledFunction(_) => Success(func)):
                     DebugLoop.functionBP.set(func,true);
@@ -534,7 +535,6 @@ class Handlers {
         final addVars:Array<AddVar> = [];
         switch (ref.getValue()) {
             case Child(_, ref):
-	    trace('asking for $ref');
 	      var storedvar:Dynamic = (storedVariables[ref] : Any).unsafe();
 	      if (storedvar == null) trace('Variable requested with nothing stored! $ref');
                 switch Gmod.TypeID(storedvar) {

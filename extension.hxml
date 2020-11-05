@@ -12,4 +12,4 @@
 -debug
 
 gmdebug.dap.Extension
--js extension.js
+-js bin/extension.js

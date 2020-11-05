@@ -1,6 +1,6 @@
 package gmdebug;
 
-import gmdebug.Cross.GmMsgType;
+import gmdebug.GmDebugMessage;
 import haxe.Json;
 import gmdebug.RequestString;
 #if lua
@@ -56,6 +56,7 @@ class ComposedEvent<T> extends ComposedProtocolMessage {
 
     #if js
     public inline function send() {
+	trace('sending from dap $event');
         LuaDebugger.inst.sendEvent(cast this); // pls work :)
     }
     #end
@@ -127,6 +128,7 @@ class ComposedResponse<T> extends ComposedProtocolMessage {
 
     #if js
     public inline function send() {
+	trace('sending from dap $command');
         LuaDebugger.inst.sendResponse(cast this); // pls work :)
     }
     #end

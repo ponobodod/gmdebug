@@ -24,19 +24,16 @@ class Main {
         }
         if (port > 0) {
             var server = Net.createServer((socket) -> {
-                trace("woo");
                 socket.on('end',() -> trace("Closed"));
                 final session = new LuaDebugger(false,true);
                 session.setRunAsServer(true);
-                session.start(socket,socket);
-                trace("started");
-                // session.start()
+                untyped session.start(socket,socket);
             });
             server.listen(4555,"localhost");
         } else {
             final session = new LuaDebugger(false);
             Node.process.on("SIGTRM", () -> session.shutdown());
-            session.start(Node.process.stdin,Node.process.stdout);
+            untyped session.start(Node.process.stdin,Node.process.stdout);
             //redirect traces to stderr
             haxe.Log.trace = (v,?infos) -> {
                 final str = haxe.Log.formatOutput(v, infos);

@@ -4,22 +4,16 @@
 	"version": "0.0.1",
 	"publisher": "ponobodod",
 	"dependencies": {
-		"deasync": "0.1.20",
 		"ip": "^1.1.5",
-		"mocha": "8.0.1",
 		"vscode-debugadapter": "^1.41.0",
-		"vscode-debugadapter-testsupport": "1.41.0",
 		"vscode-debugprotocol": "^1.41.0"
 	},
 	"engines": {
 		"vscode": "^1.34.0"
 	},
-	"main": "./extension.js",
+	"main": "./bin/extension.js",
 	"activationEvents": [
-		"onDebug",
-		"onDebugResolve:gmdebug",
-		"*",
-		"onCommand:extension.gmdebug.FilePicker"
+		"onDebug"	
 	],
 	"contributes": {
 		"breakpoints": [
@@ -31,7 +25,7 @@
 			{
 				"type": "gmdebug",
 				"label": "Garry's mod debugger - gmdebug",
-				"program": "./out/node/main.js",
+				"program": "./bin/main.js",
 				"runtime": "node",
 				"configurationAttributes": {
 					"attach": {
@@ -42,9 +36,47 @@
 							"serverFolder": {
 								"type": "string",
 								"description": "The path to your garry's mod server (the garrysmod folder specifically)",
-								"default": "${command:FilePicker}"
+								"default": "/path_to_server_from_root/garrysmod"
+							},
+							"clientFolders": {
+								"type": "array",
+								"description": "The path to the client connecting to the server you wish to debug."
+								
 							}
 						}
+					},
+					"launch" : {
+						"required": [
+							"serverFolder",
+							"programPath",
+							"programArgs"
+						],
+						"properties": {
+							"serverFolder": {
+								"type": "string",
+								"description": "The path to your garry's mod server (the garrysmod folder specifically)",
+								"default": "/path_to_server_from_root/garrysmod"
+							},
+							"clientFolders": {
+								"type": "array",
+								"description": "The path to the client connecting to the server you wish to debug."
+								
+							},
+							"programPath" : {
+								"type": "string",
+								"description": "The path to server executable/config, or 'auto' to find and run the default server executable (srcds_run)",
+								"default" : "auto"
+							},
+							"programArgs" : {
+								"type": "array",
+								"description": "Arguments to launch server. Fill out if using the option 'auto' for programPath",
+								"default": ["+map","gm_flatgrass","+sv_lan","1"]
+
+							}
+							
+
+						}
+
 					}
 				},
 				"initialConfigurations": [
@@ -52,7 +84,18 @@
 						"type": "gmdebug",
 						"request": "attach",
 						"name": "gmdebug: Attach to server",
-						"serverFolder": "${command:FilePicker}"
+						"serverFolder": "/path_to_server_from_root/garrysmod"
+					},
+					{
+						"label": "gmdebug: Launch server",
+						"description": "Launch your garry's mod server.",
+						"body": {
+							"type": "gmdebug",
+							"request": "launch",
+							"name": "gmdebug : Launch server",
+							"serverFolder": "/path_to_server_from_root/garrysmod",
+							"programPath": "Fill in the path to your server executable/config here, or delete and let gmdebug find your executable "
+						}
 					}
 				],
 				"configurationSnippets": [
@@ -63,13 +106,21 @@
 							"type": "gmdebug",
 							"request": "attach",
 							"name": "gmdebug : Attach to server",
-							"serverFolder": "${command:FilePicker}"
+							"serverFolder": "/path_to_server_from_root/garrysmod"
+						}
+					},
+					{
+						"label": "gmdebug: Launch server",
+						"description": "Launch your garry's mod server.",
+						"body": {
+							"type": "gmdebug",
+							"request": "launch",
+							"name": "gmdebug : Launch server",
+							"serverFolder": "/path_to_server_from_root/garrysmod",
+							"programPath": "Fill in the path to your server executable/config here, or delete and let gmdebug find your executable "
 						}
 					}
-				],
-				"variables": {
-					"FilePicker": "extension.gmdebug.FilePicker"
-				}
+				]
 			}
 		]
 	}

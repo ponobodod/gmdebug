@@ -21,12 +21,6 @@ typedef HasThreadID = {
     }
 }
 
-//https://microsoft.github.io/debug-adapter-protocol/implementors/tools/
-enum abstract DapClients(String) {
-    var Emacs = "emacs.dap-mode";
-    var Vscode = "vscode";
-}
-
 class Handlers {
 
     public static function handle(req:Request<Dynamic>) {
@@ -81,7 +75,7 @@ class Handlers {
 	for (i in 1...LuaDebugger.clients.length) {
 	    threadArr.push({
 		name : LuaDebugger.mapClientName.get(i),
-		id : i});
+		id : i });
 	}
 	x.compose(threads,{threads : threadArr}).send();
     }
@@ -144,7 +138,6 @@ class Handlers {
 
     static function h_initialize(x:InitializeRequest) {
 	
-	//when dap-mode identifies itself...?
         final response:InitializeResponse = {
             seq: 0, //it gets ignored anyway
             request_seq : x.seq,
@@ -154,13 +147,10 @@ class Handlers {
             success: true,
         }
         response.body.supportsConfigurationDoneRequest = true;
-        response.body.supportsFunctionBreakpoints = true; //TODO support through the global table
+        response.body.supportsFunctionBreakpoints = true; 
         response.body.supportsConditionalBreakpoints = true;
         response.body.supportsEvaluateForHovers = true;
-        // response.body.supportsModulesRequest = true;
-        // response.body.additionalModuleColumns = [];
         response.body.supportsLoadedSourcesRequest = true;
-        // response.body.supportsDelayedStackTraceLoading = true; TODO support
         response.body.supportsFunctionBreakpoints = true;
         response.body.supportsBreakpointLocationsRequest = false;
         // response.body.exceptionBreakpointFilters = switch (client) {
@@ -174,14 +164,29 @@ class Handlers {
         LuaDebugger.inst.sendResponse(response);
     }
 
-    
-
     static function h_launch(x:GmDebugLaunchRequest) {
+	final serverFolder = x.arguments.serverFolder;
+	if (!validateServerFolder(serverFolder,x)) return;
 	//handle windows stuff here
-       
-	final programPath = x.arguments.programPath;
+	final programPath = switch (x.arguments.programPath) {
+	    case null:
+		x.composeFail("Gmdebug requires the property \"programPath\" to be specified when launching.",{
+		    id: 2,
+		    format: "Gmdebug requires the property \"programPath\" to be specified when launching",
+		}).send();
+		return;
+	    case "auto":
+		'$serverFolder/../srcds_run';
+	    case path:
+		path;
+	}
 	if (!validateProgramPath(programPath,x)) return;
-	final childProcess = js.node.ChildProcess.spawn('script -c \'bash $programPath\' /dev/null',{
+	final arrArgs = x.arguments.programArgs.or([]);
+	var argResult = "";
+	for (arg in arrArgs) {
+	    argResult += arg + " ";
+	}
+	final childProcess = js.node.ChildProcess.spawn('script -c \'$programPath -norestart $argResult\' /dev/null',{
 	    cwd : haxe.io.Path.directory(programPath),
 	    env : Node.process.env,
 	    shell : true
@@ -214,16 +219,9 @@ class Handlers {
 	    LuaDebugger.inst.shutdown();
 	    return;
 	});
-	new ComposedEvent(process,{
-	    name : x.arguments.programPath,
-	    systemProcessId : childProcess.pid,
-	    isLocalProcess : true,
-	    startMethod : Launch
-	}).send();
 	
 	//nodebug?
-	final serverFolder = x.arguments.serverFolder;
-	if (!validateServerFolder(serverFolder,x)) return;
+	setupDebugger(serverFolder);
 	final clientFolders = x.arguments.clientFolders.or([]);
 	for (ind => client in clientFolders) {
 	    if (!validateClientFolder(client,x)) {
@@ -231,11 +229,11 @@ class Handlers {
 	    }
 	    clientFolders[ind] = haxe.io.Path.addTrailingSlash(client); 
 	}
-	final serverSlash  = haxe.io.Path.addTrailingSlash(x.arguments.serverFolder);
+	final serverSlash = haxe.io.Path.addTrailingSlash(x.arguments.serverFolder);
 	LuaDebugger.inst.serverFolder = serverSlash;
 	LuaDebugger.inst.clientLocations = clientFolders;
 	LuaDebugger.dapMode = LAUNCH(childProcess);
-        LuaDebugger.inst.startServer(LuaDebugger.commMethod,x);
+        LuaDebugger.inst.startServer(Pipe,x);
     }
 
     static function h_scopes(x:ScopesRequest) {
@@ -243,6 +241,14 @@ class Handlers {
         LuaDebugger.inst.sendToClient(client,x);
     }
 
+    static function setupDebugger(serverFolder:String) {
+	final addonFolder = haxe.io.Path.join([serverFolder,"addons"]);
+	final debugFolder = haxe.io.Path.join([addonFolder,"debugee-auto"]);
+	if (!Fs.existsSync(debugFolder)) {
+	    js.node.ChildProcess.execSync('cp -r ../generated $addonFolder',{cwd : haxe.io.Path.directory(Sys.programPath())}); //todo fix for windows
+	}
+    }
+    
     static function h_attach(x:GmDebugAttachRequest) {
 	final serverFolder = x.arguments.serverFolder;
 	if (!validateServerFolder(serverFolder,x)) return;
@@ -256,10 +262,11 @@ class Handlers {
 	final serverSlash  = haxe.io.Path.addTrailingSlash(x.arguments.serverFolder);
 	LuaDebugger.inst.serverFolder = serverSlash;
 	LuaDebugger.inst.clientLocations = clientFolders;
-        LuaDebugger.inst.startServer(LuaDebugger.commMethod,x);
+        LuaDebugger.inst.startServer(Pipe,x);
     }
 
     static function validateProgramPath(programPath:String,launchReq:GmDebugLaunchRequest) {
+	
 	final valid = if (programPath == null) {
 	    launchReq.composeFail("Gmdebug requires the property \"programPath\" to be specified when launching.",{
 		id: 2,
@@ -299,8 +306,7 @@ class Handlers {
 	    }).send();
 	    false;
 	} else {
-	    final dataFolder = js.node.Path.join(serverFolder,"data");
-	    final gmdebug = js.node.Path.join(dataFolder,"gmdebug");
+	    final addonFolder = js.node.Path.join(serverFolder,"addons");
 	    if (!haxe.io.Path.isAbsolute(serverFolder)) {
 		attachReq.composeFail("Gmdebug requires the property \"serverFolder\" to be an absolute path (i.e from root folder).",{
 		    id: 3,
@@ -319,16 +325,10 @@ class Handlers {
 		    format: "The \"serverFolder\" path is not a directory.",
 		}).send();
 		false;
-	    } else if (!Fs.existsSync(dataFolder)|| !Fs.statSync(dataFolder).isDirectory()) {
-		attachReq.composeFail( "\"serverFolder\" does not seem to be a garrysmod directory. (looking for \"data\" folder)",{
+	    } else if (!Fs.existsSync(addonFolder)|| !Fs.statSync(addonFolder).isDirectory()) {
+		attachReq.composeFail( "\"serverFolder\" does not seem to be a garrysmod directory. (looking for \"addons\" folder)",{
 		    id: 6,
-		    format: "\"serverFolder\" does not seem to be a garrysmod directory. (looking for \"data\" folder)",
-		}).send();
-		false;
-	    } else if (!Fs.existsSync(gmdebug) || !Fs.statSync(gmdebug).isDirectory()) {
-		attachReq.composeFail( "\"serverFolder\" does not seem to have the gmdebug lua component installed. Please run your server with it installed once before continuing.",{
-		    id: 7,
-		    format: "\"serverFolder\" does not seem to have the gmdebug lua component installed. Please run your server with it installed once before continuing.",
+		    format: "\"serverFolder\" does not seem to be a garrysmod directory. (looking for \"addons\" folder)",
 		}).send();
 		false;
 	    } else {
@@ -340,9 +340,11 @@ class Handlers {
 	}
 	return valid;
     }
+
     static function validateClientFolder(folder:String,attachReq:GmDebugAttachRequest) {
-	final dataFolder = js.node.Path.join(folder,"data");
-	final gmdebug = js.node.Path.join(dataFolder,"gmdebug");
+
+	final addonFolder = js.node.Path.join(folder,"addons");
+	final gmdebug = js.node.Path.join(folder,"data","gmdebug");
 	final valid = if (!haxe.io.Path.isAbsolute(folder)) {
 	    attachReq.composeFail('Gmdebug requires client folder: $folder to be an absolute path (i.e from root folder).',{
 		id: 8,
@@ -361,16 +363,10 @@ class Handlers {
 		format:'The client folder: $folder is not a directory.',
 	    }).send();
 	    false;
-	} else if (!Fs.existsSync(dataFolder)|| !Fs.statSync(dataFolder).isDirectory()) {
-	    attachReq.composeFail( 'The client folder: $folder does not seem to be a garrysmod directory. (looking for \"data\" folder)',{
+	} else if (!Fs.existsSync(addonFolder)|| !Fs.statSync(addonFolder).isDirectory()) {
+	    attachReq.composeFail( 'The client folder: $folder does not seem to be a garrysmod directory. (looking for \"addons\" folder)',{
 		id: 11,
-		format: 'The client folder: $folder does not seem to be a garrysmod directory. (looking for \"data\" folder)',
-	    }).send();
-	    false;
-	} else if (!Fs.existsSync(gmdebug) || !Fs.statSync(gmdebug).isDirectory()) {
-	    attachReq.composeFail( 'The client folder: $folder does not seem to have the gmdebug lua component installed. Please run your server with it installed once before continuing.',{
-		id: 12,
-		format: 'The client folder: $folder does not seem to have the gmdebug lua component installed. Please run your server with it installed once before continuing.',
+		format: 'The client folder: $folder does not seem to be a garrysmod directory. (looking for \"addons\" folder)',
 	    }).send();
 	    false;
 	} else {
@@ -408,6 +404,9 @@ typedef GmDebugLaunchRequestArguments = LaunchRequestArguments & GmDebugBaseRequ
        REQUIRED The path to batch file or script used to launch your server
     **/
     programPath : String,
+
+    
+    ?programArgs : Array<String>,
 
     /**
        If you wish to log the output.

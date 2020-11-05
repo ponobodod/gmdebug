@@ -44,5 +44,6 @@ enum abstract EventString<T:Event<Dynamic>>(String) from String to String {
     var continued:EventString<ContinuedEvent>;
     var exited:EventString<ExitedEvent>;
     var process:EventString<ProcessEvent>;
+    var loadedSource:EventString<LoadedSourceEvent>;
     
 }
