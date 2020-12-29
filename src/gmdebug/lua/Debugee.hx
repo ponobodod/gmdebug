@@ -1,5 +1,6 @@
 package gmdebug.lua;
 
+import gmdebug.lib.lua.Mri;
 import gmod.libs.GuiLib;
 import gmod.libs.VguiLib;
 import gmdebug.Cross;
@@ -468,13 +469,3 @@ enum DebugState {
     OUT(outFunc:Function,lowestLine:Int);
 }
 
-
-#if debugdump
-@:native("_G.mri.m_cMethods")
-extern class Mri {
-
-    static function DumpMemorySnapshot(prefix:String,name:String,dunno:Int):Void;
-
-    static function DumpMemorySnapshotComparedFile(prefix:String,name:String,dunno:Int,before:String,after:String):Void;
-}
-#end

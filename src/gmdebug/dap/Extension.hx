@@ -25,8 +25,6 @@ class Extension {
 	    
         final fact:DebugAdapterDescriptorFactory = new InlineDebugAdapterProvide();
         context.subscriptions.push(Vscode.debug.registerDebugAdapterDescriptorFactory("gmdebug",fact));
-        // provideDebugConfigurations: () -> {
-        // context.subscriptions.push(fact);
     }
     @:expose("deactivate")
     static function deactivate() {
@@ -38,17 +36,6 @@ class Extension {
 }
 
 private class DebugConfigProvider {
-
-    // public function provideDebugConfigurations(?folder:vscode.WorkspaceFolder,?token:vscode.CancellationToken) {
-    //     return [{
-    //         type: "gmdebug",
-    //         name: "Attach",
-    //         request: "attach",
-    //         communicationMethod : "pipe", //pipe/file tbd/tcp
-    //         gmodServerLocation : "path/to/garrysmod/server",
-    //         gmodClientLocations : ["path/to/garrysmod/client/","otherpath"]
-    //     }];
-    // }
 
     public var resolveDebugConfiguration = null;
 

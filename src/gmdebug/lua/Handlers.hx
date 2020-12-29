@@ -40,32 +40,38 @@ class Handlers {
         next => h_next,
         variables => h_variables,
         loadedSources => h_sources,
-        setBreakpoints => h_setBreakpoints,
+        // setBreakpoints => h_setBreakpoints,
         configurationDone => h_configurationDone,
         modules => h_modules,
         disconnect => h_disconnect,
         setExceptionBreakpoints => h_setExceptionBreakpoints,
-        setFunctionBreakpoints => h_setFunctionBreakpoints,
+        // setFunctionBreakpoints => h_setFunctionBreakpoints,
         evaluate => h_evaluate,
         breakpointLocations => h_breakpointLocations
     ];
 
+    static var breakpointM:BreakpointManager = new BreakpointManager();
+
     static var storedVariables:Array<Null<Dynamic>> = [null];
 
-    static var sources:Map<String,Source> = [];
-
-    public static function handlers(x:Request<Dynamic>):HandlerResponse {
-	if (x.command == "continue") {
+    public static function handlers(req:Request<Dynamic>):HandlerResponse {
+	if (req.command == "continue") {
 	    storedVariables = [null];
-	    return h_continue(x);
+	    return h_continue(req);
 	}
-        var h = handlerMap.get(x.command);
+	switch (req.command) {
+	    case setBreakpoints:
+		return breakpointM.handle(req);
+	    case functionBreakpoints:
+	    default: 
+	}
+        var h = handlerMap.get(req.command);
         if (h != null) {
-	    final result = h(x);
+	    final result = h(req);
 	    if (result == CONTINUE) storedVariables = [null]; 
             return result;
         } else {
-            throw new UnhandledResponse('Unhandled... ${x.command}');
+            throw new UnhandledResponse('Unhandled... ${req.command}');
         }
     }
 
@@ -107,40 +113,6 @@ class Handlers {
         return WAIT;
     }
 
-    
-    // static function getSources():Array<Source> {
-    //     var arr:Array<Source> = [];
-    //     for (i in 1...9999) {
-    //         var info = DebugLib.getinfo(i + 1,"S");
-    //         if (info == null) break;
-    //         var src = switch (info.source.charAt(0)) {
-    //             case "@":
-    //                 @:nullSafety(Off) info.source.substr(1);
-    //             default:
-    //                 info.source;
-    //         }
-    //         var path:String;
-    //         var hint:Null<SourcePresentationHint>;
-    //         switch (src) {
-    //             case "=[C]":
-    //                 continue;
-    //                 hint = Deemphasize;
-    //             case x:
-    //                 path = Debugee.normalPath(x);
-    //                 hint = null;
-    //         }
-    //         var thing = @:nullSafety(Off) path.split("/");
-    //         var thing2 = thing[thing.length - 1];
-    //         arr.push({
-    //             name: thing2,
-    //             path: path,
-    //             presentationHint: hint,
-    //         });
-    //         trace(arr);
-    //     }
-    //     return arr;
-    // }
-
     static function h_continue(req:ContinueRequest) {
         var resp = req.compose(_continue,{allThreadsContinued: false});
         resp.send();
@@ -162,8 +134,8 @@ class Handlers {
             final info = DebugLib.getinfo(Debugee.baseDepth.unsafe() + 1,"fLSl");
             final func = info.func;
             trace('${info.source}');
-            var exdee = info.activelines;
-            final lowest = exdee.keys().fold(
+            final activeLines = info.activelines;
+            final lowest = activeLines.keys().fold(
                 (line,res) -> {
                     return if (line < res) {
                         line;
@@ -177,7 +149,7 @@ class Handlers {
             Debugee.state = STEP(tarheight);
         }
         DebugLoop.activateLineStepping();
-        var stepout = x.compose(stepOut);
+        final stepout = x.compose(stepOut);
         stepout.send();
         return CONTINUE;
     }
@@ -234,7 +206,6 @@ class Handlers {
         }
         metatable.__index = unsettables;
         var unsetmeta:AnyTable = Table.create();
-
         unsetmeta.__index = fenv.or(untyped __lua__("_G"));
         Gmod.setmetatable(env,metatable);
         Gmod.setmetatable(unsettables,unsetmeta);
@@ -307,44 +278,44 @@ class Handlers {
         return WAIT;
     }
 
-    public static function h_setFunctionBreakpoints(x:SetFunctionBreakpointsRequest) {
-        final args = x.arguments.unsafe();
-        DebugLoop.functionBP.clear();
-        //candidate for map and yucky functional ect.
-        final bpResponse:Array<Breakpoint> = [];
-        for (fbp in args.breakpoints) {
-            final eval = Util.processReturnable(fbp.name);
-            final resp:Breakpoint = switch (Util.compileString(eval,"gmdebug FuncBp:")) {
-                case Error(err):
-                    {
-                        verified : false,
-                        message : "Failed to compile" 
-                    };
-                case Success(Util.runCompiledFunction(_) => Error(err)):
-                    {
-                        verified : false,
-                        message : "Failed to run" 
-                    };
-                case Success(Util.runCompiledFunction(_) => Success(result))
-                    if (Lua.type(result) != "function"):
-                    {
-                        verified : false,
-                        message : "Result is not a function" //TODO add error message 
-                    };
-                case Success(Util.runCompiledFunction(_) => Success(func)):
-                    DebugLoop.functionBP.set(func,true);
-                    {
-                        verified : true
-                    }
-            }
-            bpResponse.push(resp);
-        }
-        final resp = x.compose(setFunctionBreakpoints, {
-            breakpoints : bpResponse
-        });
-        resp.send();
-        return WAIT;
-    }
+    // public static function h_setFunctionBreakpoints(x:SetFunctionBreakpointsRequest) {
+    //     final args = x.arguments.unsafe();
+    //     DebugLoop.functionBP.clear();
+    //     //candidate for map and yucky functional ect.
+    //     final bpResponse:Array<Breakpoint> = [];
+    //     for (fbp in args.breakpoints) {
+    //         final eval = Util.processReturnable(fbp.name);
+    //         final resp:Breakpoint = switch (Util.compileString(eval,"gmdebug FuncBp:")) {
+    //             case Error(err):
+    //                 {
+    //                     verified : false,
+    //                     message : "Failed to compile" 
+    //                 };
+    //             case Success(Util.runCompiledFunction(_) => Error(err)):
+    //                 {
+    //                     verified : false,
+    //                     message : "Failed to run" 
+    //                 };
+    //             case Success(Util.runCompiledFunction(_) => Success(result))
+    //                 if (Lua.type(result) != "function"):
+    //                 {
+    //                     verified : false,
+    //                     message : "Result is not a function" //TODO add error message 
+    //                 };
+    //             case Success(Util.runCompiledFunction(_) => Success(func)):
+    //                 DebugLoop.functionBP.set(func,true);
+    //                 {
+    //                     verified : true
+    //                 }
+    //         }
+    //         bpResponse.push(resp);
+    //     }
+    //     final resp = x.compose(setFunctionBreakpoints, {
+    //         breakpoints : bpResponse
+    //     });
+    //     resp.send();
+    //     return WAIT;
+    // }
 
     public static function h_scopes(x:ScopesRequest) {
         var args = x.arguments.sure();
@@ -442,301 +413,291 @@ class Handlers {
         return DISCONNECT;
     }
 
-    public static function generateVariablesReference(val:Dynamic,?name:String):Int {
-        return switch Gmod.TypeID(val) {
-            case _ if (name == "_G"):
-                ScopeConsts.Globals;
-            case TYPE_ENTITY if (!Gmod.IsValid(val)):
-                0;
-            case TYPE_TABLE | TYPE_FUNCTION | TYPE_USERDATA | TYPE_ENTITY: 
-		VariableReference.encode(Child(Debugee.clientID,storedVariables.push(val) - 1));
-            default:
-                0;
-        };
-    }
+    // public static function generateVariablesReference(val:Dynamic,?name:String):Int {
+        // return switch Gmod.TypeID(val) {
+        //     case _ if (name == "_G"):
+        //         ScopeConsts.Globals;
+        //     case TYPE_ENTITY if (!Gmod.IsValid(val)):
+        //         0;
+        //     case TYPE_TABLE | TYPE_FUNCTION | TYPE_USERDATA | TYPE_ENTITY: 
+	// 	VariableReference.encode(Child(Debugee.clientID,storedVariables.push(val) - 1));
+        //     default:
+        //         0;
+        // };
+    // }
 
-    static function genvar(addv:AddVar):Variable {
-        final name = Std.string(addv.name);
-        final val = addv.value;
-        var virtual = addv.virtual;
-        var noquote = addv.noquote;
-        var novalue = addv.novalue;
-        var ty = Gmod.type(val);
-        var id = Gmod.TypeID(val);
-        var stringReplace = switch (Lua.type(val)) { 
-            case "table":
-                "table";
-            case "string":
-                val;
-            case "number":
-                Std.string(val);
-            default:
-                Gmod.tostring(val);
-        };
-        var obj:Variable =  {
+    // static function genvar(addv:AddVar):Variable {
+    //     final name = Std.string(addv.name);
+    //     final val = addv.value;
+    //     var virtual = addv.virtual;
+    //     var noquote = addv.noquote;
+    //     var novalue = addv.novalue;
+    //     var ty = Gmod.type(val);
+    //     var id = Gmod.TypeID(val);
+    //     var stringReplace = switch (Lua.type(val)) { 
+    //         case "table":
+    //             "table";
+    //         case "string":
+    //             val;
+    //         case "number":
+    //             Std.string(val);
+    //         default:
+    //             Gmod.tostring(val);
+    //     };
+    //     var obj:Variable =  {
+    //         name : name,
+    //         type : ty,
+    //         value : switch[ty,noquote,novalue] {
+    //             case ["table",_,_]:
+    //                 "table";
+    //             case ["string",null,_]:
+    //                 '"$stringReplace"';
+    //             case [_,_,true]:
+    //                 "";
+    //             default:
+    //                 stringReplace;
+    //         },
+    //         variablesReference : switch id {
+    //             case _ if (name == "_G"):
+    //                 ScopeConsts.Globals;
+    //             case TYPE_ENTITY if (!Gmod.IsValid(val)):
+    //                 0;
+    //             case TYPE_TABLE | TYPE_FUNCTION | TYPE_USERDATA | TYPE_ENTITY: 
+    //                 VariableReference.encode(Child(Debugee.clientID,storedVariables.push(val) - 1));
+    //             default:
+    //                 0;
+    //         },
+    //     }
+    //     switch [id,virtual] {
+    //         case [TYPE_FUNCTION,null]:
+    //             obj.presentationHint = {
+    //                 kind : Method,
+    //                 attributes : null,
+    //                 visibility: Public
+    //             };
+    //         case [_,null]:
+    //         case [_,_]:
+    //             obj.presentationHint = {
+    //                 kind : Virtual,
+    //                 attributes: null,
+    //                 visibility: Internal
+    //             };
+    //     }
+    //     return obj;
+    // }
 
-            name : name,
-            type : ty,
-            value : switch[ty,noquote,novalue] {
-                case ["table",_,_]:
-                    "table";
-                case ["string",null,_]:
-                    '"$stringReplace"';
-                case [_,_,true]:
-                    "";
-                default:
-                    stringReplace;
-            },
-            variablesReference : switch id {
-                case _ if (name == "_G"):
-                    ScopeConsts.Globals;
-                case TYPE_ENTITY if (!Gmod.IsValid(val)):
-                    0;
-                case TYPE_TABLE | TYPE_FUNCTION | TYPE_USERDATA | TYPE_ENTITY: 
-                    VariableReference.encode(Child(Debugee.clientID,storedVariables.push(val) - 1));
-                default:
-                    0;
-            },
-        }
-        switch [id,virtual] {
-            case [TYPE_FUNCTION,null]:
-                obj.presentationHint = {
-                    kind : Method,
-                    attributes : null,
-                    visibility: Public
-                };
-            case [_,null]:
-            case [_,_]:
-                obj.presentationHint = {
-                    kind : Virtual,
-                    attributes: null,
-                    visibility: Internal
-                };
-        }
-        return obj;
-    }
+    // static function fixupNames(variables:Array<Variable>) {
+    //     final varnamecount:Map<String,Int> = [];
+    //     for (v in variables) {
+    //         final count = varnamecount.get(v.name);
+    //         if (count != null) {
+    //             varnamecount.set(v.name,count + 1);
+    //             v.name = '${v.name} ($count)';
+    //         } else {
+    //             varnamecount.set(v.name,1);
+    //         }
+    //     }
+    // }
 
-    static function fixupNames(variables:Array<Variable>) {
-        final varnamecount:Map<String,Int> = [];
-        for (v in variables) {
-            final count = varnamecount.get(v.name);
-            if (count != null) {
-                varnamecount.set(v.name,count + 1);
-                v.name = '${v.name} ($count)';
-            } else {
-                varnamecount.set(v.name,1);
-            }
-        }
-    }
+    // static function h_variables(req:VariablesRequest) {
+    //     final args = req.arguments.unsafe();
+    //     final ref:VariableReference = args.variablesReference;
+    //     final addVars:Array<AddVar> = [];
+    //     switch (ref.getValue()) {
+    //         case Child(_, ref):
+    // 	      var storedvar:Dynamic = (storedVariables[ref] : Any).unsafe();
+    // 	      if (storedvar == null) trace('Variable requested with nothing stored! $ref');
+    //             switch Gmod.TypeID(storedvar) {
+    //                 case TYPE_TABLE:
+    //                     for (ind => val in (storedvar : AnyTable)) {
+    //                         addVars.push({name : ind, value : val});
+    //                     }
+    //                 case TYPE_FUNCTION:
+    //                     var info = DebugLib.getinfo(storedvar, "S");
+    //                     addVars.push({name : "(source)", value : Gmod.tostring(info.short_src),virtual: true,noquote : true});
+    //                     addVars.push({name : "(line)", value : info.linedefined,virtual: true});
+    //                     for (i in 1...9999) {
+    //                         var upv = DebugLib.getupvalue(storedvar,i);
+    //                         if (upv.a == null) break;
+    //                         addVars.push({name : upv.a, value :upv.b});
+    //                     }
+    //                 case TYPE_ENTITY:
+    //                     var ent:Entity = cast storedvar;
+    //                     // trace("bad?");
+    //                     var tbl = (storedvar : Entity).GetTable();
+    //                     addVars.push({name : "(position)", value :ent.GetPos(),virtual: true});
+    //                     addVars.push({name : "(angle)",value : ent.GetAngles(),virtual: true});
+    //                     addVars.push({name : "(model)", value : ent.GetModel(),virtual : true});
+    //                     for (ind => val in tbl) {
+    //                         addVars.push({name : ind, value : val});
+    //                     }
+    //                 default:
+    //             }
+    //             var mt = DebugLib.getmetatable(storedvar);
+    //             if (mt != null) {
+    //                 addVars.push({name : "(metatable)", value : mt});
+    //             }
+    // 		// storedVariables[ref] = null; ???
+    //         case FrameLocal(_,frame,scope):
+    //             switch (scope) {
+    //                 case FrameLocalScope.Arguments:
+    //                     var info = DebugLib.getinfo(frame + 1,"u");
+    //                     for (i in 1...info.nparams + 1) {
+    //                         var result = DebugLib.getlocal(frame + 1,i);
+    //                         if (result.a == null) break;
+    //                         // trace('locals ${result.a} ${result.b}');
+    //                         addVars.push({name : result.a, value : result.b});
+    //                     }
+    //                     for (i in 1...9999) {
+    //                         var result = DebugLib.getlocal(frame + 1,-i);
+    //                         if (result.a == null) break;
+    //                         addVars.push({name : result.a, value : result.b});
+    //                     }
+    //                 case FrameLocalScope.Locals:
+    //                     for (i in 1...9999) {
+    //                         var result = DebugLib.getlocal(frame + 1,i);
+    //                         if (result.a == null) break;
+    //                         // trace('locals ${result.a} ${result.b}');
+    //                         addVars.push({name : result.a, value : result.b});
+    //                     }
+    //                     for (i in 1...9999) {
+    //                         var result = DebugLib.getlocal(frame + 1,-i);
+    //                         if (result.a == null) break;
+    //                         addVars.push({name : result.a, value : result.b});
+    //                     }
+    //                 case FrameLocalScope.Upvalues:
+    //                     var info = DebugLib.getinfo(frame + 1,"f");
+    //                     if (info != null && info.func != null) {
+    //                         for (i in 1...9999) {
+    //                             var func = info.func;//otherwise _hx_bind..?
+    //                             var upv = DebugLib.getupvalue(func,i);
+    //                             if (upv.a == null) break;
+    //                             addVars.push({name : upv.a, value : upv.b});
+    //                         }
+    //                     }
+    //                 case FrameLocalScope.Fenv:
+    //                     var info = DebugLib.getinfo(frame + 1,"f");
+    //                     if (info != null && info.func != null) {
+    //                         final func = info.func;
+    //                         final tbl = DebugLib.getfenv(func);
+    //                         for (i => p in tbl) {
+    //                             addVars.push({name : i,value : p});
+    //                         }
+    //                     }
+    //             }
+    //         case Global(_,scope):
+    //             switch (scope) {
+    //                 case ScopeConsts.Globals:
+    //                     var _g:AnyTable = untyped __lua__("_G");
+    //                     var sort:Array<String> = [];
+    //                     var isEnum = function (index:String,value:Dynamic) {
+    //                         return NativeStringTools.match(index,"%u",1) != null
+    //                         && NativeStringTools.match(index,"%u",2) != null
+    //                         && Lua.type(value) == "number";
+    //                     }
+    //                     var enums:Array<String> = [];
+    //                     addVars.push({name : "_G", value : ""});
+    //                     for (i => x in _g) {
+    //                         if (Lua.type(i) == "string") {
+    //                             if (isEnum(i,x)) {
+    //                                 enums.push(i);
+    //                             } else {
+    //                                 sort.push(i);
+    //                             }
+    //                         }
+    //                     }
+    //                     // trace("made it past compare");
+    //                     for (index in sort) {
+    //                         if (Lua.type(index) == "string") {
+    //                             addVars.push({name : index, value : Reflect.field(_g,index)});
+    //                         }
+    //                     }
+    //                     // trace("addedvars");
+    //                 case ScopeConsts.Players:
+    //                     for (i => ply in PlayerLib.GetAll()) {
+    //                         trace('players $i $ply');
+    //                         addVars.push({name : ply.GetName(), value : ply});
+    //                     }
+    //                 case ScopeConsts.Entities:
+    //                     final ents = EntsLib.GetAll();
+    //                     for (i in 1...EntsLib.GetCount()) {
+    //                         var ent = ents[i];
+    //                         addVars.push({name : ent.GetClass(), value : ent});
+    //                     }
+    //             }
+    //     }
+    //     final variablesArr = addVars.map(genvar);
+    //     fixupNames(variablesArr);
+    //     var resp = req.compose(variables,{variables: variablesArr});
+    //     // final old = Gmod.SysTime();
+    //     // trace("custom json start");
+    //     final js = tink.Json.stringify((cast resp : VariablesResponse)); //in pratical terms they're the same
+    //     // trace('custom json end ${Gmod.SysTime() - old}');
+    //     resp.sendtink(js);
+    //     return WAIT;
+    // }
 
-    static function h_variables(req:VariablesRequest) {
-        final args = req.arguments.unsafe();
-        final ref:VariableReference = args.variablesReference;
-        final addVars:Array<AddVar> = [];
-        switch (ref.getValue()) {
-            case Child(_, ref):
-	      var storedvar:Dynamic = (storedVariables[ref] : Any).unsafe();
-	      if (storedvar == null) trace('Variable requested with nothing stored! $ref');
-                switch Gmod.TypeID(storedvar) {
-                    case TYPE_TABLE:
-                        for (ind => val in (storedvar : AnyTable)) {
-                            addVars.push({name : ind, value : val});
-                        }
-                    case TYPE_FUNCTION:
-                        var info = DebugLib.getinfo(storedvar, "S");
-                        addVars.push({name : "(source)", value : Gmod.tostring(info.short_src),virtual: true,noquote : true});
-                        addVars.push({name : "(line)", value : info.linedefined,virtual: true});
-                        for (i in 1...9999) {
-                            var upv = DebugLib.getupvalue(storedvar,i);
-                            if (upv.a == null) break;
-                            addVars.push({name : upv.a, value :upv.b});
-                        }
-                    case TYPE_ENTITY:
-                        var ent:Entity = cast storedvar;
-                        // trace("bad?");
-                        var tbl = (storedvar : Entity).GetTable();
-                        addVars.push({name : "(position)", value :ent.GetPos(),virtual: true});
-                        addVars.push({name : "(angle)",value : ent.GetAngles(),virtual: true});
-                        addVars.push({name : "(model)", value : ent.GetModel(),virtual : true});
-                        for (ind => val in tbl) {
-                            addVars.push({name : ind, value : val});
-                        }
-                    default:
-                }
-                var mt = DebugLib.getmetatable(storedvar);
-                if (mt != null) {
-                    addVars.push({name : "(metatable)", value : mt});
-                }
-		// storedVariables[ref] = null; ???
-            case FrameLocal(_,frame,scope):
-                switch (scope) {
-                    case FrameLocalScope.Arguments:
-                        var info = DebugLib.getinfo(frame + 1,"u");
-                        for (i in 1...info.nparams + 1) {
-                            var result = DebugLib.getlocal(frame + 1,i);
-                            if (result.a == null) break;
-                            // trace('locals ${result.a} ${result.b}');
-                            addVars.push({name : result.a, value : result.b});
-                        }
-                        for (i in 1...9999) {
-                            var result = DebugLib.getlocal(frame + 1,-i);
-                            if (result.a == null) break;
-                            addVars.push({name : result.a, value : result.b});
-                        }
-                    case FrameLocalScope.Locals:
-                        for (i in 1...9999) {
-                            var result = DebugLib.getlocal(frame + 1,i);
-                            if (result.a == null) break;
-                            // trace('locals ${result.a} ${result.b}');
-                            addVars.push({name : result.a, value : result.b});
-                        }
-                        for (i in 1...9999) {
-                            var result = DebugLib.getlocal(frame + 1,-i);
-                            if (result.a == null) break;
-                            addVars.push({name : result.a, value : result.b});
-                        }
-                    case FrameLocalScope.Upvalues:
-                        var info = DebugLib.getinfo(frame + 1,"f");
-                        if (info != null && info.func != null) {
-                            for (i in 1...9999) {
-                                var func = info.func;//otherwise _hx_bind..?
-                                var upv = DebugLib.getupvalue(func,i);
-                                if (upv.a == null) break;
-                                addVars.push({name : upv.a, value : upv.b});
-                            }
-                        }
-                    case FrameLocalScope.Fenv:
-                        var info = DebugLib.getinfo(frame + 1,"f");
-                        if (info != null && info.func != null) {
-                            final func = info.func;
-                            final tbl = DebugLib.getfenv(func);
-                            for (i => p in tbl) {
-                                addVars.push({name : i,value : p});
-                            }
-                        }
-                }
-            case Global(_,scope):
-                switch (scope) {
-                    case ScopeConsts.Globals:
-                        var _g:AnyTable = untyped __lua__("_G");
-                        var sort:Array<String> = [];
-                        var isEnum = function (index:String,value:Dynamic) {
-                            return NativeStringTools.match(index,"%u",1) != null
-                            && NativeStringTools.match(index,"%u",2) != null
-                            && Lua.type(value) == "number";
-                        }
-                        var enums:Array<String> = [];
-                        addVars.push({name : "_G", value : ""});
-                        for (i => x in _g) {
-                            if (Lua.type(i) == "string") {
-                                if (isEnum(i,x)) {
-                                    enums.push(i);
-                                } else {
-                                    sort.push(i);
-                                }
-                            }
-                        }
-                        // trace("made it past compare");
-                        for (index in sort) {
-                            if (Lua.type(index) == "string") {
-                                addVars.push({name : index, value : Reflect.field(_g,index)});
-                            }
-                        }
-                        // trace("addedvars");
-                    case ScopeConsts.Players:
-                        for (i => ply in PlayerLib.GetAll()) {
-                            trace('players $i $ply');
-                            addVars.push({name : ply.GetName(), value : ply});
-                        }
-                    case ScopeConsts.Entities:
-                        final ents = EntsLib.GetAll();
-                        for (i in 1...EntsLib.GetCount()) {
-                            var ent = ents[i];
-                            addVars.push({name : ent.GetClass(), value : ent});
-                        }
-                }
-        }
-        final variablesArr = addVars.map(genvar);
-        fixupNames(variablesArr);
-        var resp = req.compose(variables,{variables: variablesArr});
-        // final old = Gmod.SysTime();
-        // trace("custom json start");
-        final js = tink.Json.stringify((cast resp : VariablesResponse)); //in pratical terms they're the same
-        // trace('custom json end ${Gmod.SysTime() - old}');
-        resp.sendtink(js);
-        return WAIT;
-    }
+    // static var bpID:Int = 0;
 
-    static var bpID:Int = 0;
+    // static function h_setBreakpoints(x:SetBreakpointsRequest) {
+    //     final args = x.arguments.unsafe();
+    //     final bpResponse:Array<Breakpoint> = [];
+    //     if (args.breakpoints != null) {
+    //         final nmpath = args.source.path.sure();
+    //         final pathBreakpoints:Map<Int,BreakPoint> = [];
+    //         for (bp in args.breakpoints) {
+    //             final possibleLocs = DebugLoop.breakLocsCache[Debugee.fullPathToGmod(nmpath).or("")];
+    //             var verified = false;
+    //             var message:Null<String> = null;
+    //             var bpType =
+    //                 if (bp.condition == null) {
+    //                     NORMAL(bpID++);
+    //                 } else {
+    //                     final eval = Util.processReturnable(bp.condition);
+    //                     switch (Util.compileString(eval,"Gmdebug Conditional BP: ")) {
+    //                         case Error(err):
+    //                             verified = false;
+    //                             message = 'Failed to compile condition $err';
+    //                             null;
+    //                         case Success(compiledFunc):
+    //                             CONDITIONAL(bpID++,compiledFunc);
+    //                     }
+    //                 }
 
-    static function h_setBreakpoints(x:SetBreakpointsRequest) {
-        final args = x.arguments.unsafe();
-        final bpResponse:Array<Breakpoint> = [];
-        if (args.breakpoints != null) {
-            final nmpath = args.source.path.sure();
-            final pathBreakpoints:Map<Int,BreakPoint> = [];
-            for (bp in args.breakpoints) {
-                final possibleLocs = DebugLoop.breakLocsCache[Debugee.fullPathToGmod(nmpath).or("")];
-                var verified = false;
-                var message:Null<String> = null;
-                var bpType =
-                    if (bp.condition == null) {
-                        NORMAL(bpID++);
-                    } else {
-                        final eval = Util.processReturnable(bp.condition);
-                        switch (Util.compileString(eval,"Gmdebug Conditional BP: ")) {
-                            case Error(err):
-                                verified = false;
-                                message = 'Failed to compile condition $err';
-                                null;
-                            case Success(compiledFunc):
-                                CONDITIONAL(bpID++,compiledFunc);
-                        }
-                    }
-
-                if (possibleLocs != null) {
-                    final activeLineStatus = possibleLocs.get(bp.line);
-                    switch (activeLineStatus) {
-                        case null:
-                            verified = true;
-                            message = "This breakpoint could not be confirmed.";
-                        case false:
-                            verified = false;
-                            message = "Lua does not consider this an active line.";
-                            bpType = null;
-                        case true:
-                            verified = true;
-                    }
-                } else {
-                    verified = true;
-                    message = "This file has not been visited by running code yet.";
-                }
-                bpResponse.push({
-                    verified : verified,
-                    message : message,
-                    line : bp.line
-                });
-                if (bpType != null) {
-                    pathBreakpoints.set(bp.line,bpType);
-                }
-            }
-            final fixpath = Debugee.fullPathToGmod(nmpath).or(nmpath);
-            DebugLoop.breakpoints.set(fixpath,pathBreakpoints);
-        }
-        var resp = x.compose(setBreakpoints,{breakpoints: bpResponse});
-        final js = tink.Json.stringify((cast resp : SetBreakpointsResponse)); //in pratical terms they're the same
-        resp.sendtink(js) ;
-        return WAIT;
-    }
-
-    //TODO remove
-    static function h_breakpointLocations(x:BreakpointLocationsRequest) {
-        final resp = x.compose(breakpointLocations,{
-            breakpoints: []
-        });
-        resp.send();
-        return WAIT;
-    }
+    //             if (possibleLocs != null) {
+    //                 final activeLineStatus = possibleLocs.get(bp.line);
+    //                 switch (activeLineStatus) {
+    //                     case null:
+    //                         verified = true;
+    //                         message = "This breakpoint could not be confirmed.";
+    //                     case false:
+    //                         verified = false;
+    //                         message = "Lua does not consider this an active line.";
+    //                         bpType = null;
+    //                     case true:
+    //                         verified = true;
+    //                 }
+    //             } else {
+    //                 verified = true;
+    //                 message = "This file has not been visited by running code yet.";
+    //             }
+    //             bpResponse.push({
+    //                 verified : verified,
+    //                 message : message,
+    //                 line : bp.line
+    //             });
+    //             if (bpType != null) {
+    //                 pathBreakpoints.set(bp.line,bpType);
+    //             }
+    //         }
+    //         final fixpath = Debugee.fullPathToGmod(nmpath).or(nmpath);
+    //         DebugLoop.breakpoints.set(fixpath,pathBreakpoints);
+    //     }
+    //     var resp = x.compose(setBreakpoints,{breakpoints: bpResponse});
+    //     final js = tink.Json.stringify((cast resp : SetBreakpointsResponse)); //in pratical terms they're the same
+    //     resp.sendtink(js) ;
+    //     return WAIT;
+    // }
 
     static function h_stackTrace(x:StackTraceRequest) {
         final args = x.arguments.unsafe();
@@ -866,7 +827,6 @@ class Handlers {
                 column: column,
                 endLine: endLine,
                 endColumn: endColumn,
-                moduleId: "test",
                 // presentationHint:
             }
             if (path != null) {

@@ -8,16 +8,17 @@ import lua.Debug;
 import haxe.Constraints.Function;
 import lua.Lua;
 import gmod.libs.DebugLib;
+import gmdebug.lua.BreakpointManager.BreakPoint;
 import gmod.Gmod;
-
 using gmod.WeakTools;
 using Safety;
 using tink.CoreApi;
+
 class DebugLoop {
 
-    public static var breakpoints:Map<String,Map<Int,BreakPoint>> = [];
+    // public static var breakpoints:Map<String,Map<Int,BreakPoint>> = [];
 
-    public static var functionBP = new haxe.ds.ObjectMap<Function,Bool>();
+    // public static var functionBP = new haxe.ds.ObjectMap<Function,Bool>();
 
     public static var breakLocsCache:Map<String,Map<Int,Bool>> = [];
     /**
@@ -25,7 +26,7 @@ class DebugLoop {
     **/
     static final activeLinesCheckInterval = 3;
 
-    public static final sourceCache = makeSourceCache(); 
+    // public static final sourceCache = makeSourceCache(); 
 
     static var lineInfoFuncCache:haxe.ds.ObjectMap<Function,Bool> = new haxe.ds.ObjectMap();
 
@@ -67,7 +68,6 @@ class DebugLoop {
         for (i in info.linedefined...info.lastlinedefined) {
             final cache = retrieveSourceLineInfo(info.source);
             if (cache.get(i) != true) {
-               
                 cache.set(i,info.activelines[i] != null);
             }
         }
@@ -80,11 +80,6 @@ class DebugLoop {
         }
     }
 
-    static function makeSourceCache() {
-	final sc = new haxe.ds.ObjectMap<Function,SourceInfo>();
-	sc.setWeakKeysM();
-	return sc;
-    }
 
     static function retrieveSourceLineInfo(source:String):Map<Int,Bool> {
         return switch (breakLocsCache.get(source)) {
@@ -96,7 +91,6 @@ class DebugLoop {
                 x.unsafe();
         }
     }
-    
 
     static function activeLinesCheck(func:Function) {
         for (i in 1...10000) {
@@ -366,9 +360,4 @@ typedef SourceAndFuncInfo = FuncInfo & SourceInfo;
 enum CatchOut {
     NONE;
     OUT(outFunc:Function);
-}
-
-enum BreakPoint {
-    NORMAL(id:Int);
-    CONDITIONAL(id:Int,condition:Function);
 }

@@ -28,10 +28,10 @@ class SimpleLSOutput extends haxe.io.Output {
     var tcp:TcpClient;
 
     public function new(tcp:TcpClient) {
-	    this.tcp = tcp;
+	this.tcp = tcp;
     }
 
     override function writeString(s:String, ?encoding:Encoding) {
-        tcp.send(s);
+	tcp.send(s);
     }
 }

@@ -2,6 +2,7 @@ package gmdebug;
 
 import gmdebug.ComposedMessage;
 import gmdebug.RequestString;
+
 class ComposeTools {
 
     /**

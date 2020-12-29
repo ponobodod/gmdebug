@@ -17,6 +17,7 @@ enum abstract GmMsgType<T>(Int) to Int {
     var intialInfo:GmMsgType<GmDebugIntialInfo>;
 
     var serverInfo:GmMsgType<GMServerInfoMessage>;
+
 }
 
 enum abstract DapModeStr(String) {
@@ -51,7 +52,7 @@ typedef GMPlayerRemovedMessage = {
 
 typedef GMClientID = {
     /**
-	Your thread number given
+	Thread number given
     **/
     id : Int
 }
@@ -59,6 +60,7 @@ typedef GMClientID = {
 typedef GMServerInfoMessage = {
 
     ip : String,
+
     isLan : Bool
  
 }

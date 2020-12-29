@@ -26,7 +26,7 @@ class CustomHandlers {
 
 
     static function isLan() {
-	    return Gmod.GetConVar("sv_lan").GetBool();
+	return Gmod.GetConVar("sv_lan").GetBool();
     }
 
     static function h_initalInfo(x:GmDebugMessage<GmDebugIntialInfo>) {
@@ -35,7 +35,6 @@ class CustomHandlers {
 	    new ComposedGmDebugMessage(serverInfo,{
 		ip : GameLib.GetIPAddress(),
 		isLan : isLan() 
-		  
 	    }).send();
 	    Debugee.dapMode = Launch;
 	} else {

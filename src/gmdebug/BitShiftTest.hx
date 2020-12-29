@@ -4,8 +4,6 @@ import gmdebug.VariableReference;
 class BitShiftTest {
 
     public static function main() {
-
-
         var child1 = VariableReference.encode(Child(10,123922));
         var framelocal = VariableReference.encode(FrameLocal(10,50,110213));
         framelocal = VariableReference.encode(FrameLocal(10,50,1));

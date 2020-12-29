@@ -12,6 +12,7 @@ import vscode.debugProtocol.DebugProtocol.ProtocolMessage;
 import gmdebug.VariableReference;
 import haxe.Json;
 import haxe.io.Input;
+
 class Cross {
 
     public static final FOLDER = "gmdebug";
@@ -55,7 +56,8 @@ class Cross {
         return content_length;
     }
 
-    @:nullSafety(Off) public static function recvMessage(x:Input):MessageResult {
+    @:nullSafety(Off)
+    public static function recvMessage(x:Input):MessageResult {
         var len = readHeader(x);
         if (len == null) {
             return ACK;
