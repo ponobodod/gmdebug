@@ -5,7 +5,6 @@ import vscode.DebugAdapterExecutable;
 import vscode.DebugAdapterInlineImplementation;
 import vscode.ProviderResult;
 import vscode.DebugAdapterDescriptorFactory;
-
 import vscode.Uri;
 using tink.CoreApi;
 using Lambda;

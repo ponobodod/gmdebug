@@ -4,6 +4,7 @@ import haxe.Constraints.Function;
 import lua.Lua;
 import gmod.Gmod;
 using Safety;
+
 enum CompileResult {
     Error(err:String);
     Success(compiledFunc:Function);
@@ -34,6 +35,7 @@ class Util {
             Error(runResult.value);
         }
     }
+
     public static inline function processReturnable(expr:String):String {
         return if (expr.charAt(0) == "!") {
             expr.substr(1);

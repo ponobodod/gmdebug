@@ -2,7 +2,7 @@ package gmdebug.dap;
 
 import js.node.net.Socket;
 
-class DebugeeClient {
+class Client {
 
     var socket:FileSocket; 
 

@@ -9,17 +9,6 @@ import gmod.Gmod;
 using Safety;
 using gmod.PairTools;
 
-@:native("_G")
-private extern class G {
-    @:native("__exceptFuncs")
-    static var exceptFuncs:haxe.ds.ObjectMap<Dynamic,Int>;
-
-    @:native("__oldFuncs")
-    static var oldFuncs:Array<Function>;
-
-    static function __gmdebugTraceback():Void;
-
-}
 
 class Exceptions {
 
@@ -139,7 +128,16 @@ class Exceptions {
     }
 }
 
+@:native("_G")
+private extern class G {
+    @:native("__exceptFuncs")
+    static var exceptFuncs:haxe.ds.ObjectMap<Dynamic,Int>;
 
+    @:native("__oldFuncs")
+    static var oldFuncs:Array<Function>;
+
+    static function __gmdebugTraceback():Void;
+}
 
 // static function getoldinclude() {
 //     final _g = untyped __lua__("_G");

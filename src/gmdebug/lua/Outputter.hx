@@ -72,6 +72,8 @@ class Outputter {
         ignoreTrace = false;
     }
 }
+
+
 @:native("_G") private extern class G {
     static var __oldprint:Null<Function>;
 

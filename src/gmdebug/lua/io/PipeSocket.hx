@@ -11,6 +11,7 @@ import haxe.io.Input;
 import haxe.io.Output;
 import sys.net.Socket;
 
+
 class PipeSocket implements DebugIO {
 
     public final input:PipeInput;

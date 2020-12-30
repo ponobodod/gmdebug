@@ -35,7 +35,6 @@ abstract VariableReference(Int) from Int to Int {
 
     public static function encode(x:VariableReferenceVal):VariableReference {
         var val = x.getIndex() << 29;
-
         return switch(x) {
             case Child(clientID,ref):
                 val |= clientID << 25;

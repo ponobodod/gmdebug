@@ -7,7 +7,7 @@ import gmdebug.lua.DebugLoop.SourceInfo;
 import gmdebug.ComposedMessage;
 using Safety; 
 using Lambda;
-class Sources implements IHandler<SourceRequest> {
+class SourceContainer implements IHandler<SourceRequest> {
 
     static final uniqueSources:Map<String,Null<Source>> = [];
 
@@ -24,7 +24,6 @@ class Sources implements IHandler<SourceRequest> {
 	sc.setWeakKeysM();
 	return sc;
     }
-
     
     static function readSourceInfo() {
 	if (Debugee.dest == "") return; 

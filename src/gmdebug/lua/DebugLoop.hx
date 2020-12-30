@@ -202,32 +202,32 @@ class DebugLoop {
 
     //if true, we're stepping. no need to perform other actions
     static extern inline function debug_step(cur:HookState,func:Function,?curLine:Int):Bool {
-        return switch [cur,Debugee.state] {
-            case [_,null]: //otherwise lua dump. not good
+        return switch Debugee.state {
+            case null: //otherwise lua dump. not good
                 false;
-            case [Line,WAIT]:
+            case WAIT:
                 false;
-            case [Line,STEP(target)] if (target == null || Debugee.stackHeight <= target):
+            case STEP(target) if (target == null || Debugee.stackHeight <= target):
                 trace('stepped $target ${Debugee.stackHeight}');
                 Debugee.state = WAIT;
                 Debug.sethook(debugloop,"c");
                 Debugee.startHaltLoop(Step,Debugee.stackOffset.stepDebugLoop);
                 true;
-            case [Line,STEP(x)] :
+            case STEP(x) :
                 true;
-            case [Line,OUT(outFunc,lowest)] if (outFunc == func && curLine.unsafe() == lowest):
+            case OUT(outFunc,lowest) if (outFunc == func && curLine.unsafe() == lowest):
                 Debugee.state = WAIT;
                 Lua.print(outFunc,func);
                 Debug.sethook(debugloop,"c");
                 Debugee.startHaltLoop(Step,Debugee.stackOffset.stepDebugLoop);
                 true;
-            case [Line,OUT(outFunc,_)] if (outFunc != func):
+            case OUT(outFunc,_) if (outFunc != func):
                 Debugee.state = WAIT;
                 Lua.print(outFunc,func);
                 Debug.sethook(debugloop,"c");
                 Debugee.startHaltLoop(Step,Debugee.stackOffset.stepDebugLoop);
                 true;
-            case [Line,OUT(outFunc,_)]:
+            case OUT(outFunc,_):
                 Lua.print(outFunc,func,curLine);
                 true;
             default:

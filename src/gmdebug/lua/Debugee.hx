@@ -200,18 +200,18 @@ class Debugee {
             new ComposedGmDebugMessage(playerAdded,{
                 name : ply.Name(),
                 playerID : ply.UserID()
-	        }).send();
+	    }).send();
         });
         HookLib.Add(PlayerDisconnected,"debugee-byeplayer",(ply) -> {
             new ComposedGmDebugMessage(playerRemoved,{
 		        playerID : ply.UserID()
-	        }).send();
+	    }).send();
         });
         for (ply in PlayerLib.GetAll()) {
             new ComposedGmDebugMessage(playerAdded,{
                 name : ply.Name(),
                 playerID : ply.UserID()
-	        }).send();
+	    }).send();
         }
     }
     #end
