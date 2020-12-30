@@ -20,14 +20,6 @@ class DebugLoop {
 
     // public static var functionBP = new haxe.ds.ObjectMap<Function,Bool>();
 
-    public static var breakLocsCache:Map<String,Map<Int,Bool>> = [];
-    /**
-        Checking every line is expensive. The higher this value, the more likely it is to miss a function.
-    **/
-    static final activeLinesCheckInterval = 3;
-
-    // public static final sourceCache = makeSourceCache(); 
-
     static var lineInfoFuncCache:haxe.ds.ObjectMap<Function,Bool> = new haxe.ds.ObjectMap();
 
     static var currentFunc:Null<haxe.Constraints.Function> = null;
@@ -39,26 +31,6 @@ class DebugLoop {
     static var prevFunc:Null<Function> = null;
 
     static var prevStackHeight:Int = 0;
-
-    static var activeLinesCheckCount = 0;
-
-    static var mapcache:Map<String,Option<String>> = [];
-
-    static function readMap(x:String):Option<String> {
-        if (mapcache == null) return None;
-        var map = mapcache.get(x);
-        if (map != null) return map;
-        var mapfile = FileLib.Read('${NativeStringTools.sub(x,2)}.map',GAME);
-        if (mapfile == null) {
-            var val = None;
-            mapcache.set(x,val);
-            return val;
-        } 
-        var tbl = Json.parse(mapfile);
-        var newfile = Some('${tbl.sourceroot}${tbl.source[1]}');
-        mapcache.set(x,newfile);
-        return newfile;
-    }
 
     public static function addLineInfo(x:Function) {
         if (lineInfoFuncCache != null && lineInfoFuncCache.exists(x)) return;
@@ -232,26 +204,6 @@ class DebugLoop {
                 true;
             default:
                 false;
-        }
-    }
-
-
-    static function debug_activeLineCheck(func:Function,sinfo:SourceInfo) {
-        if (activeLinesCheckCount != null && activeLinesCheckInterval != null) {
-            activeLinesCheckCount++;
-            if (activeLinesCheckCount > activeLinesCheckInterval) {
-                activeLinesCheckCount = 0;
-                activeLinesCheck(func);
-            }
-        }
-        if (lineInfoFuncCache != null && !lineInfoFuncCache.exists(func)) {
-            final lineInfo = DebugLib.getinfo(2,"L");
-            lineInfoFuncCache.set(func,true);
-            for (i in sinfo.linedefined...sinfo.lastlinedefined) {
-                final cache = retrieveSourceLineInfo(sinfo.source);
-                cache.set(i,lineInfo.activelines[i] != null);
-            }
-
         }
     }
 
