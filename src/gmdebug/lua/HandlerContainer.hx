@@ -29,49 +29,42 @@ import gmod.libs.PlayerLib;
 import gmdebug.lua.DebugLoop;
 import gmod.libs.DebugLib;
 import gmdebug.lib.lua.Protocol;
+
 using gmdebug.composer.ComposeTools;
+
 import String;
+
 using Safety;
 using gmod.PairTools;
 using Lambda;
 
 class HandlerContainer {
+	static var breakpointM:BreakpointManager = new BreakpointManager();
 
-    static var breakpointM:BreakpointManager = new BreakpointManager();
+	var handlerMap:HashMap<AnyRequest, IHandler<Request<Dynamic>>> = [];
 
-    var handlerMap:HashMap<AnyRequest,IHandler<Request<Dynamic>>> = [];
-    
-    public function new(vm:VariableManager) {
-        handlerMap.set(_continue,new HContinue());
-        handlerMap.set(disconnect,new HDisconnect());
-        handlerMap.set(stackTrace,new HStackTrace());
-        handlerMap.set(next,new HNext());
-        handlerMap.set(pause,new HPause());
-        handlerMap.set(stepIn,new HStepIn());
-        handlerMap.set(stepOut,new HStepOut());
-        
-        
-    }
+	public function new(vm:VariableManager) {
+		handlerMap.set(_continue, new HContinue());
+		handlerMap.set(disconnect, new HDisconnect());
+		handlerMap.set(stackTrace, new HStackTrace());
+		handlerMap.set(next, new HNext());
+		handlerMap.set(pause, new HPause());
+		handlerMap.set(stepIn, new HStepIn());
+		handlerMap.set(stepOut, new HStepOut());
+	}
 
-    public function handlers(req:Request<Dynamic>):HandlerResponse {
-        return handlers.get(req.command).handle();
-	    
-    }
-
+	public function handlers(req:Request<Dynamic>):HandlerResponse {
+		return handlers.get(req.command).handle();
+	}
 }
-
-
 
 typedef Item = {
-    name : String,
-    type : String,
-    ?value : String,
-    ?variablesReference : Int
+	name:String,
+	type:String,
+	?value:String,
+	?variablesReference:Int
 }
 
-
-
-
 enum abstract EvalCommand(String) from String {
-    var profile;
+	var profile;
 }

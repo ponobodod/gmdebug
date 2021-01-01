@@ -2,7 +2,5 @@ package gmdebug.lib;
 
 @:jsRequire("ip")
 extern class Ip {
-    
-    static function address():String;
-
+	static function address():String;
 }

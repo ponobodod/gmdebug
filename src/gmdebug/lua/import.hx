@@ -1,4 +1,3 @@
-
 using gmdebug.composer.ComposeTools;
 
 import gmod.Gmod;

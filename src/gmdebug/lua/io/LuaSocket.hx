@@ -5,28 +5,24 @@ import haxe.io.Encoding;
 import lua.lib.luasocket.socket.TcpClient;
 import sys.net.Socket;
 
-
 class LuaSocket extends Socket implements DebugIO {
-
-    override function connect(host:Host, port:Int) {
-        super.connect(host, port);
-        output = new SimpleLSOutput(cast _socket);
-	final tcpClient:TcpClient = cast _socket;
-	tcpClient.setoption(KeepAlive,true);
-	tcpClient.setoption(TcpNoDelay,true);
-    }
-    
+	override function connect(host:Host, port:Int) {
+		super.connect(host, port);
+		output = new SimpleLSOutput(cast _socket);
+		final tcpClient:TcpClient = cast _socket;
+		tcpClient.setoption(KeepAlive, true);
+		tcpClient.setoption(TcpNoDelay, true);
+	}
 }
 
 class SimpleLSOutput extends haxe.io.Output {
+	var tcp:TcpClient;
 
-    var tcp:TcpClient;
+	public function new(tcp:TcpClient) {
+		this.tcp = tcp;
+	}
 
-    public function new(tcp:TcpClient) {
-	this.tcp = tcp;
-    }
-
-    override function writeString(s:String, ?encoding:Encoding) {
-	tcp.send(s);
-    }
+	override function writeString(s:String, ?encoding:Encoding) {
+		tcp.send(s);
+	}
 }

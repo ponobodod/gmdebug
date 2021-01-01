@@ -1,11 +1,10 @@
-//Clone of dap, but with no js dragged in via imports
+// Clone of dap, but with no js dragged in via imports
 package gmdebug.lib.lua;
 
 import gmdebug.Cross.ExceptionBreakpointFilters;
 import gmdebug.composer.RequestString;
 import haxe.extern.EitherType;
 import haxe.DynamicAccess;
-
 
 enum abstract MessageType(String) from String to String {
 	var Request = "request";
@@ -36,7 +35,7 @@ typedef Request<T> = ProtocolMessage & {
 	/**
 		The command to execute.
 	**/
-	var command:RequestString<Dynamic,Dynamic>;
+	var command:RequestString<Dynamic, Dynamic>;
 
 	/**
 		Object containing arguments for the command.
@@ -59,7 +58,7 @@ typedef Event<T> = ProtocolMessage & {
 	var ?body:T;
 }
 
-//custom
+// custom
 
 /**
 	Response to a request.
