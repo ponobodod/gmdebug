@@ -1,6 +1,5 @@
-package gmdebug;
+package gmdebug.composer;
 
-import gmdebug.ComposedMessage;
 import gmdebug.RequestString;
 
 class ComposeTools {

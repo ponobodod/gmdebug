@@ -4,7 +4,7 @@ import gmod.Gmod;
 import gmod.Hook.GMHook;
 import gmod.libs.HookLib;
 import gmdebug.lua.DebugLoop.SourceInfo;
-import gmdebug.ComposedMessage;
+import gmdebug.composer.*;
 using Safety; 
 using Lambda;
 class SourceContainer implements IHandler<SourceRequest> {

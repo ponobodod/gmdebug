@@ -1,7 +1,7 @@
 
 package gmdebug.lua;
 
-import gmdebug.ComposedMessage;
+import gmdebug.composer.*;
 import gmod.libs.GameLib;
 import gmdebug.GmDebugMessage;
 import gmod.Gmod;

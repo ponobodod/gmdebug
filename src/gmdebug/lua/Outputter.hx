@@ -2,7 +2,7 @@ package gmdebug.lua;
 
 import gmod.Gmod;
 import gmdebug.RequestString;
-import gmdebug.ComposedMessage;
+import gmdebug.composer.*;
 import haxe.Constraints.Function;
 import lua.Table;
 import gmod.libs.DebugLib;

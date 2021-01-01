@@ -1,5 +1,8 @@
 package gmdebug.composer;
 
+import gmdebug.lua.Debugee;
+import haxe.Json;
+
 class ComposedProtocolMessage {
 
     public var seq:Int = 0;

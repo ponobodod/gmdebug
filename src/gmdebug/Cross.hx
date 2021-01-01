@@ -5,7 +5,7 @@ import haxe.io.BytesData;
 import haxe.io.Bytes;
 import tink.CoreApi.Ref;
 #if lua 
-import gmdebug.lua.Protocol.ProtocolMessage;
+import gmdebug.lib.lua.Protocol.ProtocolMessage;
 #elseif js
 import vscode.debugProtocol.DebugProtocol.ProtocolMessage;
 #end

@@ -10,7 +10,10 @@ class Client {
 
     var threadName:Int;
 
+    var clientName:String;
+
     public var debugeeID:Int;
+
 }
 
 private typedef FileSocket = {

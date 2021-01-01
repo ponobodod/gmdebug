@@ -1,4 +1,7 @@
-package gmdebug.lua;
+package gmdebug.lua.managers;
+
+import gmdebug.lua.handlers.IHandler;
+import haxe.Constraints.Function;
 
 class BreakpointManager implements IHandler<SetBreakpointsRequest>  {
 
@@ -19,12 +22,8 @@ class BreakpointManager implements IHandler<SetBreakpointsRequest>  {
         }
     }
 
-    public function getForLine(line:Int):Map<Int,Breakpoint>  {
-	return bp.get(line);
-    }
-
     public function handle(req:SetBreakpointsRequest):HandlerResponse {
-        final args = x.arguments.unsafe();
+        final args = req.arguments.unsafe();
         final bpResponse:Array<Breakpoint> = [];
         if (args.breakpoints != null) {
             final nmpath = args.source.path.sure();
@@ -75,9 +74,9 @@ class BreakpointManager implements IHandler<SetBreakpointsRequest>  {
                 }
             }
             final fixpath = Debugee.fullPathToGmod(nmpath).or(nmpath);
-            DebugLoop.breakpoints.set(fixpath,pathBreakpoints);
+            breakpoints.set(fixpath,pathBreakpoints);
         }
-        var resp = x.compose(setBreakpoints,{breakpoints: bpResponse});
+        var resp = req.compose(setBreakpoints,{breakpoints: bpResponse});
         final js = tink.Json.stringify((cast resp : SetBreakpointsResponse)); //in pratical terms they're the same
         resp.sendtink(js) ;
         return WAIT;

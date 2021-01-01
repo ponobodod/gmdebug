@@ -1,9 +1,10 @@
 package gmdebug.lua;
 
-import gmdebug.ComposedMessage;
+import gmdebug.lua.handlers.IHandler.HandlerResponse;
+import gmdebug.composer.*;
 import gmod.LuaArray;
 import tink.Json;
-import gmdebug.ComposedMessage.ComposedProtocolMessage;
+import gmdebug.composer.*;
 import haxe.ds.Option;
 import lua.Table;
 import lua.NativeStringTools;
@@ -17,38 +18,19 @@ import lua.Table.AnyTable;
 import gmod.libs.EntsLib;
 import gmod.Gmod;
 import lua.Debug;
+import gmdebug.lua.managers.BreakpointManager;
 import gmod.gclass.Player;
 import gmod.libs.PlayerLib;
-import gmdebug.lua.DebugLoop.BreakPoint;
+import gmdebug.lua.DebugLoop;
 import gmod.libs.DebugLib;
-import gmdebug.lua.Protocol;
-using gmdebug.ComposeTools;
+import gmdebug.lib.lua.Protocol;
+using gmdebug.composer.ComposeTools;
 import String;
 using Safety;
 using gmod.PairTools;
 using Lambda;
 
 class Handlers {
-
-    static var handlerMap:Map<RequestString<Dynamic,Dynamic>,(req:Request<Dynamic>) -> HandlerResponse> = [
-        pause => h_pause,
-        stackTrace => h_stackTrace,
-        stepIn => h_stepIn,
-        stepOut => h_stepOut,
-        threads => h_threads,
-        scopes => h_scopes,
-        next => h_next,
-        variables => h_variables,
-        loadedSources => h_sources,
-        // setBreakpoints => h_setBreakpoints,
-        configurationDone => h_configurationDone,
-        modules => h_modules,
-        disconnect => h_disconnect,
-        setExceptionBreakpoints => h_setExceptionBreakpoints,
-        // setFunctionBreakpoints => h_setFunctionBreakpoints,
-        evaluate => h_evaluate,
-        breakpointLocations => h_breakpointLocations
-    ];
 
     static var breakpointM:BreakpointManager = new BreakpointManager();
 

@@ -1,6 +1,7 @@
-package gmdebug;
+package;
 
 import gmdebug.VariableReference;
+
 class BitShiftTest {
 
     public static function main() {

@@ -1,7 +1,7 @@
 package gmdebug;
 
 #if lua
-import gmdebug.lua.lib.Protocol;
+import gmdebug.lib.lua.Protocol;
 #elseif js
 import vscode.debugProtocol.DebugProtocol;
 #end

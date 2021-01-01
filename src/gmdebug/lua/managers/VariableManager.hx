@@ -1,4 +1,6 @@
-package gmdebug.lua;
+package gmdebug.lua.managers;
+
+import gmdebug.lua.handlers.IHandler;
 
 class VariableManager implements IHandler<VariablesRequest> {
 
