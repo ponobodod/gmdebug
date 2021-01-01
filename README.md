@@ -28,8 +28,8 @@ which should produce a `generated` folder, which is necessary for the lua side.
 
 ### Running the addon
 
-You can run the addon built by opening the root directory in vscode
-Open up a lua file and the debug section to get started
+You can run the addon built by opening the root directory in vscode. Open up a lua file and the debug section to get started
+
 Be sure to set the `serverFolder` property to the right location, or it will be unable to connect
 
 
