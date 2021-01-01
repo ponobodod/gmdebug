@@ -2,7 +2,7 @@
 package gmdebug.lib.lua;
 
 import gmdebug.Cross.ExceptionBreakpointFilters;
-import gmdebug.RequestString;
+import gmdebug.composer.RequestString;
 import haxe.extern.EitherType;
 import haxe.DynamicAccess;
 

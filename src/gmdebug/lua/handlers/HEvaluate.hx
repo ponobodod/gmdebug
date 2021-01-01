@@ -1,10 +1,22 @@
 package gmdebug.lua.handlers;
 
+import gmdebug.lua.managers.VariableManager;
+import lua.Lua;
+import lua.Table;
+import gmod.libs.DebugLib;
+import lua.Table.AnyTable;
+import gmod.Gmod;
+import gmdebug.composer.ComposedProtocolMessage;
+import lua.NativeStringTools;
+import gmdebug.lua.handlers.IHandler;
+
 class HEvaluate implements IHandler<EvaluateRequest> {
 
-    public function new() {
+    public function new(vm:VariableManager) {
 
     }
+
+    var variableManager:VariableManager;
 
     inline function translateEvalError(err:String) {
         return NativeStringTools.gsub(err,'^%[string %"X%"%]%:%d+%: ',"");
@@ -54,8 +66,8 @@ class HEvaluate implements IHandler<EvaluateRequest> {
         }
     }
     
-    public function handle(:EvaluateRequest):HandlerResponse {
-        final args = x.arguments.unsafe();
+    public function handle(evalReq:EvaluateRequest):HandlerResponse {
+        final args = evalReq.arguments.unsafe();
         final fid:Null<FrameID> = args.frameId;
         if (args.expression.charAt(0) == "#") {
             processCommands(args.expression.substr(1));
@@ -67,7 +79,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
         trace('expr : $expr');
         final resp:ComposedProtocolMessage = switch (Util.compileString(expr,"GmDebug")) {
             case Error(err):
-                x.composeFail(translateEvalEr/proror(err));
+                evalReq.composeFail(translateEvalError(err));
             case Success(func):
                 if (fid != null) {
                     final eval = createEvalEnvironment(fid.getValue().actualFrame);
@@ -75,13 +87,13 @@ class HEvaluate implements IHandler<EvaluateRequest> {
                 }
                 switch (Util.runCompiledFunction(func)) {
                     case Error(err):
-                        x.composeFail(translateEvalError(err));
+                        evalReq.composeFail(translateEvalError(err));
                     case Success(result):
-                        final item = genvar({
+                        final item = variableManager.genvar({
                             name : "",
                             value : result
                         });
-                        x.compose(evaluate,{
+                        evalReq.compose(evaluate,{
                             result: item.value,
                             type: item.type,
                             variablesReference: item.variablesReference,
@@ -91,4 +103,8 @@ class HEvaluate implements IHandler<EvaluateRequest> {
         resp.send();
         return WAIT;
     }
+}
+
+enum abstract EvalCommand(String) from String {
+    var profile;
 }

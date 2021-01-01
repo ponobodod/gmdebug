@@ -1,5 +1,7 @@
 package gmdebug.lua.handlers;
 
+import gmod.libs.DebugLib;
+
 class HScopes implements IHandler<ScopesRequest> {
 
     public function new() {

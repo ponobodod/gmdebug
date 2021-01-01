@@ -1,5 +1,10 @@
 package gmdebug.lua;
 
+import gmdebug.lua.managers.VariableManager;
+import gmdebug.lua.handlers.HNext.HStepIn;
+import gmdebug.lua.handlers.HStackTrace;
+import gmdebug.RequestString.AnyRequest;
+import haxe.ds.HashMap;
 import gmdebug.lua.handlers.IHandler.HandlerResponse;
 import gmdebug.composer.*;
 import gmod.LuaArray;
@@ -30,31 +35,27 @@ using Safety;
 using gmod.PairTools;
 using Lambda;
 
-class Handlers {
+class HandlerContainer {
 
     static var breakpointM:BreakpointManager = new BreakpointManager();
 
-    static var storedVariables:Array<Null<Dynamic>> = [null];
+    var handlerMap:HashMap<AnyRequest,IHandler<Request<Dynamic>>> = [];
+    
+    public function new(vm:VariableManager) {
+        handlerMap.set(_continue,new HContinue());
+        handlerMap.set(disconnect,new HDisconnect());
+        handlerMap.set(stackTrace,new HStackTrace());
+        handlerMap.set(next,new HNext());
+        handlerMap.set(pause,new HPause());
+        handlerMap.set(stepIn,new HStepIn());
+        handlerMap.set(stepOut,new HStepOut());
+        
+        
+    }
 
-    public static function handlers(req:Request<Dynamic>):HandlerResponse {
-	if (req.command == "continue") {
-	    storedVariables = [null];
-	    return h_continue(req);
-	}
-	switch (req.command) {
-	    case setBreakpoints:
-		return breakpointM.handle(req);
-	    case functionBreakpoints:
-	    default: 
-	}
-        var h = handlerMap.get(req.command);
-        if (h != null) {
-	    final result = h(req);
-	    if (result == CONTINUE) storedVariables = [null]; 
-            return result;
-        } else {
-            throw new UnhandledResponse('Unhandled... ${req.command}');
-        }
+    public function handlers(req:Request<Dynamic>):HandlerResponse {
+        return handlers.get(req.command).handle();
+	    
     }
 
 }
@@ -69,13 +70,7 @@ typedef Item = {
 }
 
 
-typedef AddVar = {
-    name : Dynamic, //std.string
-    value : Dynamic,
-    ?virtual : Bool,
-    ?noquote : Bool,
-    ?novalue : Bool
-}
+
 
 enum abstract EvalCommand(String) from String {
     var profile;

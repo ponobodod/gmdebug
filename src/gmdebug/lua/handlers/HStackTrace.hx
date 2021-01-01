@@ -1,6 +1,8 @@
 package gmdebug.lua.handlers;
 
-class HStackTrace implements IHandler<StackTrace> {
+import gmdebug.composer.ComposedEvent;
+
+class HStackTrace implements IHandler<StackTraceRequest> {
 
     public function new() {
 

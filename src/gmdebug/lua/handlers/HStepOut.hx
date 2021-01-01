@@ -1,12 +1,15 @@
 package gmdebug.lua.handlers;
 
+import gmod.libs.DebugLib;
+using Lambda;
+
 class HStepOut implements IHandler<StepOutRequest> {
 
     public function new() {
 
     }
     
-    public function handle(stepIn:StepOutRequest):HandlerResponse {
+    public function handle(stepOutReq:StepOutRequest):HandlerResponse {
         var tarheight = Debugee.stackHeight - (Debugee.stackOffset.step + 1);
         trace('stepOut $tarheight ${Debugee.minheight}');
         if (tarheight < Debugee.minheight) {
@@ -28,8 +31,8 @@ class HStepOut implements IHandler<StepOutRequest> {
             Debugee.state = STEP(tarheight);
         }
         DebugLoop.activateLineStepping();
-        final stepout = x.compose(stepOut);
-        stepout.send();
+        final stepoutResp = stepOutReq.compose(stepOut);
+        stepoutResp.send();
         return CONTINUE;
     }
 }

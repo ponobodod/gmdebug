@@ -1,4 +1,4 @@
-package gmdebug;
+package gmdebug.composer;
 
 #if lua
 import gmdebug.lib.lua.Protocol;
@@ -17,6 +17,7 @@ enum abstract RequestString<X:Request<Dynamic>,Y:Response<Dynamic>>(String) from
     var modules:RequestString<ModulesRequest,ModulesResponse>;
 
     var loadedSources:RequestString<LoadedSourcesRequest,LoadedSourcesResponse>;
+
     var stepIn:RequestString<StepInRequest,StepInResponse>;
 
     var stepOut:RequestString<StepOutRequest,StepOutResponse>;

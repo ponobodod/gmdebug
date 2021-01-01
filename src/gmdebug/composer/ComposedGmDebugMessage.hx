@@ -2,7 +2,6 @@ package gmdebug.composer;
 
 import gmdebug.GmDebugMessage;
 import haxe.Json;
-import gmdebug.RequestString;
 #if lua
 import gmdebug.lua.Debugee;
 import gmod.Gmod;

@@ -1,6 +1,6 @@
 package gmdebug.lua.handlers;
 
-class HDummy implements IHandler<Request> {
+class HDummy implements IHandler<AnyRequest> {
 
     public function new() {
 

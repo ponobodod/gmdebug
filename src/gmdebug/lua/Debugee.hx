@@ -8,15 +8,14 @@ import gmdebug.Cross;
 import gmdebug.GmDebugMessage;
 import gmod.libs.GameLib;
 import gmod.libs.MathLib;
-import gmdebug.lua.Handlers;
 import gmdebug.composer.*;
+import gmod.lua.HandlerContainer;
 import gmod.libs.Scripted_entsLib;
 import haxe.io.Input;
 import gmdebug.lua.io.DebugIO;
 import gmdebug.Cross.CommMethod;
 import gmdebug.lib.lua.Protocol.TOutputEvent;
 import gmdebug.lib.lua.Protocol.OutputEventCategory;
-import gmdebug.RequestString;
 import lua.Table;
 import lua.Table.AnyTable;
 import haxe.Log;
@@ -64,8 +63,6 @@ class Debugee {
 
     public static var dapMode:Null<DapModeStr>;
 
-    public static var playerThreads:Array<Null<Player>> = [];
-
     public static final stackOffset = {
         step : 4, 
         stepDebugLoop : 5, 
@@ -93,11 +90,6 @@ class Debugee {
 
     static var hooksActive = false;
 
-    //SENT BY DAP
-    static var methodsPossible:Map<CommMethod,Bool> = [
-        Pipe => true
-    ];
-
     public static var socket(default,set):Null<DebugIO>;
 
     //SENT BY DEBUG CLIENT
@@ -115,22 +107,13 @@ class Debugee {
     
     public static function start() {
         if (active) return false;
-        for (comMethod in methodsPossible.keys()) {
-            try {
-                socket = switch (comMethod) {
-                    case Pipe:
-                        new PipeSocket();
-                    case Socket:
-                        final sock = new LuaSocket();
-                        sock.setTimeout(0);
-                        sock.connect(cast {ip : "127.0.0.1",host : "localhost"},56789);
-			sock;
-                }
-            } catch (e) {
-                trace('failed to start $e');
-                socket = null;
-            }
+        try {
+            socket = new PipeSocket(); 
+        } catch (e) {
+            trace('failed to start $e');
+            socket = null;
         }
+        
         if (socket == null) {
             return false;
         }
@@ -293,9 +276,9 @@ class Debugee {
         }
         trace(NativeStringTools.rep("abcdefghijklmnopqrstuvwxyz",45));
         trace("Hello from debugee");
-        if (methodsPossible.exists(Pipe)) {
-            FileLib.CreateDir("gmdebug");
-        }
+        
+        FileLib.CreateDir("gmdebug");
+        
 	#if server
 	GameLib.ConsoleCommand("sv_timeout 999999\n");
 	#elseif client
@@ -325,30 +308,12 @@ class Debugee {
 		pollTime = Gmod.CurTime() + 0.1;
 		shouldDebug = false;
 		poll();
-		// Lua.xpcall(,
-		//     (err) -> trace(Debug.traceback(err,3))
-		// );
 		shouldDebug = true;
 	    }
 	});
 	
 	HookLib.Remove(GMHook.Think,"woopee");
-        // var timer = Gmod.CurTime() + 30;
-        // HookLib.Add(GMHook.Think,"woopee",() -> {
-        //     if (Gmod.CurTime() > timer) {
-        //         timer = Gmod.CurTime() + 30;
-        //         var x:Null<Int> = null;
-        //         untyped __lua__("print(x + 5)");
-        //     }
-        // });
-        // var timer2 = 0.0;
-        // HookLib.Add(GMHook.Think,"execute-order", () -> {
-        //     if (Gmod.CurTime() > timer2) {
-        //         timer2 = Gmod.CurTime() + 4;
-        //         final x = MathLib.random(1,10);
-        //         trace(x);
-        //     }
-        // });
+        
     }
 
     public static function normalPath(x:String):String {

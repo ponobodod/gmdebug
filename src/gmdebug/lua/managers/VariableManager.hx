@@ -1,13 +1,18 @@
 package gmdebug.lua.managers;
 
+import gmod.libs.DebugLib;
+import gmod.Gmod;
+import lua.Lua;
+import lua.NativeStringTools;
 import gmdebug.lua.handlers.IHandler;
+using gmod.PairTools;
 
 class VariableManager implements IHandler<VariablesRequest> {
 
     var storedVariables:Array<Null<Dynamic>> = [null];
 
     public function resetVariables() {
-	storedVariables = [null];
+	    storedVariables = [null];
     }
 
     public function handle(req:VariablesRequest) {
@@ -48,7 +53,6 @@ class VariableManager implements IHandler<VariablesRequest> {
                 if (mt != null) {
                     addVars.push({name : "(metatable)", value : mt});
                 }
-		// storedVariables[ref] = null; ???
             case FrameLocal(_,frame,scope):
                 switch (scope) {
                     case FrameLocalScope.Arguments:
@@ -144,13 +148,13 @@ class VariableManager implements IHandler<VariablesRequest> {
     }
 
     function isEnum(index:String,value:Dynamic) {
-	return NativeStringTools.match(index, "%u", 1) != null
-	    && NativeStringTools.match(index, "%u", 2) != null
-	    && Lua.type(value) == "number";
+        return NativeStringTools.match(index, "%u", 1) != null
+            && NativeStringTools.match(index, "%u", 2) != null
+            && Lua.type(value) == "number";
     }
 
     public function genvar(addv:AddVar):Variable {
-	final name = Std.string(addv.name);
+	    final name = Std.string(addv.name);
         final val = addv.value;
         var virtual = addv.virtual;
         var noquote = addv.noquote;
@@ -234,4 +238,12 @@ class VariableManager implements IHandler<VariablesRequest> {
             }
         }
     }
+}
+
+typedef AddVar = {
+    name : Dynamic, //std.string
+    value : Dynamic,
+    ?virtual : Bool,
+    ?noquote : Bool,
+    ?novalue : Bool
 }

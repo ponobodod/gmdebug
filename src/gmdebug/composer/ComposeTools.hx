@@ -1,7 +1,5 @@
 package gmdebug.composer;
 
-import gmdebug.RequestString;
-
 class ComposeTools {
 
     /**

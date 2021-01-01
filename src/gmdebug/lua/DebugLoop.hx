@@ -16,10 +16,6 @@ using tink.CoreApi;
 
 class DebugLoop {
 
-    // public static var breakpoints:Map<String,Map<Int,BreakPoint>> = [];
-
-    // public static var functionBP = new haxe.ds.ObjectMap<Function,Bool>();
-
     static var lineInfoFuncCache:haxe.ds.ObjectMap<Function,Bool> = new haxe.ds.ObjectMap();
 
     static var currentFunc:Null<haxe.Constraints.Function> = null;
@@ -31,6 +27,11 @@ class DebugLoop {
     static var prevFunc:Null<Function> = null;
 
     static var prevStackHeight:Int = 0;
+
+    public static function init() {
+
+        
+    }
 
     public static function addLineInfo(x:Function) {
         if (lineInfoFuncCache != null && lineInfoFuncCache.exists(x)) return;
