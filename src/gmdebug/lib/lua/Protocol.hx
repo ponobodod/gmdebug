@@ -1,6 +1,7 @@
 // Clone of dap, but with no js dragged in via imports
 package gmdebug.lib.lua;
 
+import gmdebug.composer.EventString;
 import gmdebug.Cross.ExceptionBreakpointFilters;
 import gmdebug.composer.RequestString;
 import haxe.extern.EitherType;

@@ -1,9 +1,11 @@
 package gmdebug.lua;
 
+import haxe.Exception;
+import gmdebug.lua.managers.FunctionBreakpointManager;
+import gmdebug.lua.handlers.HDisconnect;
+import gmdebug.composer.RequestString;
 import gmdebug.lua.managers.VariableManager;
-import gmdebug.lua.handlers.HNext.HStepIn;
-import gmdebug.lua.handlers.HStackTrace;
-import gmdebug.RequestString.AnyRequest;
+import gmdebug.lua.handlers.*;
 import haxe.ds.HashMap;
 import gmdebug.lua.handlers.IHandler.HandlerResponse;
 import gmdebug.composer.*;
@@ -39,22 +41,31 @@ using gmod.PairTools;
 using Lambda;
 
 class HandlerContainer {
-	static var breakpointM:BreakpointManager = new BreakpointManager();
 
-	var handlerMap:HashMap<AnyRequest, IHandler<Request<Dynamic>>> = [];
+	var handlerMap:haxe.ds.StringMap<IHandler<Request<Dynamic>>> = new haxe.ds.StringMap();
 
-	public function new(vm:VariableManager) {
-		handlerMap.set(_continue, new HContinue());
+	public function new(vm:VariableManager,bm:BreakpointManager,fbm:FunctionBreakpointManager) {
+		handlerMap.set(_continue, new HContinue(vm));
 		handlerMap.set(disconnect, new HDisconnect());
 		handlerMap.set(stackTrace, new HStackTrace());
 		handlerMap.set(next, new HNext());
 		handlerMap.set(pause, new HPause());
 		handlerMap.set(stepIn, new HStepIn());
 		handlerMap.set(stepOut, new HStepOut());
+		handlerMap.set(variables, new HVariables(vm));
+		handlerMap.set(setBreakpoints,new HSetBreakpoints(bm));
+		handlerMap.set(setFunctionBreakpoints,new HSetFunctionBreakpoints(fbm));
+		handlerMap.set(setExceptionBreakpoints,new HSetExceptionBreakpoints());
+		handlerMap.set(evaluate,new HEvaluate(vm));
+		
 	}
 
 	public function handlers(req:Request<Dynamic>):HandlerResponse {
-		return handlers.get(req.command).handle();
+		final result = handlerMap.get(req.command);
+		if (result == null) {
+			throw new Exception('No such command ${req.command}');
+		}
+		return result.handle(req);
 	}
 }
 

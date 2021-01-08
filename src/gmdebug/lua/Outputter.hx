@@ -1,7 +1,7 @@
 package gmdebug.lua;
 
+import gmdebug.lua.managers.VariableManager;
 import gmod.Gmod;
-import gmdebug.RequestString;
 import gmdebug.composer.*;
 import haxe.Constraints.Function;
 import lua.Table;
@@ -11,8 +11,12 @@ using gmod.PairTools;
 
 class Outputter {
 	var ignoreTrace:Bool = false;
+	
+	var vm:VariableManager;
 
-	public function new() {}
+	public function new(vm:VariableManager) {
+		this.vm = vm;
+	}
 
 	public function hookprint() {
 		if (G.__oldprint == null) {
@@ -34,7 +38,7 @@ class Outputter {
 		final arr:Array<Dynamic> = [];
 		for (dyn in vargs) {
 			out += Gmod.tostring(dyn) + "\t";
-			final varref = Handlers.generateVariablesReference(dyn);
+			final varref = vm.generateVariablesReference(dyn);
 			if (varref > 0) {
 				arr.push(dyn);
 			}
@@ -47,7 +51,7 @@ class Outputter {
 				case 0:
 					null;
 				default:
-					Handlers.generateVariablesReference(arr);
+					vm.generateVariablesReference(arr);
 			}
 		}
 		var lineInfo = DebugLib.getinfo(4, "Slf"); // + 1 for handler functions ect.

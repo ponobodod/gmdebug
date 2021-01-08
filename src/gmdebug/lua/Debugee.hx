@@ -1,5 +1,9 @@
 package gmdebug.lua;
 
+import gmdebug.lua.managers.BreakpointManager;
+import gmdebug.lua.managers.FunctionBreakpointManager;
+import gmdebug.lua.managers.VariableManager;
+import gmdebug.lua.io.PipeSocket;
 import gmdebug.lua.handlers.IHandler.HandlerResponse;
 import gmdebug.lib.lua.Mri;
 import gmod.libs.GuiLib;
@@ -9,7 +13,7 @@ import gmdebug.GmDebugMessage;
 import gmod.libs.GameLib;
 import gmod.libs.MathLib;
 import gmdebug.composer.*;
-import gmod.lua.HandlerContainer;
+import gmdebug.lua.HandlerContainer;
 import gmod.libs.Scripted_entsLib;
 import haxe.io.Input;
 import gmdebug.lua.io.DebugIO;
@@ -55,6 +59,7 @@ import gmod.libs.ChatLib;
 
 @:keep
 class Debugee {
+
 	public static var clientID:Int = 0;
 
 	public static var state:DebugState = WAIT;
@@ -105,7 +110,18 @@ class Debugee {
 
 	public static var shouldDebug = true;
 
-	static var outputter = new Outputter();
+	static var outputter:Null<Outputter>;
+
+	static var sc:Null<SourceContainer>;
+
+	static var vm:Null<VariableManager>;
+
+	static var hc:Null<HandlerContainer>;
+
+	static var bm:Null<BreakpointManager>;
+
+	static var fbm:Null<FunctionBreakpointManager>;
+	
 
 	public static function start() {
 		if (active)
@@ -118,6 +134,7 @@ class Debugee {
 		}
 
 		if (socket == null) {
+			trace("no");
 			return false;
 		}
 		trace("attached to server");
@@ -136,32 +153,12 @@ class Debugee {
 		Exceptions.hookOnChange();
 		Exceptions.hookGamemodeHooks();
 		Exceptions.hookEntityHooks();
-		Sources.init();
+		
 		outputter.hookprint();
-		getAllBpLines();
+		// getAllBpLines();
 		Debug.sethook(DebugLoop.debugloop, "c");
 		hooksActive = true;
 		return true;
-	}
-
-	static function getAllBpLines(?_searchTable:AnyTable, ?_depth:Int) {
-		final searchTable:AnyTable = _searchTable.or(untyped __lua__("_G"));
-		final depth = _depth.or(0);
-		if (depth > 3) {
-			return;
-		}
-		for (p in searchTable) {
-			switch (Lua.type(p)) {
-				case "function":
-					DebugLoop.addLineInfo(cast p);
-				case "table":
-					getAllBpLines(cast p, depth + 1);
-				case "entity":
-					if (Gmod.IsValid(p)) {
-						getAllBpLines((cast p : Entity).GetTable(), depth + 1);
-					}
-			}
-		}
 	}
 
 	@:access(sys.net.Socket)
@@ -184,7 +181,6 @@ class Debugee {
 
 	#if server
 	static function hookPlayer() {
-		playerThreads = [];
 		HookLib.Add(PlayerInitialSpawn, "debugee-newplayer", (ply, _) -> {
 			new ComposedGmDebugMessage(playerAdded, {
 				name: ply.Name(),
@@ -287,9 +283,17 @@ class Debugee {
 		}
 		trace(NativeStringTools.rep("abcdefghijklmnopqrstuvwxyz", 45));
 		trace("Hello from debugee");
-
+		vm = new VariableManager();
+		sc = new SourceContainer();
+		outputter = new Outputter(vm);
+		bm = new BreakpointManager();
+		fbm = new FunctionBreakpointManager();
+		hc = new HandlerContainer(vm,bm,fbm);
+		DebugLoop.init(bm,sc);
+		trace("oogie?");
+		
 		FileLib.CreateDir("gmdebug");
-
+		
 		#if server
 		GameLib.ConsoleCommand("sv_timeout 999999\n");
 		#elseif client
@@ -412,7 +416,7 @@ class Debugee {
 				CustomHandlers.handle(cast incoming);
 				WAIT; // this is a safe option in all scenarios.
 			case MessageType.Request:
-				Handlers.handlers(cast incoming);
+				hc.handlers(cast incoming);
 			default:
 				throw "message sent to us had an unknown type";
 		}

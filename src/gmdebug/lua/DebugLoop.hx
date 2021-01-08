@@ -1,15 +1,14 @@
 package gmdebug.lua;
 
-import haxe.Json;
-import lua.NativeStringTools;
-import gmod.libs.FileLib;
+import gmdebug.lua.managers.FunctionBreakpointManager;
+import gmdebug.lua.handlers.HEvaluate;
 import gmdebug.composer.*;
 import lua.Debug;
 import haxe.Constraints.Function;
 import lua.Lua;
 import gmod.libs.DebugLib;
-import gmdebug.lua.managers.BreakpointManager;
 import gmod.Gmod;
+import gmdebug.lua.managers.BreakpointManager;
 
 using gmod.WeakTools;
 using Safety;
@@ -28,65 +27,20 @@ class DebugLoop {
 
 	static var prevStackHeight:Int = 0;
 
-	public static function init() {}
+	static var bm:Null<BreakpointManager>;
 
-	public static function addLineInfo(x:Function) {
-		if (lineInfoFuncCache != null && lineInfoFuncCache.exists(x))
-			return;
-		lineInfoFuncCache.set(x, true);
-		var info = DebugLib.getinfo(x, "LS");
-		if (info == null || info.activelines == null)
-			return;
-		for (i in info.linedefined...info.lastlinedefined) {
-			final cache = retrieveSourceLineInfo(info.source);
-			if (cache.get(i) != true) {
-				cache.set(i, info.activelines[i] != null);
-			}
-		}
-		for (i in 1...10000) {
-			final upv = DebugLib.getupvalue(x, i);
-			if (upv.a == null)
-				break;
-			if (Lua.type(upv.b) == "function") {
-				addLineInfo(x);
-			}
-		}
+	static var sc:Null<SourceContainer>;
+
+	static var fbm:Null<FunctionBreakpointManager>;
+
+
+	public static function init(bm:BreakpointManager,sc:SourceContainer) {
+		DebugLoop.bm = bm;
+		DebugLoop.sc = sc;
+		DebugLoop.fbm = fbm;
 	}
 
-	static function retrieveSourceLineInfo(source:String):Map<Int, Bool> {
-		return switch (breakLocsCache.get(source)) {
-			case null:
-				var map:Map<Int, Bool> = [];
-				breakLocsCache.set(source, map);
-				map;
-			case x:
-				x.unsafe();
-		}
-	}
-
-	static function activeLinesCheck(func:Function) {
-		for (i in 1...10000) {
-			var foundOne = false;
-			final local = DebugLib.getlocal(3, i);
-			if (local.a != null && Lua.type(local.b) == "function") {
-				addLineInfo(local.b);
-				foundOne = true;
-			}
-			if (func != null) {
-				final upv = DebugLib.getupvalue(func, i);
-				if (upv.a != null) {
-					if (Lua.type(upv.b) == "function") {
-						addLineInfo(upv.b);
-						foundOne = true;
-					}
-				}
-			}
-			if (!foundOne)
-				break;
-		}
-	}
-
-	inline static function nextCallStop(sinfo:SourceInfo, bp:Map<Int, BreakPoint>) {
+	inline static function nextCallStop(sinfo:SourceInfo, bp:Map<Int, Dynamic>) {
 		var stop = false;
 		for (k in bp.keys()) {
 			if (k >= sinfo.linedefined && k <= sinfo.lastlinedefined) {
@@ -121,9 +75,9 @@ class DebugLoop {
 		}
 	}
 
-	static extern inline function debug_switchHookState(cur:HookState, func:Function, ?sinfo:SourceInfo, ?bp:Map<Int, BreakPoint>) {
+	static extern inline function debug_switchHookState(cur:HookState, func:Function, ?sinfo:SourceInfo) {
 		if (sinfo != null && highestStackHeight != null && escapeHatch != null) {
-			if (cur == Call && bp != null && nextCallStop(sinfo, bp)) {
+			if (cur == Call && bm.unsafe().breakpointWithinRange(sinfo.source, sinfo.linedefined,sinfo.lastlinedefined)) {
 				final sh = currentStackHeight(func);
 				if (sh < highestStackHeight) {
 					Debug.sethook(debugloop, "cl");
@@ -139,39 +93,37 @@ class DebugLoop {
 		}
 	}
 
-	static extern inline function debug_checkBreakpoints(sinfo:SourceInfo, line:Int, ?bp:Map<Int, BreakPoint>) {
-		if (bp != null) {
-			switch (bp.get(line)) {
-				case null:
-				case NORMAL(_):
-					trace("hit bp");
-					Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
-				case CONDITIONAL(id, condFunc):
-					Gmod.setfenv(condFunc, Handlers.createEvalEnvironment(1));
-					switch (Util.runCompiledFunction(condFunc)) {
-						case Error(err):
-							final message = Handlers.translateEvalError(err);
-							final resp = new ComposedEvent(breakpoint, {
-								reason: Changed,
-								breakpoint: {
-									id: id,
-									verified: false,
-									message: 'Errored on run: $message'
-								}
-							});
-							Lua.print('Conditional breakpoint in file ${sinfo.short_src}:${line} failed!');
-							Lua.print('Error: $message');
-							resp.send();
-						case Success(val):
-							if (val) {
-								Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
+	static extern inline function debug_checkBreakpoints(sinfo:SourceInfo, line:Int) {
+		switch (bm.getBreakpointForLine(sinfo.source,line)) {
+			case null | {breakpointType : INACTIVE}:
+			case {breakpointType : NORMAL}:
+				trace("hit bp");
+				Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
+			case bp = {breakpointType : CONDITIONAL(condFunc)}:
+				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(1));
+				switch (Util.runCompiledFunction(condFunc)) {
+					case Error(err):
+						final message = HEvaluate.translateEvalError(err);
+						final resp = new ComposedEvent(breakpoint, {
+							reason: Changed,
+							breakpoint: {
+								id: bp.id,
+								verified: false,
+								message: 'Errored on run: $message'
 							}
-					}
-			}
+						});
+						Lua.print('Conditional breakpoint in file ${sinfo.short_src}:${line} failed!');
+						Lua.print('Error: $message');
+						resp.send();
+					case Success(val):
+						if (val) {
+							Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
+						}
+				}
 		}
+		
 	}
 
-	// if true, we're stepping. no need to perform other actions
 	static extern inline function debug_step(cur:HookState, func:Function, ?curLine:Int):Bool {
 		return switch Debugee.state {
 			case null: // otherwise lua dump. not good
@@ -212,8 +164,8 @@ class DebugLoop {
 		}
 		// TODO make function breakpoints update when target changes.
 		// RUns on entry and exit
-		if (func != null && functionBP != null && currentFunc == null) {
-			if (functionBP.exists(func)) {
+		if (func != null && fbm != null && currentFunc == null) {
+			if (fbm.functionBP.exists(func)) {
 				Debugee.startHaltLoop(FunctionBreakpoint, Debugee.stackOffset.stepDebugLoop);
 			}
 			currentFunc = func;
@@ -222,18 +174,16 @@ class DebugLoop {
 
 	// TODO if having inline breakpoints, only use instruction count when necessary (i.e when running the line to step through) also granuality ect.
 	public static function debugloop(cur:HookState, currentLine:Int) {
-		if (!Debugee.shouldDebug)
-			return;
-		if (Debugee.tracing)
+		if (!Debugee.shouldDebug || Debugee.tracing)
 			return;
 		DebugLoopProfile.profile("getinfo", true);
 		final func = DebugLib.getinfo(2, 'f').func; // activelines causes MASSIVE slowdown (6x)
-		final result = sourceCache.get(func);
+		final result = sc.sourceCache.get(func);
 		final sinfo = if (result != null) {
 			result;
 		} else {
 			final tmp = DebugLib.getinfo(2, 'S');
-			sourceCache.set(func, tmp);
+			sc.sourceCache.set(func, tmp);
 			tmp;
 		}
 		DebugLoopProfile.profile("step");
@@ -241,17 +191,16 @@ class DebugLoop {
 		DebugLoopProfile.profile("getbptable");
 		if (Exceptions.exceptFuncs != null && func != null && Exceptions.exceptFuncs.exists(func))
 			return;
-		final bp = if (breakpoints != null) {
-			breakpoints.get(sinfo.source);
-		} else {
-			null;
-		}
+		final bpValid = if (bm == null || !bm.valid())
+				true;
+			else
+				false;
 		DebugLoopProfile.profile("switchhookstate");
-		if (!stepping)
-			debug_switchHookState(cur, func, sinfo, bp);
+		if (!stepping && bpValid)
+			debug_switchHookState(cur, func, sinfo);
 		DebugLoopProfile.profile("checkBreakpoints");
-		@:nullSafety(Off) if (cur == Line)
-			debug_checkBreakpoints(sinfo, currentLine, bp);
+		@:nullSafety(Off) if (cur == Line && bpValid)
+			debug_checkBreakpoints(sinfo, currentLine);
 		DebugLoopProfile.profile("functionalbp");
 		debug_functionalBP(func, cur);
 		DebugLoopProfile.resetprofile();

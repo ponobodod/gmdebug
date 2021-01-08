@@ -3,7 +3,7 @@ package gmdebug.composer;
 class ComposeTools {
 	/**
 		Compose a response
-		RequestString isin't used, but helps bridge the generics,to ensure response is typed
+		RequestString is not physically used, but ensures response is type checked
 	**/
 	public static function compose<X, Y>(req:Request<X>, str:RequestString<Request<X>, Response<Y>>, ?body:Y):ComposedResponse<Null<Y>> {
 		// return ;
@@ -19,7 +19,5 @@ class ComposeTools {
 		return response;
 	}
 
-	// public static function send(x:Response<Dynamic>) {
-	//     Debugee.writeJson(x);
-	// }
+	
 }

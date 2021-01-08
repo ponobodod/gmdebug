@@ -1,4 +1,6 @@
+package gmdebug.lua.handlers;
 import gmdebug.lua.managers.VariableManager;
+
 
 class HContinue implements IHandler<ContinueRequest> {
 	public function new(vm:VariableManager) {

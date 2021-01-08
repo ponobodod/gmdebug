@@ -1,5 +1,9 @@
 package gmdebug.composer;
 
+#if js
+import gmdebug.dap.LuaDebugger;
+#end
+
 class ComposedEvent<T> extends ComposedProtocolMessage {
 	/**
 		Type of event.

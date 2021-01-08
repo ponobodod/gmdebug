@@ -1,6 +1,5 @@
-package gmdebug.lua;
+package gmdebug.lua.io;
 
-import gmdebug.lua.LuaSocket.DebugIO;
 import haxe.io.Encoding;
 import lua.lib.luasocket.socket.TcpClient;
 import haxe.io.Bytes;

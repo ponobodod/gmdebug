@@ -1,13 +1,12 @@
 package gmdebug.dap;
 
+import gmdebug.composer.RequestString;
 import js.Node;
 import js.node.Buffer;
 import js.node.child_process.ChildProcess;
 import js.node.fs.Stats;
 import js.node.Fs;
 import gmdebug.composer.*;
-import gmdebug.composer.*;
-import gmdebug.RequestString;
 import vscode.debugProtocol.DebugProtocol;
 import gmdebug.VariableReference;
 
@@ -248,7 +247,7 @@ class Handlers {
 		final addonFolder = haxe.io.Path.join([serverFolder, "addons"]);
 		final debugFolder = haxe.io.Path.join([addonFolder, "debugee-auto"]);
 		if (!Fs.existsSync(debugFolder)) {
-			js.node.ChildProcess.execSync('cp -r ../generated $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
+			js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
 		}
 	}
 

@@ -1,5 +1,10 @@
 package gmdebug.composer;
 
+#if js
+import gmdebug.dap.LuaDebugger;
+
+#end
+
 class ComposedResponse<T> extends ComposedProtocolMessage {
 	/**
 		Sequence number of the corresponding request.

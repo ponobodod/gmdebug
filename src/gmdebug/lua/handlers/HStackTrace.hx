@@ -1,5 +1,6 @@
 package gmdebug.lua.handlers;
 
+import gmod.libs.DebugLib;
 import gmdebug.composer.ComposedEvent;
 
 class HStackTrace implements IHandler<StackTraceRequest> {

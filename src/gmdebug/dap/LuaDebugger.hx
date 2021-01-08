@@ -129,7 +129,7 @@ using Lambda;
 	function serverInfoMessage(x:GMServerInfoMessage) {
 		final sp = x.ip.split(":");
 		final ip = if (x.isLan) {
-			js.Ip.address();
+			gmdebug.lib.js.Ip.address();
 		} else {
 			sp[0];
 		}
@@ -165,9 +165,9 @@ using Lambda;
 	}
 
 	@:async function pokeServerNamedPipes(attachReq:AttachRequest) {
-		if (!FileSystem.exists(haxe.io.Path.join([serverFolder, Cross.DATA]))) {
-			throw "GmDebug is not running on given server";
-		}
+		// if (!FileSystem.exists(haxe.io.Path.join([serverFolder, Cross.DATA]))) {
+		// 	throw "GmDebug is not running on given server";
+		// }
 		final ready = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.READY]);
 		final input = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.INPUT]);
 		final output = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.OUTPUT]);
@@ -296,7 +296,7 @@ using Lambda;
 							resp.send();
 						case Failure(fail):
 							trace(fail);
-							final resp = attachReq.composeFail("attach fail", {
+							final resp = attachReq.composeFail('attach fail ${fail.message}', {
 								id: 1,
 								format: 'Failed to attach to server ${fail.message}',
 							});
@@ -331,7 +331,7 @@ using Lambda;
 	override function handleMessage(message:ProtocolMessage) {
 		if (LuaDebugger.inst == null)
 			LuaDebugger.inst = this;
-		try {
+		// try {
 			switch (message.type) {
 				case Request:
 					untyped trace('recieved message from client ${message.command}');
@@ -339,10 +339,10 @@ using Lambda;
 				default:
 					trace("unhandled message from client");
 			}
-		} catch (e) {
-			trace(e.details());
-			shutdown();
-		}
+		// } catch (e) {
+			// trace(e.details());
+			// shutdown();
+		// }
 	}
 }
 

@@ -1,4 +1,4 @@
-package gmdebug.lib;
+package gmdebug.lib.js;
 
 @:jsRequire("ip")
 extern class Ip {

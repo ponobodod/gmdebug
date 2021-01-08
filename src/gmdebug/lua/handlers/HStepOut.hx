@@ -3,6 +3,7 @@ package gmdebug.lua.handlers;
 import gmod.libs.DebugLib;
 
 using Lambda;
+using gmod.PairTools;
 
 class HStepOut implements IHandler<StepOutRequest> {
 	public function new() {}
@@ -14,7 +15,7 @@ class HStepOut implements IHandler<StepOutRequest> {
 			final info = DebugLib.getinfo(Debugee.baseDepth.unsafe() + 1, "fLSl");
 			final func = info.func;
 			trace('${info.source}');
-			final activeLines = info.activelines;
+            final activeLines = info.activelines;
 			final lowest = activeLines.keys().fold((line, res) -> {
 				return if (line < res) {
 					line;

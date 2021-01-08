@@ -1,6 +1,8 @@
 package gmdebug.composer;
 
+#if lua
 import gmdebug.lua.Debugee;
+#end
 import haxe.Json;
 
 class ComposedProtocolMessage {

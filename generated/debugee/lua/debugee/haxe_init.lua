@@ -316,103 +316,107 @@ local _hx_obj_mt = {__newindex=_hx_obj_newindex, __tostring=_hx_tostring}
 local _hx_exports = _hx_exports or {}
 local Array = _hx_e()
 local Date = _hx_e()
+__haxe_Exception = _hx_e()
+__haxe_IMap = _hx_e()
+__haxe_ds_StringMap = _hx_e()
+__lua_Boot = _hx_e()
+local String = _hx_e()
+__lua_Thread = _hx_e()
+__lua_UserData = _hx_e()
+__haxe_ValueException = _hx_e()
+local Std = _hx_e()
+__haxe_NativeStackTrace = _hx_e()
 local Lambda = _hx_e()
 local LuaLambdaKeys = _hx_e()
 local Math = _hx_e()
 local NETMESSAGE_gmdebug_netJit = _hx_e()
 local Reflect = _hx_e()
-local String = _hx_e()
-local Std = _hx_e()
 local StringBuf = _hx_e()
 local StringTools = _hx_e()
 local Sys = _hx_e()
 local ValueType = _hx_e()
 local Type = _hx_e()
-__gmdebug_ComposeTools = _hx_e()
-__gmdebug_ComposedProtocolMessage = _hx_e()
-__gmdebug_ComposedEvent = _hx_e()
-__gmdebug_ComposedResponse = _hx_e()
-__gmdebug_ComposedGmDebugMessage = _hx_e()
 __haxe_io_Path = _hx_e()
 __gmdebug_Cross = _hx_e()
-__gmdebug_CommMethod = _hx_e()
 __gmdebug_MessageResult = _hx_e()
 __gmdebug__FrameID_FrameID_Impl_ = _hx_e()
 __gmdebug_VariableReferenceVal = _hx_e()
 __gmdebug__VariableReference_VariableReference_Impl_ = _hx_e()
+__gmdebug_composer_ComposeTools = _hx_e()
+__gmdebug_composer_ComposedProtocolMessage = _hx_e()
+__gmdebug_composer_ComposedEvent = _hx_e()
+__gmdebug_composer_ComposedGmDebugMessage = _hx_e()
+__gmdebug_composer_ComposedResponse = _hx_e()
 __gmdebug_lua_CustomHandlers = _hx_e()
 __gmdebug_lua_CatchOut = _hx_e()
-__haxe_IMap = _hx_e()
 __haxe_ds_ObjectMap = _hx_e()
-__gmod_WeakTools = _hx_e()
 __gmdebug_lua_DebugLoop = _hx_e()
-__gmdebug_lua_BreakPoint = _hx_e()
 __gmdebug_lua_ProfilingState = _hx_e()
 __gmdebug_lua_DebugLoopProfile = _hx_e()
-__gmdebug_lua_Outputter = _hx_e()
 __gmdebug_lua_DebugState = _hx_e()
 __gmdebug_lua_Debugee = _hx_e()
 __gmdebug_lua_Exceptions = _hx_e()
-__gmdebug_lua_HandlerResponse = _hx_e()
-__haxe_Json = _hx_e()
-__haxe_format_JsonPrinter = _hx_e()
-__haxe_Log = _hx_e()
-__haxe_io_Encoding = _hx_e()
-__haxe_format_JsonParser = _hx_e()
-__gmod__PairTools_KeyTable_Impl_ = _hx_e()
-__tink_json_BasicWriter = _hx_e()
-__tink_json_Writer0 = _hx_e()
-__tink_core_Annex = _hx_e()
-__haxe_Exception = _hx_e()
-__safety_SafetyException = _hx_e()
-__safety_NullPointerException = _hx_e()
-__haxe_NativeStackTrace = _hx_e()
-__gmdebug_lua_Util = _hx_e()
-__gmdebug_lua_RunResult = _hx_e()
-__tink_json_Writer1 = _hx_e()
-__gmod__LuaArray_LuaArray_Impl_ = _hx_e()
-__tink_json_Writer2 = _hx_e()
-__gmdebug_lua_Sources = _hx_e()
-__gmdebug_lua_CompileResult = _hx_e()
-__tink_json_Writer3 = _hx_e()
-__gmdebug_lua_UnhandledResponse = _hx_e()
-__gmdebug_lua_Handlers = _hx_e()
+__gmdebug_lua_HandlerContainer = _hx_e()
 __gmdebug_lua_Jit = _hx_e()
-__gmdebug_lua_DebugIO = _hx_e()
-__sys_net_Socket = _hx_e()
-__gmdebug_lua_LuaSocket = _hx_e()
-__haxe_io_Output = _hx_e()
-__gmdebug_lua_SimpleLSOutput = _hx_e()
-__gmdebug_lua_PipeSocket = _hx_e()
+__gmdebug_lua_Outputter = _hx_e()
+__gmdebug_lua_SourceContainer = _hx_e()
+__gmdebug_lua_CompileResult = _hx_e()
+__gmdebug_lua_RunResult = _hx_e()
+__gmdebug_lua_Util = _hx_e()
+__gmdebug_lua_handlers_IHandler = _hx_e()
+__gmdebug_lua_handlers_HContinue = _hx_e()
+__gmdebug_lua_handlers_HDisconnect = _hx_e()
+__gmdebug_lua_handlers_HEvaluate = _hx_e()
+__gmdebug_lua_handlers_HNext = _hx_e()
+__gmdebug_lua_handlers_HPause = _hx_e()
+__gmdebug_lua_handlers_HSetBreakpoints = _hx_e()
+__gmdebug_lua_handlers_HSetExceptionBreakpoints = _hx_e()
+__gmdebug_lua_handlers_HSetFunctionBreakpoints = _hx_e()
+__gmdebug_lua_handlers_HStackTrace = _hx_e()
+__gmdebug_lua_handlers_HStepIn = _hx_e()
+__gmdebug_lua_handlers_HStepOut = _hx_e()
+__gmdebug_lua_handlers_HVariables = _hx_e()
+__gmdebug_lua_handlers_HandlerResponse = _hx_e()
+__gmdebug_lua_io_DebugIO = _hx_e()
+__gmdebug_lua_io_PipeSocket = _hx_e()
 __haxe_io_Input = _hx_e()
-__gmdebug_lua_PipeInput = _hx_e()
-__gmdebug_lua_PipeOutput = _hx_e()
+__gmdebug_lua_io_PipeInput = _hx_e()
+__haxe_io_Output = _hx_e()
+__gmdebug_lua_io_PipeOutput = _hx_e()
+__gmdebug_lua_managers_BreakpointManager = _hx_e()
+__gmdebug_lua_managers_LineStatus = _hx_e()
+__gmdebug_lua_managers_Breakpoint = _hx_e()
+__gmdebug_lua_managers_BreakpointType = _hx_e()
+__gmdebug_lua_managers_FunctionBreakpointManager = _hx_e()
+__gmdebug_lua_managers_VariableManager = _hx_e()
+__gmod__LuaArray_LuaArray_Impl_ = _hx_e()
+__gmod__PairTools_KeyTable_Impl_ = _hx_e()
+__gmod_WeakTools = _hx_e()
 __gmod_macros_include___ForceExpose = _hx_e()
 __haxe_EntryPoint = _hx_e()
+__haxe_Json = _hx_e()
+__haxe_Log = _hx_e()
 __haxe_MainEvent = _hx_e()
 __haxe_MainLoop = _hx_e()
-__haxe_ValueException = _hx_e()
-__haxe_ds_BalancedTree = _hx_e()
-__haxe_ds_TreeNode = _hx_e()
-__haxe_ds_EnumValueMap = _hx_e()
 __haxe_ds_IntMap = _hx_e()
-__haxe_ds_StringMap = _hx_e()
+__haxe_format_JsonParser = _hx_e()
+__haxe_format_JsonPrinter = _hx_e()
 __haxe_io_Bytes = _hx_e()
 __haxe_io_BytesBuffer = _hx_e()
+__haxe_io_Encoding = _hx_e()
 __haxe_io_Eof = _hx_e()
 __haxe_io_Error = _hx_e()
 __haxe_iterators_ArrayIterator = _hx_e()
 __haxe_iterators_ArrayKeyValueIterator = _hx_e()
 __haxe_iterators_MapKeyValueIterator = _hx_e()
-__lua_Boot = _hx_e()
-__lua_UserData = _hx_e()
-__lua_Thread = _hx_e()
-__lua_lib_luasocket_Socket = _G.require("socket")
-__lua_lib_luv_net_Dns = _G.require("luv")
-__sys_net_Host = _hx_e()
-__sys_net__Socket_SocketInput = _hx_e()
-__sys_net__Socket_SocketOutput = _hx_e()
-__tink_json_Writer4 = _hx_e()
+__safety_SafetyException = _hx_e()
+__safety_NullPointerException = _hx_e()
+__tink_core_Annex = _hx_e()
+__tink_json_BasicWriter = _hx_e()
+__tink_json_Writer197 = _hx_e()
+__tink_json_Writer198 = _hx_e()
+__tink_json_Writer199 = _hx_e()
+__tink_json_Writer200 = _hx_e()
 
 local _hx_bind, _hx_bit, _hx_staticToInstance, _hx_funcToField, _hx_maxn, _hx_print, _hx_apply_self, _hx_box_mr, _hx_bit_clamp, _hx_table, _hx_bit_raw
 local _hx_pcall_default = {};
@@ -774,151 +778,249 @@ end
 
 Date.prototype.__class__ =  Date
 
-Lambda.new = {}
-Lambda.__name__ = true
-Lambda.has = function(it,elt) 
-  local x = it:iterator();
-  while (x:hasNext()) do 
-    if (x:next() == elt) then 
-      do return true end;
-    end;
-  end;
-  do return false end;
-end
-
-LuaLambdaKeys.new = {}
-LuaLambdaKeys.__name__ = true
-LuaLambdaKeys.fold = function(it,f,first) 
-  local x = __gmod__PairTools_KeyTable_Impl_.iterator(it);
-  while (x:hasNext()) do 
-    first = f(x:next(), first);
-  end;
-  do return first end;
-end
-
-Math.new = {}
-Math.__name__ = true
-Math.isNaN = function(f) 
-  do return f ~= f end;
-end
-Math.isFinite = function(f) 
-  if (f > -_G.math.huge) then 
-    do return f < _G.math.huge end;
-  else
-    do return false end;
-  end;
-end
-Math.min = function(a,b) 
-  if (Math.isNaN(a) or Math.isNaN(b)) then 
-    do return (0/0) end;
-  else
-    do return _G.math.min(a, b) end;
-  end;
-end
-
-NETMESSAGE_gmdebug_netJit.new = function() 
-  local self = _hx_new(NETMESSAGE_gmdebug_netJit.prototype)
-  NETMESSAGE_gmdebug_netJit.super(self)
+__haxe_Exception.new = function(message,previous,native) 
+  local self = _hx_new(__haxe_Exception.prototype)
+  __haxe_Exception.super(self,message,previous,native)
   return self
 end
-NETMESSAGE_gmdebug_netJit.super = function(self) 
-  _G.util.AddNetworkString("gmdebug_netJit");
-end
-NETMESSAGE_gmdebug_netJit.__name__ = true
-NETMESSAGE_gmdebug_netJit.prototype = _hx_e();
-NETMESSAGE_gmdebug_netJit.prototype.broadcast = function(self,data,unreliable) 
-  if (unreliable == nil) then 
-    unreliable = false;
-  end;
-  _G.net.Start("gmdebug_netJit", unreliable);
-  _G.net.Broadcast();
-end
-
-NETMESSAGE_gmdebug_netJit.prototype.__class__ =  NETMESSAGE_gmdebug_netJit
-
-Reflect.new = {}
-Reflect.__name__ = true
-Reflect.field = function(o,field) 
-  if (_G.type(o) == "string") then 
-    if (field == "length") then 
-      do return _hx_wrap_if_string_field(o,'length') end;
-    else
-      do return String.prototype[field] end;
-    end;
+__haxe_Exception.super = function(self,message,previous,native) 
+  self.__skipStack = 0;
+  self.__exceptionMessage = message;
+  self.__previousException = previous;
+  if (native ~= nil) then 
+    self.__nativeException = native;
+    self.__nativeStack = __haxe_NativeStackTrace.exceptionStack();
   else
-    local _hx_status, _hx_result = pcall(function() 
-    
-        do return o[field] end;
-      return _hx_pcall_default
-    end)
-    if not _hx_status and _hx_result == "_hx_pcall_break" then
-    elseif not _hx_status then 
-      local _g = _hx_result;
-      do return nil end;
-    elseif _hx_result ~= _hx_pcall_default then
-      return _hx_result
-    end;
+    self.__nativeException = self;
+    self.__nativeStack = __haxe_NativeStackTrace.callStack();
+    self.__skipStack = 1;
   end;
 end
-Reflect.fields = function(o) 
-  local _hx_continue_1 = false;
-  while (true) do repeat 
-    if (_G.type(o) == "string") then 
-      o = String.prototype;
-      break;
+__haxe_Exception.__name__ = true
+__haxe_Exception.caught = function(value) 
+  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
+    do return value end;
+  else
+    do return __haxe_ValueException.new(value, nil, value) end;
+  end;
+end
+__haxe_Exception.thrown = function(value) 
+  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
+    do return value:get_native() end;
+  else
+    local e = __haxe_ValueException.new(value);
+    e.__skipStack = e.__skipStack + 1;
+    do return e end;
+  end;
+end
+__haxe_Exception.prototype = _hx_e();
+__haxe_Exception.prototype.__exceptionMessage= nil;
+__haxe_Exception.prototype.__nativeStack= nil;
+__haxe_Exception.prototype.__skipStack= nil;
+__haxe_Exception.prototype.__nativeException= nil;
+__haxe_Exception.prototype.__previousException= nil;
+__haxe_Exception.prototype.unwrap = function(self) 
+  do return self.__nativeException end
+end
+__haxe_Exception.prototype.toString = function(self) 
+  do return self:get_message() end
+end
+__haxe_Exception.prototype.get_message = function(self) 
+  do return self.__exceptionMessage end
+end
+__haxe_Exception.prototype.get_native = function(self) 
+  do return self.__nativeException end
+end
+
+__haxe_Exception.prototype.__class__ =  __haxe_Exception
+
+__haxe_IMap.new = {}
+__haxe_IMap.__name__ = true
+__haxe_IMap.prototype = _hx_e();
+__haxe_IMap.prototype.get= nil;
+__haxe_IMap.prototype.keys= nil;
+
+__haxe_IMap.prototype.__class__ =  __haxe_IMap
+
+__haxe_ds_StringMap.new = function() 
+  local self = _hx_new(__haxe_ds_StringMap.prototype)
+  __haxe_ds_StringMap.super(self)
+  return self
+end
+__haxe_ds_StringMap.super = function(self) 
+  self.h = ({});
+end
+__haxe_ds_StringMap.__name__ = true
+__haxe_ds_StringMap.__interfaces__ = {__haxe_IMap}
+__haxe_ds_StringMap.prototype = _hx_e();
+__haxe_ds_StringMap.prototype.h= nil;
+__haxe_ds_StringMap.prototype.get = function(self,key) 
+  local ret = self.h[key];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  do return ret end
+end
+__haxe_ds_StringMap.prototype.keys = function(self) 
+  local _gthis = self;
+  local next = _G.next;
+  local cur = next(self.h, nil);
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local ret = cur;
+    cur = next(_gthis.h, cur);
+    do return ret end;
+  end,hasNext=function(self) 
+    do return cur ~= nil end;
+  end}) end
+end
+
+__haxe_ds_StringMap.prototype.__class__ =  __haxe_ds_StringMap
+
+__lua_Boot.new = {}
+__lua_Boot.__name__ = true
+__lua_Boot.__instanceof = function(o,cl) 
+  if (cl == nil) then 
+    do return false end;
+  end;
+  local cl1 = cl;
+  if (cl1) == Array then 
+    do return __lua_Boot.isArray(o) end;
+  elseif (cl1) == Bool then 
+    do return _G.type(o) == "boolean" end;
+  elseif (cl1) == Dynamic then 
+    do return o ~= nil end;
+  elseif (cl1) == Float then 
+    do return _G.type(o) == "number" end;
+  elseif (cl1) == Int then 
+    if (_G.type(o) == "number") then 
+      do return _hx_bit_clamp(o) == o end;
     else
-      do return _hx_field_arr(o) end;
-    end;until true
-    if _hx_continue_1 then 
-    _hx_continue_1 = false;
-    break;
+      do return false end;
     end;
-    
-  end;
-end
-Reflect.isFunction = function(f) 
-  if (_G.type(f) == "function") then 
-    do return not ((function() 
-      local _hx_1
-      if (_G.type(f) ~= "table") then 
-      _hx_1 = false; else 
-      _hx_1 = f.__name__; end
-      return _hx_1
-    end )() or (function() 
+  elseif (cl1) == String then 
+    do return _G.type(o) == "string" end;
+  elseif (cl1) == _G.table then 
+    do return _G.type(o) == "table" end;
+  elseif (cl1) == __lua_Thread then 
+    do return _G.type(o) == "thread" end;
+  elseif (cl1) == __lua_UserData then 
+    do return _G.type(o) == "userdata" end;else
+  if (((o ~= nil) and (_G.type(o) == "table")) and (_G.type(cl) == "table")) then 
+    local tmp;
+    if (__lua_Boot.__instanceof(o, Array)) then 
+      tmp = Array;
+    else
+      if (__lua_Boot.__instanceof(o, String)) then 
+        tmp = String;
+      else
+        local cl = o.__class__;
+        tmp = (function() 
+          local _hx_1
+          if (cl ~= nil) then 
+          _hx_1 = cl; else 
+          _hx_1 = nil; end
+          return _hx_1
+        end )();
+      end;
+    end;
+    if (__lua_Boot.extendsOrImplements(tmp, cl)) then 
+      do return true end;
+    end;
+    if ((function() 
       local _hx_2
-      if (_G.type(f) ~= "table") then 
-      _hx_2 = false; else 
-      _hx_2 = f.__ename__; end
+      if (cl == Class) then 
+      _hx_2 = o.__name__ ~= nil; else 
+      _hx_2 = false; end
       return _hx_2
-    end )()) end;
+    end )()) then 
+      do return true end;
+    end;
+    if ((function() 
+      local _hx_3
+      if (cl == Enum) then 
+      _hx_3 = o.__ename__ ~= nil; else 
+      _hx_3 = false; end
+      return _hx_3
+    end )()) then 
+      do return true end;
+    end;
+    do return o.__enum__ == cl end;
+  else
+    do return false end;
+  end; end;
+end
+__lua_Boot.isArray = function(o) 
+  if (_G.type(o) == "table") then 
+    if ((o.__enum__ == nil) and (_G.getmetatable(o) ~= nil)) then 
+      do return _G.getmetatable(o).__index == Array.prototype end;
+    else
+      do return false end;
+    end;
   else
     do return false end;
   end;
 end
-Reflect.compare = function(a,b) 
-  if (a == b) then 
-    do return 0 end;
-  else
-    if (a == nil) then 
-      do return -1 end;
+__lua_Boot.dateStr = function(date) 
+  local m = date:getMonth() + 1;
+  local d = date:getDate();
+  local h = date:getHours();
+  local mi = date:getMinutes();
+  local s = date:getSeconds();
+  do return Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(date:getFullYear()) .. Std.string("-")) .. Std.string(((function() 
+    local _hx_1
+    if (m < 10) then 
+    _hx_1 = Std.string("0") .. Std.string(m); else 
+    _hx_1 = Std.string("") .. Std.string(m); end
+    return _hx_1
+  end )()))) .. Std.string("-")) .. Std.string(((function() 
+    local _hx_2
+    if (d < 10) then 
+    _hx_2 = Std.string("0") .. Std.string(d); else 
+    _hx_2 = Std.string("") .. Std.string(d); end
+    return _hx_2
+  end )()))) .. Std.string(" ")) .. Std.string(((function() 
+    local _hx_3
+    if (h < 10) then 
+    _hx_3 = Std.string("0") .. Std.string(h); else 
+    _hx_3 = Std.string("") .. Std.string(h); end
+    return _hx_3
+  end )()))) .. Std.string(":")) .. Std.string(((function() 
+    local _hx_4
+    if (mi < 10) then 
+    _hx_4 = Std.string("0") .. Std.string(mi); else 
+    _hx_4 = Std.string("") .. Std.string(mi); end
+    return _hx_4
+  end )()))) .. Std.string(":")) .. Std.string(((function() 
+    local _hx_5
+    if (s < 10) then 
+    _hx_5 = Std.string("0") .. Std.string(s); else 
+    _hx_5 = Std.string("") .. Std.string(s); end
+    return _hx_5
+  end )())) end;
+end
+__lua_Boot.extendsOrImplements = function(cl1,cl2) 
+  while (true) do 
+    if ((cl1 == nil) or (cl2 == nil)) then 
+      do return false end;
     else
-      if (b == nil) then 
-        do return 1 end;
+      if (cl1 == cl2) then 
+        do return true end;
       else
-        if (a > b) then 
-          do return 1 end;
-        else
-          do return -1 end;
+        if (cl1.__interfaces__ ~= nil) then 
+          local intf = cl1.__interfaces__;
+          local _g = 1;
+          local _g1 = _hx_table.maxn(intf) + 1;
+          while (_g < _g1) do 
+            _g = _g + 1;
+            local i = _g - 1;
+            if (__lua_Boot.extendsOrImplements(intf[i], cl2)) then 
+              do return true end;
+            end;
+          end;
         end;
       end;
     end;
-  end;
-end
-Reflect.isEnumValue = function(v) 
-  if ((v ~= nil) and __lua_Boot.__instanceof(v, _G.table)) then 
-    do return v.__enum__ ~= nil end;
-  else
-    do return false end;
+    cl1 = cl1.__super__;
   end;
 end
 
@@ -1103,6 +1205,32 @@ end
 
 String.prototype.__class__ =  String
 
+__lua_Thread.new = {}
+__lua_Thread.__name__ = true
+
+__lua_UserData.new = {}
+__lua_UserData.__name__ = true
+
+__haxe_ValueException.new = function(value,previous,native) 
+  local self = _hx_new(__haxe_ValueException.prototype)
+  __haxe_ValueException.super(self,value,previous,native)
+  return self
+end
+__haxe_ValueException.super = function(self,value,previous,native) 
+  __haxe_Exception.super(self,Std.string(value),previous,native);
+  self.value = value;
+end
+__haxe_ValueException.__name__ = true
+__haxe_ValueException.prototype = _hx_e();
+__haxe_ValueException.prototype.value= nil;
+__haxe_ValueException.prototype.unwrap = function(self) 
+  do return self.value end
+end
+
+__haxe_ValueException.prototype.__class__ =  __haxe_ValueException
+__haxe_ValueException.__super__ = __haxe_Exception
+setmetatable(__haxe_ValueException.prototype,{__index=__haxe_Exception.prototype})
+
 Std.new = {}
 Std.__name__ = true
 Std.string = function(s) 
@@ -1212,6 +1340,165 @@ Std.parseFloat = function(x)
     do return result end;
   else
     do return (0/0) end;
+  end;
+end
+
+__haxe_NativeStackTrace.new = {}
+__haxe_NativeStackTrace.__name__ = true
+__haxe_NativeStackTrace.saveStack = function(exception) 
+end
+__haxe_NativeStackTrace.callStack = function() 
+  local _g = debug.traceback();
+  if (_g == nil) then 
+    do return _hx_tab_array({}, 0) end;
+  else
+    local idx = 1;
+    local ret = _hx_tab_array({}, 0);
+    while (idx ~= nil) do 
+      local newidx = 0;
+      if (#"\n" > 0) then 
+        newidx = _G.string.find(_g, "\n", idx, true);
+      else
+        if (idx >= #_g) then 
+          newidx = nil;
+        else
+          newidx = idx + 1;
+        end;
+      end;
+      if (newidx ~= nil) then 
+        ret:push(_G.string.sub(_g, idx, newidx - 1));
+        idx = newidx + #"\n";
+      else
+        ret:push(_G.string.sub(_g, idx, #_g));
+        idx = nil;
+      end;
+    end;
+    do return ret:slice(3) end;
+  end;
+end
+__haxe_NativeStackTrace.exceptionStack = function() 
+  do return _hx_tab_array({}, 0) end;
+end
+
+Lambda.new = {}
+Lambda.__name__ = true
+Lambda.has = function(it,elt) 
+  local x = it:iterator();
+  while (x:hasNext()) do 
+    if (x:next() == elt) then 
+      do return true end;
+    end;
+  end;
+  do return false end;
+end
+
+LuaLambdaKeys.new = {}
+LuaLambdaKeys.__name__ = true
+LuaLambdaKeys.fold = function(it,f,first) 
+  local x = __gmod__PairTools_KeyTable_Impl_.iterator(it);
+  while (x:hasNext()) do 
+    first = f(x:next(), first);
+  end;
+  do return first end;
+end
+
+Math.new = {}
+Math.__name__ = true
+Math.isNaN = function(f) 
+  do return f ~= f end;
+end
+Math.isFinite = function(f) 
+  if (f > -_G.math.huge) then 
+    do return f < _G.math.huge end;
+  else
+    do return false end;
+  end;
+end
+Math.min = function(a,b) 
+  if (Math.isNaN(a) or Math.isNaN(b)) then 
+    do return (0/0) end;
+  else
+    do return _G.math.min(a, b) end;
+  end;
+end
+
+NETMESSAGE_gmdebug_netJit.new = function() 
+  local self = _hx_new(NETMESSAGE_gmdebug_netJit.prototype)
+  NETMESSAGE_gmdebug_netJit.super(self)
+  return self
+end
+NETMESSAGE_gmdebug_netJit.super = function(self) 
+  _G.util.AddNetworkString("gmdebug_netJit");
+end
+NETMESSAGE_gmdebug_netJit.__name__ = true
+NETMESSAGE_gmdebug_netJit.prototype = _hx_e();
+NETMESSAGE_gmdebug_netJit.prototype.broadcast = function(self,data,unreliable) 
+  if (unreliable == nil) then 
+    unreliable = false;
+  end;
+  _G.net.Start("gmdebug_netJit", unreliable);
+  _G.net.Broadcast();
+end
+
+NETMESSAGE_gmdebug_netJit.prototype.__class__ =  NETMESSAGE_gmdebug_netJit
+
+Reflect.new = {}
+Reflect.__name__ = true
+Reflect.field = function(o,field) 
+  if (_G.type(o) == "string") then 
+    if (field == "length") then 
+      do return _hx_wrap_if_string_field(o,'length') end;
+    else
+      do return String.prototype[field] end;
+    end;
+  else
+    local _hx_status, _hx_result = pcall(function() 
+    
+        do return o[field] end;
+      return _hx_pcall_default
+    end)
+    if not _hx_status and _hx_result == "_hx_pcall_break" then
+    elseif not _hx_status then 
+      local _g = _hx_result;
+      do return nil end;
+    elseif _hx_result ~= _hx_pcall_default then
+      return _hx_result
+    end;
+  end;
+end
+Reflect.fields = function(o) 
+  local _hx_continue_1 = false;
+  while (true) do repeat 
+    if (_G.type(o) == "string") then 
+      o = String.prototype;
+      break;
+    else
+      do return _hx_field_arr(o) end;
+    end;until true
+    if _hx_continue_1 then 
+    _hx_continue_1 = false;
+    break;
+    end;
+    
+  end;
+end
+Reflect.isFunction = function(f) 
+  if (_G.type(f) == "function") then 
+    do return not ((function() 
+      local _hx_1
+      if (_G.type(f) ~= "table") then 
+      _hx_1 = false; else 
+      _hx_1 = f.__name__; end
+      return _hx_1
+    end )() or (function() 
+      local _hx_2
+      if (_G.type(f) ~= "table") then 
+      _hx_2 = false; else 
+      _hx_2 = f.__ename__; end
+      return _hx_2
+    end )()) end;
+  else
+    do return false end;
   end;
 end
 
@@ -1399,96 +1686,6 @@ Type.typeof = function(v)
     do return ValueType.TObject end;else
   do return ValueType.TUnknown end; end;
 end
-
-__gmdebug_ComposeTools.new = {}
-__gmdebug_ComposeTools.__name__ = true
-__gmdebug_ComposeTools.compose = function(req,str,body) 
-  local response = __gmdebug_ComposedResponse.new(req, body);
-  response.success = true;
-  do return response end;
-end
-__gmdebug_ComposeTools.composeFail = function(req,rawerror,error) 
-  local response = __gmdebug_ComposedResponse.new(req, error);
-  response.message = rawerror;
-  response.success = false;
-  do return response end;
-end
-
-__gmdebug_ComposedProtocolMessage.new = function(_type) 
-  local self = _hx_new(__gmdebug_ComposedProtocolMessage.prototype)
-  __gmdebug_ComposedProtocolMessage.super(self,_type)
-  return self
-end
-__gmdebug_ComposedProtocolMessage.super = function(self,_type) 
-  self.type = _type;
-end
-__gmdebug_ComposedProtocolMessage.__name__ = true
-__gmdebug_ComposedProtocolMessage.prototype = _hx_e();
-__gmdebug_ComposedProtocolMessage.prototype.type= nil;
-
-__gmdebug_ComposedProtocolMessage.prototype.__class__ =  __gmdebug_ComposedProtocolMessage
-
-__gmdebug_ComposedEvent.new = function(str,body) 
-  local self = _hx_new(__gmdebug_ComposedEvent.prototype)
-  __gmdebug_ComposedEvent.super(self,str,body)
-  return self
-end
-__gmdebug_ComposedEvent.super = function(self,str,body) 
-  __gmdebug_ComposedProtocolMessage.super(self,"event");
-  self.event = str;
-  self.body = body;
-end
-__gmdebug_ComposedEvent.__name__ = true
-__gmdebug_ComposedEvent.prototype = _hx_e();
-__gmdebug_ComposedEvent.prototype.event= nil;
-__gmdebug_ComposedEvent.prototype.body= nil;
-
-__gmdebug_ComposedEvent.prototype.__class__ =  __gmdebug_ComposedEvent
-__gmdebug_ComposedEvent.__super__ = __gmdebug_ComposedProtocolMessage
-setmetatable(__gmdebug_ComposedEvent.prototype,{__index=__gmdebug_ComposedProtocolMessage.prototype})
-
-__gmdebug_ComposedResponse.new = function(req,body) 
-  local self = _hx_new(__gmdebug_ComposedResponse.prototype)
-  __gmdebug_ComposedResponse.super(self,req,body)
-  return self
-end
-__gmdebug_ComposedResponse.super = function(self,req,body) 
-  self.success = true;
-  __gmdebug_ComposedProtocolMessage.super(self,"response");
-  self.request_seq = _hx_funcToField(req.seq);
-  self.command = _hx_funcToField(req.command);
-  self.body = body;
-end
-__gmdebug_ComposedResponse.__name__ = true
-__gmdebug_ComposedResponse.prototype = _hx_e();
-__gmdebug_ComposedResponse.prototype.request_seq= nil;
-__gmdebug_ComposedResponse.prototype.success= nil;
-__gmdebug_ComposedResponse.prototype.command= nil;
-__gmdebug_ComposedResponse.prototype.message= nil;
-__gmdebug_ComposedResponse.prototype.body= nil;
-
-__gmdebug_ComposedResponse.prototype.__class__ =  __gmdebug_ComposedResponse
-__gmdebug_ComposedResponse.__super__ = __gmdebug_ComposedProtocolMessage
-setmetatable(__gmdebug_ComposedResponse.prototype,{__index=__gmdebug_ComposedProtocolMessage.prototype})
-
-__gmdebug_ComposedGmDebugMessage.new = function(msg,body) 
-  local self = _hx_new(__gmdebug_ComposedGmDebugMessage.prototype)
-  __gmdebug_ComposedGmDebugMessage.super(self,msg,body)
-  return self
-end
-__gmdebug_ComposedGmDebugMessage.super = function(self,msg,body) 
-  __gmdebug_ComposedProtocolMessage.super(self,"gmdebug");
-  self.msg = msg;
-  self.body = body;
-end
-__gmdebug_ComposedGmDebugMessage.__name__ = true
-__gmdebug_ComposedGmDebugMessage.prototype = _hx_e();
-__gmdebug_ComposedGmDebugMessage.prototype.msg= nil;
-__gmdebug_ComposedGmDebugMessage.prototype.body= nil;
-
-__gmdebug_ComposedGmDebugMessage.prototype.__class__ =  __gmdebug_ComposedGmDebugMessage
-__gmdebug_ComposedGmDebugMessage.__super__ = __gmdebug_ComposedProtocolMessage
-setmetatable(__gmdebug_ComposedGmDebugMessage.prototype,{__index=__gmdebug_ComposedProtocolMessage.prototype})
 
 __haxe_io_Path.new = function(path) 
   local self = _hx_new(__haxe_io_Path.prototype)
@@ -1906,12 +2103,6 @@ __gmdebug_Cross.recvMessage = function(x)
   end;
   do return __gmdebug_MessageResult.MESSAGE(__haxe_Json.parse(x:readString(len, __haxe_io_Encoding.UTF8))) end;
 end
-_hxClasses["gmdebug.CommMethod"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Pipe","Socket"},2)}
-__gmdebug_CommMethod = _hxClasses["gmdebug.CommMethod"];
-__gmdebug_CommMethod.Pipe = _hx_tab_array({[0]="Pipe",0,__enum__ = __gmdebug_CommMethod},2)
-
-__gmdebug_CommMethod.Socket = _hx_tab_array({[0]="Socket",1,__enum__ = __gmdebug_CommMethod},2)
-
 _hxClasses["gmdebug.MessageResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="ACK","MESSAGE"},2)}
 __gmdebug_MessageResult = _hxClasses["gmdebug.MessageResult"];
 __gmdebug_MessageResult.ACK = _hx_tab_array({[0]="ACK",0,__enum__ = __gmdebug_MessageResult},2)
@@ -1965,6 +2156,96 @@ __gmdebug__VariableReference_VariableReference_Impl_.encode = function(x)
     do return _hx_bit.bor(val,ref - 1) end; end;
 end
 
+__gmdebug_composer_ComposeTools.new = {}
+__gmdebug_composer_ComposeTools.__name__ = true
+__gmdebug_composer_ComposeTools.compose = function(req,str,body) 
+  local response = __gmdebug_composer_ComposedResponse.new(req, body);
+  response.success = true;
+  do return response end;
+end
+__gmdebug_composer_ComposeTools.composeFail = function(req,rawerror,error) 
+  local response = __gmdebug_composer_ComposedResponse.new(req, error);
+  response.message = rawerror;
+  response.success = false;
+  do return response end;
+end
+
+__gmdebug_composer_ComposedProtocolMessage.new = function(_type) 
+  local self = _hx_new(__gmdebug_composer_ComposedProtocolMessage.prototype)
+  __gmdebug_composer_ComposedProtocolMessage.super(self,_type)
+  return self
+end
+__gmdebug_composer_ComposedProtocolMessage.super = function(self,_type) 
+  self.type = _type;
+end
+__gmdebug_composer_ComposedProtocolMessage.__name__ = true
+__gmdebug_composer_ComposedProtocolMessage.prototype = _hx_e();
+__gmdebug_composer_ComposedProtocolMessage.prototype.type= nil;
+
+__gmdebug_composer_ComposedProtocolMessage.prototype.__class__ =  __gmdebug_composer_ComposedProtocolMessage
+
+__gmdebug_composer_ComposedEvent.new = function(str,body) 
+  local self = _hx_new(__gmdebug_composer_ComposedEvent.prototype)
+  __gmdebug_composer_ComposedEvent.super(self,str,body)
+  return self
+end
+__gmdebug_composer_ComposedEvent.super = function(self,str,body) 
+  __gmdebug_composer_ComposedProtocolMessage.super(self,"event");
+  self.event = str;
+  self.body = body;
+end
+__gmdebug_composer_ComposedEvent.__name__ = true
+__gmdebug_composer_ComposedEvent.prototype = _hx_e();
+__gmdebug_composer_ComposedEvent.prototype.event= nil;
+__gmdebug_composer_ComposedEvent.prototype.body= nil;
+
+__gmdebug_composer_ComposedEvent.prototype.__class__ =  __gmdebug_composer_ComposedEvent
+__gmdebug_composer_ComposedEvent.__super__ = __gmdebug_composer_ComposedProtocolMessage
+setmetatable(__gmdebug_composer_ComposedEvent.prototype,{__index=__gmdebug_composer_ComposedProtocolMessage.prototype})
+
+__gmdebug_composer_ComposedGmDebugMessage.new = function(msg,body) 
+  local self = _hx_new(__gmdebug_composer_ComposedGmDebugMessage.prototype)
+  __gmdebug_composer_ComposedGmDebugMessage.super(self,msg,body)
+  return self
+end
+__gmdebug_composer_ComposedGmDebugMessage.super = function(self,msg,body) 
+  __gmdebug_composer_ComposedProtocolMessage.super(self,"gmdebug");
+  self.msg = msg;
+  self.body = body;
+end
+__gmdebug_composer_ComposedGmDebugMessage.__name__ = true
+__gmdebug_composer_ComposedGmDebugMessage.prototype = _hx_e();
+__gmdebug_composer_ComposedGmDebugMessage.prototype.msg= nil;
+__gmdebug_composer_ComposedGmDebugMessage.prototype.body= nil;
+
+__gmdebug_composer_ComposedGmDebugMessage.prototype.__class__ =  __gmdebug_composer_ComposedGmDebugMessage
+__gmdebug_composer_ComposedGmDebugMessage.__super__ = __gmdebug_composer_ComposedProtocolMessage
+setmetatable(__gmdebug_composer_ComposedGmDebugMessage.prototype,{__index=__gmdebug_composer_ComposedProtocolMessage.prototype})
+
+__gmdebug_composer_ComposedResponse.new = function(req,body) 
+  local self = _hx_new(__gmdebug_composer_ComposedResponse.prototype)
+  __gmdebug_composer_ComposedResponse.super(self,req,body)
+  return self
+end
+__gmdebug_composer_ComposedResponse.super = function(self,req,body) 
+  self.success = true;
+  __gmdebug_composer_ComposedProtocolMessage.super(self,"response");
+  self.request_seq = _hx_funcToField(req.seq);
+  self.command = _hx_funcToField(req.command);
+  self.body = body;
+end
+__gmdebug_composer_ComposedResponse.__name__ = true
+__gmdebug_composer_ComposedResponse.prototype = _hx_e();
+__gmdebug_composer_ComposedResponse.prototype.request_seq= nil;
+__gmdebug_composer_ComposedResponse.prototype.success= nil;
+__gmdebug_composer_ComposedResponse.prototype.command= nil;
+__gmdebug_composer_ComposedResponse.prototype.message= nil;
+__gmdebug_composer_ComposedResponse.prototype.body= nil;
+
+__gmdebug_composer_ComposedResponse.prototype.__class__ =  __gmdebug_composer_ComposedResponse
+__gmdebug_composer_ComposedResponse.__super__ = __gmdebug_composer_ComposedProtocolMessage
+setmetatable(__gmdebug_composer_ComposedResponse.prototype,{__index=__gmdebug_composer_ComposedProtocolMessage.prototype})
+
 __gmdebug_lua_CustomHandlers.new = {}
 __gmdebug_lua_CustomHandlers.__name__ = true
 __gmdebug_lua_CustomHandlers.handle = function(x) 
@@ -1977,7 +2258,7 @@ __gmdebug_lua_CustomHandlers.handle = function(x)
     __gmdebug_lua_CustomHandlers.h_initalInfo(x); end;
 end
 __gmdebug_lua_CustomHandlers.h_clientID = function(x) 
-  __haxe_Log.trace(Std.string("recieved id ") .. Std.string(x.body.id), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/CustomHandlers.hx",lineNumber=23,className="gmdebug.lua.CustomHandlers",methodName="h_clientID"}));
+  __haxe_Log.trace(Std.string("recieved id ") .. Std.string(x.body.id), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/CustomHandlers.hx",lineNumber=21,className="gmdebug.lua.CustomHandlers",methodName="h_clientID"}));
   __gmdebug_lua_Debugee.clientID = x.body.id;
 end
 __gmdebug_lua_CustomHandlers.isLan = function() 
@@ -1986,7 +2267,7 @@ end
 __gmdebug_lua_CustomHandlers.h_initalInfo = function(x) 
   __gmdebug_lua_Debugee.dest = x.body.location;
   if (x.body.dapMode == "Launch") then 
-    local js = __haxe_Json.stringify(__gmdebug_ComposedGmDebugMessage.new(4, _hx_o({__fields__={ip=true,isLan=true},ip=_G.game.GetIPAddress(),isLan=__gmdebug_lua_CustomHandlers.isLan()})));
+    local js = __haxe_Json.stringify(__gmdebug_composer_ComposedGmDebugMessage.new(4, _hx_o({__fields__={ip=true,isLan=true},ip=_G.game.GetIPAddress(),isLan=__gmdebug_lua_CustomHandlers.isLan()})));
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -2000,14 +2281,6 @@ __gmdebug_lua_CatchOut = _hxClasses["gmdebug.lua.CatchOut"];
 __gmdebug_lua_CatchOut.NONE = _hx_tab_array({[0]="NONE",0,__enum__ = __gmdebug_lua_CatchOut},2)
 
 __gmdebug_lua_CatchOut.OUT = function(outFunc) local _x = _hx_tab_array({[0]="OUT",1,outFunc,__enum__=__gmdebug_lua_CatchOut}, 3); return _x; end 
-
-__haxe_IMap.new = {}
-__haxe_IMap.__name__ = true
-__haxe_IMap.prototype = _hx_e();
-__haxe_IMap.prototype.get= nil;
-__haxe_IMap.prototype.keys= nil;
-
-__haxe_IMap.prototype.__class__ =  __haxe_IMap
 
 __haxe_ds_ObjectMap.new = function() 
   local self = _hx_new(__haxe_ds_ObjectMap.prototype)
@@ -2047,88 +2320,12 @@ end
 
 __haxe_ds_ObjectMap.prototype.__class__ =  __haxe_ds_ObjectMap
 
-__gmod_WeakTools.new = {}
-__gmod_WeakTools.__name__ = true
-__gmod_WeakTools.setWeakKeys = function(table) 
-  local prevMeta = _G.getmetatable(table);
-  if (prevMeta == nil) then 
-    prevMeta = ({});
-    _G.setmetatable(table, prevMeta);
-  end;
-  prevMeta.__mode = "k";
-end
-__gmod_WeakTools.setWeakKeysM = function(objMap) 
-  __gmod_WeakTools.setWeakKeys(objMap.h);
-  __gmod_WeakTools.setWeakKeys(objMap.k);
-end
-
 __gmdebug_lua_DebugLoop.new = {}
 __gmdebug_lua_DebugLoop.__name__ = true
-__gmdebug_lua_DebugLoop.addLineInfo = function(x) 
-  if ((__gmdebug_lua_DebugLoop.lineInfoFuncCache ~= nil) and (__gmdebug_lua_DebugLoop.lineInfoFuncCache.k[x] ~= nil)) then 
-    do return end;
-  end;
-  local _this = __gmdebug_lua_DebugLoop.lineInfoFuncCache;
-  _this.h[x] = true;
-  _this.k[x] = true;
-  local info = _G.debug.getinfo(x, "LS");
-  if ((info == nil) or (info.activelines == nil)) then 
-    do return end;
-  end;
-  local _g = info.linedefined;
-  local _g1 = info.lastlinedefined;
-  while (_g < _g1) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    local cache = __gmdebug_lua_DebugLoop.retrieveSourceLineInfo(info.source);
-    local ret = cache.h[i];
-    if (ret == __haxe_ds_IntMap.tnull) then 
-      ret = nil;
-    end;
-    if (ret ~= true) then 
-      local value = info.activelines[i] ~= nil;
-      if (value == nil) then 
-        cache.h[i] = __haxe_ds_IntMap.tnull;
-      else
-        cache.h[i] = value;
-      end;
-    end;
-  end;
-  local _g = 1;
-  while (_g < 10000) do 
-    _g = _g + 1;
-    local _hx_1_upv_a, _hx_1_upv_b = _G.debug.getupvalue(x, _g - 1);
-    if (_hx_1_upv_a == nil) then 
-      break;
-    end;
-    if (_G.type(_hx_1_upv_b) == "function") then 
-      __gmdebug_lua_DebugLoop.addLineInfo(x);
-    end;
-  end;
-end
-__gmdebug_lua_DebugLoop.makeSourceCache = function() 
-  local sc = __haxe_ds_ObjectMap.new();
-  __gmod_WeakTools.setWeakKeysM(sc);
-  do return sc end;
-end
-__gmdebug_lua_DebugLoop.retrieveSourceLineInfo = function(source) 
-  local ret = __gmdebug_lua_DebugLoop.breakLocsCache.h[source];
-  if (ret == __haxe_ds_StringMap.tnull) then 
-    ret = nil;
-  end;
-  local _g = ret;
-  if (_g == nil) then 
-    local map = __haxe_ds_IntMap.new();
-    local _this = __gmdebug_lua_DebugLoop.breakLocsCache;
-    if (map == nil) then 
-      _this.h[source] = __haxe_ds_StringMap.tnull;
-    else
-      _this.h[source] = map;
-    end;
-    do return map end;
-  else
-    do return _g end;
-  end;
+__gmdebug_lua_DebugLoop.init = function(bm,sc) 
+  __gmdebug_lua_DebugLoop.bm = bm;
+  __gmdebug_lua_DebugLoop.sc = sc;
+  __gmdebug_lua_DebugLoop.fbm = __gmdebug_lua_DebugLoop.fbm;
 end
 __gmdebug_lua_DebugLoop.currentStackHeight = function(func) 
   if (func ~= __gmdebug_lua_DebugLoop.prevFunc) then 
@@ -2139,20 +2336,17 @@ __gmdebug_lua_DebugLoop.currentStackHeight = function(func)
   end;
 end
 __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine) 
-  if (not __gmdebug_lua_Debugee.shouldDebug) then 
-    do return end;
-  end;
-  if (__gmdebug_lua_Debugee.tracing) then 
+  if (not __gmdebug_lua_Debugee.shouldDebug or __gmdebug_lua_Debugee.tracing) then 
     do return end;
   end;
   local func = _G.debug.getinfo(2, "f").func;
-  local result = __gmdebug_lua_DebugLoop.sourceCache.h[func];
+  local result = __gmdebug_lua_DebugLoop.sc.sourceCache.h[func];
   local sinfo;
   if (result ~= nil) then 
     sinfo = result;
   else
     local tmp = _G.debug.getinfo(2, "S");
-    local _this = __gmdebug_lua_DebugLoop.sourceCache;
+    local _this = __gmdebug_lua_DebugLoop.sc.sourceCache;
     _this.h[func] = tmp;
     _this.k[func] = true;
     sinfo = tmp;
@@ -2164,80 +2358,48 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
   else
     local stepping1 = _g[1];
     if (stepping1) == 0 then 
-      stepping = (cur == "line") and false;
+      stepping = false;
     elseif (stepping1) == 1 then 
-      if (cur == "line") then 
-        local target = _g[2];
-        if ((target == nil) or (__gmdebug_lua_Debugee.get_stackHeight() <= target)) then 
-          __haxe_Log.trace(Std.string(Std.string(Std.string("stepped ") .. Std.string(target)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=217,className="gmdebug.lua.DebugLoop",methodName="debug_step"}));
-          __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
-          debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
-          __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
-          stepping = true;
-        else
-          stepping = true;
-        end;
+      local target = _g[2];
+      if ((target == nil) or (__gmdebug_lua_Debugee.get_stackHeight() <= target)) then 
+        __haxe_Log.trace(Std.string(Std.string(Std.string("stepped ") .. Std.string(target)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=138,className="gmdebug.lua.DebugLoop",methodName="debug_step"}));
+        __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
+        debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
+        __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
+        stepping = true;
       else
-        stepping = false;
+        stepping = true;
       end;
     elseif (stepping1) == 2 then 
       local _g1 = _g[2];
-      if (cur == "line") then 
+      local outFunc = _g1;
+      if ((outFunc == func) and (currentLine == _g[3])) then 
+        __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
+        _G.print(outFunc, func);
+        debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
+        __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
+        stepping = true;
+      else
         local outFunc = _g1;
-        if ((outFunc == func) and (currentLine == _g[3])) then 
+        if (outFunc ~= func) then 
           __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
           _G.print(outFunc, func);
           debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
           __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
           stepping = true;
         else
-          local outFunc = _g1;
-          if (outFunc ~= func) then 
-            __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
-            _G.print(outFunc, func);
-            debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
-            __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
-            stepping = true;
-          else
-            _G.print(_g1, func, currentLine);
-            stepping = true;
-          end;
+          _G.print(_g1, func, currentLine);
+          stepping = true;
         end;
-      else
-        stepping = false;
       end; end;
   end;
   if (((__gmdebug_lua_Exceptions.exceptFuncs ~= nil) and (func ~= nil)) and (__gmdebug_lua_Exceptions.exceptFuncs.k[func] ~= nil)) then 
     do return end;
   end;
-  local bp;
-  if (__gmdebug_lua_DebugLoop.breakpoints ~= nil) then 
-    local ret = __gmdebug_lua_DebugLoop.breakpoints.h[sinfo.source];
-    if (ret == __haxe_ds_StringMap.tnull) then 
-      ret = nil;
-    end;
-    bp = ret;
-  else
-    bp = nil;
-  end;
-  if (not stepping) then 
+  local bpValid = (__gmdebug_lua_DebugLoop.bm == nil) or not __gmdebug_lua_DebugLoop.bm:valid();
+  if (not stepping and bpValid) then 
     if (((sinfo ~= nil) and (__gmdebug_lua_DebugLoop.highestStackHeight ~= nil)) and (__gmdebug_lua_DebugLoop.escapeHatch ~= nil)) then 
-      local tmp;
-      if ((cur == "call") and (bp ~= nil)) then 
-        local stop = false;
-        local k = bp:keys();
-        while (k:hasNext()) do 
-          local k = k:next();
-          if ((k >= sinfo.linedefined) and (k <= sinfo.lastlinedefined)) then 
-            stop = true;
-            break;
-          end;
-        end;
-        tmp = stop;
-      else
-        tmp = false;
-      end;
-      if (tmp) then 
+      if ((cur == "call") and __gmdebug_lua_DebugLoop.bm:breakpointWithinRange(sinfo.source, sinfo.linedefined, sinfo.lastlinedefined)) then 
         local sh = __gmdebug_lua_DebugLoop.currentStackHeight(func);
         if (sh < __gmdebug_lua_DebugLoop.highestStackHeight) then 
           debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
@@ -2264,54 +2426,46 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
       end;
     end;
   end;
-  if (cur == "line") then 
-    if (bp ~= nil) then 
-      local ret = bp.h[currentLine];
-      if (ret == __haxe_ds_IntMap.tnull) then 
-        ret = nil;
-      end;
-      local _g = ret;
-      if (_g ~= nil) then 
+  if ((cur == "line") and bpValid) then 
+    local _g = __gmdebug_lua_DebugLoop.bm:getBreakpointForLine(sinfo.source, currentLine);
+    if (_g ~= nil) then 
+      local _g1 = _g.breakpointType;
+      local tmp = _g1[1];
+      if (tmp) == 0 then 
+      elseif (tmp) == 1 then 
+        __haxe_Log.trace("hit bp", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=104,className="gmdebug.lua.DebugLoop",methodName="debug_checkBreakpoints"}));
+        __gmdebug_lua_Debugee.startHaltLoop("breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
+      elseif (tmp) == 2 then 
+        local condFunc = _g1[2];
+        local bp = _g;
+        _G.setfenv(condFunc, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(1));
+        local _g = __gmdebug_lua_Util.runCompiledFunction(condFunc);
         local tmp = _g[1];
         if (tmp) == 0 then 
-          __haxe_Log.trace("hit bp", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=182,className="gmdebug.lua.DebugLoop",methodName="debug_checkBreakpoints"}));
-          __gmdebug_lua_Debugee.startHaltLoop("breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
+          local message = _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", "");
+          local resp = __gmdebug_composer_ComposedEvent.new("breakpoint", _hx_o({__fields__={reason=true,breakpoint=true},reason="changed",breakpoint=_hx_o({__fields__={id=true,verified=true,message=true},id=bp.id,verified=false,message=Std.string("Errored on run: ") .. Std.string(message)})}));
+          _G.print(Std.string(Std.string(Std.string(Std.string("Conditional breakpoint in file ") .. Std.string(sinfo.short_src)) .. Std.string(":")) .. Std.string(currentLine)) .. Std.string(" failed!"));
+          _G.print(Std.string("Error: ") .. Std.string(message));
+          local js = __haxe_Json.stringify(resp);
+          local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+          __gmdebug_lua_Debugee.socket.output:writeString(str);
+          __gmdebug_lua_Debugee.socket.output:flush();
         elseif (tmp) == 1 then 
-          local condFunc = _g[3];
-          local id = _g[2];
-          _G.setfenv(condFunc, __gmdebug_lua_Handlers.createEvalEnvironment(1));
-          local _g = __gmdebug_lua_Util.runCompiledFunction(condFunc);
-          local tmp = _g[1];
-          if (tmp) == 0 then 
-            local message = _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", "");
-            local resp = __gmdebug_ComposedEvent.new("breakpoint", _hx_o({__fields__={reason=true,breakpoint=true},reason="changed",breakpoint=_hx_o({__fields__={id=true,verified=true,message=true},id=id,verified=false,message=Std.string("Errored on run: ") .. Std.string(message)})}));
-            _G.print(Std.string(Std.string(Std.string(Std.string("Conditional breakpoint in file ") .. Std.string(sinfo.short_src)) .. Std.string(":")) .. Std.string(currentLine)) .. Std.string(" failed!"));
-            _G.print(Std.string("Error: ") .. Std.string(message));
-            local js = __haxe_Json.stringify(resp);
-            local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-            __gmdebug_lua_Debugee.socket.output:writeString(str);
-            __gmdebug_lua_Debugee.socket.output:flush();
-          elseif (tmp) == 1 then 
-            if (_g[2]) then 
-              __gmdebug_lua_Debugee.startHaltLoop("breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
-            end; end; end;
-      end;
+          if (_g[2]) then 
+            __gmdebug_lua_Debugee.startHaltLoop("breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
+          end; end; end;
     end;
   end;
   if (cur == "call") then 
     __gmdebug_lua_DebugLoop.currentFunc = nil;
   end;
-  if (((func ~= nil) and (__gmdebug_lua_DebugLoop.functionBP ~= nil)) and (__gmdebug_lua_DebugLoop.currentFunc == nil)) then 
-    if (__gmdebug_lua_DebugLoop.functionBP.k[func] ~= nil) then 
+  if (((func ~= nil) and (__gmdebug_lua_DebugLoop.fbm ~= nil)) and (__gmdebug_lua_DebugLoop.currentFunc == nil)) then 
+    if (__gmdebug_lua_DebugLoop.fbm.functionBP.k[func] ~= nil) then 
       __gmdebug_lua_Debugee.startHaltLoop("function breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
     end;
     __gmdebug_lua_DebugLoop.currentFunc = func;
   end;
 end
-_hxClasses["gmdebug.lua.BreakPoint"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="NORMAL","CONDITIONAL"},2)}
-__gmdebug_lua_BreakPoint = _hxClasses["gmdebug.lua.BreakPoint"];
-__gmdebug_lua_BreakPoint.NORMAL = function(id) local _x = _hx_tab_array({[0]="NORMAL",0,id,__enum__=__gmdebug_lua_BreakPoint}, 3); return _x; end 
-__gmdebug_lua_BreakPoint.CONDITIONAL = function(id,condition) local _x = _hx_tab_array({[0]="CONDITIONAL",1,id,condition,__enum__=__gmdebug_lua_BreakPoint}, 4); return _x; end 
 _hxClasses["gmdebug.lua.ProfilingState"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="NOT_PROFILING","PROFILING","PROFILE_FINISHED"},3)}
 __gmdebug_lua_ProfilingState = _hxClasses["gmdebug.lua.ProfilingState"];
 __gmdebug_lua_ProfilingState.NOT_PROFILING = _hx_tab_array({[0]="NOT_PROFILING",0,__enum__ = __gmdebug_lua_ProfilingState},2)
@@ -2334,7 +2488,7 @@ __gmdebug_lua_DebugLoopProfile.report = function()
     do return end;
   end;
   local avg = __haxe_ds_StringMap.new();
-  __haxe_Log.trace("report", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=30,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace("report", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=31,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   local _g = 0;
   local _g1 = __gmdebug_lua_DebugLoopProfile.vinal;
   while (_g < _g1.length) do 
@@ -2366,114 +2520,13 @@ __gmdebug_lua_DebugLoopProfile.report = function()
   local _g = __haxe_iterators_MapKeyValueIterator.new(avg);
   while (_g:hasNext()) do 
     local _g = _g:next();
-    __haxe_Log.trace(Std.string(Std.string(Std.string("average ") .. Std.string(_g.key)) .. Std.string(" : ")) .. Std.string(_g.value), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=37,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+    __haxe_Log.trace(Std.string(Std.string(Std.string("average ") .. Std.string(_g.key)) .. Std.string(" : ")) .. Std.string(_g.value), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=38,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   end;
-  __haxe_Log.trace(Std.string(Std.string(Std.string("Cumulative time ") .. Std.string(__gmdebug_lua_DebugLoopProfile.cumulativeTime)) .. Std.string(" / Total time ")) .. Std.string(__gmdebug_lua_DebugLoopProfile.totalProfileTime), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=39,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace(Std.string(Std.string(Std.string("Cumulative time ") .. Std.string(__gmdebug_lua_DebugLoopProfile.cumulativeTime)) .. Std.string(" / Total time ")) .. Std.string(__gmdebug_lua_DebugLoopProfile.totalProfileTime), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=40,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   local percent = _G.math.Round((__gmdebug_lua_DebugLoopProfile.cumulativeTime / __gmdebug_lua_DebugLoopProfile.totalProfileTime) * 100, 3);
-  __haxe_Log.trace(Std.string("Overall runtime impact ") .. Std.string(percent), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=41,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace(Std.string("Overall runtime impact ") .. Std.string(percent), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=42,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   __gmdebug_lua_DebugLoopProfile.profileState = __gmdebug_lua_ProfilingState.NOT_PROFILING;
 end
-
-__gmdebug_lua_Outputter.new = function() 
-  local self = _hx_new(__gmdebug_lua_Outputter.prototype)
-  __gmdebug_lua_Outputter.super(self)
-  return self
-end
-__gmdebug_lua_Outputter.super = function(self) 
-  self.ignoreTrace = false;
-end
-__gmdebug_lua_Outputter.__name__ = true
-__gmdebug_lua_Outputter.prototype = _hx_e();
-__gmdebug_lua_Outputter.prototype.ignoreTrace= nil;
-__gmdebug_lua_Outputter.prototype.hookprint = function(self) 
-  if (_G.__oldprint == nil) then 
-    _G.__oldprint = _G.print;
-  end;
-  _G.print = function (...) local succ,err = pcall(_hx_bind(self,self.output),"console",true,{...}) if not succ then _G.__oldprint("Debug output failed: ",err) end if _hx_bind(self,self.shouldForward)() then _G.__oldprint(...) end end;
-end
-__gmdebug_lua_Outputter.prototype.shouldForward = function(self) 
-  do return __gmdebug_lua_Debugee.dapMode == "Attach" end
-end
-__gmdebug_lua_Outputter.prototype.output = function(self,cat,print,vargs) 
-  if (self.ignoreTrace or (__gmdebug_lua_Debugee.socket == nil)) then 
-    do return end;
-  end;
-  self.ignoreTrace = true;
-  local out = "";
-  local arr = _hx_tab_array({}, 0);
-  local table = vargs;
-  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(table);
-  local next = _hx_1_p_next;
-  local i = _hx_1_p_index;
-  local dyn = _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local _hx_2_res_index, _hx_2_res_value = next(table, i);
-    i = _hx_2_res_index;
-    do return _hx_2_res_value end;
-  end,hasNext=function(self) 
-    do return _G.select(2, _G.next(table, i)) ~= nil end;
-  end});
-  while (dyn:hasNext()) do 
-    local dyn = dyn:next();
-    out = Std.string(out) .. Std.string((Std.string(_G.tostring(dyn)) .. Std.string("\t")));
-    local varref = __gmdebug_lua_Handlers.generateVariablesReference(dyn);
-    if (varref > 0) then 
-      arr:push(dyn);
-    end;
-  end;
-  out = Std.string(out) .. Std.string("\n");
-  local body = _hx_o({__fields__={category=true,output=true,variablesReference=true},category="stdout",output=out,variablesReference=(function() 
-    local _hx_3
-    if (arr.length == 0) then 
-    _hx_3 = nil; else 
-    _hx_3 = __gmdebug_lua_Handlers.generateVariablesReference(arr); end
-    return _hx_3
-  end )()});
-  local lineInfo = _G.debug.getinfo(4, "Slf");
-  if (print and (lineInfo ~= nil)) then 
-    local meta = _G.debug.getmetatable(lineInfo.func);
-    if (meta ~= nil) then 
-      if (meta.printHandler ~= nil) then 
-        lineInfo = _G.debug.getinfo(6, "Slf");
-      end;
-    end;
-    if ((lineInfo ~= nil) and (lineInfo.source ~= "")) then 
-      local _this = lineInfo.source;
-      local idx = 1;
-      local ret = _hx_tab_array({}, 0);
-      while (idx ~= nil) do 
-        local newidx = 0;
-        if (#"/" > 0) then 
-          newidx = _G.string.find(_this, "/", idx, true);
-        else
-          if (idx >= #_this) then 
-            newidx = nil;
-          else
-            newidx = idx + 1;
-          end;
-        end;
-        if (newidx ~= nil) then 
-          local match = _G.string.sub(_this, idx, newidx - 1);
-          ret:push(match);
-          idx = newidx + #"/";
-        else
-          ret:push(_G.string.sub(_this, idx, #_this));
-          idx = nil;
-        end;
-      end;
-      local pth = ret;
-      body.source = _hx_o({__fields__={name=true,path=true},name=pth[pth.length - 1],path=__gmdebug_lua_Debugee.normalPath(lineInfo.source)});
-      body.line = _hx_funcToField(lineInfo.currentline);
-    end;
-  end;
-  local event = __gmdebug_ComposedEvent.new("output", body);
-  local js = __tink_json_Writer4.new():write(event);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  self.ignoreTrace = false;
-end
-
-__gmdebug_lua_Outputter.prototype.__class__ =  __gmdebug_lua_Outputter
 _hxClasses["gmdebug.lua.DebugState"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","STEP","OUT"},3)}
 __gmdebug_lua_DebugState = _hxClasses["gmdebug.lua.DebugState"];
 __gmdebug_lua_DebugState.WAIT = _hx_tab_array({[0]="WAIT",0,__enum__ = __gmdebug_lua_DebugState},2)
@@ -2502,103 +2555,42 @@ __gmdebug_lua_Debugee.start = function()
   if (__gmdebug_lua_Debugee.active) then 
     do return false end;
   end;
-  local comMethod = __gmdebug_lua_Debugee.methodsPossible:keys();
-  while (comMethod:hasNext()) do 
-    local comMethod = comMethod:next();
-    local _hx_status, _hx_result = pcall(function() 
-    
-        local tmp;
-        local tmp1 = comMethod[1];
-        if (tmp1) == 0 then 
-          tmp = __gmdebug_lua_PipeSocket.new();
-        elseif (tmp1) == 1 then 
-          local sock = __gmdebug_lua_LuaSocket.new();
-          sock.timeout = 0;
-          if (sock._socket ~= nil) then 
-            sock._socket:settimeout(0);
-          end;
-          sock:connect(_hx_o({__fields__={ip=true,host=true},ip="127.0.0.1",host="localhost"}), 56789);
-          tmp = sock; end;
-        __gmdebug_lua_Debugee.set_socket(tmp);
-      return _hx_pcall_default
-    end)
-    if not _hx_status and _hx_result == "_hx_pcall_break" then
-      break
-    elseif not _hx_status then 
-      local _g = _hx_result;
-      local _g = __haxe_Exception.caught(_g);
-      __haxe_Log.trace(Std.string("failed to start ") .. Std.string(Std.string(_g)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=128,className="gmdebug.lua.Debugee",methodName="start"}));
-      __gmdebug_lua_Debugee.set_socket(nil);
-    elseif _hx_result ~= _hx_pcall_default then
-      return _hx_result
-    end;
+  local _hx_status, _hx_result = pcall(function() 
+  
+      __gmdebug_lua_Debugee.set_socket(__gmdebug_lua_io_PipeSocket.new());
+    return _hx_pcall_default
+  end)
+  if not _hx_status and _hx_result == "_hx_pcall_break" then
+  elseif not _hx_status then 
+    local _g = _hx_result;
+    local _g = __haxe_Exception.caught(_g);
+    __haxe_Log.trace(Std.string("failed to start ") .. Std.string(Std.string(_g)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=132,className="gmdebug.lua.Debugee",methodName="start"}));
+    __gmdebug_lua_Debugee.set_socket(nil);
+  elseif _hx_result ~= _hx_pcall_default then
+    return _hx_result
   end;
   if (__gmdebug_lua_Debugee.socket == nil) then 
+    __haxe_Log.trace("no", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=137,className="gmdebug.lua.Debugee",methodName="start"}));
     do return false end;
   end;
-  __haxe_Log.trace("attached to server", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=135,className="gmdebug.lua.Debugee",methodName="start"}));
+  __haxe_Log.trace("attached to server", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=140,className="gmdebug.lua.Debugee",methodName="start"}));
   __gmdebug_lua_Debugee.active = true;
-  local js = __haxe_Json.stringify(__gmdebug_ComposedEvent.new("initialized"));
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("initialized"));
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
   __gmdebug_lua_Debugee.hookPlayer();
-  local js = __haxe_Json.stringify(__gmdebug_ComposedEvent.new("continued", _hx_o({__fields__={threadId=true,allThreadsContinued=true},threadId=0,allThreadsContinued=true})));
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("continued", _hx_o({__fields__={threadId=true,allThreadsContinued=true},threadId=0,allThreadsContinued=true})));
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
   __gmdebug_lua_Exceptions.hookOnChange();
   __gmdebug_lua_Exceptions.hookGamemodeHooks();
   __gmdebug_lua_Exceptions.hookEntityHooks();
-  __gmdebug_lua_Sources.init();
   __gmdebug_lua_Debugee.outputter:hookprint();
-  __gmdebug_lua_Debugee.getAllBpLines();
   debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "c");
   __gmdebug_lua_Debugee.hooksActive = true;
   do return true end;
-end
-__gmdebug_lua_Debugee.getAllBpLines = function(_searchTable,_depth) 
-  local defaultValue = _G;
-  local searchTable = (function() 
-    local _hx_1
-    if (_searchTable == nil) then 
-    _hx_1 = defaultValue; else 
-    _hx_1 = _searchTable; end
-    return _hx_1
-  end )();
-  local depth = (function() 
-    local _hx_2
-    if (_depth == nil) then 
-    _hx_2 = 0; else 
-    _hx_2 = _depth; end
-    return _hx_2
-  end )();
-  if (depth > 3) then 
-    do return end;
-  end;
-  local table = searchTable;
-  local _hx_3_p_next, _hx_3_p_table, _hx_3_p_index = _G.pairs(table);
-  local next = _hx_3_p_next;
-  local i = _hx_3_p_index;
-  local p = _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local _hx_4_res_index, _hx_4_res_value = next(table, i);
-    i = _hx_4_res_index;
-    do return _hx_4_res_value end;
-  end,hasNext=function(self) 
-    do return _G.select(2, _G.next(table, i)) ~= nil end;
-  end});
-  while (p:hasNext()) do 
-    local p = p:next();
-    local _g = _G.type(p);
-    if (_g) == "entity" then 
-      if (_G.IsValid(p)) then 
-        __gmdebug_lua_Debugee.getAllBpLines(p:GetTable(), depth + 1);
-      end;
-    elseif (_g) == "function" then 
-      __gmdebug_lua_DebugLoop.addLineInfo(p);
-    elseif (_g) == "table" then 
-      __gmdebug_lua_Debugee.getAllBpLines(p, depth + 1); end;
-  end;
 end
 __gmdebug_lua_Debugee.writeJson = function(json) 
   local str = "Content-Length: " .. #json .. "\r\n\r\n" .. json;
@@ -2612,15 +2604,14 @@ __gmdebug_lua_Debugee.ignoreError = function(_err)
   __gmdebug_lua_Debugee.ignores.h[_err] = true;
 end
 __gmdebug_lua_Debugee.hookPlayer = function() 
-  __gmdebug_lua_Debugee.playerThreads = _hx_tab_array({}, 0);
   _G.hook.Add("PlayerInitialSpawn", "debugee-newplayer", function(ply,_) 
-    local js = __haxe_Json.stringify(__gmdebug_ComposedGmDebugMessage.new(0, _hx_o({__fields__={name=true,playerID=true},name=ply:Name(),playerID=ply:UserID()})));
+    local js = __haxe_Json.stringify(__gmdebug_composer_ComposedGmDebugMessage.new(0, _hx_o({__fields__={name=true,playerID=true},name=ply:Name(),playerID=ply:UserID()})));
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
   end);
   _G.hook.Add("PlayerDisconnected", "debugee-byeplayer", function(ply) 
-    local js = __haxe_Json.stringify(__gmdebug_ComposedGmDebugMessage.new(1, _hx_o({__fields__={playerID=true},playerID=ply:UserID()})));
+    local js = __haxe_Json.stringify(__gmdebug_composer_ComposedGmDebugMessage.new(1, _hx_o({__fields__={playerID=true},playerID=ply:UserID()})));
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -2628,7 +2619,7 @@ __gmdebug_lua_Debugee.hookPlayer = function()
   local ply = __gmod__LuaArray_LuaArray_Impl_.iterator(_G.player.GetAll());
   while (ply:hasNext()) do 
     local ply = ply:next();
-    local js = __haxe_Json.stringify(__gmdebug_ComposedGmDebugMessage.new(0, _hx_o({__fields__={name=true,playerID=true},name=ply:Name(),playerID=ply:UserID()})));
+    local js = __haxe_Json.stringify(__gmdebug_composer_ComposedGmDebugMessage.new(0, _hx_o({__fields__={name=true,playerID=true},name=ply:Name(),playerID=ply:UserID()})));
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -2668,7 +2659,7 @@ __gmdebug_lua_Debugee.traceback = function(err)
     do return _err end;
   end;
   if (__gmdebug_lua_Debugee.inpauseloop or __gmdebug_lua_Debugee.tracing) then 
-    __haxe_Log.trace("no...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=230,className="gmdebug.lua.Debugee",methodName="traceback"}));
+    __haxe_Log.trace("no...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=218,className="gmdebug.lua.Debugee",methodName="traceback"}));
     do return _err end;
   end;
   local tmp;
@@ -2742,7 +2733,7 @@ __gmdebug_lua_Debugee.poll = function()
       end;
     else
       if (__lua_Boot.__instanceof(_g1, __haxe_io_Eof)) then 
-        __haxe_Log.trace("eof", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=274,className="gmdebug.lua.Debugee",methodName="poll"}));
+        __haxe_Log.trace("eof", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=266,className="gmdebug.lua.Debugee",methodName="poll"}));
         __gmdebug_lua_Debugee.abortDebugee();
         do return end;
       else
@@ -2752,7 +2743,7 @@ __gmdebug_lua_Debugee.poll = function()
   elseif _hx_result ~= _hx_pcall_default then
     return _hx_result
   end;
-  if (__gmdebug_lua_Debugee.chooseHandler(data) == __gmdebug_lua_HandlerResponse.DISCONNECT) then 
+  if (__gmdebug_lua_Debugee.chooseHandler(data) == __gmdebug_lua_handlers_HandlerResponse.DISCONNECT) then 
     __gmdebug_lua_Debugee.abortDebugee();
   end;
 end
@@ -2765,11 +2756,17 @@ __gmdebug_lua_Debugee.main = function()
     local str = __haxe_Log.formatOutput(v, infos);
     _hx_print_2(str);
   end;
-  __haxe_Log.trace(_G.string.rep("abcdefghijklmnopqrstuvwxyz", 45), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=292,className="gmdebug.lua.Debugee",methodName="main"}));
-  __haxe_Log.trace("Hello from debugee", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=293,className="gmdebug.lua.Debugee",methodName="main"}));
-  if (__gmdebug_lua_Debugee.methodsPossible:exists(__gmdebug_CommMethod.Pipe)) then 
-    _G.file.CreateDir("gmdebug");
-  end;
+  __haxe_Log.trace(_G.string.rep("abcdefghijklmnopqrstuvwxyz", 45), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=284,className="gmdebug.lua.Debugee",methodName="main"}));
+  __haxe_Log.trace("Hello from debugee", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=285,className="gmdebug.lua.Debugee",methodName="main"}));
+  __gmdebug_lua_Debugee.vm = __gmdebug_lua_managers_VariableManager.new();
+  __gmdebug_lua_Debugee.sc = __gmdebug_lua_SourceContainer.new();
+  __gmdebug_lua_Debugee.outputter = __gmdebug_lua_Outputter.new(__gmdebug_lua_Debugee.vm);
+  __gmdebug_lua_Debugee.bm = __gmdebug_lua_managers_BreakpointManager.new();
+  __gmdebug_lua_Debugee.fbm = __gmdebug_lua_managers_FunctionBreakpointManager.new();
+  __gmdebug_lua_Debugee.hc = __gmdebug_lua_HandlerContainer.new(__gmdebug_lua_Debugee.vm, __gmdebug_lua_Debugee.bm, __gmdebug_lua_Debugee.fbm);
+  __gmdebug_lua_DebugLoop.init(__gmdebug_lua_Debugee.bm, __gmdebug_lua_Debugee.sc);
+  __haxe_Log.trace("oogie?", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=293,className="gmdebug.lua.Debugee",methodName="main"}));
+  _G.file.CreateDir("gmdebug");
   _G.game.ConsoleCommand("sv_timeout 999999\n");
   _G.timer.Create("debugee-start", 3, 0, function() 
     __gmdebug_lua_Jit.jitActivate();
@@ -2824,8 +2821,8 @@ __gmdebug_lua_Debugee.startHaltLoop = function(reason,bd,txt)
   __gmdebug_lua_Debugee.inpauseloop = true;
   __gmdebug_lua_Debugee.baseDepth = bd;
   local tstop = _hx_o({__fields__={threadId=true,allThreadsStopped=true,reason=true,text=true},threadId=__gmdebug_lua_Debugee.clientID,allThreadsStopped=false,reason=reason,text=txt});
-  __haxe_Log.trace("sending stopped", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=369,className="gmdebug.lua.Debugee",methodName="startHaltLoop"}));
-  local js = __haxe_Json.stringify(__gmdebug_ComposedEvent.new("stopped", tstop));
+  __haxe_Log.trace("sending stopped", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=350,className="gmdebug.lua.Debugee",methodName="startHaltLoop"}));
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("stopped", tstop));
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -2841,7 +2838,7 @@ __gmdebug_lua_Debugee.abortDebugee = function()
   __gmdebug_lua_Debugee.hooksActive = false;
   __gmdebug_lua_Debugee.set_socket(nil);
   __gmdebug_lua_Debugee.active = false;
-  __haxe_Log.trace("Debugging aborted", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=395,className="gmdebug.lua.Debugee",methodName="abortDebugee"}));
+  __haxe_Log.trace("Debugging aborted", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=375,className="gmdebug.lua.Debugee",methodName="abortDebugee"}));
   __gmdebug_lua_Exceptions.unhookGamemodeHooks();
   __gmdebug_lua_Exceptions.unhookEntityHooks();
 end
@@ -2903,9 +2900,9 @@ __gmdebug_lua_Debugee.chooseHandler = function(incoming)
   else
     if (_g) == "gmdebug" then 
       __gmdebug_lua_CustomHandlers.handle(incoming);
-      do return __gmdebug_lua_HandlerResponse.WAIT end;
+      do return __gmdebug_lua_handlers_HandlerResponse.WAIT end;
     elseif (_g) == "request" then 
-      do return __gmdebug_lua_Handlers.handlers(incoming) end;else
+      do return __gmdebug_lua_Debugee.hc:handlers(incoming) end;else
     _G.error(__haxe_Exception.thrown("message sent to us had an unknown type"),0); end;
   end;
 end
@@ -3152,14 +3149,1991 @@ __gmdebug_lua_Exceptions.unhookEntityHooks = function()
     end;
   end;
 end
-_hxClasses["gmdebug.lua.HandlerResponse"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","CONTINUE","DISCONNECT"},3)}
-__gmdebug_lua_HandlerResponse = _hxClasses["gmdebug.lua.HandlerResponse"];
-__gmdebug_lua_HandlerResponse.WAIT = _hx_tab_array({[0]="WAIT",0,__enum__ = __gmdebug_lua_HandlerResponse},2)
 
-__gmdebug_lua_HandlerResponse.CONTINUE = _hx_tab_array({[0]="CONTINUE",1,__enum__ = __gmdebug_lua_HandlerResponse},2)
+__gmdebug_lua_HandlerContainer.new = function(vm,bm,fbm) 
+  local self = _hx_new(__gmdebug_lua_HandlerContainer.prototype)
+  __gmdebug_lua_HandlerContainer.super(self,vm,bm,fbm)
+  return self
+end
+__gmdebug_lua_HandlerContainer.super = function(self,vm,bm,fbm) 
+  self.handlerMap = __haxe_ds_StringMap.new();
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HContinue.new(vm);
+  if (value == nil) then 
+    _this.h._continue = __haxe_ds_StringMap.tnull;
+  else
+    _this.h._continue = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HDisconnect.new();
+  if (value == nil) then 
+    _this.h.disconnect = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.disconnect = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HStackTrace.new();
+  if (value == nil) then 
+    _this.h.stackTrace = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.stackTrace = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HNext.new();
+  if (value == nil) then 
+    _this.h.next = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.next = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HPause.new();
+  if (value == nil) then 
+    _this.h.pause = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.pause = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HStepIn.new();
+  if (value == nil) then 
+    _this.h.stepIn = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.stepIn = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HStepOut.new();
+  if (value == nil) then 
+    _this.h.stepOut = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.stepOut = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HVariables.new(vm);
+  if (value == nil) then 
+    _this.h.variables = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.variables = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HSetBreakpoints.new(bm);
+  if (value == nil) then 
+    _this.h.setBreakpoints = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.setBreakpoints = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HSetFunctionBreakpoints.new(fbm);
+  if (value == nil) then 
+    _this.h.setFunctionBreakpoints = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.setFunctionBreakpoints = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HSetExceptionBreakpoints.new();
+  if (value == nil) then 
+    _this.h.setExceptionBreakpoints = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.setExceptionBreakpoints = value;
+  end;
+  local _this = self.handlerMap;
+  local value = __gmdebug_lua_handlers_HEvaluate.new(vm);
+  if (value == nil) then 
+    _this.h.evaluate = __haxe_ds_StringMap.tnull;
+  else
+    _this.h.evaluate = value;
+  end;
+end
+__gmdebug_lua_HandlerContainer.__name__ = true
+__gmdebug_lua_HandlerContainer.prototype = _hx_e();
+__gmdebug_lua_HandlerContainer.prototype.handlerMap= nil;
+__gmdebug_lua_HandlerContainer.prototype.handlers = function(self,req) 
+  local ret = self.handlerMap.h[req.command];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local result = ret;
+  if (result == nil) then 
+    _G.error(__haxe_Exception.new(Std.string("No such command ") .. Std.string(req.command)),0);
+  end;
+  do return result:handle(req) end
+end
 
-__gmdebug_lua_HandlerResponse.DISCONNECT = _hx_tab_array({[0]="DISCONNECT",2,__enum__ = __gmdebug_lua_HandlerResponse},2)
+__gmdebug_lua_HandlerContainer.prototype.__class__ =  __gmdebug_lua_HandlerContainer
 
+__gmdebug_lua_Jit.new = {}
+__gmdebug_lua_Jit.__name__ = true
+__gmdebug_lua_Jit.jitCheck = function(err,traceback) 
+  __haxe_Log.trace(Std.string("Jit activated due to: ") .. Std.string(err), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=48,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+  __haxe_Log.trace("To make a choice, open garrysmod/data/jitchoice.txt and type it in or remove this file to permenantley disable this feature and continue execution.", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=49,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+  __haxe_Log.trace("Waiting for choice...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=50,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+  local msg = Std.string(Std.string(Std.string(__gmdebug_lua_Jit.JIT_MESSAGE) .. Std.string("\n//Current error: \n//")) .. Std.string(StringTools.replace(traceback, "\n", "\n//"))) .. Std.string("\n");
+  _G.file.Write(__gmdebug_Cross.JIT, msg);
+  local wait = _G.SysTime() + 1;
+  local _hx_continue_1 = false;
+  while (_G.file.Exists(__gmdebug_Cross.JIT, "DATA")) do repeat 
+    if (_G.SysTime() < wait) then 
+      break;
+    end;
+    wait = _G.SysTime() + 1;
+    local jitFile = _G.file.Open(__gmdebug_Cross.JIT, "r", "DATA");
+    if (jitFile == nil) then 
+      __haxe_Log.trace("cannot open", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=61,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+      break;
+    end;
+    jitFile:Seek(#msg);
+    local str = jitFile:Read(2);
+    if (str == nil) then 
+      if (__gmdebug_lua_Jit.autostart and __gmdebug_lua_Debugee.start()) then 
+        do return true end;
+      end;
+    else
+      local choice = _G.string.lower(StringTools.replace(StringTools.replace(str, "\n", ""), "\r", ""));
+      if (choice) == "n" then 
+        __haxe_Log.trace("NO.", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=77,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+        do return false end;
+      elseif (choice) == "s" then 
+        _G.gmdebugJit = false;
+        do return false end;
+      elseif (choice) == "y" then 
+        __haxe_Log.trace("YES!", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=73,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+        if (__gmdebug_lua_Debugee.start()) then 
+          do return true end;
+        end;else
+      if (__gmdebug_lua_Jit.autostart) then 
+        __haxe_Log.trace(Std.string("invalid choice ") .. Std.string(choice), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=83,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+        _G.file.Write(__gmdebug_Cross.JIT, msg);
+        if (__gmdebug_lua_Debugee.start()) then 
+          do return true end;
+        end;
+      else
+        __haxe_Log.trace(Std.string("invalid choice ") .. Std.string(choice), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=88,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+        _G.file.Write(__gmdebug_Cross.JIT, msg);
+      end; end;
+    end;
+    jitFile:Close();until true
+    if _hx_continue_1 then 
+    _hx_continue_1 = false;
+    break;
+    end;
+    
+  end;
+  __haxe_Log.trace("file left plane of existence", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=96,className="gmdebug.lua.Jit",methodName="jitCheck"}));
+  do return false end;
+end
+__gmdebug_lua_Jit.jitActivate = function() 
+  local tmp;
+  if (not __gmdebug_lua_Jit.jitActive) then 
+    local _g = _G.gmdebugJit;
+    if (_g == nil) then 
+      _G.gmdebugJit = true;
+      tmp = true;
+    else
+      tmp = _g;
+    end;
+  else
+    tmp = false;
+  end;
+  if (tmp and _G.file.Exists(__gmdebug_Cross.JIT, "DATA")) then 
+    __haxe_Log.trace("activating jit", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=106,className="gmdebug.lua.Jit",methodName="jitActivate"}));
+    __gmdebug_lua_Jit.jitActive = true;
+    __gmdebug_lua_Exceptions.hookGamemodeHooks();
+    __gmdebug_lua_Exceptions.hookEntityHooks();
+    __gmdebug_lua_Jit.netJit:broadcast(_hx_e());
+  end;
+end
+
+__gmdebug_lua_Outputter.new = function(vm) 
+  local self = _hx_new(__gmdebug_lua_Outputter.prototype)
+  __gmdebug_lua_Outputter.super(self,vm)
+  return self
+end
+__gmdebug_lua_Outputter.super = function(self,vm) 
+  self.ignoreTrace = false;
+  self.vm = vm;
+end
+__gmdebug_lua_Outputter.__name__ = true
+__gmdebug_lua_Outputter.prototype = _hx_e();
+__gmdebug_lua_Outputter.prototype.ignoreTrace= nil;
+__gmdebug_lua_Outputter.prototype.vm= nil;
+__gmdebug_lua_Outputter.prototype.hookprint = function(self) 
+  if (_G.__oldprint == nil) then 
+    _G.__oldprint = _G.print;
+  end;
+  _G.print = function (...) local succ,err = pcall(_hx_bind(self,self.output),"console",true,{...}) if not succ then _G.__oldprint("Debug output failed: ",err) end if _hx_bind(self,self.shouldForward)() then _G.__oldprint(...) end end;
+end
+__gmdebug_lua_Outputter.prototype.shouldForward = function(self) 
+  do return __gmdebug_lua_Debugee.dapMode == "Attach" end
+end
+__gmdebug_lua_Outputter.prototype.output = function(self,cat,print,vargs) 
+  if (self.ignoreTrace or (__gmdebug_lua_Debugee.socket == nil)) then 
+    do return end;
+  end;
+  self.ignoreTrace = true;
+  local out = "";
+  local arr = _hx_tab_array({}, 0);
+  local table = vargs;
+  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(table);
+  local next = _hx_1_p_next;
+  local i = _hx_1_p_index;
+  local dyn = _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local _hx_2_res_index, _hx_2_res_value = next(table, i);
+    i = _hx_2_res_index;
+    do return _hx_2_res_value end;
+  end,hasNext=function(self) 
+    do return _G.select(2, _G.next(table, i)) ~= nil end;
+  end});
+  while (dyn:hasNext()) do 
+    local dyn = dyn:next();
+    out = Std.string(out) .. Std.string((Std.string(_G.tostring(dyn)) .. Std.string("\t")));
+    local varref = self.vm:generateVariablesReference(dyn);
+    if (varref > 0) then 
+      arr:push(dyn);
+    end;
+  end;
+  out = Std.string(out) .. Std.string("\n");
+  local body = _hx_o({__fields__={category=true,output=true,variablesReference=true},category="stdout",output=out,variablesReference=(function() 
+    local _hx_3
+    if (arr.length == 0) then 
+    _hx_3 = nil; else 
+    _hx_3 = self.vm:generateVariablesReference(arr); end
+    return _hx_3
+  end )()});
+  local lineInfo = _G.debug.getinfo(4, "Slf");
+  if (print and (lineInfo ~= nil)) then 
+    local meta = _G.debug.getmetatable(lineInfo.func);
+    if (meta ~= nil) then 
+      if (meta.printHandler ~= nil) then 
+        lineInfo = _G.debug.getinfo(6, "Slf");
+      end;
+    end;
+    if ((lineInfo ~= nil) and (lineInfo.source ~= "")) then 
+      local _this = lineInfo.source;
+      local idx = 1;
+      local ret = _hx_tab_array({}, 0);
+      while (idx ~= nil) do 
+        local newidx = 0;
+        if (#"/" > 0) then 
+          newidx = _G.string.find(_this, "/", idx, true);
+        else
+          if (idx >= #_this) then 
+            newidx = nil;
+          else
+            newidx = idx + 1;
+          end;
+        end;
+        if (newidx ~= nil) then 
+          local match = _G.string.sub(_this, idx, newidx - 1);
+          ret:push(match);
+          idx = newidx + #"/";
+        else
+          ret:push(_G.string.sub(_this, idx, #_this));
+          idx = nil;
+        end;
+      end;
+      local pth = ret;
+      body.source = _hx_o({__fields__={name=true,path=true},name=pth[pth.length - 1],path=__gmdebug_lua_Debugee.normalPath(lineInfo.source)});
+      body.line = _hx_funcToField(lineInfo.currentline);
+    end;
+  end;
+  local event = __gmdebug_composer_ComposedEvent.new("output", body);
+  local js = __tink_json_Writer200.new():write(event);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  self.ignoreTrace = false;
+end
+
+__gmdebug_lua_Outputter.prototype.__class__ =  __gmdebug_lua_Outputter
+
+__gmdebug_lua_SourceContainer.new = function() 
+  local self = _hx_new(__gmdebug_lua_SourceContainer.prototype)
+  __gmdebug_lua_SourceContainer.super(self)
+  return self
+end
+__gmdebug_lua_SourceContainer.super = function(self) 
+  self.sources = _hx_tab_array({}, 0);
+  self.uniqueSources = __haxe_ds_StringMap.new();
+  local _gthis = self;
+  _G.hook.Add("Think", "source-get", function() 
+    if (_G.CurTime() > __gmdebug_lua_SourceContainer.readSourceTime) then 
+      __gmdebug_lua_SourceContainer.readSourceTime = _G.CurTime() + 1;
+      _gthis:readSourceInfo();
+    end;
+  end);
+  self.sourceCache = self:makeSourceCache();
+end
+__gmdebug_lua_SourceContainer.__name__ = true
+__gmdebug_lua_SourceContainer.infoToSource = function(info) 
+  local _g = info.source;
+  if (_g == "=[C]") then 
+    do return nil end;
+  else
+    local path = __haxe_io_Path.new(__gmdebug_lua_Debugee.normalPath(_g));
+    do return _hx_o({__fields__={name=true,path=true},name=path.file,path=path:toString()}) end;
+  end;
+end
+__gmdebug_lua_SourceContainer.prototype = _hx_e();
+__gmdebug_lua_SourceContainer.prototype.uniqueSources= nil;
+__gmdebug_lua_SourceContainer.prototype.sources= nil;
+__gmdebug_lua_SourceContainer.prototype.sourceCache= nil;
+__gmdebug_lua_SourceContainer.prototype.makeSourceCache = function(self) 
+  local sc = __haxe_ds_ObjectMap.new();
+  __gmod_WeakTools.setWeakKeysM(sc);
+  do return sc end
+end
+__gmdebug_lua_SourceContainer.prototype.readSourceInfo = function(self) 
+  if (__gmdebug_lua_Debugee.dest == "") then 
+    do return end;
+  end;
+  local si = self.sourceCache:iterator();
+  while (si:hasNext()) do 
+    local si = si:next();
+    if (self.uniqueSources.h[si.source] == nil) then 
+      local result = __gmdebug_lua_SourceContainer.infoToSource(si);
+      if (result ~= nil) then 
+        local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("loadedSource", _hx_o({__fields__={reason=true,source=true},reason="new",source=result})));
+        local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+        __gmdebug_lua_Debugee.socket.output:writeString(str);
+        __gmdebug_lua_Debugee.socket.output:flush();
+        self.sources:push(result);
+      end;
+      local key = si.source;
+      local _this = self.uniqueSources;
+      if (result == nil) then 
+        _this.h[key] = __haxe_ds_StringMap.tnull;
+      else
+        _this.h[key] = result;
+      end;
+    end;
+  end;
+end
+
+__gmdebug_lua_SourceContainer.prototype.__class__ =  __gmdebug_lua_SourceContainer
+_hxClasses["gmdebug.lua.CompileResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Error","Success"},2)}
+__gmdebug_lua_CompileResult = _hxClasses["gmdebug.lua.CompileResult"];
+__gmdebug_lua_CompileResult.Error = function(err) local _x = _hx_tab_array({[0]="Error",0,err,__enum__=__gmdebug_lua_CompileResult}, 3); return _x; end 
+__gmdebug_lua_CompileResult.Success = function(compiledFunc) local _x = _hx_tab_array({[0]="Success",1,compiledFunc,__enum__=__gmdebug_lua_CompileResult}, 3); return _x; end 
+_hxClasses["gmdebug.lua.RunResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Error","Success"},2)}
+__gmdebug_lua_RunResult = _hxClasses["gmdebug.lua.RunResult"];
+__gmdebug_lua_RunResult.Error = function(err) local _x = _hx_tab_array({[0]="Error",0,err,__enum__=__gmdebug_lua_RunResult}, 3); return _x; end 
+__gmdebug_lua_RunResult.Success = function(dyn) local _x = _hx_tab_array({[0]="Success",1,dyn,__enum__=__gmdebug_lua_RunResult}, 3); return _x; end 
+
+__gmdebug_lua_Util.new = {}
+__gmdebug_lua_Util.__name__ = true
+__gmdebug_lua_Util.compileString = function(eval,errorPrefix) 
+  local _g = __gmdebug_lua_Util.runCompiledFunction(_G.CompileString, eval, errorPrefix, false);
+  local tmp = _g[1];
+  if (tmp) == 0 then 
+    do return __gmdebug_lua_CompileResult.Error(_g[2]) end;
+  elseif (tmp) == 1 then 
+    local _g = _g[2];
+    if (_G.type(_g) == "string") then 
+      do return __gmdebug_lua_CompileResult.Error(_g) end;
+    else
+      do return __gmdebug_lua_CompileResult.Success(_g) end;
+    end; end;
+end
+__gmdebug_lua_Util.runCompiledFunction = function(compiledFunc,a,b,c,d,e) 
+  local _hx_1_runResult_status, _hx_1_runResult_value = _G.pcall(compiledFunc, a, b, c, d, e);
+  if (_hx_1_runResult_status) then 
+    do return __gmdebug_lua_RunResult.Success(_hx_1_runResult_value) end;
+  else
+    do return __gmdebug_lua_RunResult.Error(_hx_1_runResult_value) end;
+  end;
+end
+
+__gmdebug_lua_handlers_IHandler.new = {}
+__gmdebug_lua_handlers_IHandler.__name__ = true
+__gmdebug_lua_handlers_IHandler.prototype = _hx_e();
+__gmdebug_lua_handlers_IHandler.prototype.handle= nil;
+
+__gmdebug_lua_handlers_IHandler.prototype.__class__ =  __gmdebug_lua_handlers_IHandler
+
+__gmdebug_lua_handlers_HContinue.new = function(vm) 
+  local self = _hx_new(__gmdebug_lua_handlers_HContinue.prototype)
+  __gmdebug_lua_handlers_HContinue.super(self,vm)
+  return self
+end
+__gmdebug_lua_handlers_HContinue.super = function(self,vm) 
+  self.variableManager = vm;
+end
+__gmdebug_lua_handlers_HContinue.__name__ = true
+__gmdebug_lua_handlers_HContinue.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HContinue.prototype = _hx_e();
+__gmdebug_lua_handlers_HContinue.prototype.variableManager= nil;
+__gmdebug_lua_handlers_HContinue.prototype.handle = function(self,contReq) 
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(contReq, "_continue", _hx_o({__fields__={allThreadsContinued=true},allThreadsContinued=false})));
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  self.variableManager:resetVariables();
+  do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
+end
+
+__gmdebug_lua_handlers_HContinue.prototype.__class__ =  __gmdebug_lua_handlers_HContinue
+
+__gmdebug_lua_handlers_HDisconnect.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HDisconnect.prototype)
+  __gmdebug_lua_handlers_HDisconnect.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HDisconnect.super = function(self) 
+end
+__gmdebug_lua_handlers_HDisconnect.__name__ = true
+__gmdebug_lua_handlers_HDisconnect.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HDisconnect.prototype = _hx_e();
+__gmdebug_lua_handlers_HDisconnect.prototype.handle = function(self,stepIn) 
+  do return __gmdebug_lua_handlers_HandlerResponse.DISCONNECT end
+end
+
+__gmdebug_lua_handlers_HDisconnect.prototype.__class__ =  __gmdebug_lua_handlers_HDisconnect
+
+__gmdebug_lua_handlers_HEvaluate.new = function(vm) 
+  local self = _hx_new(__gmdebug_lua_handlers_HEvaluate.prototype)
+  __gmdebug_lua_handlers_HEvaluate.super(self,vm)
+  return self
+end
+__gmdebug_lua_handlers_HEvaluate.super = function(self,vm) 
+  self.variableManager = vm;
+end
+__gmdebug_lua_handlers_HEvaluate.__name__ = true
+__gmdebug_lua_handlers_HEvaluate.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HEvaluate.createEvalEnvironment = function(stackLevel) 
+  local env = ({});
+  local unsettables = ({});
+  local set = function(k,v) 
+    unsettables[k] = v;
+  end;
+  local info = _G.debug.getinfo(stackLevel + 2, "f");
+  local fenv = nil;
+  if ((info ~= nil) and (info.func ~= nil)) then 
+    local _g = 1;
+    while (_g < 9999) do 
+      _g = _g + 1;
+      local i = _g - 1;
+      local func = info.func;
+      local _hx_1_upv_a, _hx_1_upv_b = _G.debug.getupvalue(func, i);
+      if (_hx_1_upv_a == nil) then 
+        break;
+      end;
+      set(_hx_1_upv_a, _hx_1_upv_b);
+    end;
+    local func = info.func;
+    fenv = _G.debug.getfenv(func);
+  end;
+  local _g = 1;
+  while (_g < 9999) do 
+    _g = _g + 1;
+    local i = _g - 1;
+    local _hx_2_lcl_a, _hx_2_lcl_b = _G.debug.getlocal(stackLevel + 2, i);
+    if (_hx_2_lcl_a == nil) then 
+      break;
+    end;
+    set(_hx_2_lcl_a, _hx_2_lcl_b);
+  end;
+  local metatable = ({});
+  metatable.__newindex = function(t,k,v) 
+    if (_G.rawget(unsettables, k) ~= nil) then 
+      _G.error("Cannot alter upvalues and locals", 2);
+    else
+      _G[k] = v;
+    end;
+  end;
+  metatable.__index = unsettables;
+  local unsetmeta = ({});
+  local defaultValue = _G;
+  unsetmeta.__index = (function() 
+    local _hx_3
+    if (fenv == nil) then 
+    _hx_3 = defaultValue; else 
+    _hx_3 = fenv; end
+    return _hx_3
+  end )();
+  _G.setmetatable(env, metatable);
+  _G.setmetatable(unsettables, unsetmeta);
+  do return env end;
+end
+__gmdebug_lua_handlers_HEvaluate.prototype = _hx_e();
+__gmdebug_lua_handlers_HEvaluate.prototype.variableManager= nil;
+__gmdebug_lua_handlers_HEvaluate.prototype.processCommands = function(self,x) 
+  if (x == "profile") then 
+    __gmdebug_lua_DebugLoopProfile.beginProfiling();
+  end;
+end
+__gmdebug_lua_handlers_HEvaluate.prototype.handle = function(self,evalReq) 
+  local args = evalReq.arguments;
+  local fid = args.frameId;
+  if (_G.string.sub(args.expression, 1, 1) == "#") then 
+    local _this = args.expression;
+    local pos = 1;
+    local len = nil;
+    if ((len == nil) or (len > (pos + #_this))) then 
+      len = #_this;
+    else
+      if (len < 0) then 
+        len = #_this + len;
+      end;
+    end;
+    if (pos < 0) then 
+      pos = #_this + pos;
+    end;
+    if (pos < 0) then 
+      pos = 0;
+    end;
+    self:processCommands(_G.string.sub(_this, pos + 1, pos + len));
+  end;
+  local expr = args.expression;
+  local expr1;
+  if (_G.string.sub(expr, 1, 1) == "!") then 
+    local pos = 1;
+    local len = nil;
+    if ((len == nil) or (len > (pos + #expr))) then 
+      len = #expr;
+    else
+      if (len < 0) then 
+        len = #expr + len;
+      end;
+    end;
+    if (pos < 0) then 
+      pos = #expr + pos;
+    end;
+    if (pos < 0) then 
+      pos = 0;
+    end;
+    expr1 = _G.string.sub(expr, pos + 1, pos + len);
+  else
+    expr1 = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
+  end;
+  if (args.context == "hover") then 
+    expr1 = _G.string.gsub(expr1, ":", ".");
+  end;
+  __haxe_Log.trace(Std.string("expr : ") .. Std.string(expr1), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HEvaluate.hx",lineNumber=83,className="gmdebug.lua.handlers.HEvaluate",methodName="handle"}));
+  local resp;
+  local _g = __gmdebug_lua_Util.compileString(expr1, "GmDebug");
+  local resp1 = _g[1];
+  if (resp1) == 0 then 
+    resp = __gmdebug_composer_ComposeTools.composeFail(evalReq, _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", ""));
+  elseif (resp1) == 1 then 
+    local func = _g[2];
+    if (fid ~= nil) then 
+      _G.setfenv(func, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(__gmdebug__FrameID_FrameID_Impl_.getValue(fid).actualFrame));
+    end;
+    local _g = __gmdebug_lua_Util.runCompiledFunction(func);
+    local resp1 = _g[1];
+    if (resp1) == 0 then 
+      resp = __gmdebug_composer_ComposeTools.composeFail(evalReq, _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", ""));
+    elseif (resp1) == 1 then 
+      local item = self.variableManager:genvar(_hx_o({__fields__={name=true,value=true},name="",value=_g[2]}));
+      resp = __gmdebug_composer_ComposeTools.compose(evalReq, "evaluate", _hx_o({__fields__={result=true,type=true,variablesReference=true},result=item.value,type=item.type,variablesReference=item.variablesReference})); end; end;
+  local js = __haxe_Json.stringify(resp);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HEvaluate.prototype.__class__ =  __gmdebug_lua_handlers_HEvaluate
+
+__gmdebug_lua_handlers_HNext.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HNext.prototype)
+  __gmdebug_lua_handlers_HNext.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HNext.super = function(self) 
+end
+__gmdebug_lua_handlers_HNext.__name__ = true
+__gmdebug_lua_handlers_HNext.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HNext.prototype = _hx_e();
+__gmdebug_lua_handlers_HNext.prototype.handle = function(self,nextReq) 
+  local resp = __gmdebug_composer_ComposeTools.compose(nextReq, "next");
+  __haxe_Log.trace(Std.string(Std.string(Std.string("our stack height ") .. Std.string(__gmdebug_lua_Debugee.get_stackHeight())) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.stackOffset.step), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HNext.hx",lineNumber=8,className="gmdebug.lua.handlers.HNext",methodName="handle"}));
+  __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(__gmdebug_lua_Debugee.get_stackHeight() - __gmdebug_lua_Debugee.stackOffset.step);
+  local js = __haxe_Json.stringify(resp);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
+  do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
+end
+
+__gmdebug_lua_handlers_HNext.prototype.__class__ =  __gmdebug_lua_handlers_HNext
+
+__gmdebug_lua_handlers_HPause.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HPause.prototype)
+  __gmdebug_lua_handlers_HPause.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HPause.super = function(self) 
+end
+__gmdebug_lua_handlers_HPause.__name__ = true
+__gmdebug_lua_handlers_HPause.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HPause.prototype = _hx_e();
+__gmdebug_lua_handlers_HPause.prototype.handle = function(self,pauseReq) 
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(pauseReq, "pause", _hx_e()));
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  __gmdebug_lua_Debugee.startHaltLoop("pause", __gmdebug_lua_Debugee.stackOffset.pause);
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HPause.prototype.__class__ =  __gmdebug_lua_handlers_HPause
+
+__gmdebug_lua_handlers_HSetBreakpoints.new = function(bm) 
+  local self = _hx_new(__gmdebug_lua_handlers_HSetBreakpoints.prototype)
+  __gmdebug_lua_handlers_HSetBreakpoints.super(self,bm)
+  return self
+end
+__gmdebug_lua_handlers_HSetBreakpoints.super = function(self,bm) 
+  self.bm = bm;
+end
+__gmdebug_lua_handlers_HSetBreakpoints.__name__ = true
+__gmdebug_lua_handlers_HSetBreakpoints.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HSetBreakpoints.prototype = _hx_e();
+__gmdebug_lua_handlers_HSetBreakpoints.prototype.bm= nil;
+__gmdebug_lua_handlers_HSetBreakpoints.prototype.handle = function(self,req) 
+  local args = req.arguments;
+  local bpResponse = _hx_tab_array({}, 0);
+  if (args.breakpoints ~= nil) then 
+    local _g = 0;
+    local _g1 = args.breakpoints;
+    while (_g < _g1.length) do 
+      local bp = _g1[_g];
+      _g = _g + 1;
+      local breakPoint = self.bm:newBreakpoint(args.source, bp);
+      bpResponse:push(_hx_o({__fields__={line=true,message=true,verified=true},line=breakPoint.line,message=breakPoint.message,verified=breakPoint.verified}));
+    end;
+  end;
+  local resp = __gmdebug_composer_ComposeTools.compose(req, "setBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse}));
+  local js = __tink_json_Writer197.new():write(resp);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HSetBreakpoints.prototype.__class__ =  __gmdebug_lua_handlers_HSetBreakpoints
+
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HSetExceptionBreakpoints.prototype)
+  __gmdebug_lua_handlers_HSetExceptionBreakpoints.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.super = function(self) 
+end
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.__name__ = true
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.prototype = _hx_e();
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.prototype.handle = function(self,x) 
+  local rep = __gmdebug_composer_ComposeTools.compose(x, "setExceptionBreakpoints");
+  local gamemodeSet = false;
+  local entitiesSet = false;
+  local _g = 0;
+  local _g1 = x.arguments.filters;
+  while (_g < _g1.length) do 
+    local filter = _g1[_g];
+    _g = _g + 1;
+    local filter = filter;
+    if (filter) == "entities" then 
+      __gmdebug_lua_Exceptions.hookEntityHooks();
+      entitiesSet = true;
+    elseif (filter) == "gamemode" then 
+      __gmdebug_lua_Exceptions.hookGamemodeHooks();
+      gamemodeSet = true; end;
+  end;
+  if (not gamemodeSet) then 
+    __gmdebug_lua_Exceptions.unhookGamemodeHooks();
+  end;
+  if (not entitiesSet) then 
+    __gmdebug_lua_Exceptions.unhookEntityHooks();
+  end;
+  local js = __haxe_Json.stringify(rep);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HSetExceptionBreakpoints.prototype.__class__ =  __gmdebug_lua_handlers_HSetExceptionBreakpoints
+
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.new = function(fbm) 
+  local self = _hx_new(__gmdebug_lua_handlers_HSetFunctionBreakpoints.prototype)
+  __gmdebug_lua_handlers_HSetFunctionBreakpoints.super(self,fbm)
+  return self
+end
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.super = function(self,fbm) 
+  self.fbm = fbm;
+end
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.__name__ = true
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.prototype = _hx_e();
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.prototype.fbm= nil;
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.prototype.handle = function(self,req) 
+  local _this = self.fbm.functionBP;
+  _this.h = ({});
+  _this.k = ({});
+  local bpResponse = _hx_tab_array({}, 0);
+  local _g = 0;
+  local _g1 = req.arguments.breakpoints;
+  while (_g < _g1.length) do 
+    local fbp = _g1[_g];
+    _g = _g + 1;
+    local expr = fbp.name;
+    local eval;
+    if (_G.string.sub(expr, 1, 1) == "!") then 
+      local pos = 1;
+      local len = nil;
+      if ((len == nil) or (len > (pos + #expr))) then 
+        len = #expr;
+      else
+        if (len < 0) then 
+          len = #expr + len;
+        end;
+      end;
+      if (pos < 0) then 
+        pos = #expr + pos;
+      end;
+      if (pos < 0) then 
+        pos = 0;
+      end;
+      eval = _G.string.sub(expr, pos + 1, pos + len);
+    else
+      eval = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
+    end;
+    local resp;
+    local _g = __gmdebug_lua_Util.compileString(eval, "gmdebug FuncBp:");
+    local resp1 = _g[1];
+    if (resp1) == 0 then 
+      resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Failed to compile"});
+    elseif (resp1) == 1 then 
+      local _hx_tmp = __gmdebug_lua_Util.runCompiledFunction(_g[2]);
+      local resp1 = _hx_tmp[1];
+      if (resp1) == 0 then 
+        resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Failed to run"});
+      elseif (resp1) == 1 then 
+        local _g = _hx_tmp[2];
+        if (_G.type(_g) ~= "function") then 
+          resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Result is not a function"});
+        else
+          local _this = self.fbm.functionBP;
+          local key = _g;
+          _this.h[key] = true;
+          _this.k[key] = true;
+          resp = _hx_o({__fields__={verified=true},verified=true});
+        end; end; end;
+    bpResponse:push(resp);
+  end;
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(req, "setFunctionBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse})));
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HSetFunctionBreakpoints.prototype.__class__ =  __gmdebug_lua_handlers_HSetFunctionBreakpoints
+
+__gmdebug_lua_handlers_HStackTrace.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HStackTrace.prototype)
+  __gmdebug_lua_handlers_HStackTrace.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HStackTrace.super = function(self) 
+end
+__gmdebug_lua_handlers_HStackTrace.__name__ = true
+__gmdebug_lua_handlers_HStackTrace.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HStackTrace.prototype = _hx_e();
+__gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x) 
+  local args = x.arguments;
+  if (not __gmdebug_lua_Debugee.inpauseloop) then 
+    local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=_hx_tab_array({}, 0),totalFrames=0}));
+    local js = __tink_json_Writer199.new():write(response);
+    local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+    __gmdebug_lua_Debugee.socket.output:writeString(str);
+    __gmdebug_lua_Debugee.socket.output:flush();
+    local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("continued", _hx_o({__fields__={threadId=true,allThreadsContinued=true},threadId=__gmdebug_lua_Debugee.clientID,allThreadsContinued=false})));
+    local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+    __gmdebug_lua_Debugee.socket.output:writeString(str);
+    __gmdebug_lua_Debugee.socket.output:flush();
+    do return __gmdebug_lua_handlers_HandlerResponse.WAIT end;
+  end;
+  local firstFrame;
+  local _g = args.startFrame;
+  if (_g == nil) then 
+    local value = __gmdebug_lua_Debugee.baseDepth;
+    if (value == nil) then 
+      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
+    else
+      firstFrame = value;
+    end;
+  else
+    local value = __gmdebug_lua_Debugee.baseDepth;
+    local firstFrame1;
+    if (value == nil) then 
+      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
+    else
+      firstFrame1 = value;
+    end;
+    firstFrame = _g + firstFrame1;
+  end;
+  local _g = args.levels;
+  local lastFrame = (function() 
+    local _hx_1
+    if (_g == nil) then 
+    _hx_1 = 9999; elseif (_g == 0) then 
+    _hx_1 = 9999; else 
+    _hx_1 = firstFrame + (_g - 1); end
+    return _hx_1
+  end )();
+  local stackFrames = _hx_tab_array({}, 0);
+  __haxe_Log.trace(Std.string(Std.string(Std.string("levels ") .. Std.string(args.startFrame)) .. Std.string(" ")) .. Std.string(args.levels), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=37,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
+  __haxe_Log.trace(Std.string(Std.string(Std.string(Std.string(Std.string("first ") .. Std.string((firstFrame - 1))) .. Std.string(" last ")) .. Std.string(lastFrame)) .. Std.string(" stackheight ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=38,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
+  local _g = firstFrame;
+  local _g1 = lastFrame;
+  while (_g < _g1) do 
+    _g = _g + 1;
+    local i = _g - 1;
+    __haxe_Log.trace(i, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=40,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
+    local info = _G.debug.getinfo(i + 1, "lnSfu");
+    if (info == nil) then 
+      break;
+    end;
+    local src;
+    if (_G.string.sub(info.source, 1, 1) == "@") then 
+      local _this = info.source;
+      local pos = 1;
+      local len = nil;
+      if ((len == nil) or (len > (pos + #_this))) then 
+        len = #_this;
+      else
+        if (len < 0) then 
+          len = #_this + len;
+        end;
+      end;
+      if (pos < 0) then 
+        pos = #_this + pos;
+      end;
+      if (pos < 0) then 
+        pos = 0;
+      end;
+      src = _G.string.sub(_this, pos + 1, pos + len);
+    else
+      src = info.source;
+    end;
+    local args = "";
+    if (info.nparams > 0) then 
+      args = "(";
+      local _g = 0;
+      local _g1 = info.nparams;
+      while (_g < _g1) do 
+        _g = _g + 1;
+        local _hx_2_lcl_a, _hx_2_lcl_b = _G.debug.getlocal(i + 1, (_g - 1) + 1);
+        local val;
+        local _g = _G.type(_hx_2_lcl_b);
+        if (_g) == "string" then 
+          val = Std.string(Std.string("\"") .. Std.string(Std.string(_hx_2_lcl_b))) .. Std.string("\"");
+        elseif (_g) == "table" then 
+          val = "table";else
+        val = _G.tostring(_hx_2_lcl_b); end;
+        args = Std.string(args) .. Std.string((Std.string(Std.string(Std.string(Std.string("") .. Std.string(_hx_2_lcl_a)) .. Std.string("=")) .. Std.string(val)) .. Std.string(",")));
+      end;
+      local _g = 1;
+      while (_g < 9999) do 
+        _g = _g + 1;
+        local _hx_3_lcl_a, _hx_3_lcl_b = _G.debug.getlocal(i + 1, -(_g - 1));
+        if (_hx_3_lcl_a == nil) then 
+          break;
+        end;
+        local val;
+        local _g = _G.type(_hx_3_lcl_b);
+        if (_g) == "string" then 
+          val = Std.string(Std.string("\"") .. Std.string(Std.string(_hx_3_lcl_b))) .. Std.string("\"");
+        elseif (_g) == "table" then 
+          val = "table";else
+        val = _G.tostring(_hx_3_lcl_b); end;
+        args = Std.string(args) .. Std.string((Std.string(Std.string(Std.string(Std.string("") .. Std.string(_hx_3_lcl_a)) .. Std.string("=")) .. Std.string(val)) .. Std.string(",")));
+      end;
+      local pos = 0;
+      local len = #args - 1;
+      if ((len == nil) or (len > (pos + #args))) then 
+        len = #args;
+      else
+        if (len < 0) then 
+          len = #args + len;
+        end;
+      end;
+      if (pos < 0) then 
+        pos = #args + pos;
+      end;
+      if (pos < 0) then 
+        pos = 0;
+      end;
+      args = Std.string(_G.string.sub(args, pos + 1, pos + len)) .. Std.string(")");
+    end;
+    local _g = info.namewhat;
+    local _g1 = info.name;
+    local name = (function() 
+      local _hx_4
+      if (_g1 == nil) then 
+      _hx_4 = (function() 
+        local _hx_5
+        if (_g == "") then 
+        _hx_5 = Std.string("anonymous function ") .. Std.string(args); else 
+        _hx_5 = Std.string(Std.string(Std.string(Std.string(Std.string("[") .. Std.string(_g)) .. Std.string("] ")) .. Std.string(_g1)) .. Std.string(" ")) .. Std.string(args); end
+        return _hx_5
+      end )(); else 
+      _hx_4 = Std.string(Std.string(Std.string(Std.string(Std.string("[") .. Std.string(_g)) .. Std.string("] ")) .. Std.string(_g1)) .. Std.string(" ")) .. Std.string(args); end
+      return _hx_4
+    end )();
+    local path;
+    local hint;
+    local line;
+    local column;
+    local endLine = nil;
+    local endColumn = nil;
+    if (src == "=[C]") then 
+      hint = "deemphasize";
+      path = nil;
+      line = 0;
+      column = 0;
+    else
+      path = __gmdebug_lua_Debugee.normalPath(src);
+      hint = nil;
+      line = info.currentline;
+      column = 1;
+      endLine = info.lastlinedefined;
+      endColumn = 99999;
+    end;
+    hint = "normal";
+    if ((info.func ~= nil) and (__gmdebug_lua_Exceptions.exceptFuncs.k[info.func] ~= nil)) then 
+      line = 0;
+      path = nil;
+      column = 0;
+      hint = "deemphasize";
+      name = "Exception catcher";
+    else
+      hint = "normal";
+    end;
+    local value = __gmdebug_lua_Debugee.clientID;
+    local clientID;
+    if (value == nil) then 
+      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
+    else
+      clientID = value;
+    end;
+    local target = _hx_bit.bor(_hx_bit.lshift(clientID,27),i);
+    local target1;
+    if (path == nil) then 
+      target1 = nil;
+    else
+      local path = path;
+      __haxe_Log.trace(path, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=127,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
+      local idx = 1;
+      local ret = _hx_tab_array({}, 0);
+      while (idx ~= nil) do 
+        local newidx = 0;
+        if (#"/" > 0) then 
+          newidx = _G.string.find(path, "/", idx, true);
+        else
+          if (idx >= #path) then 
+            newidx = nil;
+          else
+            newidx = idx + 1;
+          end;
+        end;
+        if (newidx ~= nil) then 
+          ret:push(_G.string.sub(path, idx, newidx - 1));
+          idx = newidx + #"/";
+        else
+          ret:push(_G.string.sub(path, idx, #path));
+          idx = nil;
+        end;
+      end;
+      local pth = ret;
+      target1 = _hx_o({__fields__={name=true,path=true,presentationHint=true},name=pth[pth.length - 1],path=path,presentationHint=hint});
+    end;
+    local target = _hx_o({__fields__={id=true,name=true,source=true,line=true,column=true,endLine=true,endColumn=true},id=target,name=name,source=target1,line=line,column=column,endLine=endLine,endColumn=endColumn});
+    if (path ~= nil) then 
+      target.source.path = path;
+    end;
+    stackFrames:push(target);
+  end;
+  local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=stackFrames,totalFrames=stackFrames.length}));
+  local js = __tink_json_Writer199.new():write(response);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HStackTrace.prototype.__class__ =  __gmdebug_lua_handlers_HStackTrace
+
+__gmdebug_lua_handlers_HStepIn.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HStepIn.prototype)
+  __gmdebug_lua_handlers_HStepIn.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HStepIn.super = function(self) 
+end
+__gmdebug_lua_handlers_HStepIn.__name__ = true
+__gmdebug_lua_handlers_HStepIn.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HStepIn.prototype = _hx_e();
+__gmdebug_lua_handlers_HStepIn.prototype.handle = function(self,stepInReq) 
+  __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(nil);
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(stepInReq, "stepIn"));
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
+  do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
+end
+
+__gmdebug_lua_handlers_HStepIn.prototype.__class__ =  __gmdebug_lua_handlers_HStepIn
+
+__gmdebug_lua_handlers_HStepOut.new = function() 
+  local self = _hx_new(__gmdebug_lua_handlers_HStepOut.prototype)
+  __gmdebug_lua_handlers_HStepOut.super(self)
+  return self
+end
+__gmdebug_lua_handlers_HStepOut.super = function(self) 
+end
+__gmdebug_lua_handlers_HStepOut.__name__ = true
+__gmdebug_lua_handlers_HStepOut.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HStepOut.prototype = _hx_e();
+__gmdebug_lua_handlers_HStepOut.prototype.handle = function(self,stepOutReq) 
+  local tarheight = __gmdebug_lua_Debugee.get_stackHeight() - (__gmdebug_lua_Debugee.stackOffset.step + 1);
+  __haxe_Log.trace(Std.string(Std.string(Std.string("stepOut ") .. Std.string(tarheight)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.minheight), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStepOut.hx",lineNumber=13,className="gmdebug.lua.handlers.HStepOut",methodName="handle"}));
+  if (tarheight < __gmdebug_lua_Debugee.minheight) then 
+    local info = _G.debug.getinfo(__gmdebug_lua_Debugee.baseDepth + 1, "fLSl");
+    local func = info.func;
+    __haxe_Log.trace(Std.string("") .. Std.string(info.source), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStepOut.hx",lineNumber=17,className="gmdebug.lua.handlers.HStepOut",methodName="handle"}));
+    local lowest = LuaLambdaKeys.fold(info.activelines, function(line,res) 
+      if (line < res) then 
+        do return line end;
+      else
+        do return res end;
+      end;
+    end, _G.math.huge);
+    __haxe_Log.trace(Std.string("lowest ") .. Std.string(lowest), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStepOut.hx",lineNumber=26,className="gmdebug.lua.handlers.HStepOut",methodName="handle"}));
+    __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.OUT(func, lowest);
+  else
+    __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(tarheight);
+  end;
+  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
+  local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(stepOutReq, "stepOut"));
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
+end
+
+__gmdebug_lua_handlers_HStepOut.prototype.__class__ =  __gmdebug_lua_handlers_HStepOut
+
+__gmdebug_lua_handlers_HVariables.new = function(vm) 
+  local self = _hx_new(__gmdebug_lua_handlers_HVariables.prototype)
+  __gmdebug_lua_handlers_HVariables.super(self,vm)
+  return self
+end
+__gmdebug_lua_handlers_HVariables.super = function(self,vm) 
+  self.variableManager = vm;
+end
+__gmdebug_lua_handlers_HVariables.__name__ = true
+__gmdebug_lua_handlers_HVariables.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
+__gmdebug_lua_handlers_HVariables.prototype = _hx_e();
+__gmdebug_lua_handlers_HVariables.prototype.variableManager= nil;
+__gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref) 
+  local addVars = _hx_tab_array({}, 0);
+  local storedvar = self.variableManager:getVar(ref);
+  if (storedvar == nil) then 
+    __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=25,className="gmdebug.lua.handlers.HVariables",methodName="child"}));
+  end;
+  local _g = _G.TypeID(storedvar);
+  if (_g) == _G.TYPE_ENTITY then 
+    local ent = storedvar;
+    local tbl = storedvar:GetTable();
+    addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(position)",value=ent:GetPos(),virtual=true}));
+    addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(angle)",value=ent:GetAngles(),virtual=true}));
+    addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(model)",value=ent:GetModel(),virtual=true}));
+    local table = tbl;
+    local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(table);
+    local next = _hx_1_p_next;
+    local i = _hx_1_p_index;
+    local _g_next = function() 
+      local _hx_2_res_index, _hx_2_res_value = next(table, i);
+      i = _hx_2_res_index;
+      do return _hx_o({__fields__={key=true,value=true},key=_hx_2_res_index,value=_hx_2_res_value}) end;
+    end;
+    local _g_hasNext = function() 
+      do return _G.select(2, _G.next(table, i)) ~= nil end;
+    end;
+    while (_g_hasNext()) do 
+      local _g = _g_next();
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_g.key,value=_g.value}));
+    end;
+  elseif (_g) == _G.TYPE_FUNCTION then 
+    local info = _G.debug.getinfo(storedvar, "S");
+    addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true,noquote=true},name="(source)",value=_G.tostring(info.short_src),virtual=true,noquote=true}));
+    addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(line)",value=info.linedefined,virtual=true}));
+    local _g = 1;
+    while (_g < 9999) do 
+      _g = _g + 1;
+      local _hx_3_upv_a, _hx_3_upv_b = _G.debug.getupvalue(storedvar, _g - 1);
+      if (_hx_3_upv_a == nil) then 
+        break;
+      end;
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_3_upv_a,value=_hx_3_upv_b}));
+    end;
+  elseif (_g) == _G.TYPE_TABLE then 
+    local table = storedvar;
+    local _hx_4_p_next, _hx_4_p_table, _hx_4_p_index = _G.pairs(table);
+    local next = _hx_4_p_next;
+    local i = _hx_4_p_index;
+    local _g_next = function() 
+      local _hx_5_res_index, _hx_5_res_value = next(table, i);
+      i = _hx_5_res_index;
+      do return _hx_o({__fields__={key=true,value=true},key=_hx_5_res_index,value=_hx_5_res_value}) end;
+    end;
+    local _g_hasNext = function() 
+      do return _G.select(2, _G.next(table, i)) ~= nil end;
+    end;
+    while (_g_hasNext()) do 
+      local _g = _g_next();
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_g.key,value=_g.value}));
+    end;else end;
+  local mt = _G.debug.getmetatable(storedvar);
+  if (mt ~= nil) then 
+    addVars:push(_hx_o({__fields__={name=true,value=true},name="(metatable)",value=mt}));
+  end;
+  do return addVars end
+end
+__gmdebug_lua_handlers_HVariables.prototype.frameLocal = function(self,frame,scope) 
+  local addVars = _hx_tab_array({}, 0);
+  if (scope) == 0 then 
+    local _g = 1;
+    local _g1 = _G.debug.getinfo(frame + 1, "u").nparams + 1;
+    while (_g < _g1) do 
+      _g = _g + 1;
+      local _hx_1_result_a, _hx_1_result_b = _G.debug.getlocal(frame + 1, _g - 1);
+      if (_hx_1_result_a == nil) then 
+        break;
+      end;
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_1_result_a,value=_hx_1_result_b}));
+    end;
+    local _g = 1;
+    while (_g < 9999) do 
+      _g = _g + 1;
+      local _hx_2_result_a, _hx_2_result_b = _G.debug.getlocal(frame + 1, -(_g - 1));
+      if (_hx_2_result_a == nil) then 
+        break;
+      end;
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_2_result_a,value=_hx_2_result_b}));
+    end;
+  elseif (scope) == 1 then 
+    local _g = 1;
+    while (_g < 9999) do 
+      _g = _g + 1;
+      local _hx_3_result_a, _hx_3_result_b = _G.debug.getlocal(frame + 1, _g - 1);
+      if (_hx_3_result_a == nil) then 
+        break;
+      end;
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_3_result_a,value=_hx_3_result_b}));
+    end;
+    local _g = 1;
+    while (_g < 9999) do 
+      _g = _g + 1;
+      local _hx_4_result_a, _hx_4_result_b = _G.debug.getlocal(frame + 1, -(_g - 1));
+      if (_hx_4_result_a == nil) then 
+        break;
+      end;
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_4_result_a,value=_hx_4_result_b}));
+    end;
+  elseif (scope) == 2 then 
+    local info = _G.debug.getinfo(frame + 1, "f");
+    if ((info ~= nil) and (info.func ~= nil)) then 
+      local _g = 1;
+      while (_g < 9999) do 
+        _g = _g + 1;
+        local _hx_5_upv_a, _hx_5_upv_b = _G.debug.getupvalue(_hx_bind(info,info.func), _g - 1);
+        if (_hx_5_upv_a == nil) then 
+          break;
+        end;
+        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_5_upv_a,value=_hx_5_upv_b}));
+      end;
+    end;
+  elseif (scope) == 3 then 
+    local info = _G.debug.getinfo(frame + 1, "f");
+    if ((info ~= nil) and (info.func ~= nil)) then 
+      local table = _G.debug.getfenv(_hx_bind(info,info.func));
+      local _hx_6_p_next, _hx_6_p_table, _hx_6_p_index = _G.pairs(table);
+      local next = _hx_6_p_next;
+      local i = _hx_6_p_index;
+      local _g_next = function() 
+        local _hx_7_res_index, _hx_7_res_value = next(table, i);
+        i = _hx_7_res_index;
+        do return _hx_o({__fields__={key=true,value=true},key=_hx_7_res_index,value=_hx_7_res_value}) end;
+      end;
+      local _g_hasNext = function() 
+        do return _G.select(2, _G.next(table, i)) ~= nil end;
+      end;
+      while (_g_hasNext()) do 
+        local _g = _g_next();
+        addVars:push(_hx_o({__fields__={name=true,value=true},name=_g.key,value=_g.value}));
+      end;
+    end; end;
+  do return addVars end
+end
+__gmdebug_lua_handlers_HVariables.prototype.global = function(self,scope) 
+  local addVars = _hx_tab_array({}, 0);
+  local scope = scope;
+  if (scope) == 0 then 
+    local _g = _G;
+    local sort = _hx_tab_array({}, 0);
+    local enums = _hx_tab_array({}, 0);
+    addVars:push(_hx_o({__fields__={name=true,value=true},name="_G",value=""}));
+    local table = _g;
+    local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(table);
+    local next = _hx_1_p_next;
+    local i = _hx_1_p_index;
+    local _g_next = function() 
+      local _hx_2_res_index, _hx_2_res_value = next(table, i);
+      i = _hx_2_res_index;
+      do return _hx_o({__fields__={key=true,value=true},key=_hx_2_res_index,value=_hx_2_res_value}) end;
+    end;
+    local _g_hasNext = function() 
+      do return _G.select(2, _G.next(table, i)) ~= nil end;
+    end;
+    while (_g_hasNext()) do 
+      local _g = _g_next();
+      local i = _g.key;
+      local x = _g.value;
+      if (_G.type(i) == "string") then 
+        if (self:isEnum(i, x)) then 
+          enums:push(i);
+        else
+          sort:push(i);
+        end;
+      end;
+    end;
+    local _g1 = 0;
+    while (_g1 < sort.length) do 
+      local index = sort[_g1];
+      _g1 = _g1 + 1;
+      if (_G.type(index) == "string") then 
+        addVars:push(_hx_o({__fields__={name=true,value=true},name=index,value=Reflect.field(_g, index)}));
+      end;
+    end;
+  elseif (scope) == 1 then 
+    local _g = __gmod__LuaArray_LuaArray_Impl_.keyValueIterator(_G.player.GetAll());
+    while (_g:hasNext()) do 
+      local _g = _g:next();
+      local i = _g.key;
+      local ply = _g.value;
+      __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=148,className="gmdebug.lua.handlers.HVariables",methodName="global"}));
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=ply:GetName(),value=ply}));
+    end;
+  elseif (scope) == 2 then 
+    local ents = _G.ents.GetAll();
+    local _g = 1;
+    local _g1 = _G.ents.GetCount();
+    while (_g < _g1) do 
+      _g = _g + 1;
+      local i = _g - 1;
+      local ent = ents[i];
+      addVars:push(_hx_o({__fields__={name=true,value=true},name=ent:GetClass(),value=ent}));
+    end;else
+  _G.error(__haxe_Exception.thrown("Unhandled scope"),0); end;
+  do return addVars end
+end
+__gmdebug_lua_handlers_HVariables.prototype.isEnum = function(self,index,value) 
+  if ((_G.string.match(index, "%u", 1) ~= nil) and (_G.string.match(index, "%u", 2) ~= nil)) then 
+    do return _G.type(value) == "number" end;
+  else
+    do return false end;
+  end;
+end
+__gmdebug_lua_handlers_HVariables.prototype.fixupNames = function(self,variables) 
+  local varnamecount_h = ({});
+  local _g = 0;
+  while (_g < variables.length) do 
+    local v = variables[_g];
+    _g = _g + 1;
+    local ret = varnamecount_h[v.name];
+    if (ret == __haxe_ds_StringMap.tnull) then 
+      ret = nil;
+    end;
+    local count = ret;
+    if (count ~= nil) then 
+      local key = v.name;
+      local value = count + 1;
+      if (value == nil) then 
+        varnamecount_h[key] = __haxe_ds_StringMap.tnull;
+      else
+        varnamecount_h[key] = value;
+      end;
+      v.name = Std.string(Std.string(Std.string(Std.string("") .. Std.string(v.name)) .. Std.string(" (")) .. Std.string(count)) .. Std.string(")");
+    else
+      varnamecount_h[v.name] = 1;
+    end;
+  end;
+end
+__gmdebug_lua_handlers_HVariables.prototype.handle = function(self,req) 
+  local addVars;
+  local _g = __gmdebug__VariableReference_VariableReference_Impl_.getValue(req.arguments.variablesReference);
+  local addVars1 = _g[1];
+  if (addVars1) == 0 then 
+    addVars = self:child(_g[3]);
+  elseif (addVars1) == 1 then 
+    addVars = self:frameLocal(_g[3], _g[4]);
+  elseif (addVars1) == 2 then 
+    addVars = self:global(_g[3]); end;
+  local f = (function() local __=self.variableManager; return _hx_bind(__,__.genvar) end)();
+  local _g = _hx_tab_array({}, 0);
+  local _g1 = 0;
+  local _g2 = addVars;
+  while (_g1 < _g2.length) do 
+    local i = _g2[_g1];
+    _g1 = _g1 + 1;
+    _g:push(f(i));
+  end;
+  local variablesArr = _g;
+  self:fixupNames(variablesArr);
+  local resp = __gmdebug_composer_ComposeTools.compose(req, "variables", _hx_o({__fields__={variables=true},variables=variablesArr}));
+  local js = __tink_json_Writer198.new():write(resp);
+  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
+  __gmdebug_lua_Debugee.socket.output:writeString(str);
+  __gmdebug_lua_Debugee.socket.output:flush();
+  do return __gmdebug_lua_handlers_HandlerResponse.WAIT end
+end
+
+__gmdebug_lua_handlers_HVariables.prototype.__class__ =  __gmdebug_lua_handlers_HVariables
+_hxClasses["gmdebug.lua.handlers.HandlerResponse"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","CONTINUE","DISCONNECT"},3)}
+__gmdebug_lua_handlers_HandlerResponse = _hxClasses["gmdebug.lua.handlers.HandlerResponse"];
+__gmdebug_lua_handlers_HandlerResponse.WAIT = _hx_tab_array({[0]="WAIT",0,__enum__ = __gmdebug_lua_handlers_HandlerResponse},2)
+
+__gmdebug_lua_handlers_HandlerResponse.CONTINUE = _hx_tab_array({[0]="CONTINUE",1,__enum__ = __gmdebug_lua_handlers_HandlerResponse},2)
+
+__gmdebug_lua_handlers_HandlerResponse.DISCONNECT = _hx_tab_array({[0]="DISCONNECT",2,__enum__ = __gmdebug_lua_handlers_HandlerResponse},2)
+
+
+__gmdebug_lua_io_DebugIO.new = {}
+__gmdebug_lua_io_DebugIO.__name__ = true
+__gmdebug_lua_io_DebugIO.prototype = _hx_e();
+__gmdebug_lua_io_DebugIO.prototype.input= nil;
+__gmdebug_lua_io_DebugIO.prototype.output= nil;
+__gmdebug_lua_io_DebugIO.prototype.close= nil;
+
+__gmdebug_lua_io_DebugIO.prototype.__class__ =  __gmdebug_lua_io_DebugIO
+
+__gmdebug_lua_io_PipeSocket.new = function() 
+  local self = _hx_new(__gmdebug_lua_io_PipeSocket.prototype)
+  __gmdebug_lua_io_PipeSocket.super(self)
+  return self
+end
+__gmdebug_lua_io_PipeSocket.super = function(self) 
+  if (not _G.file.Exists(__gmdebug_Cross.READY, "DATA")) then 
+    _G.error(__haxe_Exception.thrown("Other process is not ready."),0);
+  end;
+  _G.file.Delete(__gmdebug_Cross.READY);
+  self.input = __gmdebug_lua_io_PipeInput.new();
+  self.output = __gmdebug_lua_io_PipeOutput.new();
+end
+__gmdebug_lua_io_PipeSocket.__name__ = true
+__gmdebug_lua_io_PipeSocket.__interfaces__ = {__gmdebug_lua_io_DebugIO}
+__gmdebug_lua_io_PipeSocket.prototype = _hx_e();
+__gmdebug_lua_io_PipeSocket.prototype.input= nil;
+__gmdebug_lua_io_PipeSocket.prototype.output= nil;
+__gmdebug_lua_io_PipeSocket.prototype.close = function(self) 
+  self.input:close();
+  self.output:close();
+end
+
+__gmdebug_lua_io_PipeSocket.prototype.__class__ =  __gmdebug_lua_io_PipeSocket
+
+__haxe_io_Input.new = {}
+__haxe_io_Input.__name__ = true
+__haxe_io_Input.prototype = _hx_e();
+__haxe_io_Input.prototype.readByte = function(self) 
+  _G.error(__haxe_Exception.thrown("Not implemented"),0);
+end
+__haxe_io_Input.prototype.readBytes = function(self,s,pos,len) 
+  local k = len;
+  local b = s.b;
+  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
+    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
+  end;
+  local _hx_status, _hx_result = pcall(function() 
+  
+      while (k > 0) do 
+        b[pos] = self:readByte();
+        pos = pos + 1;
+        k = k - 1;
+      end;
+    return _hx_pcall_default
+  end)
+  if not _hx_status and _hx_result == "_hx_pcall_break" then
+  elseif not _hx_status then 
+    local _g = _hx_result;
+    if (not __lua_Boot.__instanceof(__haxe_Exception.caught(_g):unwrap(), __haxe_io_Eof)) then 
+      _G.error(_g,0);
+    end;
+  elseif _hx_result ~= _hx_pcall_default then
+    return _hx_result
+  end;
+  do return len - k end
+end
+__haxe_io_Input.prototype.close = function(self) 
+end
+__haxe_io_Input.prototype.readFullBytes = function(self,s,pos,len) 
+  while (len > 0) do 
+    local k = self:readBytes(s, pos, len);
+    if (k == 0) then 
+      _G.error(__haxe_Exception.thrown(__haxe_io_Error.Blocked),0);
+    end;
+    pos = pos + k;
+    len = len - k;
+  end;
+end
+__haxe_io_Input.prototype.readLine = function(self) 
+  local buf = __haxe_io_BytesBuffer.new();
+  local last;
+  local s;
+  local _hx_status, _hx_result = pcall(function() 
+  
+      while (true) do 
+        last = self:readByte();
+        if (not (last ~= 10)) then 
+          break;
+        end;
+        buf.b:push(last);
+      end;
+      s = buf:getBytes():toString();
+      if (_G.string.byte(s, (#s - 1) + 1) == 13) then 
+        local len = -1;
+        if (-1 > #s) then 
+          len = #s;
+        else
+          len = #s + -1;
+        end;
+        s = _G.string.sub(s, 1, len);
+      end;
+    return _hx_pcall_default
+  end)
+  if not _hx_status and _hx_result == "_hx_pcall_break" then
+  elseif not _hx_status then 
+    local _g = _hx_result;
+    local _g1 = __haxe_Exception.caught(_g):unwrap();
+    if (__lua_Boot.__instanceof(_g1, __haxe_io_Eof)) then 
+      s = buf:getBytes():toString();
+      if (#s == 0) then 
+        _G.error(__haxe_Exception.thrown(_g1),0);
+      end;
+    else
+      _G.error(_g,0);
+    end;
+  elseif _hx_result ~= _hx_pcall_default then
+    return _hx_result
+  end;
+  do return s end
+end
+__haxe_io_Input.prototype.readString = function(self,len,encoding) 
+  local b = __haxe_io_Bytes.alloc(len);
+  self:readFullBytes(b, 0, len);
+  do return b:getString(0, len, encoding) end
+end
+
+__haxe_io_Input.prototype.__class__ =  __haxe_io_Input
+
+__gmdebug_lua_io_PipeInput.new = function() 
+  local self = _hx_new(__gmdebug_lua_io_PipeInput.prototype)
+  __gmdebug_lua_io_PipeInput.super(self)
+  return self
+end
+__gmdebug_lua_io_PipeInput.super = function(self) 
+  if (not _G.file.Exists(__gmdebug_Cross.INPUT, "DATA")) then 
+    _G.error(__haxe_Exception.thrown("Input pipe does not exist"),0);
+  end;
+  local f = _G.file.Open(__gmdebug_Cross.INPUT, "r", "DATA");
+  if (f == nil) then 
+    _G.error(__haxe_Exception.thrown("Cannot open Input pipe for reading"),0);
+  end;
+  self.file = f;
+end
+__gmdebug_lua_io_PipeInput.__name__ = true
+__gmdebug_lua_io_PipeInput.prototype = _hx_e();
+__gmdebug_lua_io_PipeInput.prototype.file= nil;
+__gmdebug_lua_io_PipeInput.prototype.readByte = function(self) 
+  do return self.file:ReadByte() end
+end
+
+__gmdebug_lua_io_PipeInput.prototype.__class__ =  __gmdebug_lua_io_PipeInput
+__gmdebug_lua_io_PipeInput.__super__ = __haxe_io_Input
+setmetatable(__gmdebug_lua_io_PipeInput.prototype,{__index=__haxe_io_Input.prototype})
+
+__haxe_io_Output.new = {}
+__haxe_io_Output.__name__ = true
+__haxe_io_Output.prototype = _hx_e();
+__haxe_io_Output.prototype.writeByte = function(self,c) 
+  _G.error(__haxe_Exception.thrown("Not implemented"),0);
+end
+__haxe_io_Output.prototype.writeBytes = function(self,s,pos,len) 
+  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
+    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
+  end;
+  local b = s.b;
+  local k = len;
+  while (k > 0) do 
+    self:writeByte(b[pos]);
+    pos = pos + 1;
+    k = k - 1;
+  end;
+  do return len end
+end
+__haxe_io_Output.prototype.flush = function(self) 
+end
+__haxe_io_Output.prototype.writeFullBytes = function(self,s,pos,len) 
+  while (len > 0) do 
+    local k = self:writeBytes(s, pos, len);
+    pos = pos + k;
+    len = len - k;
+  end;
+end
+__haxe_io_Output.prototype.writeString = function(self,s,encoding) 
+  local b = __haxe_io_Bytes.ofString(s, encoding);
+  self:writeFullBytes(b, 0, b.length);
+end
+
+__haxe_io_Output.prototype.__class__ =  __haxe_io_Output
+
+__gmdebug_lua_io_PipeOutput.new = function() 
+  local self = _hx_new(__gmdebug_lua_io_PipeOutput.prototype)
+  __gmdebug_lua_io_PipeOutput.super(self)
+  return self
+end
+__gmdebug_lua_io_PipeOutput.super = function(self) 
+  local f = _G.file.Open(__gmdebug_Cross.OUTPUT, "w", "DATA");
+  if (f == nil) then 
+    _G.error(__haxe_Exception.thrown("Cannot open output pipe for reading"),0);
+  end;
+  self.file = f;
+end
+__gmdebug_lua_io_PipeOutput.__name__ = true
+__gmdebug_lua_io_PipeOutput.prototype = _hx_e();
+__gmdebug_lua_io_PipeOutput.prototype.file= nil;
+__gmdebug_lua_io_PipeOutput.prototype.close = function(self) 
+  self.file:Close();
+end
+__gmdebug_lua_io_PipeOutput.prototype.flush = function(self) 
+  self.file:Flush();
+end
+__gmdebug_lua_io_PipeOutput.prototype.writeString = function(self,s,encoding) 
+  self.file:Write(s);
+end
+
+__gmdebug_lua_io_PipeOutput.prototype.__class__ =  __gmdebug_lua_io_PipeOutput
+__gmdebug_lua_io_PipeOutput.__super__ = __haxe_io_Output
+setmetatable(__gmdebug_lua_io_PipeOutput.prototype,{__index=__haxe_io_Output.prototype})
+
+__gmdebug_lua_managers_BreakpointManager.new = function() 
+  local self = _hx_new(__gmdebug_lua_managers_BreakpointManager.prototype)
+  __gmdebug_lua_managers_BreakpointManager.super(self)
+  return self
+end
+__gmdebug_lua_managers_BreakpointManager.super = function(self) 
+  self.bpID = 0;
+  self.breakpoints = __haxe_ds_StringMap.new();
+  self.breakLocsCache = __haxe_ds_StringMap.new();
+end
+__gmdebug_lua_managers_BreakpointManager.__name__ = true
+__gmdebug_lua_managers_BreakpointManager.prototype = _hx_e();
+__gmdebug_lua_managers_BreakpointManager.prototype.breakLocsCache= nil;
+__gmdebug_lua_managers_BreakpointManager.prototype.breakpoints= nil;
+__gmdebug_lua_managers_BreakpointManager.prototype.bpID= nil;
+__gmdebug_lua_managers_BreakpointManager.prototype.retrieveBreakpointTable = function(self,source) 
+  local ret = self.breakpoints.h[source];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local _g = ret;
+  if (_g == nil) then 
+    local map = __haxe_ds_IntMap.new();
+    local _this = self.breakpoints;
+    if (map == nil) then 
+      _this.h[source] = __haxe_ds_StringMap.tnull;
+    else
+      _this.h[source] = map;
+    end;
+    do return map end;
+  else
+    do return _g end;
+  end;
+end
+__gmdebug_lua_managers_BreakpointManager.prototype.valid = function(self) 
+  do return self.breakpoints ~= nil end
+end
+__gmdebug_lua_managers_BreakpointManager.prototype.breakpointWithinRange = function(self,source,min,max) 
+  local ret = self.breakpoints.h[source];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local k = ret:keys();
+  while (k:hasNext()) do 
+    local k = k:next();
+    if ((k >= min) and (k <= max)) then 
+      do return true end;
+    end;
+  end;
+  do return false end
+end
+__gmdebug_lua_managers_BreakpointManager.prototype.getBreakpointForLine = function(self,source,line) 
+  local ret = self.breakpoints.h[source];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local bp = ret;
+  if (bp == nil) then 
+    do return nil end;
+  else
+    local ret = bp.h[line];
+    if (ret == __haxe_ds_IntMap.tnull) then 
+      ret = nil;
+    end;
+    do return ret end;
+  end;
+end
+__gmdebug_lua_managers_BreakpointManager.prototype.newBreakpoint = function(self,source,bp) 
+  local value = __gmdebug_lua_Debugee.fullPathToGmod(source.path);
+  local status = self:breakpointStatus((function() 
+    local _hx_1
+    if (value == nil) then 
+    _hx_1 = ""; else 
+    _hx_1 = value; end
+    return _hx_1
+  end )(), bp.line);
+  local breakpoint = __gmdebug_lua_managers_Breakpoint.new((function() 
+  local _hx_obj = self;
+  local _hx_fld = 'bpID';
+  local _ = _hx_obj[_hx_fld];
+  _hx_obj[_hx_fld] = _hx_obj[_hx_fld]  + 1;
+   return _;
+   end)(), source, bp, status);
+  if (breakpoint.breakpointType ~= __gmdebug_lua_managers_BreakpointType.INACTIVE) then 
+    local value = __gmdebug_lua_Debugee.fullPathToGmod(source.path);
+    local map = self:retrieveBreakpointTable((function() 
+      local _hx_2
+      if (value == nil) then 
+      _hx_2 = source.path; else 
+      _hx_2 = value; end
+      return _hx_2
+    end )());
+    local key = breakpoint.line;
+    if (breakpoint == nil) then 
+      map.h[key] = __haxe_ds_IntMap.tnull;
+    else
+      map.h[key] = breakpoint;
+    end;
+  end;
+  do return breakpoint end
+end
+__gmdebug_lua_managers_BreakpointManager.prototype.breakpointStatus = function(self,path,line) 
+  local ret = self.breakLocsCache.h[path];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local possibles = ret;
+  if (possibles == nil) then 
+    do return __gmdebug_lua_managers_LineStatus.NOT_VISITED end;
+  else
+    local ret = possibles.h[line];
+    if (ret == __haxe_ds_IntMap.tnull) then 
+      ret = nil;
+    end;
+    local _hx_tmp = ret;
+    if (_hx_tmp == nil) then 
+      do return __gmdebug_lua_managers_LineStatus.UNKNOWN end;
+    else
+      if (_hx_tmp) then 
+        do return __gmdebug_lua_managers_LineStatus.CONFIRMED end;
+      else
+        do return __gmdebug_lua_managers_LineStatus.NOT_ACTIVE end;
+      end;
+    end;
+  end;
+end
+
+__gmdebug_lua_managers_BreakpointManager.prototype.__class__ =  __gmdebug_lua_managers_BreakpointManager
+_hxClasses["gmdebug.lua.managers.LineStatus"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="UNKNOWN","NOT_ACTIVE","NOT_VISITED","CONFIRMED"},4)}
+__gmdebug_lua_managers_LineStatus = _hxClasses["gmdebug.lua.managers.LineStatus"];
+__gmdebug_lua_managers_LineStatus.UNKNOWN = _hx_tab_array({[0]="UNKNOWN",0,__enum__ = __gmdebug_lua_managers_LineStatus},2)
+
+__gmdebug_lua_managers_LineStatus.NOT_ACTIVE = _hx_tab_array({[0]="NOT_ACTIVE",1,__enum__ = __gmdebug_lua_managers_LineStatus},2)
+
+__gmdebug_lua_managers_LineStatus.NOT_VISITED = _hx_tab_array({[0]="NOT_VISITED",2,__enum__ = __gmdebug_lua_managers_LineStatus},2)
+
+__gmdebug_lua_managers_LineStatus.CONFIRMED = _hx_tab_array({[0]="CONFIRMED",3,__enum__ = __gmdebug_lua_managers_LineStatus},2)
+
+
+__gmdebug_lua_managers_Breakpoint.new = function(id,source,bp,ls) 
+  local self = _hx_new(__gmdebug_lua_managers_Breakpoint.prototype)
+  __gmdebug_lua_managers_Breakpoint.super(self,id,source,bp,ls)
+  return self
+end
+__gmdebug_lua_managers_Breakpoint.super = function(self,id,source,bp,ls) 
+  self.message = "";
+  self.verified = false;
+  self.id = id;
+  self.path = _hx_funcToField(source.path);
+  self.line = _hx_funcToField(bp.line);
+  local tmp;
+  if (bp.condition == nil) then 
+    tmp = __gmdebug_lua_managers_BreakpointType.NORMAL;
+  else
+    local expr = bp.condition;
+    local eval;
+    if (_G.string.sub(expr, 1, 1) == "!") then 
+      local len = nil;
+      len = #expr;
+      eval = _G.string.sub(expr, 2, 1 + len);
+    else
+      eval = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
+    end;
+    local _g = __gmdebug_lua_Util.compileString(eval, "Gmdebug Conditional BP: ");
+    local tmp1 = _g[1];
+    if (tmp1) == 0 then 
+      self.verified = false;
+      self.message = Std.string("Failed to compile condition ") .. Std.string(_g[2]);
+      tmp = __gmdebug_lua_managers_BreakpointType.INACTIVE;
+    elseif (tmp1) == 1 then 
+      tmp = __gmdebug_lua_managers_BreakpointType.CONDITIONAL(_g[2]); end;
+  end;
+  self.breakpointType = tmp;
+  local tmp = ls[1];
+  if (tmp) == 0 then 
+    self.verified = true;
+    self.message = "This breakpoint could not be confirmed.";
+  elseif (tmp) == 1 then 
+    self.verified = false;
+    self.message = "Lua does not consider this an active line.";
+  elseif (tmp) == 2 then 
+    self.verified = true;
+    self.message = "This file has not been visited by running code yet.";
+  elseif (tmp) == 3 then 
+    self.verified = true; end;
+end
+__gmdebug_lua_managers_Breakpoint.__name__ = true
+__gmdebug_lua_managers_Breakpoint.prototype = _hx_e();
+__gmdebug_lua_managers_Breakpoint.prototype.breakpointType= nil;
+__gmdebug_lua_managers_Breakpoint.prototype.id= nil;
+__gmdebug_lua_managers_Breakpoint.prototype.line= nil;
+__gmdebug_lua_managers_Breakpoint.prototype.path= nil;
+__gmdebug_lua_managers_Breakpoint.prototype.verified= nil;
+__gmdebug_lua_managers_Breakpoint.prototype.message= nil;
+
+__gmdebug_lua_managers_Breakpoint.prototype.__class__ =  __gmdebug_lua_managers_Breakpoint
+_hxClasses["gmdebug.lua.managers.BreakpointType"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="INACTIVE","NORMAL","CONDITIONAL"},3)}
+__gmdebug_lua_managers_BreakpointType = _hxClasses["gmdebug.lua.managers.BreakpointType"];
+__gmdebug_lua_managers_BreakpointType.INACTIVE = _hx_tab_array({[0]="INACTIVE",0,__enum__ = __gmdebug_lua_managers_BreakpointType},2)
+
+__gmdebug_lua_managers_BreakpointType.NORMAL = _hx_tab_array({[0]="NORMAL",1,__enum__ = __gmdebug_lua_managers_BreakpointType},2)
+
+__gmdebug_lua_managers_BreakpointType.CONDITIONAL = function(condition) local _x = _hx_tab_array({[0]="CONDITIONAL",2,condition,__enum__=__gmdebug_lua_managers_BreakpointType}, 3); return _x; end 
+
+__gmdebug_lua_managers_FunctionBreakpointManager.new = function() 
+  local self = _hx_new(__gmdebug_lua_managers_FunctionBreakpointManager.prototype)
+  __gmdebug_lua_managers_FunctionBreakpointManager.super(self)
+  return self
+end
+__gmdebug_lua_managers_FunctionBreakpointManager.super = function(self) 
+  self.functionBP = __haxe_ds_ObjectMap.new();
+end
+__gmdebug_lua_managers_FunctionBreakpointManager.__name__ = true
+__gmdebug_lua_managers_FunctionBreakpointManager.prototype = _hx_e();
+__gmdebug_lua_managers_FunctionBreakpointManager.prototype.functionBP= nil;
+
+__gmdebug_lua_managers_FunctionBreakpointManager.prototype.__class__ =  __gmdebug_lua_managers_FunctionBreakpointManager
+
+__gmdebug_lua_managers_VariableManager.new = function() 
+  local self = _hx_new(__gmdebug_lua_managers_VariableManager.prototype)
+  __gmdebug_lua_managers_VariableManager.super(self)
+  return self
+end
+__gmdebug_lua_managers_VariableManager.super = function(self) 
+  self.storedVariables = _hx_tab_array({[0]=nil}, 1);
+end
+__gmdebug_lua_managers_VariableManager.__name__ = true
+__gmdebug_lua_managers_VariableManager.prototype = _hx_e();
+__gmdebug_lua_managers_VariableManager.prototype.storedVariables= nil;
+__gmdebug_lua_managers_VariableManager.prototype.resetVariables = function(self) 
+  self.storedVariables = _hx_tab_array({[0]=nil}, 1);
+end
+__gmdebug_lua_managers_VariableManager.prototype.getVar = function(self,ind) 
+  do return self.storedVariables[ind] end
+end
+__gmdebug_lua_managers_VariableManager.prototype.genvar = function(self,addv) 
+  local name = Std.string(addv.name);
+  local val = addv.value;
+  local virtual = addv.virtual;
+  local noquote = addv.noquote;
+  local novalue = addv.novalue;
+  local ty = _G.type(val);
+  local id = _G.TypeID(val);
+  local stringReplace;
+  local _g = _G.type(val);
+  if (_g) == "number" then 
+    stringReplace = Std.string(val);
+  elseif (_g) == "string" then 
+    stringReplace = val;
+  elseif (_g) == "table" then 
+    stringReplace = "table";else
+  stringReplace = _G.tostring(val); end;
+  local obj;
+  if (ty) == "string" then 
+    obj = (function() 
+      local _hx_1
+      if (noquote == nil) then 
+      _hx_1 = Std.string(Std.string("\"") .. Std.string(stringReplace)) .. Std.string("\""); elseif (novalue == nil) then 
+      _hx_1 = stringReplace; elseif (novalue == true) then 
+      _hx_1 = ""; else 
+      _hx_1 = stringReplace; end
+      return _hx_1
+    end )();
+  elseif (ty) == "table" then 
+    obj = "table";else
+  obj = (function() 
+    local _hx_2
+    if (novalue == nil) then 
+    _hx_2 = stringReplace; elseif (novalue == true) then 
+    _hx_2 = ""; else 
+    _hx_2 = stringReplace; end
+    return _hx_2
+  end )(); end;
+  local obj1;
+  if (name == "_G") then 
+    obj1 = 0;
+  else
+    if (id) == _G.TYPE_ENTITY then 
+      obj1 = (function() 
+        local _hx_3
+        if (not _G.IsValid(val)) then 
+        _hx_3 = 0; else 
+        _hx_3 = __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, self.storedVariables:push(val) - 1)); end
+        return _hx_3
+      end )();
+    elseif (id) == _G.TYPE_FUNCTION or (id) == _G.TYPE_TABLE or (id) == _G.TYPE_USERDATA then 
+      obj1 = __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, self.storedVariables:push(val) - 1));else
+    obj1 = 0; end;
+  end;
+  local obj = _hx_o({__fields__={name=true,type=true,value=true,variablesReference=true},name=name,type=ty,value=obj,variablesReference=obj1});
+  if (id == _G.TYPE_FUNCTION) then 
+    if (virtual == nil) then 
+      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="method",attributes=nil,visibility="public"});
+    else
+      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="virtual",attributes=nil,visibility="internal"});
+    end;
+  else
+    if (virtual ~= nil) then 
+      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="virtual",attributes=nil,visibility="internal"});
+    end;
+  end;
+  do return obj end
+end
+__gmdebug_lua_managers_VariableManager.prototype.generateVariablesReference = function(self,val,name) 
+  local _g = _G.TypeID(val);
+  if (name == "_G") then 
+    do return 0 end;
+  else
+    if (_g) == _G.TYPE_ENTITY then 
+      if (not _G.IsValid(val)) then 
+        do return 0 end;
+      else
+        do return __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, self.storedVariables:push(val) - 1)) end;
+      end;
+    elseif (_g) == _G.TYPE_FUNCTION or (_g) == _G.TYPE_TABLE or (_g) == _G.TYPE_USERDATA then 
+      do return __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, self.storedVariables:push(val) - 1)) end;else
+    do return 0 end; end;
+  end;
+end
+
+__gmdebug_lua_managers_VariableManager.prototype.__class__ =  __gmdebug_lua_managers_VariableManager
+
+__gmod__LuaArray_LuaArray_Impl_.new = {}
+__gmod__LuaArray_LuaArray_Impl_.__name__ = true
+__gmod__LuaArray_LuaArray_Impl_.keyValueIterator = function(this1) 
+  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.ipairs(this1);
+  local next = _hx_1_p_next;
+  local i = _hx_1_p_index;
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
+    i = _hx_2_res_index;
+    do return _hx_o({__fields__={key=true,value=true},key=_hx_2_res_index,value=_hx_2_res_value}) end;
+  end,hasNext=function(self) 
+    do return _G.select(2, next(this1, i)) ~= nil end;
+  end}) end;
+end
+__gmod__LuaArray_LuaArray_Impl_.iterator = function(this1) 
+  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.ipairs(this1);
+  local next = _hx_1_p_next;
+  local i = _hx_1_p_index;
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
+    i = _hx_2_res_index;
+    do return _hx_2_res_value end;
+  end,hasNext=function(self) 
+    do return _G.select(2, next(this1, i)) ~= nil end;
+  end}) end;
+end
+
+__gmod__PairTools_KeyTable_Impl_.new = {}
+__gmod__PairTools_KeyTable_Impl_.__name__ = true
+__gmod__PairTools_KeyTable_Impl_.iterator = function(this1) 
+  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(this1);
+  local next = _hx_1_p_next;
+  local i = _hx_1_p_index;
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
+    i = _hx_2_res_index;
+    do return _hx_2_res_index end;
+  end,hasNext=function(self) 
+    do return _G.select(2, _G.next(this1, i)) ~= nil end;
+  end}) end;
+end
+
+__gmod_WeakTools.new = {}
+__gmod_WeakTools.__name__ = true
+__gmod_WeakTools.setWeakKeys = function(table) 
+  local prevMeta = _G.getmetatable(table);
+  if (prevMeta == nil) then 
+    prevMeta = ({});
+    _G.setmetatable(table, prevMeta);
+  end;
+  prevMeta.__mode = "k";
+end
+__gmod_WeakTools.setWeakKeysM = function(objMap) 
+  __gmod_WeakTools.setWeakKeys(objMap.h);
+  __gmod_WeakTools.setWeakKeys(objMap.k);
+end
+
+__gmod_macros_include___ForceExpose.new = {}
+_hx_exports["__forceExpose"] = __gmod_macros_include___ForceExpose
+__gmod_macros_include___ForceExpose.__name__ = true
+
+__haxe_EntryPoint.new = {}
+__haxe_EntryPoint.__name__ = true
+__haxe_EntryPoint.processEvents = function() 
+  while (true) do 
+    local f = __haxe_EntryPoint.pending:shift();
+    if (f == nil) then 
+      break;
+    end;
+    f();
+  end;
+  local time = __haxe_MainLoop.tick();
+  if (not __haxe_MainLoop.hasEvents() and (__haxe_EntryPoint.threadCount == 0)) then 
+    do return -1 end;
+  end;
+  do return time end;
+end
+__haxe_EntryPoint.run = function() 
+  while (not (__haxe_EntryPoint.processEvents() < 0)) do 
+  end;
+end
 
 __haxe_Json.new = {}
 __haxe_Json.__name__ = true
@@ -3169,282 +5143,6 @@ end
 __haxe_Json.stringify = function(value,replacer,space) 
   do return __haxe_format_JsonPrinter.print(value, replacer, space) end;
 end
-
-__haxe_format_JsonPrinter.new = function(replacer,space) 
-  local self = _hx_new(__haxe_format_JsonPrinter.prototype)
-  __haxe_format_JsonPrinter.super(self,replacer,space)
-  return self
-end
-__haxe_format_JsonPrinter.super = function(self,replacer,space) 
-  self.replacer = _hx_funcToField(replacer);
-  self.indent = space;
-  self.pretty = space ~= nil;
-  self.nind = 0;
-  self.buf = StringBuf.new();
-end
-__haxe_format_JsonPrinter.__name__ = true
-__haxe_format_JsonPrinter.print = function(o,replacer,space) 
-  local printer = __haxe_format_JsonPrinter.new(replacer, space);
-  printer:write("", o);
-  do return _G.table.concat(printer.buf.b) end;
-end
-__haxe_format_JsonPrinter.prototype = _hx_e();
-__haxe_format_JsonPrinter.prototype.buf= nil;
-__haxe_format_JsonPrinter.prototype.replacer= nil;
-__haxe_format_JsonPrinter.prototype.indent= nil;
-__haxe_format_JsonPrinter.prototype.pretty= nil;
-__haxe_format_JsonPrinter.prototype.nind= nil;
-__haxe_format_JsonPrinter.prototype.write = function(self,k,v) 
-  if (self.replacer ~= nil) then 
-    v = self:replacer(k, v);
-  end;
-  local _g = Type.typeof(v);
-  local tmp = _g[1];
-  if (tmp) == 0 then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, "null");
-    _this.length = _this.length + #"null";
-  elseif (tmp) == 1 then 
-    local _this = self.buf;
-    local str = Std.string(v);
-    _G.table.insert(_this.b, str);
-    _this.length = _this.length + #str;
-  elseif (tmp) == 2 then 
-    local v = (function() 
-      local _hx_1
-      if (Math.isFinite(v)) then 
-      _hx_1 = Std.string(v); else 
-      _hx_1 = "null"; end
-      return _hx_1
-    end )();
-    local _this = self.buf;
-    local str = Std.string(v);
-    _G.table.insert(_this.b, str);
-    _this.length = _this.length + #str;
-  elseif (tmp) == 3 then 
-    local _this = self.buf;
-    local str = Std.string(v);
-    _G.table.insert(_this.b, str);
-    _this.length = _this.length + #str;
-  elseif (tmp) == 4 then 
-    self:fieldsString(v, Reflect.fields(v));
-  elseif (tmp) == 5 then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"<fun>\"");
-    _this.length = _this.length + #"\"<fun>\"";
-  elseif (tmp) == 6 then 
-    local _g = _g[2];
-    if (_g == String) then 
-      self:quote(v);
-    else
-      if (_g == Array) then 
-        local v = v;
-        local _this = self.buf;
-        _G.table.insert(_this.b, _G.string.char(91));
-        _this.length = _this.length + 1;
-        local len = v.length;
-        local last = len - 1;
-        local _g = 0;
-        while (_g < len) do 
-          _g = _g + 1;
-          local i = _g - 1;
-          if (i > 0) then 
-            local _this = self.buf;
-            _G.table.insert(_this.b, _G.string.char(44));
-            _this.length = _this.length + 1;
-          else
-            self.nind = self.nind + 1;
-          end;
-          if (self.pretty) then 
-            local _this = self.buf;
-            _G.table.insert(_this.b, _G.string.char(10));
-            _this.length = _this.length + 1;
-          end;
-          if (self.pretty) then 
-            local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
-            local _this = self.buf;
-            local str = Std.string(v);
-            _G.table.insert(_this.b, str);
-            _this.length = _this.length + #str;
-          end;
-          self:write(i, v[i]);
-          if (i == last) then 
-            self.nind = self.nind - 1;
-            if (self.pretty) then 
-              local _this = self.buf;
-              _G.table.insert(_this.b, _G.string.char(10));
-              _this.length = _this.length + 1;
-            end;
-            if (self.pretty) then 
-              local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
-              local _this = self.buf;
-              local str = Std.string(v);
-              _G.table.insert(_this.b, str);
-              _this.length = _this.length + #str;
-            end;
-          end;
-        end;
-        local _this = self.buf;
-        _G.table.insert(_this.b, _G.string.char(93));
-        _this.length = _this.length + 1;
-      else
-        if (_g == __haxe_ds_StringMap) then 
-          local v = v;
-          local o = _hx_e();
-          local k = v:keys();
-          while (k:hasNext()) do 
-            local k = k:next();
-            local ret = v.h[k];
-            if (ret == __haxe_ds_StringMap.tnull) then 
-              ret = nil;
-            end;
-            o[k] = ret;
-          end;
-          local v = o;
-          self:fieldsString(v, Reflect.fields(v));
-        else
-          if (_g == Date) then 
-            self:quote(__lua_Boot.dateStr(v));
-          else
-            self:classString(v);
-          end;
-        end;
-      end;
-    end;
-  elseif (tmp) == 7 then 
-    local _this = self.buf;
-    local str = Std.string(v[1]);
-    _G.table.insert(_this.b, str);
-    _this.length = _this.length + #str;
-  elseif (tmp) == 8 then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"???\"");
-    _this.length = _this.length + #"\"???\""; end;
-end
-__haxe_format_JsonPrinter.prototype.classString = function(self,v) 
-  self:fieldsString(v, Type.getInstanceFields(Type.getClass(v)));
-end
-__haxe_format_JsonPrinter.prototype.fieldsString = function(self,v,fields) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local len = fields.length;
-  local last = len - 1;
-  local first = true;
-  local _g = 0;
-  local _hx_continue_1 = false;
-  while (_g < len) do repeat 
-    _g = _g + 1;
-    local i = _g - 1;
-    local f = fields[i];
-    local value = Reflect.field(v, f);
-    if (Reflect.isFunction(value)) then 
-      break;
-    end;
-    if (first) then 
-      self.nind = self.nind + 1;
-      first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    if (self.pretty) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(10));
-      _this.length = _this.length + 1;
-    end;
-    if (self.pretty) then 
-      local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
-      local _this = self.buf;
-      local str = Std.string(v);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-    self:quote(f);
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(58));
-    _this.length = _this.length + 1;
-    if (self.pretty) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(32));
-      _this.length = _this.length + 1;
-    end;
-    self:write(f, value);
-    if (i == last) then 
-      self.nind = self.nind - 1;
-      if (self.pretty) then 
-        local _this = self.buf;
-        _G.table.insert(_this.b, _G.string.char(10));
-        _this.length = _this.length + 1;
-      end;
-      if (self.pretty) then 
-        local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
-        local _this = self.buf;
-        local str = Std.string(v);
-        _G.table.insert(_this.b, str);
-        _this.length = _this.length + #str;
-      end;
-    end;until true
-    if _hx_continue_1 then 
-    _hx_continue_1 = false;
-    break;
-    end;
-    
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__haxe_format_JsonPrinter.prototype.quote = function(self,s) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(34));
-  _this.length = _this.length + 1;
-  local i = 0;
-  while (true) do 
-    i = i + 1;
-    local c = _G.string.byte(s, (i - 1) + 1);
-    if (c == nil) then 
-      break;
-    end;
-    if (c) == 8 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\b");
-      _this.length = _this.length + #"\\b";
-    elseif (c) == 9 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\t");
-      _this.length = _this.length + #"\\t";
-    elseif (c) == 10 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\n");
-      _this.length = _this.length + #"\\n";
-    elseif (c) == 12 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\f");
-      _this.length = _this.length + #"\\f";
-    elseif (c) == 13 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\r");
-      _this.length = _this.length + #"\\r";
-    elseif (c) == 34 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\\"");
-      _this.length = _this.length + #"\\\"";
-    elseif (c) == 92 then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "\\\\");
-      _this.length = _this.length + #"\\\\";else
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(c));
-    _this.length = _this.length + 1; end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(34));
-  _this.length = _this.length + 1;
-end
-
-__haxe_format_JsonPrinter.prototype.__class__ =  __haxe_format_JsonPrinter
 
 __haxe_Log.new = {}
 __haxe_Log.__name__ = true
@@ -3469,12 +5167,165 @@ __haxe_Log.trace = function(v,infos)
   local str = __haxe_Log.formatOutput(v, infos);
   _hx_print(str);
 end
-_hxClasses["haxe.io.Encoding"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="UTF8","RawNative"},2)}
-__haxe_io_Encoding = _hxClasses["haxe.io.Encoding"];
-__haxe_io_Encoding.UTF8 = _hx_tab_array({[0]="UTF8",0,__enum__ = __haxe_io_Encoding},2)
 
-__haxe_io_Encoding.RawNative = _hx_tab_array({[0]="RawNative",1,__enum__ = __haxe_io_Encoding},2)
+__haxe_MainEvent.new = function(f,p) 
+  local self = _hx_new(__haxe_MainEvent.prototype)
+  __haxe_MainEvent.super(self,f,p)
+  return self
+end
+__haxe_MainEvent.super = function(self,f,p) 
+  self.isBlocking = true;
+  self.f = _hx_funcToField(f);
+  self.priority = p;
+  self.nextRun = -_G.math.huge;
+end
+__haxe_MainEvent.__name__ = true
+__haxe_MainEvent.prototype = _hx_e();
+__haxe_MainEvent.prototype.f= nil;
+__haxe_MainEvent.prototype.prev= nil;
+__haxe_MainEvent.prototype.next= nil;
+__haxe_MainEvent.prototype.isBlocking= nil;
+__haxe_MainEvent.prototype.nextRun= nil;
+__haxe_MainEvent.prototype.priority= nil;
 
+__haxe_MainEvent.prototype.__class__ =  __haxe_MainEvent
+
+__haxe_MainLoop.new = {}
+__haxe_MainLoop.__name__ = true
+__haxe_MainLoop.hasEvents = function() 
+  local p = __haxe_MainLoop.pending;
+  while (p ~= nil) do 
+    if (p.isBlocking) then 
+      do return true end;
+    end;
+    p = p.next;
+  end;
+  do return false end;
+end
+__haxe_MainLoop.sortEvents = function() 
+  local list = __haxe_MainLoop.pending;
+  if (list == nil) then 
+    do return end;
+  end;
+  local insize = 1;
+  local nmerges;
+  local psize = 0;
+  local qsize = 0;
+  local p;
+  local q;
+  local e;
+  local tail;
+  while (true) do 
+    p = list;
+    list = nil;
+    tail = nil;
+    nmerges = 0;
+    while (p ~= nil) do 
+      nmerges = nmerges + 1;
+      q = p;
+      psize = 0;
+      local _g = 0;
+      local _g1 = insize;
+      while (_g < _g1) do 
+        _g = _g + 1;
+        psize = psize + 1;
+        q = q.next;
+        if (q == nil) then 
+          break;
+        end;
+      end;
+      qsize = insize;
+      while ((psize > 0) or ((qsize > 0) and (q ~= nil))) do 
+        if (psize == 0) then 
+          e = q;
+          q = q.next;
+          qsize = qsize - 1;
+        else
+          if (((qsize == 0) or (q == nil)) or ((p.priority > q.priority) or ((p.priority == q.priority) and (p.nextRun <= q.nextRun)))) then 
+            e = p;
+            p = p.next;
+            psize = psize - 1;
+          else
+            e = q;
+            q = q.next;
+            qsize = qsize - 1;
+          end;
+        end;
+        if (tail ~= nil) then 
+          tail.next = e;
+        else
+          list = e;
+        end;
+        e.prev = tail;
+        tail = e;
+      end;
+      p = q;
+    end;
+    tail.next = nil;
+    if (nmerges <= 1) then 
+      break;
+    end;
+    insize = insize * 2;
+  end;
+  list.prev = nil;
+  __haxe_MainLoop.pending = list;
+end
+__haxe_MainLoop.tick = function() 
+  __haxe_MainLoop.sortEvents();
+  local e = __haxe_MainLoop.pending;
+  local now = Sys.time();
+  local wait = 1e9;
+  while (e ~= nil) do 
+    local next = e.next;
+    local wt = e.nextRun - now;
+    if (wt <= 0) then 
+      wait = 0;
+      if (e.f ~= nil) then 
+        e:f();
+      end;
+    else
+      if (wait > wt) then 
+        wait = wt;
+      end;
+    end;
+    e = next;
+  end;
+  do return wait end;
+end
+
+__haxe_ds_IntMap.new = function() 
+  local self = _hx_new(__haxe_ds_IntMap.prototype)
+  __haxe_ds_IntMap.super(self)
+  return self
+end
+__haxe_ds_IntMap.super = function(self) 
+  self.h = ({});
+end
+__haxe_ds_IntMap.__name__ = true
+__haxe_ds_IntMap.__interfaces__ = {__haxe_IMap}
+__haxe_ds_IntMap.prototype = _hx_e();
+__haxe_ds_IntMap.prototype.h= nil;
+__haxe_ds_IntMap.prototype.get = function(self,key) 
+  local ret = self.h[key];
+  if (ret == __haxe_ds_IntMap.tnull) then 
+    ret = nil;
+  end;
+  do return ret end
+end
+__haxe_ds_IntMap.prototype.keys = function(self) 
+  local _gthis = self;
+  local next = _G.next;
+  local cur = next(self.h, nil);
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local ret = cur;
+    cur = next(_gthis.h, cur);
+    do return ret end;
+  end,hasNext=function(self) 
+    do return cur ~= nil end;
+  end}) end
+end
+
+__haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
 
 __haxe_format_JsonParser.new = function(str) 
   local self = _hx_new(__haxe_format_JsonParser.prototype)
@@ -4043,887 +5894,453 @@ end
 
 __haxe_format_JsonParser.prototype.__class__ =  __haxe_format_JsonParser
 
-__gmod__PairTools_KeyTable_Impl_.new = {}
-__gmod__PairTools_KeyTable_Impl_.__name__ = true
-__gmod__PairTools_KeyTable_Impl_.iterator = function(this1) 
-  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(this1);
-  local next = _hx_1_p_next;
-  local i = _hx_1_p_index;
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
-    i = _hx_2_res_index;
-    do return _hx_2_res_index end;
-  end,hasNext=function(self) 
-    do return _G.select(2, _G.next(this1, i)) ~= nil end;
-  end}) end;
-end
-
-__tink_json_BasicWriter.new = function() 
-  local self = _hx_new(__tink_json_BasicWriter.prototype)
-  __tink_json_BasicWriter.super(self)
+__haxe_format_JsonPrinter.new = function(replacer,space) 
+  local self = _hx_new(__haxe_format_JsonPrinter.prototype)
+  __haxe_format_JsonPrinter.super(self,replacer,space)
   return self
 end
-__tink_json_BasicWriter.super = function(self) 
-  self.plugins = __tink_core_Annex.new(self);
-end
-__tink_json_BasicWriter.__name__ = true
-__tink_json_BasicWriter.prototype = _hx_e();
-__tink_json_BasicWriter.prototype.plugins= nil;
-__tink_json_BasicWriter.prototype.buf= nil;
-__tink_json_BasicWriter.prototype.init = function(self) 
+__haxe_format_JsonPrinter.super = function(self,replacer,space) 
+  self.replacer = _hx_funcToField(replacer);
+  self.indent = space;
+  self.pretty = space ~= nil;
+  self.nind = 0;
   self.buf = StringBuf.new();
 end
-__tink_json_BasicWriter.prototype.writeDynamic = function(self,value) 
-  local s = __haxe_format_JsonPrinter.print(value);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
+__haxe_format_JsonPrinter.__name__ = true
+__haxe_format_JsonPrinter.print = function(o,replacer,space) 
+  local printer = __haxe_format_JsonPrinter.new(replacer, space);
+  printer:write("", o);
+  do return _G.table.concat(printer.buf.b) end;
 end
-
-__tink_json_BasicWriter.prototype.__class__ =  __tink_json_BasicWriter
-
-__tink_json_Writer0.new = function() 
-  local self = _hx_new(__tink_json_Writer0.prototype)
-  __tink_json_Writer0.super(self)
-  return self
+__haxe_format_JsonPrinter.prototype = _hx_e();
+__haxe_format_JsonPrinter.prototype.buf= nil;
+__haxe_format_JsonPrinter.prototype.replacer= nil;
+__haxe_format_JsonPrinter.prototype.indent= nil;
+__haxe_format_JsonPrinter.prototype.pretty= nil;
+__haxe_format_JsonPrinter.prototype.nind= nil;
+__haxe_format_JsonPrinter.prototype.write = function(self,k,v) 
+  if (self.replacer ~= nil) then 
+    v = self:replacer(k, v);
+  end;
+  local _g = Type.typeof(v);
+  local tmp = _g[1];
+  if (tmp) == 0 then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, "null");
+    _this.length = _this.length + #"null";
+  elseif (tmp) == 1 then 
+    local _this = self.buf;
+    local str = Std.string(v);
+    _G.table.insert(_this.b, str);
+    _this.length = _this.length + #str;
+  elseif (tmp) == 2 then 
+    local v = (function() 
+      local _hx_1
+      if (Math.isFinite(v)) then 
+      _hx_1 = Std.string(v); else 
+      _hx_1 = "null"; end
+      return _hx_1
+    end )();
+    local _this = self.buf;
+    local str = Std.string(v);
+    _G.table.insert(_this.b, str);
+    _this.length = _this.length + #str;
+  elseif (tmp) == 3 then 
+    local _this = self.buf;
+    local str = Std.string(v);
+    _G.table.insert(_this.b, str);
+    _this.length = _this.length + #str;
+  elseif (tmp) == 4 then 
+    self:fieldsString(v, Reflect.fields(v));
+  elseif (tmp) == 5 then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"<fun>\"");
+    _this.length = _this.length + #"\"<fun>\"";
+  elseif (tmp) == 6 then 
+    local _g = _g[2];
+    if (_g == String) then 
+      self:quote(v);
+    else
+      if (_g == Array) then 
+        local v = v;
+        local _this = self.buf;
+        _G.table.insert(_this.b, _G.string.char(91));
+        _this.length = _this.length + 1;
+        local len = v.length;
+        local last = len - 1;
+        local _g = 0;
+        while (_g < len) do 
+          _g = _g + 1;
+          local i = _g - 1;
+          if (i > 0) then 
+            local _this = self.buf;
+            _G.table.insert(_this.b, _G.string.char(44));
+            _this.length = _this.length + 1;
+          else
+            self.nind = self.nind + 1;
+          end;
+          if (self.pretty) then 
+            local _this = self.buf;
+            _G.table.insert(_this.b, _G.string.char(10));
+            _this.length = _this.length + 1;
+          end;
+          if (self.pretty) then 
+            local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
+            local _this = self.buf;
+            local str = Std.string(v);
+            _G.table.insert(_this.b, str);
+            _this.length = _this.length + #str;
+          end;
+          self:write(i, v[i]);
+          if (i == last) then 
+            self.nind = self.nind - 1;
+            if (self.pretty) then 
+              local _this = self.buf;
+              _G.table.insert(_this.b, _G.string.char(10));
+              _this.length = _this.length + 1;
+            end;
+            if (self.pretty) then 
+              local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
+              local _this = self.buf;
+              local str = Std.string(v);
+              _G.table.insert(_this.b, str);
+              _this.length = _this.length + #str;
+            end;
+          end;
+        end;
+        local _this = self.buf;
+        _G.table.insert(_this.b, _G.string.char(93));
+        _this.length = _this.length + 1;
+      else
+        if (_g == __haxe_ds_StringMap) then 
+          local v = v;
+          local o = _hx_e();
+          local k = v:keys();
+          while (k:hasNext()) do 
+            local k = k:next();
+            local ret = v.h[k];
+            if (ret == __haxe_ds_StringMap.tnull) then 
+              ret = nil;
+            end;
+            o[k] = ret;
+          end;
+          local v = o;
+          self:fieldsString(v, Reflect.fields(v));
+        else
+          if (_g == Date) then 
+            self:quote(__lua_Boot.dateStr(v));
+          else
+            self:classString(v);
+          end;
+        end;
+      end;
+    end;
+  elseif (tmp) == 7 then 
+    local _this = self.buf;
+    local str = Std.string(v[1]);
+    _G.table.insert(_this.b, str);
+    _this.length = _this.length + #str;
+  elseif (tmp) == 8 then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"???\"");
+    _this.length = _this.length + #"\"???\""; end;
 end
-__tink_json_Writer0.super = function(self) 
-  __tink_json_BasicWriter.super(self);
+__haxe_format_JsonPrinter.prototype.classString = function(self,v) 
+  self:fieldsString(v, Type.getInstanceFields(Type.getClass(v)));
 end
-__tink_json_Writer0.__name__ = true
-__tink_json_Writer0.prototype = _hx_e();
-__tink_json_Writer0.prototype.process0 = function(self,value) 
+__haxe_format_JsonPrinter.prototype.fieldsString = function(self,v,fields) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
-  local value1 = value.command;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"command\":");
-  _this.length = _this.length + #"\"command\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.request_seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"request_seq\":");
-  _this.length = _this.length + #"\"request_seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"seq\":");
-  _this.length = _this.length + #"\"seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.success;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"success\":");
-  _this.length = _this.length + #"\"success\":";
-  local _this = self.buf;
-  local str = (function() 
-    local _hx_1
-    if (value1) then 
-    _hx_1 = "true"; else 
-    _hx_1 = "false"; end
-    return _hx_1
-  end )();
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.type;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"type\":");
-  _this.length = _this.length + #"\"type\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.body;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"body\":");
-    _this.length = _this.length + #"\"body\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      self:process1(_g);
-    end;
-  end;
-  local _g = value.message;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"message\":");
-    _this.length = _this.length + #"\"message\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.process1 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.stackFrames;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"stackFrames\":");
-  _this.length = _this.length + #"\"stackFrames\":";
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(91));
-  _this.length = _this.length + 1;
+  local len = fields.length;
+  local last = len - 1;
   local first = true;
   local _g = 0;
-  while (_g < value1.length) do 
-    local value = value1[_g];
+  local _hx_continue_1 = false;
+  while (_g < len) do repeat 
     _g = _g + 1;
+    local i = _g - 1;
+    local f = fields[i];
+    local value = Reflect.field(v, f);
+    if (Reflect.isFunction(value)) then 
+      break;
+    end;
     if (first) then 
+      self.nind = self.nind + 1;
       first = false;
     else
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(44));
       _this.length = _this.length + 1;
     end;
-    self:process2(value);
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(93));
-  _this.length = _this.length + 1;
-  local _g = value.totalFrames;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"totalFrames\":");
-    _this.length = _this.length + #"\"totalFrames\":";
-    if (_g == nil) then 
+    if (self.pretty) then 
       local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.process2 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.column;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"column\":");
-  _this.length = _this.length + #"\"column\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.id;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"id\":");
-  _this.length = _this.length + #"\"id\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.line;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"line\":");
-  _this.length = _this.length + #"\"line\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.name;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"name\":");
-  _this.length = _this.length + #"\"name\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.endColumn;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"endColumn\":");
-    _this.length = _this.length + #"\"endColumn\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.endLine;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"endLine\":");
-    _this.length = _this.length + #"\"endLine\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.moduleId;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"moduleId\":");
-    _this.length = _this.length + #"\"moduleId\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      self:writeDynamic(_g);
-    end;
-  end;
-  local _g = value.presentationHint;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.source;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"source\":");
-    _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.process3 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
+      _G.table.insert(_this.b, _G.string.char(10));
       _this.length = _this.length + 1;
     end;
+    if (self.pretty) then 
+      local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
+      local _this = self.buf;
+      local str = Std.string(v);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+    self:quote(f);
     local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
+    _G.table.insert(_this.b, _G.string.char(58));
+    _this.length = _this.length + 1;
+    if (self.pretty) then 
       local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
+      _G.table.insert(_this.b, _G.string.char(32));
       _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
+    end;
+    self:write(f, value);
+    if (i == last) then 
+      self.nind = self.nind - 1;
+      if (self.pretty) then 
+        local _this = self.buf;
+        _G.table.insert(_this.b, _G.string.char(10));
+        _this.length = _this.length + 1;
       end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
+      if (self.pretty) then 
+        local v = StringTools.lpad("", self.indent, self.nind * #self.indent);
+        local _this = self.buf;
+        local str = Std.string(v);
+        _G.table.insert(_this.b, str);
+        _this.length = _this.length + #str;
       end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
+    end;until true
+    if _hx_continue_1 then 
+    _hx_continue_1 = false;
+    break;
     end;
+    
   end;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process4 = function(self,value) 
+__haxe_format_JsonPrinter.prototype.quote = function(self,s) 
   local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
+  _G.table.insert(_this.b, _G.string.char(34));
   _this.length = _this.length + 1;
-  local value1 = value.algorithm;
+  local i = 0;
+  while (true) do 
+    i = i + 1;
+    local c = _G.string.byte(s, (i - 1) + 1);
+    if (c == nil) then 
+      break;
+    end;
+    if (c) == 8 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\b");
+      _this.length = _this.length + #"\\b";
+    elseif (c) == 9 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\t");
+      _this.length = _this.length + #"\\t";
+    elseif (c) == 10 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\n");
+      _this.length = _this.length + #"\\n";
+    elseif (c) == 12 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\f");
+      _this.length = _this.length + #"\\f";
+    elseif (c) == 13 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\r");
+      _this.length = _this.length + #"\\r";
+    elseif (c) == 34 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\\"");
+      _this.length = _this.length + #"\\\"";
+    elseif (c) == 92 then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "\\\\");
+      _this.length = _this.length + #"\\\\";else
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(c));
+    _this.length = _this.length + 1; end;
+  end;
   local _this = self.buf;
-  _G.table.insert(_this.b, "\"algorithm\":");
-  _this.length = _this.length + #"\"algorithm\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value = value.checksum;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
+  _G.table.insert(_this.b, _G.string.char(34));
   _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"checksum\":");
-  _this.length = _this.length + #"\"checksum\":";
-  local s = __haxe_format_JsonPrinter.print(value);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.process5 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.write = function(self,value) 
-  self:init();
-  self:process0(value);
-  do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer0.prototype.__class__ =  __tink_json_Writer0
-__tink_json_Writer0.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer0.prototype,{__index=__tink_json_BasicWriter.prototype})
+__haxe_format_JsonPrinter.prototype.__class__ =  __haxe_format_JsonPrinter
 
-__tink_core_Annex.new = function(target) 
-  local self = _hx_new(__tink_core_Annex.prototype)
-  __tink_core_Annex.super(self,target)
+__haxe_io_Bytes.new = function(length,b) 
+  local self = _hx_new(__haxe_io_Bytes.prototype)
+  __haxe_io_Bytes.super(self,length,b)
   return self
 end
-__tink_core_Annex.super = function(self,target) 
-  self.target = target;
-  self.registry = __haxe_ds_ObjectMap.new();
+__haxe_io_Bytes.super = function(self,length,b) 
+  self.length = length;
+  self.b = b;
 end
-__tink_core_Annex.__name__ = true
-__tink_core_Annex.prototype = _hx_e();
-__tink_core_Annex.prototype.target= nil;
-__tink_core_Annex.prototype.registry= nil;
+__haxe_io_Bytes.__name__ = true
+__haxe_io_Bytes.alloc = function(length) 
+  local a = Array.new();
+  local _g = 0;
+  while (_g < length) do 
+    _g = _g + 1;
+    a:push(0);
+  end;
+  do return __haxe_io_Bytes.new(length, a) end;
+end
+__haxe_io_Bytes.ofString = function(s,encoding) 
+  local _g = _hx_tab_array({}, 0);
+  local _g1 = 0;
+  local _g2 = _G.string.len(s);
+  while (_g1 < _g2) do 
+    _g1 = _g1 + 1;
+    _g:push(_G.string.byte(s, (_g1 - 1) + 1));
+  end;
+  do return __haxe_io_Bytes.new(_g.length, _g) end;
+end
+__haxe_io_Bytes.prototype = _hx_e();
+__haxe_io_Bytes.prototype.length= nil;
+__haxe_io_Bytes.prototype.b= nil;
+__haxe_io_Bytes.prototype.getString = function(self,pos,len,encoding) 
+  local tmp = encoding == nil;
+  if (((pos < 0) or (len < 0)) or ((pos + len) > self.length)) then 
+    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
+  end;
+  if ((self.b.length - pos) <= __lua_Boot.MAXSTACKSIZE) then 
+    local _end = Math.min(self.b.length, pos + len) - 1;
+    do return _G.string.char(_hx_table.unpack(self.b, pos, _end)) end;
+  else
+    local tbl = ({});
+    local _g = pos;
+    local _g1 = pos + len;
+    while (_g < _g1) do 
+      _g = _g + 1;
+      local idx = _g - 1;
+      _G.table.insert(tbl, _G.string.char(self.b[idx]));
+    end;
+    do return _G.table.concat(tbl, "") end;
+  end;
+end
+__haxe_io_Bytes.prototype.toString = function(self) 
+  do return self:getString(0, self.length) end
+end
 
-__tink_core_Annex.prototype.__class__ =  __tink_core_Annex
+__haxe_io_Bytes.prototype.__class__ =  __haxe_io_Bytes
 
-__haxe_Exception.new = function(message,previous,native) 
-  local self = _hx_new(__haxe_Exception.prototype)
-  __haxe_Exception.super(self,message,previous,native)
+__haxe_io_BytesBuffer.new = function() 
+  local self = _hx_new(__haxe_io_BytesBuffer.prototype)
+  __haxe_io_BytesBuffer.super(self)
   return self
 end
-__haxe_Exception.super = function(self,message,previous,native) 
-  self.__skipStack = 0;
-  self.__exceptionMessage = message;
-  self.__previousException = previous;
-  if (native ~= nil) then 
-    self.__nativeException = native;
-    self.__nativeStack = __haxe_NativeStackTrace.exceptionStack();
-  else
-    self.__nativeException = self;
-    self.__nativeStack = __haxe_NativeStackTrace.callStack();
-    self.__skipStack = 1;
-  end;
+__haxe_io_BytesBuffer.super = function(self) 
+  self.b = Array.new();
 end
-__haxe_Exception.__name__ = true
-__haxe_Exception.caught = function(value) 
-  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
-    do return value end;
-  else
-    do return __haxe_ValueException.new(value, nil, value) end;
-  end;
-end
-__haxe_Exception.thrown = function(value) 
-  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
-    do return value:get_native() end;
-  else
-    local e = __haxe_ValueException.new(value);
-    e.__skipStack = e.__skipStack + 1;
-    do return e end;
-  end;
-end
-__haxe_Exception.prototype = _hx_e();
-__haxe_Exception.prototype.__exceptionMessage= nil;
-__haxe_Exception.prototype.__nativeStack= nil;
-__haxe_Exception.prototype.__skipStack= nil;
-__haxe_Exception.prototype.__nativeException= nil;
-__haxe_Exception.prototype.__previousException= nil;
-__haxe_Exception.prototype.unwrap = function(self) 
-  do return self.__nativeException end
-end
-__haxe_Exception.prototype.toString = function(self) 
-  do return self:get_message() end
-end
-__haxe_Exception.prototype.get_message = function(self) 
-  do return self.__exceptionMessage end
-end
-__haxe_Exception.prototype.get_native = function(self) 
-  do return self.__nativeException end
+__haxe_io_BytesBuffer.__name__ = true
+__haxe_io_BytesBuffer.prototype = _hx_e();
+__haxe_io_BytesBuffer.prototype.b= nil;
+__haxe_io_BytesBuffer.prototype.getBytes = function(self) 
+  local bytes = __haxe_io_Bytes.new(self.b.length, self.b);
+  self.b = nil;
+  do return bytes end
 end
 
-__haxe_Exception.prototype.__class__ =  __haxe_Exception
+__haxe_io_BytesBuffer.prototype.__class__ =  __haxe_io_BytesBuffer
+_hxClasses["haxe.io.Encoding"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="UTF8","RawNative"},2)}
+__haxe_io_Encoding = _hxClasses["haxe.io.Encoding"];
+__haxe_io_Encoding.UTF8 = _hx_tab_array({[0]="UTF8",0,__enum__ = __haxe_io_Encoding},2)
+
+__haxe_io_Encoding.RawNative = _hx_tab_array({[0]="RawNative",1,__enum__ = __haxe_io_Encoding},2)
+
+
+__haxe_io_Eof.new = function() 
+  local self = _hx_new(__haxe_io_Eof.prototype)
+  __haxe_io_Eof.super(self)
+  return self
+end
+__haxe_io_Eof.super = function(self) 
+end
+__haxe_io_Eof.__name__ = true
+__haxe_io_Eof.prototype = _hx_e();
+__haxe_io_Eof.prototype.toString = function(self) 
+  do return "Eof" end
+end
+
+__haxe_io_Eof.prototype.__class__ =  __haxe_io_Eof
+_hxClasses["haxe.io.Error"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Blocked","Overflow","OutsideBounds","Custom"},4)}
+__haxe_io_Error = _hxClasses["haxe.io.Error"];
+__haxe_io_Error.Blocked = _hx_tab_array({[0]="Blocked",0,__enum__ = __haxe_io_Error},2)
+
+__haxe_io_Error.Overflow = _hx_tab_array({[0]="Overflow",1,__enum__ = __haxe_io_Error},2)
+
+__haxe_io_Error.OutsideBounds = _hx_tab_array({[0]="OutsideBounds",2,__enum__ = __haxe_io_Error},2)
+
+__haxe_io_Error.Custom = function(e) local _x = _hx_tab_array({[0]="Custom",3,e,__enum__=__haxe_io_Error}, 3); return _x; end 
+
+__haxe_iterators_ArrayIterator.new = function(array) 
+  local self = _hx_new(__haxe_iterators_ArrayIterator.prototype)
+  __haxe_iterators_ArrayIterator.super(self,array)
+  return self
+end
+__haxe_iterators_ArrayIterator.super = function(self,array) 
+  self.current = 0;
+  self.array = array;
+end
+__haxe_iterators_ArrayIterator.__name__ = true
+__haxe_iterators_ArrayIterator.prototype = _hx_e();
+__haxe_iterators_ArrayIterator.prototype.array= nil;
+__haxe_iterators_ArrayIterator.prototype.current= nil;
+__haxe_iterators_ArrayIterator.prototype.hasNext = function(self) 
+  do return self.current < self.array.length end
+end
+__haxe_iterators_ArrayIterator.prototype.next = function(self) 
+  do return self.array[(function() 
+  local _hx_obj = self;
+  local _hx_fld = 'current';
+  local _ = _hx_obj[_hx_fld];
+  _hx_obj[_hx_fld] = _hx_obj[_hx_fld]  + 1;
+   return _;
+   end)()] end
+end
+
+__haxe_iterators_ArrayIterator.prototype.__class__ =  __haxe_iterators_ArrayIterator
+
+__haxe_iterators_ArrayKeyValueIterator.new = function(array) 
+  local self = _hx_new(__haxe_iterators_ArrayKeyValueIterator.prototype)
+  __haxe_iterators_ArrayKeyValueIterator.super(self,array)
+  return self
+end
+__haxe_iterators_ArrayKeyValueIterator.super = function(self,array) 
+  self.array = array;
+end
+__haxe_iterators_ArrayKeyValueIterator.__name__ = true
+__haxe_iterators_ArrayKeyValueIterator.prototype = _hx_e();
+__haxe_iterators_ArrayKeyValueIterator.prototype.array= nil;
+
+__haxe_iterators_ArrayKeyValueIterator.prototype.__class__ =  __haxe_iterators_ArrayKeyValueIterator
+
+__haxe_iterators_MapKeyValueIterator.new = function(map) 
+  local self = _hx_new(__haxe_iterators_MapKeyValueIterator.prototype)
+  __haxe_iterators_MapKeyValueIterator.super(self,map)
+  return self
+end
+__haxe_iterators_MapKeyValueIterator.super = function(self,map) 
+  self.map = map;
+  self.keys = map:keys();
+end
+__haxe_iterators_MapKeyValueIterator.__name__ = true
+__haxe_iterators_MapKeyValueIterator.prototype = _hx_e();
+__haxe_iterators_MapKeyValueIterator.prototype.map= nil;
+__haxe_iterators_MapKeyValueIterator.prototype.keys= nil;
+__haxe_iterators_MapKeyValueIterator.prototype.hasNext = function(self) 
+  do return self.keys:hasNext() end
+end
+__haxe_iterators_MapKeyValueIterator.prototype.next = function(self) 
+  local key = self.keys:next();
+  do return _hx_o({__fields__={value=true,key=true},value=self.map:get(key),key=key}) end
+end
+
+__haxe_iterators_MapKeyValueIterator.prototype.__class__ =  __haxe_iterators_MapKeyValueIterator
 
 __safety_SafetyException.new = function(message,previous,native) 
   local self = _hx_new(__safety_SafetyException.prototype)
@@ -4955,916 +6372,58 @@ __safety_NullPointerException.prototype.__class__ =  __safety_NullPointerExcepti
 __safety_NullPointerException.__super__ = __safety_SafetyException
 setmetatable(__safety_NullPointerException.prototype,{__index=__safety_SafetyException.prototype})
 
-__haxe_NativeStackTrace.new = {}
-__haxe_NativeStackTrace.__name__ = true
-__haxe_NativeStackTrace.saveStack = function(exception) 
-end
-__haxe_NativeStackTrace.callStack = function() 
-  local _g = debug.traceback();
-  if (_g == nil) then 
-    do return _hx_tab_array({}, 0) end;
-  else
-    local idx = 1;
-    local ret = _hx_tab_array({}, 0);
-    while (idx ~= nil) do 
-      local newidx = 0;
-      if (#"\n" > 0) then 
-        newidx = _G.string.find(_g, "\n", idx, true);
-      else
-        if (idx >= #_g) then 
-          newidx = nil;
-        else
-          newidx = idx + 1;
-        end;
-      end;
-      if (newidx ~= nil) then 
-        ret:push(_G.string.sub(_g, idx, newidx - 1));
-        idx = newidx + #"\n";
-      else
-        ret:push(_G.string.sub(_g, idx, #_g));
-        idx = nil;
-      end;
-    end;
-    do return ret:slice(3) end;
-  end;
-end
-__haxe_NativeStackTrace.exceptionStack = function() 
-  do return _hx_tab_array({}, 0) end;
-end
-
-__gmdebug_lua_Util.new = {}
-__gmdebug_lua_Util.__name__ = true
-__gmdebug_lua_Util.compileString = function(eval,errorPrefix) 
-  local _g = __gmdebug_lua_Util.runCompiledFunction(_G.CompileString, eval, errorPrefix, false);
-  local tmp = _g[1];
-  if (tmp) == 0 then 
-    do return __gmdebug_lua_CompileResult.Error(_g[2]) end;
-  elseif (tmp) == 1 then 
-    local _g = _g[2];
-    if (_G.type(_g) == "string") then 
-      do return __gmdebug_lua_CompileResult.Error(_g) end;
-    else
-      do return __gmdebug_lua_CompileResult.Success(_g) end;
-    end; end;
-end
-__gmdebug_lua_Util.runCompiledFunction = function(compiledFunc,a,b,c,d,e) 
-  local _hx_1_runResult_status, _hx_1_runResult_value = _G.pcall(compiledFunc, a, b, c, d, e);
-  if (_hx_1_runResult_status) then 
-    do return __gmdebug_lua_RunResult.Success(_hx_1_runResult_value) end;
-  else
-    do return __gmdebug_lua_RunResult.Error(_hx_1_runResult_value) end;
-  end;
-end
-_hxClasses["gmdebug.lua.RunResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Error","Success"},2)}
-__gmdebug_lua_RunResult = _hxClasses["gmdebug.lua.RunResult"];
-__gmdebug_lua_RunResult.Error = function(err) local _x = _hx_tab_array({[0]="Error",0,err,__enum__=__gmdebug_lua_RunResult}, 3); return _x; end 
-__gmdebug_lua_RunResult.Success = function(dyn) local _x = _hx_tab_array({[0]="Success",1,dyn,__enum__=__gmdebug_lua_RunResult}, 3); return _x; end 
-
-__tink_json_Writer1.new = function() 
-  local self = _hx_new(__tink_json_Writer1.prototype)
-  __tink_json_Writer1.super(self)
+__tink_core_Annex.new = function(target) 
+  local self = _hx_new(__tink_core_Annex.prototype)
+  __tink_core_Annex.super(self,target)
   return self
 end
-__tink_json_Writer1.super = function(self) 
-  __tink_json_BasicWriter.super(self);
+__tink_core_Annex.super = function(self,target) 
+  self.target = target;
+  self.registry = __haxe_ds_ObjectMap.new();
 end
-__tink_json_Writer1.__name__ = true
-__tink_json_Writer1.prototype = _hx_e();
-__tink_json_Writer1.prototype.process0 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.command;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"command\":");
-  _this.length = _this.length + #"\"command\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.request_seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"request_seq\":");
-  _this.length = _this.length + #"\"request_seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"seq\":");
-  _this.length = _this.length + #"\"seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.success;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"success\":");
-  _this.length = _this.length + #"\"success\":";
-  local _this = self.buf;
-  local str = (function() 
-    local _hx_1
-    if (value1) then 
-    _hx_1 = "true"; else 
-    _hx_1 = "false"; end
-    return _hx_1
-  end )();
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.type;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"type\":");
-  _this.length = _this.length + #"\"type\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.body;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"body\":");
-    _this.length = _this.length + #"\"body\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      self:process1(_g);
-    end;
-  end;
-  local _g = value.message;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"message\":");
-    _this.length = _this.length + #"\"message\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
+__tink_core_Annex.__name__ = true
+__tink_core_Annex.prototype = _hx_e();
+__tink_core_Annex.prototype.target= nil;
+__tink_core_Annex.prototype.registry= nil;
+
+__tink_core_Annex.prototype.__class__ =  __tink_core_Annex
+
+__tink_json_BasicWriter.new = function() 
+  local self = _hx_new(__tink_json_BasicWriter.prototype)
+  __tink_json_BasicWriter.super(self)
+  return self
 end
-__tink_json_Writer1.prototype.process1 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value = value.scopes;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"scopes\":");
-  _this.length = _this.length + #"\"scopes\":";
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(91));
-  _this.length = _this.length + 1;
-  local first = true;
-  local _g = 0;
-  while (_g < value.length) do 
-    local value = value[_g];
-    _g = _g + 1;
-    if (first) then 
-      first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    self:process2(value);
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(93));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
+__tink_json_BasicWriter.super = function(self) 
+  self.plugins = __tink_core_Annex.new(self);
 end
-__tink_json_Writer1.prototype.process2 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.expensive;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"expensive\":");
-  _this.length = _this.length + #"\"expensive\":";
-  local _this = self.buf;
-  local str = (function() 
-    local _hx_1
-    if (value1) then 
-    _hx_1 = "true"; else 
-    _hx_1 = "false"; end
-    return _hx_1
-  end )();
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.name;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"name\":");
-  _this.length = _this.length + #"\"name\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.variablesReference;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"variablesReference\":");
-  _this.length = _this.length + #"\"variablesReference\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.column;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"column\":");
-    _this.length = _this.length + #"\"column\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.endColumn;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"endColumn\":");
-    _this.length = _this.length + #"\"endColumn\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.endLine;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"endLine\":");
-    _this.length = _this.length + #"\"endLine\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.indexedVariables;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"indexedVariables\":");
-    _this.length = _this.length + #"\"indexedVariables\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.line;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"line\":");
-    _this.length = _this.length + #"\"line\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.namedVariables;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"namedVariables\":");
-    _this.length = _this.length + #"\"namedVariables\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.presentationHint;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.source;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"source\":");
-    _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
+__tink_json_BasicWriter.__name__ = true
+__tink_json_BasicWriter.prototype = _hx_e();
+__tink_json_BasicWriter.prototype.plugins= nil;
+__tink_json_BasicWriter.prototype.buf= nil;
+__tink_json_BasicWriter.prototype.init = function(self) 
+  self.buf = StringBuf.new();
 end
-__tink_json_Writer1.prototype.process3 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer1.prototype.process4 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.algorithm;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"algorithm\":");
-  _this.length = _this.length + #"\"algorithm\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value = value.checksum;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"checksum\":");
-  _this.length = _this.length + #"\"checksum\":";
+__tink_json_BasicWriter.prototype.writeDynamic = function(self,value) 
   local s = __haxe_format_JsonPrinter.print(value);
   local _this = self.buf;
   local str = Std.string(s);
   _G.table.insert(_this.b, str);
   _this.length = _this.length + #str;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer1.prototype.process5 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer1.prototype.write = function(self,value) 
-  self:init();
-  self:process0(value);
-  do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer1.prototype.__class__ =  __tink_json_Writer1
-__tink_json_Writer1.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer1.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_BasicWriter.prototype.__class__ =  __tink_json_BasicWriter
 
-__gmod__LuaArray_LuaArray_Impl_.new = {}
-__gmod__LuaArray_LuaArray_Impl_.__name__ = true
-__gmod__LuaArray_LuaArray_Impl_.keyValueIterator = function(this1) 
-  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.ipairs(this1);
-  local next = _hx_1_p_next;
-  local i = _hx_1_p_index;
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
-    i = _hx_2_res_index;
-    do return _hx_o({__fields__={key=true,value=true},key=_hx_2_res_index,value=_hx_2_res_value}) end;
-  end,hasNext=function(self) 
-    do return _G.select(2, next(this1, i)) ~= nil end;
-  end}) end;
-end
-__gmod__LuaArray_LuaArray_Impl_.iterator = function(this1) 
-  local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.ipairs(this1);
-  local next = _hx_1_p_next;
-  local i = _hx_1_p_index;
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local _hx_2_res_index, _hx_2_res_value = next(this1, i);
-    i = _hx_2_res_index;
-    do return _hx_2_res_value end;
-  end,hasNext=function(self) 
-    do return _G.select(2, next(this1, i)) ~= nil end;
-  end}) end;
-end
-
-__tink_json_Writer2.new = function() 
-  local self = _hx_new(__tink_json_Writer2.prototype)
-  __tink_json_Writer2.super(self)
+__tink_json_Writer197.new = function() 
+  local self = _hx_new(__tink_json_Writer197.prototype)
+  __tink_json_Writer197.super(self)
   return self
 end
-__tink_json_Writer2.super = function(self) 
+__tink_json_Writer197.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer2.__name__ = true
-__tink_json_Writer2.prototype = _hx_e();
-__tink_json_Writer2.prototype.process0 = function(self,value) 
+__tink_json_Writer197.__name__ = true
+__tink_json_Writer197.prototype = _hx_e();
+__tink_json_Writer197.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -5970,464 +6529,7 @@ __tink_json_Writer2.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer2.prototype.process1 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value = value.variables;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"variables\":");
-  _this.length = _this.length + #"\"variables\":";
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(91));
-  _this.length = _this.length + 1;
-  local first = true;
-  local _g = 0;
-  while (_g < value.length) do 
-    local value = value[_g];
-    _g = _g + 1;
-    if (first) then 
-      first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    self:process2(value);
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(93));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer2.prototype.process2 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.name;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"name\":");
-  _this.length = _this.length + #"\"name\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.value;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"value\":");
-  _this.length = _this.length + #"\"value\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.variablesReference;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"variablesReference\":");
-  _this.length = _this.length + #"\"variablesReference\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.evaluateName;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"evaluateName\":");
-    _this.length = _this.length + #"\"evaluateName\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.indexedVariables;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"indexedVariables\":");
-    _this.length = _this.length + #"\"indexedVariables\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.memoryReference;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"memoryReference\":");
-    _this.length = _this.length + #"\"memoryReference\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.namedVariables;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"namedVariables\":");
-    _this.length = _this.length + #"\"namedVariables\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _g = value.presentationHint;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      self:process3(_g);
-    end;
-  end;
-  local _g = value.type;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"type\":");
-    _this.length = _this.length + #"\"type\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer2.prototype.process3 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.attributes ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"attributes\":");
-    _this.length = _this.length + #"\"attributes\":";
-    local value = value.attributes;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        local s = __haxe_format_JsonPrinter.print(value);
-        local _this = self.buf;
-        local str = Std.string(s);
-        _G.table.insert(_this.b, str);
-        _this.length = _this.length + #str;
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.kind ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"kind\":");
-    _this.length = _this.length + #"\"kind\":";
-    local value = value.kind;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.visibility ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"visibility\":");
-    _this.length = _this.length + #"\"visibility\":";
-    local value = value.visibility;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer2.prototype.write = function(self,value) 
-  self:init();
-  self:process0(value);
-  do return _G.table.concat(self.buf.b) end
-end
-
-__tink_json_Writer2.prototype.__class__ =  __tink_json_Writer2
-__tink_json_Writer2.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer2.prototype,{__index=__tink_json_BasicWriter.prototype})
-
-__gmdebug_lua_Sources.new = {}
-__gmdebug_lua_Sources.__name__ = true
-__gmdebug_lua_Sources.readSourceInfo = function() 
-  if (__gmdebug_lua_Debugee.dest == "") then 
-    do return end;
-  end;
-  local si = __gmdebug_lua_DebugLoop.sourceCache:iterator();
-  while (si:hasNext()) do 
-    local si = si:next();
-    if (__gmdebug_lua_Sources.uniqueSources.h[si.source] == nil) then 
-      local result = __gmdebug_lua_Sources.infoToSource(si);
-      if (result ~= nil) then 
-        local js = __haxe_Json.stringify(__gmdebug_ComposedEvent.new("loadedSource", _hx_o({__fields__={reason=true,source=true},reason="new",source=result})));
-        local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-        __gmdebug_lua_Debugee.socket.output:writeString(str);
-        __gmdebug_lua_Debugee.socket.output:flush();
-        __gmdebug_lua_Sources.sources:push(result);
-      end;
-      local key = si.source;
-      local _this = __gmdebug_lua_Sources.uniqueSources;
-      if (result == nil) then 
-        _this.h[key] = __haxe_ds_StringMap.tnull;
-      else
-        _this.h[key] = result;
-      end;
-    end;
-  end;
-end
-__gmdebug_lua_Sources.init = function() 
-  _G.hook.Add("Think", "source-get", function() 
-    if (_G.CurTime() > __gmdebug_lua_Sources.readSourceTime) then 
-      __gmdebug_lua_Sources.readSourceTime = _G.CurTime() + 1;
-      __gmdebug_lua_Sources.readSourceInfo();
-    end;
-  end);
-end
-__gmdebug_lua_Sources.infoToSource = function(info) 
-  local _g = info.source;
-  if (_g == "=[C]") then 
-    do return nil end;
-  else
-    local path = __haxe_io_Path.new(__gmdebug_lua_Debugee.normalPath(_g));
-    do return _hx_o({__fields__={name=true,path=true},name=path.file,path=path:toString()}) end;
-  end;
-end
-_hxClasses["gmdebug.lua.CompileResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Error","Success"},2)}
-__gmdebug_lua_CompileResult = _hxClasses["gmdebug.lua.CompileResult"];
-__gmdebug_lua_CompileResult.Error = function(err) local _x = _hx_tab_array({[0]="Error",0,err,__enum__=__gmdebug_lua_CompileResult}, 3); return _x; end 
-__gmdebug_lua_CompileResult.Success = function(compiledFunc) local _x = _hx_tab_array({[0]="Success",1,compiledFunc,__enum__=__gmdebug_lua_CompileResult}, 3); return _x; end 
-
-__tink_json_Writer3.new = function() 
-  local self = _hx_new(__tink_json_Writer3.prototype)
-  __tink_json_Writer3.super(self)
-  return self
-end
-__tink_json_Writer3.super = function(self) 
-  __tink_json_BasicWriter.super(self);
-end
-__tink_json_Writer3.__name__ = true
-__tink_json_Writer3.prototype = _hx_e();
-__tink_json_Writer3.prototype.process0 = function(self,value) 
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  local value1 = value.command;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"command\":");
-  _this.length = _this.length + #"\"command\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.request_seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"request_seq\":");
-  _this.length = _this.length + #"\"request_seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.seq;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"seq\":");
-  _this.length = _this.length + #"\"seq\":";
-  local s = Std.string(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.success;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"success\":");
-  _this.length = _this.length + #"\"success\":";
-  local _this = self.buf;
-  local str = (function() 
-    local _hx_1
-    if (value1) then 
-    _hx_1 = "true"; else 
-    _hx_1 = "false"; end
-    return _hx_1
-  end )();
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local value1 = value.type;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(44));
-  _this.length = _this.length + 1;
-  local _this = self.buf;
-  _G.table.insert(_this.b, "\"type\":");
-  _this.length = _this.length + #"\"type\":";
-  local s = __haxe_format_JsonPrinter.print(value1);
-  local _this = self.buf;
-  local str = Std.string(s);
-  _G.table.insert(_this.b, str);
-  _this.length = _this.length + #str;
-  local _g = value.body;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"body\":");
-    _this.length = _this.length + #"\"body\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      self:process1(_g);
-    end;
-  end;
-  local _g = value.message;
-  if (_g ~= nil) then 
-    local _this = self.buf;
-    _G.table.insert(_this.b, _G.string.char(44));
-    _this.length = _this.length + 1;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"message\":");
-    _this.length = _this.length + #"\"message\":";
-    if (_g == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(_g);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer3.prototype.process1 = function(self,value) 
+__tink_json_Writer197.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6459,7 +6561,7 @@ __tink_json_Writer3.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process2 = function(self,value) 
+__tink_json_Writer197.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6645,13 +6747,19 @@ __tink_json_Writer3.prototype.process2 = function(self,value)
     local _this = self.buf;
     _G.table.insert(_this.b, "\"source\":");
     _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
   end;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process3 = function(self,value) 
+__tink_json_Writer197.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -6852,7 +6960,7 @@ __tink_json_Writer3.prototype.process3 = function(self,value)
           _G.table.insert(_this.b, _G.string.char(44));
           _this.length = _this.length + 1;
         end;
-        self:process5(value);
+        self:process3(value);
       end;
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(93));
@@ -6863,7 +6971,7 @@ __tink_json_Writer3.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process4 = function(self,value) 
+__tink_json_Writer197.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6892,7 +7000,737 @@ __tink_json_Writer3.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process5 = function(self,value) 
+__tink_json_Writer197.prototype.write = function(self,value) 
+  self:init();
+  self:process0(value);
+  do return _G.table.concat(self.buf.b) end
+end
+
+__tink_json_Writer197.prototype.__class__ =  __tink_json_Writer197
+__tink_json_Writer197.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer197.prototype,{__index=__tink_json_BasicWriter.prototype})
+
+__tink_json_Writer198.new = function() 
+  local self = _hx_new(__tink_json_Writer198.prototype)
+  __tink_json_Writer198.super(self)
+  return self
+end
+__tink_json_Writer198.super = function(self) 
+  __tink_json_BasicWriter.super(self);
+end
+__tink_json_Writer198.__name__ = true
+__tink_json_Writer198.prototype = _hx_e();
+__tink_json_Writer198.prototype.process0 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.command;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"command\":");
+  _this.length = _this.length + #"\"command\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.request_seq;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"request_seq\":");
+  _this.length = _this.length + #"\"request_seq\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.seq;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"seq\":");
+  _this.length = _this.length + #"\"seq\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.success;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"success\":");
+  _this.length = _this.length + #"\"success\":";
+  local _this = self.buf;
+  local str = (function() 
+    local _hx_1
+    if (value1) then 
+    _hx_1 = "true"; else 
+    _hx_1 = "false"; end
+    return _hx_1
+  end )();
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.type;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"type\":");
+  _this.length = _this.length + #"\"type\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local _g = value.body;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"body\":");
+    _this.length = _this.length + #"\"body\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process1(_g);
+    end;
+  end;
+  local _g = value.message;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"message\":");
+    _this.length = _this.length + #"\"message\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer198.prototype.process1 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value = value.variables;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"variables\":");
+  _this.length = _this.length + #"\"variables\":";
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(91));
+  _this.length = _this.length + 1;
+  local first = true;
+  local _g = 0;
+  while (_g < value.length) do 
+    local value = value[_g];
+    _g = _g + 1;
+    if (first) then 
+      first = false;
+    else
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(44));
+      _this.length = _this.length + 1;
+    end;
+    self:process2(value);
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(93));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer198.prototype.process2 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.name;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"name\":");
+  _this.length = _this.length + #"\"name\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.value;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"value\":");
+  _this.length = _this.length + #"\"value\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.variablesReference;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"variablesReference\":");
+  _this.length = _this.length + #"\"variablesReference\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local _g = value.evaluateName;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"evaluateName\":");
+    _this.length = _this.length + #"\"evaluateName\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.indexedVariables;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"indexedVariables\":");
+    _this.length = _this.length + #"\"indexedVariables\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = Std.string(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.memoryReference;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"memoryReference\":");
+    _this.length = _this.length + #"\"memoryReference\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.namedVariables;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"namedVariables\":");
+    _this.length = _this.length + #"\"namedVariables\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = Std.string(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.presentationHint;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"presentationHint\":");
+    _this.length = _this.length + #"\"presentationHint\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
+  end;
+  local _g = value.type;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"type\":");
+    _this.length = _this.length + #"\"type\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer198.prototype.process3 = function(self,value) 
+  local __first = true;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  if (value.attributes ~= nil) then 
+    __first = false;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"attributes\":");
+    _this.length = _this.length + #"\"attributes\":";
+    local value = value.attributes;
+    if (value == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(91));
+      _this.length = _this.length + 1;
+      local first = true;
+      local _g = 0;
+      while (_g < value.length) do 
+        local value = value[_g];
+        _g = _g + 1;
+        if (first) then 
+          first = false;
+        else
+          local _this = self.buf;
+          _G.table.insert(_this.b, _G.string.char(44));
+          _this.length = _this.length + 1;
+        end;
+        local s = __haxe_format_JsonPrinter.print(value);
+        local _this = self.buf;
+        local str = Std.string(s);
+        _G.table.insert(_this.b, str);
+        _this.length = _this.length + #str;
+      end;
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(93));
+      _this.length = _this.length + 1;
+    end;
+  end;
+  if (value.kind ~= nil) then 
+    if (__first) then 
+      __first = false;
+    else
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(44));
+      _this.length = _this.length + 1;
+    end;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"kind\":");
+    _this.length = _this.length + #"\"kind\":";
+    local value = value.kind;
+    if (value == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(value);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  if (value.visibility ~= nil) then 
+    if (not __first) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(44));
+      _this.length = _this.length + 1;
+    end;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"visibility\":");
+    _this.length = _this.length + #"\"visibility\":";
+    local value = value.visibility;
+    if (value == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(value);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer198.prototype.write = function(self,value) 
+  self:init();
+  self:process0(value);
+  do return _G.table.concat(self.buf.b) end
+end
+
+__tink_json_Writer198.prototype.__class__ =  __tink_json_Writer198
+__tink_json_Writer198.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer198.prototype,{__index=__tink_json_BasicWriter.prototype})
+
+__tink_json_Writer199.new = function() 
+  local self = _hx_new(__tink_json_Writer199.prototype)
+  __tink_json_Writer199.super(self)
+  return self
+end
+__tink_json_Writer199.super = function(self) 
+  __tink_json_BasicWriter.super(self);
+end
+__tink_json_Writer199.__name__ = true
+__tink_json_Writer199.prototype = _hx_e();
+__tink_json_Writer199.prototype.process0 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.command;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"command\":");
+  _this.length = _this.length + #"\"command\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.request_seq;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"request_seq\":");
+  _this.length = _this.length + #"\"request_seq\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.seq;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"seq\":");
+  _this.length = _this.length + #"\"seq\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.success;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"success\":");
+  _this.length = _this.length + #"\"success\":";
+  local _this = self.buf;
+  local str = (function() 
+    local _hx_1
+    if (value1) then 
+    _hx_1 = "true"; else 
+    _hx_1 = "false"; end
+    return _hx_1
+  end )();
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.type;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"type\":");
+  _this.length = _this.length + #"\"type\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local _g = value.body;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"body\":");
+    _this.length = _this.length + #"\"body\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process1(_g);
+    end;
+  end;
+  local _g = value.message;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"message\":");
+    _this.length = _this.length + #"\"message\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer199.prototype.process1 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.stackFrames;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"stackFrames\":");
+  _this.length = _this.length + #"\"stackFrames\":";
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(91));
+  _this.length = _this.length + 1;
+  local first = true;
+  local _g = 0;
+  while (_g < value1.length) do 
+    local value = value1[_g];
+    _g = _g + 1;
+    if (first) then 
+      first = false;
+    else
+      local _this = self.buf;
+      _G.table.insert(_this.b, _G.string.char(44));
+      _this.length = _this.length + 1;
+    end;
+    self:process2(value);
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(93));
+  _this.length = _this.length + 1;
+  local _g = value.totalFrames;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"totalFrames\":");
+    _this.length = _this.length + #"\"totalFrames\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = Std.string(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer199.prototype.process2 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.column;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"column\":");
+  _this.length = _this.length + #"\"column\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.id;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"id\":");
+  _this.length = _this.length + #"\"id\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.line;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"line\":");
+  _this.length = _this.length + #"\"line\":";
+  local s = Std.string(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value1 = value.name;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"name\":");
+  _this.length = _this.length + #"\"name\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local _g = value.endColumn;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"endColumn\":");
+    _this.length = _this.length + #"\"endColumn\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = Std.string(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.endLine;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"endLine\":");
+    _this.length = _this.length + #"\"endLine\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = Std.string(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.moduleId;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"moduleId\":");
+    _this.length = _this.length + #"\"moduleId\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:writeDynamic(_g);
+    end;
+  end;
+  local _g = value.presentationHint;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"presentationHint\":");
+    _this.length = _this.length + #"\"presentationHint\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      local s = __haxe_format_JsonPrinter.print(_g);
+      local _this = self.buf;
+      local str = Std.string(s);
+      _G.table.insert(_this.b, str);
+      _this.length = _this.length + #str;
+    end;
+  end;
+  local _g = value.source;
+  if (_g ~= nil) then 
+    local _this = self.buf;
+    _G.table.insert(_this.b, _G.string.char(44));
+    _this.length = _this.length + 1;
+    local _this = self.buf;
+    _G.table.insert(_this.b, "\"source\":");
+    _this.length = _this.length + #"\"source\":";
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
+  end;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer199.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7093,7 +7931,7 @@ __tink_json_Writer3.prototype.process5 = function(self,value)
           _G.table.insert(_this.b, _G.string.char(44));
           _this.length = _this.length + 1;
         end;
-        self:process5(value);
+        self:process3(value);
       end;
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(93));
@@ -7104,2505 +7942,56 @@ __tink_json_Writer3.prototype.process5 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.write = function(self,value) 
+__tink_json_Writer199.prototype.process4 = function(self,value) 
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(123));
+  _this.length = _this.length + 1;
+  local value1 = value.algorithm;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"algorithm\":");
+  _this.length = _this.length + #"\"algorithm\":";
+  local s = __haxe_format_JsonPrinter.print(value1);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local value = value.checksum;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(44));
+  _this.length = _this.length + 1;
+  local _this = self.buf;
+  _G.table.insert(_this.b, "\"checksum\":");
+  _this.length = _this.length + #"\"checksum\":";
+  local s = __haxe_format_JsonPrinter.print(value);
+  local _this = self.buf;
+  local str = Std.string(s);
+  _G.table.insert(_this.b, str);
+  _this.length = _this.length + #str;
+  local _this = self.buf;
+  _G.table.insert(_this.b, _G.string.char(125));
+  _this.length = _this.length + 1;
+end
+__tink_json_Writer199.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer3.prototype.__class__ =  __tink_json_Writer3
-__tink_json_Writer3.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer3.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer199.prototype.__class__ =  __tink_json_Writer199
+__tink_json_Writer199.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer199.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__gmdebug_lua_UnhandledResponse.new = function(message,previous,native) 
-  local self = _hx_new(__gmdebug_lua_UnhandledResponse.prototype)
-  __gmdebug_lua_UnhandledResponse.super(self,message,previous,native)
+__tink_json_Writer200.new = function() 
+  local self = _hx_new(__tink_json_Writer200.prototype)
+  __tink_json_Writer200.super(self)
   return self
 end
-__gmdebug_lua_UnhandledResponse.super = function(self,message,previous,native) 
-  __haxe_Exception.super(self,message,previous,native);
-end
-__gmdebug_lua_UnhandledResponse.__name__ = true
-__gmdebug_lua_UnhandledResponse.prototype = _hx_e();
-
-__gmdebug_lua_UnhandledResponse.prototype.__class__ =  __gmdebug_lua_UnhandledResponse
-__gmdebug_lua_UnhandledResponse.__super__ = __haxe_Exception
-setmetatable(__gmdebug_lua_UnhandledResponse.prototype,{__index=__haxe_Exception.prototype})
-
-__gmdebug_lua_Handlers.new = {}
-__gmdebug_lua_Handlers.__name__ = true
-__gmdebug_lua_Handlers.handlers = function(x) 
-  if (x.command == "continue") then 
-    __gmdebug_lua_Handlers.storedVariables = _hx_tab_array({[0]=nil}, 1);
-    do return __gmdebug_lua_Handlers.h_continue(x) end;
-  end;
-  local ret = __gmdebug_lua_Handlers.handlerMap.h[x.command];
-  if (ret == __haxe_ds_StringMap.tnull) then 
-    ret = nil;
-  end;
-  local h = ret;
-  if (h ~= nil) then 
-    local result = h(x);
-    if (result == __gmdebug_lua_HandlerResponse.CONTINUE) then 
-      __gmdebug_lua_Handlers.storedVariables = _hx_tab_array({[0]=nil}, 1);
-    end;
-    do return result end;
-  else
-    _G.error(__gmdebug_lua_UnhandledResponse.new(Std.string("Unhandled... ") .. Std.string(x.command)),0);
-  end;
-end
-__gmdebug_lua_Handlers.h_pause = function(req) 
-  if (__gmdebug_lua_Debugee.inpauseloop) then 
-    do return __gmdebug_lua_HandlerResponse.WAIT end;
-  end;
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(req, "pause", _hx_e()));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  __gmdebug_lua_Debugee.startHaltLoop("pause", __gmdebug_lua_Debugee.stackOffset.pause);
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_configurationDone = function(req) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(req, "configurationDone"));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_modules = function(req) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(req, "modules", _hx_o({__fields__={modules=true,totalModules=true},modules=_hx_tab_array({[0]=_hx_o({__fields__={id=true,name=true},id=0,name="test"}), _hx_o({__fields__={id=true,name=true},id=1,name="test2"})}, 2),totalModules=2})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_sources = function(req) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(req, "loadedSources", _hx_o({__fields__={sources=true},sources=__gmdebug_lua_Sources.sources})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_continue = function(req) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(req, "_continue", _hx_o({__fields__={allThreadsContinued=true},allThreadsContinued=false})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.CONTINUE end;
-end
-__gmdebug_lua_Handlers.h_stepIn = function(x) 
-  __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(nil);
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(x, "stepIn"));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
-  do return __gmdebug_lua_HandlerResponse.CONTINUE end;
-end
-__gmdebug_lua_Handlers.h_stepOut = function(x) 
-  local tarheight = __gmdebug_lua_Debugee.get_stackHeight() - (__gmdebug_lua_Debugee.stackOffset.step + 1);
-  __haxe_Log.trace(Std.string(Std.string(Std.string("stepOut ") .. Std.string(tarheight)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.minheight), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=160,className="gmdebug.lua.Handlers",methodName="h_stepOut"}));
-  if (tarheight < __gmdebug_lua_Debugee.minheight) then 
-    local info = _G.debug.getinfo(__gmdebug_lua_Debugee.baseDepth + 1, "fLSl");
-    local func = info.func;
-    __haxe_Log.trace(Std.string("") .. Std.string(info.source), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=164,className="gmdebug.lua.Handlers",methodName="h_stepOut"}));
-    local lowest = LuaLambdaKeys.fold(info.activelines, function(line,res) 
-      if (line < res) then 
-        do return line end;
-      else
-        do return res end;
-      end;
-    end, _G.math.huge);
-    __haxe_Log.trace(Std.string("lowest ") .. Std.string(lowest), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=174,className="gmdebug.lua.Handlers",methodName="h_stepOut"}));
-    __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.OUT(func, lowest);
-  else
-    __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(tarheight);
-  end;
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(x, "stepOut"));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.CONTINUE end;
-end
-__gmdebug_lua_Handlers.h_threads = function(x) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(x, "threads", _hx_o({__fields__={threads=true},threads=_hx_tab_array({[0]=_hx_o({__fields__={id=true,name=true},id=0,name="Server"})}, 1)})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.createEvalEnvironment = function(stackLevel) 
-  local env = ({});
-  local unsettables = ({});
-  local set = function(k,v) 
-    unsettables[k] = v;
-  end;
-  local info = _G.debug.getinfo(stackLevel + 2, "f");
-  local fenv = nil;
-  if ((info ~= nil) and (info.func ~= nil)) then 
-    local _g = 1;
-    while (_g < 9999) do 
-      _g = _g + 1;
-      local i = _g - 1;
-      local func = info.func;
-      local _hx_1_upv_a, _hx_1_upv_b = _G.debug.getupvalue(func, i);
-      if (_hx_1_upv_a == nil) then 
-        break;
-      end;
-      set(_hx_1_upv_a, _hx_1_upv_b);
-    end;
-    local func = info.func;
-    fenv = _G.debug.getfenv(func);
-  end;
-  local _g = 1;
-  while (_g < 9999) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    local _hx_2_lcl_a, _hx_2_lcl_b = _G.debug.getlocal(stackLevel + 2, i);
-    if (_hx_2_lcl_a == nil) then 
-      break;
-    end;
-    set(_hx_2_lcl_a, _hx_2_lcl_b);
-  end;
-  local metatable = ({});
-  metatable.__newindex = function(t,k,v) 
-    if (_G.rawget(unsettables, k) ~= nil) then 
-      _G.error("Cannot alter upvalues and locals", 2);
-    else
-      _G[k] = v;
-    end;
-  end;
-  metatable.__index = unsettables;
-  local unsetmeta = ({});
-  local defaultValue = _G;
-  unsetmeta.__index = (function() 
-    local _hx_3
-    if (fenv == nil) then 
-    _hx_3 = defaultValue; else 
-    _hx_3 = fenv; end
-    return _hx_3
-  end )();
-  _G.setmetatable(env, metatable);
-  _G.setmetatable(unsettables, unsetmeta);
-  do return env end;
-end
-__gmdebug_lua_Handlers.processCommands = function(x) 
-  if (x == "profile") then 
-    __gmdebug_lua_DebugLoopProfile.beginProfiling();
-  end;
-end
-__gmdebug_lua_Handlers.h_evaluate = function(x) 
-  local args = x.arguments;
-  local fid = args.frameId;
-  if (_G.string.sub(args.expression, 1, 1) == "#") then 
-    local _this = args.expression;
-    local pos = 1;
-    local len = nil;
-    if ((len == nil) or (len > (pos + #_this))) then 
-      len = #_this;
-    else
-      if (len < 0) then 
-        len = #_this + len;
-      end;
-    end;
-    if (pos < 0) then 
-      pos = #_this + pos;
-    end;
-    if (pos < 0) then 
-      pos = 0;
-    end;
-    __gmdebug_lua_Handlers.processCommands(_G.string.sub(_this, pos + 1, pos + len));
-  end;
-  local expr = args.expression;
-  local expr1;
-  if (_G.string.sub(expr, 1, 1) == "!") then 
-    local pos = 1;
-    local len = nil;
-    if ((len == nil) or (len > (pos + #expr))) then 
-      len = #expr;
-    else
-      if (len < 0) then 
-        len = #expr + len;
-      end;
-    end;
-    if (pos < 0) then 
-      pos = #expr + pos;
-    end;
-    if (pos < 0) then 
-      pos = 0;
-    end;
-    expr1 = _G.string.sub(expr, pos + 1, pos + len);
-  else
-    expr1 = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
-  end;
-  if (args.context == "hover") then 
-    expr1 = _G.string.gsub(expr1, ":", ".");
-  end;
-  __haxe_Log.trace(Std.string("expr : ") .. Std.string(expr1), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=262,className="gmdebug.lua.Handlers",methodName="h_evaluate"}));
-  local resp;
-  local _g = __gmdebug_lua_Util.compileString(expr1, "GmDebug");
-  local resp1 = _g[1];
-  if (resp1) == 0 then 
-    resp = __gmdebug_ComposeTools.composeFail(x, _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", ""));
-  elseif (resp1) == 1 then 
-    local func = _g[2];
-    if (fid ~= nil) then 
-      _G.setfenv(func, __gmdebug_lua_Handlers.createEvalEnvironment(__gmdebug__FrameID_FrameID_Impl_.getValue(fid).actualFrame));
-    end;
-    local _g = __gmdebug_lua_Util.runCompiledFunction(func);
-    local resp1 = _g[1];
-    if (resp1) == 0 then 
-      resp = __gmdebug_ComposeTools.composeFail(x, _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", ""));
-    elseif (resp1) == 1 then 
-      local item = __gmdebug_lua_Handlers.genvar(_hx_o({__fields__={name=true,value=true},name="",value=_g[2]}));
-      resp = __gmdebug_ComposeTools.compose(x, "evaluate", _hx_o({__fields__={result=true,type=true,variablesReference=true},result=item.value,type=item.type,variablesReference=item.variablesReference})); end; end;
-  local js = __haxe_Json.stringify(resp);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_setExceptionBreakpoints = function(x) 
-  local rep = __gmdebug_ComposeTools.compose(x, "setExceptionBreakpoints");
-  local gamemodeSet = false;
-  local entitiesSet = false;
-  local _g = 0;
-  local _g1 = x.arguments.filters;
-  while (_g < _g1.length) do 
-    local filter = _g1[_g];
-    _g = _g + 1;
-    local filter = filter;
-    if (filter) == "entities" then 
-      __gmdebug_lua_Exceptions.hookEntityHooks();
-      entitiesSet = true;
-    elseif (filter) == "gamemode" then 
-      __gmdebug_lua_Exceptions.hookGamemodeHooks();
-      gamemodeSet = true; end;
-  end;
-  if (not gamemodeSet) then 
-    __gmdebug_lua_Exceptions.unhookGamemodeHooks();
-  end;
-  if (not entitiesSet) then 
-    __gmdebug_lua_Exceptions.unhookEntityHooks();
-  end;
-  local js = __haxe_Json.stringify(rep);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_setFunctionBreakpoints = function(x) 
-  local _this = __gmdebug_lua_DebugLoop.functionBP;
-  _this.h = ({});
-  _this.k = ({});
-  local bpResponse = _hx_tab_array({}, 0);
-  local _g = 0;
-  local _g1 = x.arguments.breakpoints;
-  while (_g < _g1.length) do 
-    local fbp = _g1[_g];
-    _g = _g + 1;
-    local expr = fbp.name;
-    local eval;
-    if (_G.string.sub(expr, 1, 1) == "!") then 
-      local pos = 1;
-      local len = nil;
-      if ((len == nil) or (len > (pos + #expr))) then 
-        len = #expr;
-      else
-        if (len < 0) then 
-          len = #expr + len;
-        end;
-      end;
-      if (pos < 0) then 
-        pos = #expr + pos;
-      end;
-      if (pos < 0) then 
-        pos = 0;
-      end;
-      eval = _G.string.sub(expr, pos + 1, pos + len);
-    else
-      eval = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
-    end;
-    local resp;
-    local _g = __gmdebug_lua_Util.compileString(eval, "gmdebug FuncBp:");
-    local resp1 = _g[1];
-    if (resp1) == 0 then 
-      resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Failed to compile"});
-    elseif (resp1) == 1 then 
-      local _hx_tmp = __gmdebug_lua_Util.runCompiledFunction(_g[2]);
-      local resp1 = _hx_tmp[1];
-      if (resp1) == 0 then 
-        resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Failed to run"});
-      elseif (resp1) == 1 then 
-        local _g = _hx_tmp[2];
-        if (_G.type(_g) ~= "function") then 
-          resp = _hx_o({__fields__={verified=true,message=true},verified=false,message="Result is not a function"});
-        else
-          local _this = __gmdebug_lua_DebugLoop.functionBP;
-          local key = _g;
-          _this.h[key] = true;
-          _this.k[key] = true;
-          resp = _hx_o({__fields__={verified=true},verified=true});
-        end; end; end;
-    bpResponse:push(resp);
-  end;
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(x, "setFunctionBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_scopes = function(x) 
-  local value = x.arguments;
-  local args;
-  if (value == nil) then 
-    _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
-  else
-    args = value;
-  end;
-  local frameInfo = __gmdebug__FrameID_FrameID_Impl_.getValue(args.frameId);
-  local info = _G.debug.getinfo(frameInfo.actualFrame + 1, "fuS");
-  local arguments = _hx_o({__fields__={name=true,presentationHint=true,variablesReference=true,expensive=true},name="Arguments",presentationHint="arguments",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.FrameLocal(__gmdebug_lua_Debugee.clientID, frameInfo.actualFrame, 0)),expensive=false});
-  local locals = _hx_o({__fields__={name=true,presentationHint=true,variablesReference=true,expensive=true,line=true,endLine=true},name="Locals",presentationHint="locals",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.FrameLocal(__gmdebug_lua_Debugee.clientID, frameInfo.actualFrame, 1)),expensive=false,line=info.linedefined,endLine=info.lastlinedefined});
-  local upvalues = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Upvalues",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.FrameLocal(__gmdebug_lua_Debugee.clientID, frameInfo.actualFrame, 2)),expensive=false});
-  local globals = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Globals",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Global(__gmdebug_lua_Debugee.clientID, 0)),expensive=true});
-  local players = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Players",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Global(__gmdebug_lua_Debugee.clientID, 1)),expensive=true});
-  local entities = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Entities",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Global(__gmdebug_lua_Debugee.clientID, 2)),expensive=true});
-  local enums = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Enums",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Global(__gmdebug_lua_Debugee.clientID, 3)),expensive=true});
-  local env = _hx_o({__fields__={name=true,variablesReference=true,expensive=true},name="Function Environment",variablesReference=__gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.FrameLocal(__gmdebug_lua_Debugee.clientID, frameInfo.actualFrame, 3)),expensive=true});
-  local hasFenv;
-  if ((info ~= nil) and (info.func ~= nil)) then 
-    local func = info.func;
-    hasFenv = _G.debug.getfenv(func) ~= _G;
-  else
-    hasFenv = false;
-  end;
-  local resp;
-  local _g = info.what;
-  if (_g) == "C" then 
-    resp = _hx_tab_array({[0]=arguments, locals, entities, players, globals, enums}, 6);
-  elseif (_g) == "Lua" then 
-    resp = (function() 
-      local _hx_1
-      if (hasFenv) then 
-      _hx_1 = _hx_tab_array({[0]=arguments, locals, upvalues, entities, players, globals, enums, env}, 8); else 
-      _hx_1 = _hx_tab_array({[0]=arguments, locals, upvalues, entities, players, globals, enums}, 7); end
-      return _hx_1
-    end )(); end;
-  local resp = __gmdebug_ComposeTools.compose(x, "scopes", _hx_o({__fields__={scopes=true},scopes=resp}));
-  local js = __tink_json_Writer1.new():write(resp);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_next = function(x) 
-  local resp = __gmdebug_ComposeTools.compose(x, "next");
-  __haxe_Log.trace(Std.string(Std.string(Std.string("our stack height ") .. Std.string(__gmdebug_lua_Debugee.get_stackHeight())) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.stackOffset.step), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=432,className="gmdebug.lua.Handlers",methodName="h_next"}));
-  __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(__gmdebug_lua_Debugee.get_stackHeight() - __gmdebug_lua_Debugee.stackOffset.step);
-  local js = __haxe_Json.stringify(resp);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, "cl");
-  do return __gmdebug_lua_HandlerResponse.CONTINUE end;
-end
-__gmdebug_lua_Handlers.h_disconnect = function(x) 
-  do return __gmdebug_lua_HandlerResponse.DISCONNECT end;
-end
-__gmdebug_lua_Handlers.generateVariablesReference = function(val,name) 
-  local _g = _G.TypeID(val);
-  if (name == "_G") then 
-    do return 0 end;
-  else
-    if (_g) == _G.TYPE_ENTITY then 
-      if (not _G.IsValid(val)) then 
-        do return 0 end;
-      else
-        do return __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, __gmdebug_lua_Handlers.storedVariables:push(val) - 1)) end;
-      end;
-    elseif (_g) == _G.TYPE_FUNCTION or (_g) == _G.TYPE_TABLE or (_g) == _G.TYPE_USERDATA then 
-      do return __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, __gmdebug_lua_Handlers.storedVariables:push(val) - 1)) end;else
-    do return 0 end; end;
-  end;
-end
-__gmdebug_lua_Handlers.genvar = function(addv) 
-  local name = Std.string(addv.name);
-  local val = addv.value;
-  local virtual = addv.virtual;
-  local noquote = addv.noquote;
-  local novalue = addv.novalue;
-  local ty = _G.type(val);
-  local id = _G.TypeID(val);
-  local stringReplace;
-  local _g = _G.type(val);
-  if (_g) == "number" then 
-    stringReplace = Std.string(val);
-  elseif (_g) == "string" then 
-    stringReplace = val;
-  elseif (_g) == "table" then 
-    stringReplace = "table";else
-  stringReplace = _G.tostring(val); end;
-  local obj;
-  if (ty) == "string" then 
-    obj = (function() 
-      local _hx_1
-      if (noquote == nil) then 
-      _hx_1 = Std.string(Std.string("\"") .. Std.string(stringReplace)) .. Std.string("\""); elseif (novalue == nil) then 
-      _hx_1 = stringReplace; elseif (novalue == true) then 
-      _hx_1 = ""; else 
-      _hx_1 = stringReplace; end
-      return _hx_1
-    end )();
-  elseif (ty) == "table" then 
-    obj = "table";else
-  obj = (function() 
-    local _hx_2
-    if (novalue == nil) then 
-    _hx_2 = stringReplace; elseif (novalue == true) then 
-    _hx_2 = ""; else 
-    _hx_2 = stringReplace; end
-    return _hx_2
-  end )(); end;
-  local obj1;
-  if (name == "_G") then 
-    obj1 = 0;
-  else
-    if (id) == _G.TYPE_ENTITY then 
-      obj1 = (function() 
-        local _hx_3
-        if (not _G.IsValid(val)) then 
-        _hx_3 = 0; else 
-        _hx_3 = __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, __gmdebug_lua_Handlers.storedVariables:push(val) - 1)); end
-        return _hx_3
-      end )();
-    elseif (id) == _G.TYPE_FUNCTION or (id) == _G.TYPE_TABLE or (id) == _G.TYPE_USERDATA then 
-      obj1 = __gmdebug__VariableReference_VariableReference_Impl_.encode(__gmdebug_VariableReferenceVal.Child(__gmdebug_lua_Debugee.clientID, __gmdebug_lua_Handlers.storedVariables:push(val) - 1));else
-    obj1 = 0; end;
-  end;
-  local obj = _hx_o({__fields__={name=true,type=true,value=true,variablesReference=true},name=name,type=ty,value=obj,variablesReference=obj1});
-  if (id == _G.TYPE_FUNCTION) then 
-    if (virtual == nil) then 
-      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="method",attributes=nil,visibility="public"});
-    else
-      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="virtual",attributes=nil,visibility="internal"});
-    end;
-  else
-    if (virtual ~= nil) then 
-      obj.presentationHint = _hx_o({__fields__={kind=true,attributes=true,visibility=true},kind="virtual",attributes=nil,visibility="internal"});
-    end;
-  end;
-  do return obj end;
-end
-__gmdebug_lua_Handlers.fixupNames = function(variables) 
-  local varnamecount_h = ({});
-  local _g = 0;
-  while (_g < variables.length) do 
-    local v = variables[_g];
-    _g = _g + 1;
-    local ret = varnamecount_h[v.name];
-    if (ret == __haxe_ds_StringMap.tnull) then 
-      ret = nil;
-    end;
-    local count = ret;
-    if (count ~= nil) then 
-      local key = v.name;
-      local value = count + 1;
-      if (value == nil) then 
-        varnamecount_h[key] = __haxe_ds_StringMap.tnull;
-      else
-        varnamecount_h[key] = value;
-      end;
-      v.name = Std.string(Std.string(Std.string(Std.string("") .. Std.string(v.name)) .. Std.string(" (")) .. Std.string(count)) .. Std.string(")");
-    else
-      varnamecount_h[v.name] = 1;
-    end;
-  end;
-end
-__gmdebug_lua_Handlers.h_variables = function(req) 
-  local args = req.arguments;
-  local ref = args.variablesReference;
-  local addVars = _hx_tab_array({}, 0);
-  local _g = __gmdebug__VariableReference_VariableReference_Impl_.getValue(ref);
-  local tmp = _g[1];
-  if (tmp) == 0 then 
-    local _g1 = _g[2];
-    local ref = _g[3];
-    local storedvar = __gmdebug_lua_Handlers.storedVariables[ref];
-    if (storedvar == nil) then 
-      __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=539,className="gmdebug.lua.Handlers",methodName="h_variables"}));
-    end;
-    local _g = _G.TypeID(storedvar);
-    if (_g) == _G.TYPE_ENTITY then 
-      local ent = storedvar;
-      local tbl = storedvar:GetTable();
-      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(position)",value=ent:GetPos(),virtual=true}));
-      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(angle)",value=ent:GetAngles(),virtual=true}));
-      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(model)",value=ent:GetModel(),virtual=true}));
-      local table = tbl;
-      local _hx_1_p_next, _hx_1_p_table, _hx_1_p_index = _G.pairs(table);
-      local next = _hx_1_p_next;
-      local i = _hx_1_p_index;
-      local _g_next = function() 
-        local _hx_2_res_index, _hx_2_res_value = next(table, i);
-        i = _hx_2_res_index;
-        do return _hx_o({__fields__={key=true,value=true},key=_hx_2_res_index,value=_hx_2_res_value}) end;
-      end;
-      local _g_hasNext = function() 
-        do return _G.select(2, _G.next(table, i)) ~= nil end;
-      end;
-      while (_g_hasNext()) do 
-        local _g = _g_next();
-        local ind = _g.key;
-        local val = _g.value;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=ind,value=val}));
-      end;
-    elseif (_g) == _G.TYPE_FUNCTION then 
-      local info = _G.debug.getinfo(storedvar, "S");
-      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true,noquote=true},name="(source)",value=_G.tostring(info.short_src),virtual=true,noquote=true}));
-      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(line)",value=info.linedefined,virtual=true}));
-      local _g = 1;
-      while (_g < 9999) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local _hx_3_upv_a, _hx_3_upv_b = _G.debug.getupvalue(storedvar, i);
-        if (_hx_3_upv_a == nil) then 
-          break;
-        end;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_3_upv_a,value=_hx_3_upv_b}));
-      end;
-    elseif (_g) == _G.TYPE_TABLE then 
-      local table = storedvar;
-      local _hx_4_p_next, _hx_4_p_table, _hx_4_p_index = _G.pairs(table);
-      local next = _hx_4_p_next;
-      local i = _hx_4_p_index;
-      local _g_next = function() 
-        local _hx_5_res_index, _hx_5_res_value = next(table, i);
-        i = _hx_5_res_index;
-        do return _hx_o({__fields__={key=true,value=true},key=_hx_5_res_index,value=_hx_5_res_value}) end;
-      end;
-      local _g_hasNext = function() 
-        do return _G.select(2, _G.next(table, i)) ~= nil end;
-      end;
-      while (_g_hasNext()) do 
-        local _g = _g_next();
-        local ind = _g.key;
-        local val = _g.value;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=ind,value=val}));
-      end;else end;
-    local mt = _G.debug.getmetatable(storedvar);
-    if (mt ~= nil) then 
-      addVars:push(_hx_o({__fields__={name=true,value=true},name="(metatable)",value=mt}));
-    end;
-  elseif (tmp) == 1 then 
-    local _g1 = _g[2];
-    local scope = _g[4];
-    local frame = _g[3];
-    local scope = scope;
-    if (scope) == 0 then 
-      local info = _G.debug.getinfo(frame + 1, "u");
-      local _g = 1;
-      local _g1 = info.nparams + 1;
-      while (_g < _g1) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local _hx_6_result_a, _hx_6_result_b = _G.debug.getlocal(frame + 1, i);
-        if (_hx_6_result_a == nil) then 
-          break;
-        end;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_6_result_a,value=_hx_6_result_b}));
-      end;
-      local _g = 1;
-      while (_g < 9999) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local _hx_7_result_a, _hx_7_result_b = _G.debug.getlocal(frame + 1, -i);
-        if (_hx_7_result_a == nil) then 
-          break;
-        end;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_7_result_a,value=_hx_7_result_b}));
-      end;
-    elseif (scope) == 1 then 
-      local _g = 1;
-      while (_g < 9999) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local _hx_8_result_a, _hx_8_result_b = _G.debug.getlocal(frame + 1, i);
-        if (_hx_8_result_a == nil) then 
-          break;
-        end;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_8_result_a,value=_hx_8_result_b}));
-      end;
-      local _g = 1;
-      while (_g < 9999) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local _hx_9_result_a, _hx_9_result_b = _G.debug.getlocal(frame + 1, -i);
-        if (_hx_9_result_a == nil) then 
-          break;
-        end;
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_9_result_a,value=_hx_9_result_b}));
-      end;
-    elseif (scope) == 2 then 
-      local info = _G.debug.getinfo(frame + 1, "f");
-      if ((info ~= nil) and (info.func ~= nil)) then 
-        local _g = 1;
-        while (_g < 9999) do 
-          _g = _g + 1;
-          local i = _g - 1;
-          local func = info.func;
-          local _hx_10_upv_a, _hx_10_upv_b = _G.debug.getupvalue(func, i);
-          if (_hx_10_upv_a == nil) then 
-            break;
-          end;
-          addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_10_upv_a,value=_hx_10_upv_b}));
-        end;
-      end;
-    elseif (scope) == 3 then 
-      local info = _G.debug.getinfo(frame + 1, "f");
-      if ((info ~= nil) and (info.func ~= nil)) then 
-        local func = info.func;
-        local tbl = _G.debug.getfenv(func);
-        local table = tbl;
-        local _hx_11_p_next, _hx_11_p_table, _hx_11_p_index = _G.pairs(table);
-        local next = _hx_11_p_next;
-        local i = _hx_11_p_index;
-        local _g_next = function() 
-          local _hx_12_res_index, _hx_12_res_value = next(table, i);
-          i = _hx_12_res_index;
-          do return _hx_o({__fields__={key=true,value=true},key=_hx_12_res_index,value=_hx_12_res_value}) end;
-        end;
-        local _g_hasNext = function() 
-          do return _G.select(2, _G.next(table, i)) ~= nil end;
-        end;
-        while (_g_hasNext()) do 
-          local _g = _g_next();
-          local i = _g.key;
-          local p = _g.value;
-          addVars:push(_hx_o({__fields__={name=true,value=true},name=i,value=p}));
-        end;
-      end; end;
-  elseif (tmp) == 2 then 
-    local _g1 = _g[2];
-    local scope = _g[3];
-    local scope = scope;
-    if (scope) == 0 then 
-      local _g = _G;
-      local sort = _hx_tab_array({}, 0);
-      local isEnum = function(index,value) 
-        if ((_G.string.match(index, "%u", 1) ~= nil) and (_G.string.match(index, "%u", 2) ~= nil)) then 
-          do return _G.type(value) == "number" end;
-        else
-          do return false end;
-        end;
-      end;
-      local enums = _hx_tab_array({}, 0);
-      addVars:push(_hx_o({__fields__={name=true,value=true},name="_G",value=""}));
-      local table = _g;
-      local _hx_13_p_next, _hx_13_p_table, _hx_13_p_index = _G.pairs(table);
-      local next = _hx_13_p_next;
-      local i = _hx_13_p_index;
-      local _g_next = function() 
-        local _hx_14_res_index, _hx_14_res_value = next(table, i);
-        i = _hx_14_res_index;
-        do return _hx_o({__fields__={key=true,value=true},key=_hx_14_res_index,value=_hx_14_res_value}) end;
-      end;
-      local _g_hasNext = function() 
-        do return _G.select(2, _G.next(table, i)) ~= nil end;
-      end;
-      while (_g_hasNext()) do 
-        local _g = _g_next();
-        local i = _g.key;
-        local x = _g.value;
-        if (_G.type(i) == "string") then 
-          if (isEnum(i, x)) then 
-            enums:push(i);
-          else
-            sort:push(i);
-          end;
-        end;
-      end;
-      local _g1 = 0;
-      while (_g1 < sort.length) do 
-        local index = sort[_g1];
-        _g1 = _g1 + 1;
-        if (_G.type(index) == "string") then 
-          addVars:push(_hx_o({__fields__={name=true,value=true},name=index,value=Reflect.field(_g, index)}));
-        end;
-      end;
-    elseif (scope) == 1 then 
-      local _g = __gmod__LuaArray_LuaArray_Impl_.keyValueIterator(_G.player.GetAll());
-      while (_g:hasNext()) do 
-        local _g = _g:next();
-        local i = _g.key;
-        local ply = _g.value;
-        __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=648,className="gmdebug.lua.Handlers",methodName="h_variables"}));
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=ply:GetName(),value=ply}));
-      end;
-    elseif (scope) == 2 then 
-      local ents = _G.ents.GetAll();
-      local _g = 1;
-      local _g1 = _G.ents.GetCount();
-      while (_g < _g1) do 
-        _g = _g + 1;
-        local i = _g - 1;
-        local ent = ents[i];
-        addVars:push(_hx_o({__fields__={name=true,value=true},name=ent:GetClass(),value=ent}));
-      end; end; end;
-  local f = __gmdebug_lua_Handlers.genvar;
-  local _g = _hx_tab_array({}, 0);
-  local _g1 = 0;
-  local _g2 = addVars;
-  while (_g1 < _g2.length) do 
-    local i = _g2[_g1];
-    _g1 = _g1 + 1;
-    _g:push(f(i));
-  end;
-  local variablesArr = _g;
-  __gmdebug_lua_Handlers.fixupNames(variablesArr);
-  local resp = __gmdebug_ComposeTools.compose(req, "variables", _hx_o({__fields__={variables=true},variables=variablesArr}));
-  local js = __tink_json_Writer2.new():write(resp);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_setBreakpoints = function(x) 
-  local args = x.arguments;
-  local bpResponse = _hx_tab_array({}, 0);
-  if (args.breakpoints ~= nil) then 
-    local value = args.source.path;
-    local nmpath;
-    if (value == nil) then 
-      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
-    else
-      nmpath = value;
-    end;
-    local pathBreakpoints = __haxe_ds_IntMap.new();
-    local _g = 0;
-    local _g1 = args.breakpoints;
-    while (_g < _g1.length) do 
-      local bp = _g1[_g];
-      _g = _g + 1;
-      local this1 = __gmdebug_lua_DebugLoop.breakLocsCache;
-      local value = __gmdebug_lua_Debugee.fullPathToGmod(nmpath);
-      local ret = this1.h[(function() 
-        local _hx_1
-        if (value == nil) then 
-        _hx_1 = ""; else 
-        _hx_1 = value; end
-        return _hx_1
-      end )()];
-      if (ret == __haxe_ds_StringMap.tnull) then 
-        ret = nil;
-      end;
-      local possibleLocs = ret;
-      local verified = false;
-      local message = nil;
-      local bpType;
-      if (bp.condition == nil) then 
-        bpType = __gmdebug_lua_BreakPoint.NORMAL((function() 
-        local _hx_obj = __gmdebug_lua_Handlers;
-        local _hx_fld = 'bpID';
-        local _ = _hx_obj[_hx_fld];
-        _hx_obj[_hx_fld] = _hx_obj[_hx_fld]  + 1;
-         return _;
-         end)());
-      else
-        local expr = bp.condition;
-        local eval;
-        if (_G.string.sub(expr, 1, 1) == "!") then 
-          local pos = 1;
-          local len = nil;
-          if ((len == nil) or (len > (pos + #expr))) then 
-            len = #expr;
-          else
-            if (len < 0) then 
-              len = #expr + len;
-            end;
-          end;
-          if (pos < 0) then 
-            pos = #expr + pos;
-          end;
-          if (pos < 0) then 
-            pos = 0;
-          end;
-          eval = _G.string.sub(expr, pos + 1, pos + len);
-        else
-          eval = Std.string(Std.string("return ( ") .. Std.string(expr)) .. Std.string(" )");
-        end;
-        local _g = __gmdebug_lua_Util.compileString(eval, "Gmdebug Conditional BP: ");
-        local bpType1 = _g[1];
-        if (bpType1) == 0 then 
-          verified = false;
-          message = Std.string("Failed to compile condition ") .. Std.string(_g[2]);
-          bpType = nil;
-        elseif (bpType1) == 1 then 
-          bpType = __gmdebug_lua_BreakPoint.CONDITIONAL((function() 
-          local _hx_obj = __gmdebug_lua_Handlers;
-          local _hx_fld = 'bpID';
-          local _ = _hx_obj[_hx_fld];
-          _hx_obj[_hx_fld] = _hx_obj[_hx_fld]  + 1;
-           return _;
-           end)(), _g[2]); end;
-      end;
-      if (possibleLocs ~= nil) then 
-        local ret = possibleLocs.h[bp.line];
-        if (ret == __haxe_ds_IntMap.tnull) then 
-          ret = nil;
-        end;
-        local activeLineStatus = ret;
-        if (activeLineStatus == nil) then 
-          verified = true;
-          message = "This breakpoint could not be confirmed.";
-        else
-          if (activeLineStatus) then 
-            verified = true;
-          else
-            verified = false;
-            message = "Lua does not consider this an active line.";
-            bpType = nil;
-          end;
-        end;
-      else
-        verified = true;
-        message = "This file has not been visited by running code yet.";
-      end;
-      bpResponse:push(_hx_o({__fields__={verified=true,message=true,line=true},verified=verified,message=message,line=bp.line}));
-      if (bpType ~= nil) then 
-        local key = bp.line;
-        if (bpType == nil) then 
-          pathBreakpoints.h[key] = __haxe_ds_IntMap.tnull;
-        else
-          pathBreakpoints.h[key] = bpType;
-        end;
-      end;
-    end;
-    local value = __gmdebug_lua_Debugee.fullPathToGmod(nmpath);
-    local fixpath = (function() 
-      local _hx_2
-      if (value == nil) then 
-      _hx_2 = nmpath; else 
-      _hx_2 = value; end
-      return _hx_2
-    end )();
-    local _this = __gmdebug_lua_DebugLoop.breakpoints;
-    if (pathBreakpoints == nil) then 
-      _this.h[fixpath] = __haxe_ds_StringMap.tnull;
-    else
-      _this.h[fixpath] = pathBreakpoints;
-    end;
-  end;
-  local resp = __gmdebug_ComposeTools.compose(x, "setBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse}));
-  local js = __tink_json_Writer3.new():write(resp);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_breakpointLocations = function(x) 
-  local js = __haxe_Json.stringify(__gmdebug_ComposeTools.compose(x, "breakpointLocations", _hx_o({__fields__={breakpoints=true},breakpoints=_hx_tab_array({}, 0)})));
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-__gmdebug_lua_Handlers.h_stackTrace = function(x) 
-  local args = x.arguments;
-  if (not __gmdebug_lua_Debugee.inpauseloop) then 
-    local response = __gmdebug_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=_hx_tab_array({}, 0),totalFrames=0}));
-    local js = __tink_json_Writer0.new():write(response);
-    local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-    __gmdebug_lua_Debugee.socket.output:writeString(str);
-    __gmdebug_lua_Debugee.socket.output:flush();
-    local js = __haxe_Json.stringify(__gmdebug_ComposedEvent.new("continued", _hx_o({__fields__={threadId=true,allThreadsContinued=true},threadId=__gmdebug_lua_Debugee.clientID,allThreadsContinued=false})));
-    local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-    __gmdebug_lua_Debugee.socket.output:writeString(str);
-    __gmdebug_lua_Debugee.socket.output:flush();
-    do return __gmdebug_lua_HandlerResponse.WAIT end;
-  end;
-  local firstFrame;
-  local _g = args.startFrame;
-  if (_g == nil) then 
-    local value = __gmdebug_lua_Debugee.baseDepth;
-    if (value == nil) then 
-      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
-    else
-      firstFrame = value;
-    end;
-  else
-    local value = __gmdebug_lua_Debugee.baseDepth;
-    local firstFrame1;
-    if (value == nil) then 
-      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
-    else
-      firstFrame1 = value;
-    end;
-    firstFrame = _g + firstFrame1;
-  end;
-  local _g = args.levels;
-  local lastFrame = (function() 
-    local _hx_1
-    if (_g == nil) then 
-    _hx_1 = 9999; elseif (_g == 0) then 
-    _hx_1 = 9999; else 
-    _hx_1 = firstFrame + (_g - 1); end
-    return _hx_1
-  end )();
-  local stackFrames = _hx_tab_array({}, 0);
-  __haxe_Log.trace(Std.string(Std.string(Std.string("levels ") .. Std.string(args.startFrame)) .. Std.string(" ")) .. Std.string(args.levels), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=769,className="gmdebug.lua.Handlers",methodName="h_stackTrace"}));
-  __haxe_Log.trace(Std.string(Std.string(Std.string(Std.string(Std.string("first ") .. Std.string((firstFrame - 1))) .. Std.string(" last ")) .. Std.string(lastFrame)) .. Std.string(" stackheight ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=770,className="gmdebug.lua.Handlers",methodName="h_stackTrace"}));
-  local _g = firstFrame;
-  local _g1 = lastFrame;
-  while (_g < _g1) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    __haxe_Log.trace(i, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=772,className="gmdebug.lua.Handlers",methodName="h_stackTrace"}));
-    local info = _G.debug.getinfo(i + 1, "lnSfu");
-    if (info == nil) then 
-      break;
-    end;
-    local src;
-    if (_G.string.sub(info.source, 1, 1) == "@") then 
-      local _this = info.source;
-      local pos = 1;
-      local len = nil;
-      if ((len == nil) or (len > (pos + #_this))) then 
-        len = #_this;
-      else
-        if (len < 0) then 
-          len = #_this + len;
-        end;
-      end;
-      if (pos < 0) then 
-        pos = #_this + pos;
-      end;
-      if (pos < 0) then 
-        pos = 0;
-      end;
-      src = _G.string.sub(_this, pos + 1, pos + len);
-    else
-      src = info.source;
-    end;
-    local args = "";
-    if (info.nparams > 0) then 
-      args = "(";
-      local _g = 0;
-      local _g1 = info.nparams;
-      while (_g < _g1) do 
-        _g = _g + 1;
-        local _hx_2_lcl_a, _hx_2_lcl_b = _G.debug.getlocal(i + 1, (_g - 1) + 1);
-        local val;
-        local _g = _G.type(_hx_2_lcl_b);
-        if (_g) == "string" then 
-          val = Std.string(Std.string("\"") .. Std.string(Std.string(_hx_2_lcl_b))) .. Std.string("\"");
-        elseif (_g) == "table" then 
-          val = "table";else
-        val = _G.tostring(_hx_2_lcl_b); end;
-        args = Std.string(args) .. Std.string((Std.string(Std.string(Std.string(Std.string("") .. Std.string(_hx_2_lcl_a)) .. Std.string("=")) .. Std.string(val)) .. Std.string(",")));
-      end;
-      local _g = 1;
-      while (_g < 9999) do 
-        _g = _g + 1;
-        local _hx_3_lcl_a, _hx_3_lcl_b = _G.debug.getlocal(i + 1, -(_g - 1));
-        if (_hx_3_lcl_a == nil) then 
-          break;
-        end;
-        local val;
-        local _g = _G.type(_hx_3_lcl_b);
-        if (_g) == "string" then 
-          val = Std.string(Std.string("\"") .. Std.string(Std.string(_hx_3_lcl_b))) .. Std.string("\"");
-        elseif (_g) == "table" then 
-          val = "table";else
-        val = _G.tostring(_hx_3_lcl_b); end;
-        args = Std.string(args) .. Std.string((Std.string(Std.string(Std.string(Std.string("") .. Std.string(_hx_3_lcl_a)) .. Std.string("=")) .. Std.string(val)) .. Std.string(",")));
-      end;
-      local pos = 0;
-      local len = #args - 1;
-      if ((len == nil) or (len > (pos + #args))) then 
-        len = #args;
-      else
-        if (len < 0) then 
-          len = #args + len;
-        end;
-      end;
-      if (pos < 0) then 
-        pos = #args + pos;
-      end;
-      if (pos < 0) then 
-        pos = 0;
-      end;
-      args = Std.string(_G.string.sub(args, pos + 1, pos + len)) .. Std.string(")");
-    end;
-    local _g = info.namewhat;
-    local _g1 = info.name;
-    local name = (function() 
-      local _hx_4
-      if (_g1 == nil) then 
-      _hx_4 = (function() 
-        local _hx_5
-        if (_g == "") then 
-        _hx_5 = Std.string("anonymous function ") .. Std.string(args); else 
-        _hx_5 = Std.string(Std.string(Std.string(Std.string(Std.string("[") .. Std.string(_g)) .. Std.string("] ")) .. Std.string(_g1)) .. Std.string(" ")) .. Std.string(args); end
-        return _hx_5
-      end )(); else 
-      _hx_4 = Std.string(Std.string(Std.string(Std.string(Std.string("[") .. Std.string(_g)) .. Std.string("] ")) .. Std.string(_g1)) .. Std.string(" ")) .. Std.string(args); end
-      return _hx_4
-    end )();
-    local path;
-    local hint;
-    local line;
-    local column;
-    local endLine = nil;
-    local endColumn = nil;
-    if (src == "=[C]") then 
-      hint = "deemphasize";
-      path = nil;
-      line = 0;
-      column = 0;
-    else
-      path = __gmdebug_lua_Debugee.normalPath(src);
-      hint = nil;
-      line = info.currentline;
-      column = 1;
-      endLine = info.lastlinedefined;
-      endColumn = 99999;
-    end;
-    hint = "normal";
-    if ((info.func ~= nil) and (__gmdebug_lua_Exceptions.exceptFuncs.k[info.func] ~= nil)) then 
-      line = 0;
-      path = nil;
-      column = 0;
-      hint = "deemphasize";
-      name = "Exception catcher";
-    else
-      hint = "normal";
-    end;
-    local value = __gmdebug_lua_Debugee.clientID;
-    local clientID;
-    if (value == nil) then 
-      _G.error(__safety_NullPointerException.new("Null pointer in .sure() call"),0);
-    else
-      clientID = value;
-    end;
-    local target = _hx_bit.bor(_hx_bit.lshift(clientID,27),i);
-    local target1;
-    if (path == nil) then 
-      target1 = nil;
-    else
-      local path = path;
-      __haxe_Log.trace(path, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Handlers.hx",lineNumber=857,className="gmdebug.lua.Handlers",methodName="h_stackTrace"}));
-      local idx = 1;
-      local ret = _hx_tab_array({}, 0);
-      while (idx ~= nil) do 
-        local newidx = 0;
-        if (#"/" > 0) then 
-          newidx = _G.string.find(path, "/", idx, true);
-        else
-          if (idx >= #path) then 
-            newidx = nil;
-          else
-            newidx = idx + 1;
-          end;
-        end;
-        if (newidx ~= nil) then 
-          ret:push(_G.string.sub(path, idx, newidx - 1));
-          idx = newidx + #"/";
-        else
-          ret:push(_G.string.sub(path, idx, #path));
-          idx = nil;
-        end;
-      end;
-      local pth = ret;
-      target1 = _hx_o({__fields__={name=true,path=true,presentationHint=true},name=pth[pth.length - 1],path=path,presentationHint=hint});
-    end;
-    local target = _hx_o({__fields__={id=true,name=true,source=true,line=true,column=true,endLine=true,endColumn=true,moduleId=true},id=target,name=name,source=target1,line=line,column=column,endLine=endLine,endColumn=endColumn,moduleId="test"});
-    if (path ~= nil) then 
-      target.source.path = path;
-    end;
-    stackFrames:push(target);
-  end;
-  local response = __gmdebug_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=stackFrames,totalFrames=stackFrames.length}));
-  local js = __tink_json_Writer0.new():write(response);
-  local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
-  __gmdebug_lua_Debugee.socket.output:writeString(str);
-  __gmdebug_lua_Debugee.socket.output:flush();
-  do return __gmdebug_lua_HandlerResponse.WAIT end;
-end
-
-__gmdebug_lua_Jit.new = {}
-__gmdebug_lua_Jit.__name__ = true
-__gmdebug_lua_Jit.jitCheck = function(err,traceback) 
-  __haxe_Log.trace(Std.string("Jit activated due to: ") .. Std.string(err), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=48,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-  __haxe_Log.trace("To make a choice, open garrysmod/data/jitchoice.txt and type it in or remove this file to permenantley disable this feature and continue execution.", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=49,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-  __haxe_Log.trace("Waiting for choice...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=50,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-  local msg = Std.string(Std.string(Std.string(__gmdebug_lua_Jit.JIT_MESSAGE) .. Std.string("\n//Current error: \n//")) .. Std.string(StringTools.replace(traceback, "\n", "\n//"))) .. Std.string("\n");
-  _G.file.Write(__gmdebug_Cross.JIT, msg);
-  local wait = _G.SysTime() + 1;
-  local _hx_continue_1 = false;
-  while (_G.file.Exists(__gmdebug_Cross.JIT, "DATA")) do repeat 
-    if (_G.SysTime() < wait) then 
-      break;
-    end;
-    wait = _G.SysTime() + 1;
-    local jitFile = _G.file.Open(__gmdebug_Cross.JIT, "r", "DATA");
-    if (jitFile == nil) then 
-      __haxe_Log.trace("cannot open", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=60,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-      break;
-    end;
-    jitFile:Seek(#msg);
-    local str = jitFile:Read(2);
-    if (str == nil) then 
-      if (__gmdebug_lua_Jit.autostart and __gmdebug_lua_Debugee.start()) then 
-        do return true end;
-      end;
-    else
-      local choice = _G.string.lower(StringTools.replace(StringTools.replace(str, "\n", ""), "\r", ""));
-      if (choice) == "n" then 
-        __haxe_Log.trace("NO.", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=74,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-        do return false end;
-      elseif (choice) == "s" then 
-        _G.gmdebugJit = false;
-        do return false end;
-      elseif (choice) == "y" then 
-        __haxe_Log.trace("YES!", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=71,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-        if (__gmdebug_lua_Debugee.start()) then 
-          do return true end;
-        end;else
-      if (__gmdebug_lua_Jit.autostart) then 
-        __haxe_Log.trace(Std.string("invalid choice ") .. Std.string(choice), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=80,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-        _G.file.Write(__gmdebug_Cross.JIT, msg);
-        if (__gmdebug_lua_Debugee.start()) then 
-          do return true end;
-        end;
-      else
-        __haxe_Log.trace(Std.string("invalid choice ") .. Std.string(choice), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=84,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-        _G.file.Write(__gmdebug_Cross.JIT, msg);
-      end; end;
-    end;
-    jitFile:Close();until true
-    if _hx_continue_1 then 
-    _hx_continue_1 = false;
-    break;
-    end;
-    
-  end;
-  __haxe_Log.trace("file left plane of existence", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=92,className="gmdebug.lua.Jit",methodName="jitCheck"}));
-  do return false end;
-end
-__gmdebug_lua_Jit.jitActivate = function() 
-  local tmp;
-  if (not __gmdebug_lua_Jit.jitActive) then 
-    local _g = _G.gmdebugJit;
-    if (_g == nil) then 
-      _G.gmdebugJit = true;
-      tmp = true;
-    else
-      tmp = _g;
-    end;
-  else
-    tmp = false;
-  end;
-  if (tmp and _G.file.Exists(__gmdebug_Cross.JIT, "DATA")) then 
-    __haxe_Log.trace("activating jit", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Jit.hx",lineNumber=103,className="gmdebug.lua.Jit",methodName="jitActivate"}));
-    __gmdebug_lua_Jit.jitActive = true;
-    __gmdebug_lua_Exceptions.hookGamemodeHooks();
-    __gmdebug_lua_Exceptions.hookEntityHooks();
-    __gmdebug_lua_Jit.netJit:broadcast(_hx_e());
-  end;
-end
-
-__gmdebug_lua_DebugIO.new = {}
-__gmdebug_lua_DebugIO.__name__ = true
-__gmdebug_lua_DebugIO.prototype = _hx_e();
-__gmdebug_lua_DebugIO.prototype.input= nil;
-__gmdebug_lua_DebugIO.prototype.output= nil;
-__gmdebug_lua_DebugIO.prototype.close= nil;
-
-__gmdebug_lua_DebugIO.prototype.__class__ =  __gmdebug_lua_DebugIO
-
-__sys_net_Socket.new = function() 
-  local self = _hx_new(__sys_net_Socket.prototype)
-  __sys_net_Socket.super(self)
-  return self
-end
-__sys_net_Socket.super = function(self) 
-  self.timeout = nil;
-end
-__sys_net_Socket.__name__ = true
-__sys_net_Socket.prototype = _hx_e();
-__sys_net_Socket.prototype.input= nil;
-__sys_net_Socket.prototype.output= nil;
-__sys_net_Socket.prototype._socket= nil;
-__sys_net_Socket.prototype.timeout= nil;
-__sys_net_Socket.prototype.close = function(self) 
-  self._socket:close();
-end
-__sys_net_Socket.prototype.connect = function(self,host,port) 
-  local _hx_1_res_result, _hx_1_res_message = __lua_lib_luasocket_Socket.connect(host.host, port);
-  if (_hx_1_res_message ~= nil) then 
-    _G.error(__haxe_Exception.thrown(Std.string("Socket Error : ") .. Std.string(_hx_1_res_message)),0);
-  end;
-  self.input = __sys_net__Socket_SocketInput.new(_hx_1_res_result);
-  self.output = __sys_net__Socket_SocketOutput.new(_hx_1_res_result);
-  self._socket = _hx_1_res_result;
-  self._socket:settimeout(self.timeout);
-end
-
-__sys_net_Socket.prototype.__class__ =  __sys_net_Socket
-
-__gmdebug_lua_LuaSocket.new = function() 
-  local self = _hx_new(__gmdebug_lua_LuaSocket.prototype)
-  __gmdebug_lua_LuaSocket.super(self)
-  return self
-end
-__gmdebug_lua_LuaSocket.super = function(self) 
-  __sys_net_Socket.super(self);
-end
-__gmdebug_lua_LuaSocket.__name__ = true
-__gmdebug_lua_LuaSocket.__interfaces__ = {__gmdebug_lua_DebugIO}
-__gmdebug_lua_LuaSocket.prototype = _hx_e();
-__gmdebug_lua_LuaSocket.prototype.connect = function(self,host,port) 
-  __sys_net_Socket.prototype.connect(self,host,port);
-  self.output = __gmdebug_lua_SimpleLSOutput.new(self._socket);
-  local tcpClient = self._socket;
-  tcpClient:setoption("keepalive", true);
-  tcpClient:setoption("tcp-nodelay", true);
-end
-
-__gmdebug_lua_LuaSocket.prototype.__class__ =  __gmdebug_lua_LuaSocket
-__gmdebug_lua_LuaSocket.__super__ = __sys_net_Socket
-setmetatable(__gmdebug_lua_LuaSocket.prototype,{__index=__sys_net_Socket.prototype})
-
-__haxe_io_Output.new = {}
-__haxe_io_Output.__name__ = true
-__haxe_io_Output.prototype = _hx_e();
-__haxe_io_Output.prototype.writeByte = function(self,c) 
-  _G.error(__haxe_Exception.thrown("Not implemented"),0);
-end
-__haxe_io_Output.prototype.writeBytes = function(self,s,pos,len) 
-  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
-  end;
-  local b = s.b;
-  local k = len;
-  while (k > 0) do 
-    self:writeByte(b[pos]);
-    pos = pos + 1;
-    k = k - 1;
-  end;
-  do return len end
-end
-__haxe_io_Output.prototype.flush = function(self) 
-end
-__haxe_io_Output.prototype.writeFullBytes = function(self,s,pos,len) 
-  while (len > 0) do 
-    local k = self:writeBytes(s, pos, len);
-    pos = pos + k;
-    len = len - k;
-  end;
-end
-__haxe_io_Output.prototype.writeString = function(self,s,encoding) 
-  local b = __haxe_io_Bytes.ofString(s, encoding);
-  self:writeFullBytes(b, 0, b.length);
-end
-
-__haxe_io_Output.prototype.__class__ =  __haxe_io_Output
-
-__gmdebug_lua_SimpleLSOutput.new = function(tcp) 
-  local self = _hx_new(__gmdebug_lua_SimpleLSOutput.prototype)
-  __gmdebug_lua_SimpleLSOutput.super(self,tcp)
-  return self
-end
-__gmdebug_lua_SimpleLSOutput.super = function(self,tcp) 
-  self.tcp = tcp;
-end
-__gmdebug_lua_SimpleLSOutput.__name__ = true
-__gmdebug_lua_SimpleLSOutput.prototype = _hx_e();
-__gmdebug_lua_SimpleLSOutput.prototype.tcp= nil;
-__gmdebug_lua_SimpleLSOutput.prototype.writeString = function(self,s,encoding) 
-  self.tcp:send(s);
-end
-
-__gmdebug_lua_SimpleLSOutput.prototype.__class__ =  __gmdebug_lua_SimpleLSOutput
-__gmdebug_lua_SimpleLSOutput.__super__ = __haxe_io_Output
-setmetatable(__gmdebug_lua_SimpleLSOutput.prototype,{__index=__haxe_io_Output.prototype})
-
-__gmdebug_lua_PipeSocket.new = function() 
-  local self = _hx_new(__gmdebug_lua_PipeSocket.prototype)
-  __gmdebug_lua_PipeSocket.super(self)
-  return self
-end
-__gmdebug_lua_PipeSocket.super = function(self) 
-  if (not _G.file.Exists(__gmdebug_Cross.READY, "DATA")) then 
-    _G.error(__haxe_Exception.thrown("Other process is not ready."),0);
-  end;
-  _G.file.Delete(__gmdebug_Cross.READY);
-  self.input = __gmdebug_lua_PipeInput.new();
-  self.output = __gmdebug_lua_PipeOutput.new();
-end
-__gmdebug_lua_PipeSocket.__name__ = true
-__gmdebug_lua_PipeSocket.__interfaces__ = {__gmdebug_lua_DebugIO}
-__gmdebug_lua_PipeSocket.prototype = _hx_e();
-__gmdebug_lua_PipeSocket.prototype.input= nil;
-__gmdebug_lua_PipeSocket.prototype.output= nil;
-__gmdebug_lua_PipeSocket.prototype.close = function(self) 
-  self.input:close();
-  self.output:close();
-end
-
-__gmdebug_lua_PipeSocket.prototype.__class__ =  __gmdebug_lua_PipeSocket
-
-__haxe_io_Input.new = {}
-__haxe_io_Input.__name__ = true
-__haxe_io_Input.prototype = _hx_e();
-__haxe_io_Input.prototype.readByte = function(self) 
-  _G.error(__haxe_Exception.thrown("Not implemented"),0);
-end
-__haxe_io_Input.prototype.readBytes = function(self,s,pos,len) 
-  local k = len;
-  local b = s.b;
-  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
-  end;
-  local _hx_status, _hx_result = pcall(function() 
-  
-      while (k > 0) do 
-        b[pos] = self:readByte();
-        pos = pos + 1;
-        k = k - 1;
-      end;
-    return _hx_pcall_default
-  end)
-  if not _hx_status and _hx_result == "_hx_pcall_break" then
-  elseif not _hx_status then 
-    local _g = _hx_result;
-    if (not __lua_Boot.__instanceof(__haxe_Exception.caught(_g):unwrap(), __haxe_io_Eof)) then 
-      _G.error(_g,0);
-    end;
-  elseif _hx_result ~= _hx_pcall_default then
-    return _hx_result
-  end;
-  do return len - k end
-end
-__haxe_io_Input.prototype.close = function(self) 
-end
-__haxe_io_Input.prototype.readFullBytes = function(self,s,pos,len) 
-  while (len > 0) do 
-    local k = self:readBytes(s, pos, len);
-    if (k == 0) then 
-      _G.error(__haxe_Exception.thrown(__haxe_io_Error.Blocked),0);
-    end;
-    pos = pos + k;
-    len = len - k;
-  end;
-end
-__haxe_io_Input.prototype.readLine = function(self) 
-  local buf = __haxe_io_BytesBuffer.new();
-  local last;
-  local s;
-  local _hx_status, _hx_result = pcall(function() 
-  
-      while (true) do 
-        last = self:readByte();
-        if (not (last ~= 10)) then 
-          break;
-        end;
-        buf.b:push(last);
-      end;
-      s = buf:getBytes():toString();
-      if (_G.string.byte(s, (#s - 1) + 1) == 13) then 
-        local len = -1;
-        if (-1 > #s) then 
-          len = #s;
-        else
-          len = #s + -1;
-        end;
-        s = _G.string.sub(s, 1, len);
-      end;
-    return _hx_pcall_default
-  end)
-  if not _hx_status and _hx_result == "_hx_pcall_break" then
-  elseif not _hx_status then 
-    local _g = _hx_result;
-    local _g1 = __haxe_Exception.caught(_g):unwrap();
-    if (__lua_Boot.__instanceof(_g1, __haxe_io_Eof)) then 
-      s = buf:getBytes():toString();
-      if (#s == 0) then 
-        _G.error(__haxe_Exception.thrown(_g1),0);
-      end;
-    else
-      _G.error(_g,0);
-    end;
-  elseif _hx_result ~= _hx_pcall_default then
-    return _hx_result
-  end;
-  do return s end
-end
-__haxe_io_Input.prototype.readString = function(self,len,encoding) 
-  local b = __haxe_io_Bytes.alloc(len);
-  self:readFullBytes(b, 0, len);
-  do return b:getString(0, len, encoding) end
-end
-
-__haxe_io_Input.prototype.__class__ =  __haxe_io_Input
-
-__gmdebug_lua_PipeInput.new = function() 
-  local self = _hx_new(__gmdebug_lua_PipeInput.prototype)
-  __gmdebug_lua_PipeInput.super(self)
-  return self
-end
-__gmdebug_lua_PipeInput.super = function(self) 
-  if (not _G.file.Exists(__gmdebug_Cross.INPUT, "DATA")) then 
-    _G.error(__haxe_Exception.thrown("Input pipe does not exist"),0);
-  end;
-  local f = _G.file.Open(__gmdebug_Cross.INPUT, "r", "DATA");
-  if (f == nil) then 
-    _G.error(__haxe_Exception.thrown("Cannot open Input pipe for reading"),0);
-  end;
-  self.file = f;
-end
-__gmdebug_lua_PipeInput.__name__ = true
-__gmdebug_lua_PipeInput.prototype = _hx_e();
-__gmdebug_lua_PipeInput.prototype.file= nil;
-__gmdebug_lua_PipeInput.prototype.readByte = function(self) 
-  do return self.file:ReadByte() end
-end
-
-__gmdebug_lua_PipeInput.prototype.__class__ =  __gmdebug_lua_PipeInput
-__gmdebug_lua_PipeInput.__super__ = __haxe_io_Input
-setmetatable(__gmdebug_lua_PipeInput.prototype,{__index=__haxe_io_Input.prototype})
-
-__gmdebug_lua_PipeOutput.new = function() 
-  local self = _hx_new(__gmdebug_lua_PipeOutput.prototype)
-  __gmdebug_lua_PipeOutput.super(self)
-  return self
-end
-__gmdebug_lua_PipeOutput.super = function(self) 
-  local f = _G.file.Open(__gmdebug_Cross.OUTPUT, "w", "DATA");
-  if (f == nil) then 
-    _G.error(__haxe_Exception.thrown("Cannot open output pipe for reading"),0);
-  end;
-  self.file = f;
-end
-__gmdebug_lua_PipeOutput.__name__ = true
-__gmdebug_lua_PipeOutput.prototype = _hx_e();
-__gmdebug_lua_PipeOutput.prototype.file= nil;
-__gmdebug_lua_PipeOutput.prototype.close = function(self) 
-  self.file:Close();
-end
-__gmdebug_lua_PipeOutput.prototype.flush = function(self) 
-  self.file:Flush();
-end
-__gmdebug_lua_PipeOutput.prototype.writeString = function(self,s,encoding) 
-  self.file:Write(s);
-end
-
-__gmdebug_lua_PipeOutput.prototype.__class__ =  __gmdebug_lua_PipeOutput
-__gmdebug_lua_PipeOutput.__super__ = __haxe_io_Output
-setmetatable(__gmdebug_lua_PipeOutput.prototype,{__index=__haxe_io_Output.prototype})
-
-__gmod_macros_include___ForceExpose.new = {}
-_hx_exports["__forceExpose"] = __gmod_macros_include___ForceExpose
-__gmod_macros_include___ForceExpose.__name__ = true
-
-__haxe_EntryPoint.new = {}
-__haxe_EntryPoint.__name__ = true
-__haxe_EntryPoint.processEvents = function() 
-  while (true) do 
-    local f = __haxe_EntryPoint.pending:shift();
-    if (f == nil) then 
-      break;
-    end;
-    f();
-  end;
-  local time = __haxe_MainLoop.tick();
-  if (not __haxe_MainLoop.hasEvents() and (__haxe_EntryPoint.threadCount == 0)) then 
-    do return -1 end;
-  end;
-  do return time end;
-end
-__haxe_EntryPoint.run = function() 
-  while (not (__haxe_EntryPoint.processEvents() < 0)) do 
-  end;
-end
-
-__haxe_MainEvent.new = function(f,p) 
-  local self = _hx_new(__haxe_MainEvent.prototype)
-  __haxe_MainEvent.super(self,f,p)
-  return self
-end
-__haxe_MainEvent.super = function(self,f,p) 
-  self.isBlocking = true;
-  self.f = _hx_funcToField(f);
-  self.priority = p;
-  self.nextRun = -_G.math.huge;
-end
-__haxe_MainEvent.__name__ = true
-__haxe_MainEvent.prototype = _hx_e();
-__haxe_MainEvent.prototype.f= nil;
-__haxe_MainEvent.prototype.prev= nil;
-__haxe_MainEvent.prototype.next= nil;
-__haxe_MainEvent.prototype.isBlocking= nil;
-__haxe_MainEvent.prototype.nextRun= nil;
-__haxe_MainEvent.prototype.priority= nil;
-
-__haxe_MainEvent.prototype.__class__ =  __haxe_MainEvent
-
-__haxe_MainLoop.new = {}
-__haxe_MainLoop.__name__ = true
-__haxe_MainLoop.hasEvents = function() 
-  local p = __haxe_MainLoop.pending;
-  while (p ~= nil) do 
-    if (p.isBlocking) then 
-      do return true end;
-    end;
-    p = p.next;
-  end;
-  do return false end;
-end
-__haxe_MainLoop.sortEvents = function() 
-  local list = __haxe_MainLoop.pending;
-  if (list == nil) then 
-    do return end;
-  end;
-  local insize = 1;
-  local nmerges;
-  local psize = 0;
-  local qsize = 0;
-  local p;
-  local q;
-  local e;
-  local tail;
-  while (true) do 
-    p = list;
-    list = nil;
-    tail = nil;
-    nmerges = 0;
-    while (p ~= nil) do 
-      nmerges = nmerges + 1;
-      q = p;
-      psize = 0;
-      local _g = 0;
-      local _g1 = insize;
-      while (_g < _g1) do 
-        _g = _g + 1;
-        psize = psize + 1;
-        q = q.next;
-        if (q == nil) then 
-          break;
-        end;
-      end;
-      qsize = insize;
-      while ((psize > 0) or ((qsize > 0) and (q ~= nil))) do 
-        if (psize == 0) then 
-          e = q;
-          q = q.next;
-          qsize = qsize - 1;
-        else
-          if (((qsize == 0) or (q == nil)) or ((p.priority > q.priority) or ((p.priority == q.priority) and (p.nextRun <= q.nextRun)))) then 
-            e = p;
-            p = p.next;
-            psize = psize - 1;
-          else
-            e = q;
-            q = q.next;
-            qsize = qsize - 1;
-          end;
-        end;
-        if (tail ~= nil) then 
-          tail.next = e;
-        else
-          list = e;
-        end;
-        e.prev = tail;
-        tail = e;
-      end;
-      p = q;
-    end;
-    tail.next = nil;
-    if (nmerges <= 1) then 
-      break;
-    end;
-    insize = insize * 2;
-  end;
-  list.prev = nil;
-  __haxe_MainLoop.pending = list;
-end
-__haxe_MainLoop.tick = function() 
-  __haxe_MainLoop.sortEvents();
-  local e = __haxe_MainLoop.pending;
-  local now = Sys.time();
-  local wait = 1e9;
-  while (e ~= nil) do 
-    local next = e.next;
-    local wt = e.nextRun - now;
-    if (wt <= 0) then 
-      wait = 0;
-      if (e.f ~= nil) then 
-        e:f();
-      end;
-    else
-      if (wait > wt) then 
-        wait = wt;
-      end;
-    end;
-    e = next;
-  end;
-  do return wait end;
-end
-
-__haxe_ValueException.new = function(value,previous,native) 
-  local self = _hx_new(__haxe_ValueException.prototype)
-  __haxe_ValueException.super(self,value,previous,native)
-  return self
-end
-__haxe_ValueException.super = function(self,value,previous,native) 
-  __haxe_Exception.super(self,Std.string(value),previous,native);
-  self.value = value;
-end
-__haxe_ValueException.__name__ = true
-__haxe_ValueException.prototype = _hx_e();
-__haxe_ValueException.prototype.value= nil;
-__haxe_ValueException.prototype.unwrap = function(self) 
-  do return self.value end
-end
-
-__haxe_ValueException.prototype.__class__ =  __haxe_ValueException
-__haxe_ValueException.__super__ = __haxe_Exception
-setmetatable(__haxe_ValueException.prototype,{__index=__haxe_Exception.prototype})
-
-__haxe_ds_BalancedTree.new = function() 
-  local self = _hx_new(__haxe_ds_BalancedTree.prototype)
-  __haxe_ds_BalancedTree.super(self)
-  return self
-end
-__haxe_ds_BalancedTree.super = function(self) 
-end
-__haxe_ds_BalancedTree.__name__ = true
-__haxe_ds_BalancedTree.__interfaces__ = {__haxe_IMap}
-__haxe_ds_BalancedTree.prototype = _hx_e();
-__haxe_ds_BalancedTree.prototype.root= nil;
-__haxe_ds_BalancedTree.prototype.set = function(self,key,value) 
-  self.root = self:setLoop(key, value, self.root);
-end
-__haxe_ds_BalancedTree.prototype.get = function(self,key) 
-  local node = self.root;
-  while (node ~= nil) do 
-    local c = self:compare(key, node.key);
-    if (c == 0) then 
-      do return node.value end;
-    end;
-    if (c < 0) then 
-      node = node.left;
-    else
-      node = node.right;
-    end;
-  end;
-  do return nil end
-end
-__haxe_ds_BalancedTree.prototype.exists = function(self,key) 
-  local node = self.root;
-  while (node ~= nil) do 
-    local c = self:compare(key, node.key);
-    if (c == 0) then 
-      do return true end;
-    else
-      if (c < 0) then 
-        node = node.left;
-      else
-        node = node.right;
-      end;
-    end;
-  end;
-  do return false end
-end
-__haxe_ds_BalancedTree.prototype.keys = function(self) 
-  local ret = _hx_tab_array({}, 0);
-  self:keysLoop(self.root, ret);
-  do return __haxe_iterators_ArrayIterator.new(ret) end
-end
-__haxe_ds_BalancedTree.prototype.setLoop = function(self,k,v,node) 
-  if (node == nil) then 
-    do return __haxe_ds_TreeNode.new(nil, k, v, nil) end;
-  end;
-  local c = self:compare(k, node.key);
-  if (c == 0) then 
-    do return __haxe_ds_TreeNode.new(node.left, k, v, node.right, (function() 
-      local _hx_1
-      if (node == nil) then 
-      _hx_1 = 0; else 
-      _hx_1 = node._height; end
-      return _hx_1
-    end )()) end;
-  else
-    if (c < 0) then 
-      do return self:balance(self:setLoop(k, v, node.left), node.key, node.value, node.right) end;
-    else
-      local nr = self:setLoop(k, v, node.right);
-      do return self:balance(node.left, node.key, node.value, nr) end;
-    end;
-  end;
-end
-__haxe_ds_BalancedTree.prototype.keysLoop = function(self,node,acc) 
-  if (node ~= nil) then 
-    self:keysLoop(node.left, acc);
-    acc:push(node.key);
-    self:keysLoop(node.right, acc);
-  end;
-end
-__haxe_ds_BalancedTree.prototype.balance = function(self,l,k,v,r) 
-  local hl = (function() 
-    local _hx_1
-    if (l == nil) then 
-    _hx_1 = 0; else 
-    _hx_1 = l._height; end
-    return _hx_1
-  end )();
-  local hr = (function() 
-    local _hx_2
-    if (r == nil) then 
-    _hx_2 = 0; else 
-    _hx_2 = r._height; end
-    return _hx_2
-  end )();
-  if (hl > (hr + 2)) then 
-    local _this = l.left;
-    local _this1 = l.right;
-    if ((function() 
-      local _hx_3
-      if (_this == nil) then 
-      _hx_3 = 0; else 
-      _hx_3 = _this._height; end
-      return _hx_3
-    end )() >= (function() 
-      local _hx_4
-      if (_this1 == nil) then 
-      _hx_4 = 0; else 
-      _hx_4 = _this1._height; end
-      return _hx_4
-    end )()) then 
-      do return __haxe_ds_TreeNode.new(l.left, l.key, l.value, __haxe_ds_TreeNode.new(l.right, k, v, r)) end;
-    else
-      do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l.left, l.key, l.value, l.right.left), l.right.key, l.right.value, __haxe_ds_TreeNode.new(l.right.right, k, v, r)) end;
-    end;
-  else
-    if (hr > (hl + 2)) then 
-      local _this = r.right;
-      local _this1 = r.left;
-      if ((function() 
-        local _hx_5
-        if (_this == nil) then 
-        _hx_5 = 0; else 
-        _hx_5 = _this._height; end
-        return _hx_5
-      end )() > (function() 
-        local _hx_6
-        if (_this1 == nil) then 
-        _hx_6 = 0; else 
-        _hx_6 = _this1._height; end
-        return _hx_6
-      end )()) then 
-        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left), r.key, r.value, r.right) end;
-      else
-        do return __haxe_ds_TreeNode.new(__haxe_ds_TreeNode.new(l, k, v, r.left.left), r.left.key, r.left.value, __haxe_ds_TreeNode.new(r.left.right, r.key, r.value, r.right)) end;
-      end;
-    else
-      do return __haxe_ds_TreeNode.new(l, k, v, r, (function() 
-        local _hx_7
-        if (hl > hr) then 
-        _hx_7 = hl; else 
-        _hx_7 = hr; end
-        return _hx_7
-      end )() + 1) end;
-    end;
-  end;
-end
-__haxe_ds_BalancedTree.prototype.compare = function(self,k1,k2) 
-  do return Reflect.compare(k1, k2) end
-end
-
-__haxe_ds_BalancedTree.prototype.__class__ =  __haxe_ds_BalancedTree
-
-__haxe_ds_TreeNode.new = function(l,k,v,r,h) 
-  local self = _hx_new(__haxe_ds_TreeNode.prototype)
-  __haxe_ds_TreeNode.super(self,l,k,v,r,h)
-  return self
-end
-__haxe_ds_TreeNode.super = function(self,l,k,v,r,h) 
-  if (h == nil) then 
-    h = -1;
-  end;
-  self.left = l;
-  self.key = k;
-  self.value = v;
-  self.right = r;
-  if (h == -1) then 
-    local tmp;
-    local _this = self.left;
-    local _this1 = self.right;
-    if ((function() 
-      local _hx_1
-      if (_this == nil) then 
-      _hx_1 = 0; else 
-      _hx_1 = _this._height; end
-      return _hx_1
-    end )() > (function() 
-      local _hx_2
-      if (_this1 == nil) then 
-      _hx_2 = 0; else 
-      _hx_2 = _this1._height; end
-      return _hx_2
-    end )()) then 
-      local _this = self.left;
-      tmp = (function() 
-        local _hx_3
-        if (_this == nil) then 
-        _hx_3 = 0; else 
-        _hx_3 = _this._height; end
-        return _hx_3
-      end )();
-    else
-      local _this = self.right;
-      tmp = (function() 
-        local _hx_4
-        if (_this == nil) then 
-        _hx_4 = 0; else 
-        _hx_4 = _this._height; end
-        return _hx_4
-      end )();
-    end;
-    self._height = tmp + 1;
-  else
-    self._height = h;
-  end;
-end
-__haxe_ds_TreeNode.__name__ = true
-__haxe_ds_TreeNode.prototype = _hx_e();
-__haxe_ds_TreeNode.prototype.left= nil;
-__haxe_ds_TreeNode.prototype.right= nil;
-__haxe_ds_TreeNode.prototype.key= nil;
-__haxe_ds_TreeNode.prototype.value= nil;
-__haxe_ds_TreeNode.prototype._height= nil;
-
-__haxe_ds_TreeNode.prototype.__class__ =  __haxe_ds_TreeNode
-
-__haxe_ds_EnumValueMap.new = function() 
-  local self = _hx_new(__haxe_ds_EnumValueMap.prototype)
-  __haxe_ds_EnumValueMap.super(self)
-  return self
-end
-__haxe_ds_EnumValueMap.super = function(self) 
-  __haxe_ds_BalancedTree.super(self);
-end
-__haxe_ds_EnumValueMap.__name__ = true
-__haxe_ds_EnumValueMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_EnumValueMap.prototype = _hx_e();
-__haxe_ds_EnumValueMap.prototype.compare = function(self,k1,k2) 
-  local d = k1[1] - k2[1];
-  if (d ~= 0) then 
-    do return d end;
-  end;
-  local p1 = k1:slice(2);
-  local p2 = k2:slice(2);
-  if ((p1.length == 0) and (p2.length == 0)) then 
-    do return 0 end;
-  end;
-  do return self:compareArgs(p1, p2) end
-end
-__haxe_ds_EnumValueMap.prototype.compareArgs = function(self,a1,a2) 
-  local ld = a1.length - a2.length;
-  if (ld ~= 0) then 
-    do return ld end;
-  end;
-  local _g = 0;
-  local _g1 = a1.length;
-  while (_g < _g1) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    local d = self:compareArg(a1[i], a2[i]);
-    if (d ~= 0) then 
-      do return d end;
-    end;
-  end;
-  do return 0 end
-end
-__haxe_ds_EnumValueMap.prototype.compareArg = function(self,v1,v2) 
-  if (Reflect.isEnumValue(v1) and Reflect.isEnumValue(v2)) then 
-    do return self:compare(v1, v2) end;
-  else
-    if (__lua_Boot.__instanceof(v1, Array) and __lua_Boot.__instanceof(v2, Array)) then 
-      do return self:compareArgs(v1, v2) end;
-    else
-      do return Reflect.compare(v1, v2) end;
-    end;
-  end;
-end
-
-__haxe_ds_EnumValueMap.prototype.__class__ =  __haxe_ds_EnumValueMap
-__haxe_ds_EnumValueMap.__super__ = __haxe_ds_BalancedTree
-setmetatable(__haxe_ds_EnumValueMap.prototype,{__index=__haxe_ds_BalancedTree.prototype})
-
-__haxe_ds_IntMap.new = function() 
-  local self = _hx_new(__haxe_ds_IntMap.prototype)
-  __haxe_ds_IntMap.super(self)
-  return self
-end
-__haxe_ds_IntMap.super = function(self) 
-  self.h = ({});
-end
-__haxe_ds_IntMap.__name__ = true
-__haxe_ds_IntMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_IntMap.prototype = _hx_e();
-__haxe_ds_IntMap.prototype.h= nil;
-__haxe_ds_IntMap.prototype.get = function(self,key) 
-  local ret = self.h[key];
-  if (ret == __haxe_ds_IntMap.tnull) then 
-    ret = nil;
-  end;
-  do return ret end
-end
-__haxe_ds_IntMap.prototype.keys = function(self) 
-  local _gthis = self;
-  local next = _G.next;
-  local cur = next(self.h, nil);
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local ret = cur;
-    cur = next(_gthis.h, cur);
-    do return ret end;
-  end,hasNext=function(self) 
-    do return cur ~= nil end;
-  end}) end
-end
-
-__haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
-
-__haxe_ds_StringMap.new = function() 
-  local self = _hx_new(__haxe_ds_StringMap.prototype)
-  __haxe_ds_StringMap.super(self)
-  return self
-end
-__haxe_ds_StringMap.super = function(self) 
-  self.h = ({});
-end
-__haxe_ds_StringMap.__name__ = true
-__haxe_ds_StringMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_StringMap.prototype = _hx_e();
-__haxe_ds_StringMap.prototype.h= nil;
-__haxe_ds_StringMap.prototype.get = function(self,key) 
-  local ret = self.h[key];
-  if (ret == __haxe_ds_StringMap.tnull) then 
-    ret = nil;
-  end;
-  do return ret end
-end
-__haxe_ds_StringMap.prototype.keys = function(self) 
-  local _gthis = self;
-  local next = _G.next;
-  local cur = next(self.h, nil);
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local ret = cur;
-    cur = next(_gthis.h, cur);
-    do return ret end;
-  end,hasNext=function(self) 
-    do return cur ~= nil end;
-  end}) end
-end
-
-__haxe_ds_StringMap.prototype.__class__ =  __haxe_ds_StringMap
-
-__haxe_io_Bytes.new = function(length,b) 
-  local self = _hx_new(__haxe_io_Bytes.prototype)
-  __haxe_io_Bytes.super(self,length,b)
-  return self
-end
-__haxe_io_Bytes.super = function(self,length,b) 
-  self.length = length;
-  self.b = b;
-end
-__haxe_io_Bytes.__name__ = true
-__haxe_io_Bytes.alloc = function(length) 
-  local a = Array.new();
-  local _g = 0;
-  while (_g < length) do 
-    _g = _g + 1;
-    a:push(0);
-  end;
-  do return __haxe_io_Bytes.new(length, a) end;
-end
-__haxe_io_Bytes.ofString = function(s,encoding) 
-  local _g = _hx_tab_array({}, 0);
-  local _g1 = 0;
-  local _g2 = _G.string.len(s);
-  while (_g1 < _g2) do 
-    _g1 = _g1 + 1;
-    _g:push(_G.string.byte(s, (_g1 - 1) + 1));
-  end;
-  do return __haxe_io_Bytes.new(_g.length, _g) end;
-end
-__haxe_io_Bytes.prototype = _hx_e();
-__haxe_io_Bytes.prototype.length= nil;
-__haxe_io_Bytes.prototype.b= nil;
-__haxe_io_Bytes.prototype.getString = function(self,pos,len,encoding) 
-  local tmp = encoding == nil;
-  if (((pos < 0) or (len < 0)) or ((pos + len) > self.length)) then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
-  end;
-  if ((self.b.length - pos) <= __lua_Boot.MAXSTACKSIZE) then 
-    local _end = Math.min(self.b.length, pos + len) - 1;
-    do return _G.string.char(_hx_table.unpack(self.b, pos, _end)) end;
-  else
-    local tbl = ({});
-    local _g = pos;
-    local _g1 = pos + len;
-    while (_g < _g1) do 
-      _g = _g + 1;
-      local idx = _g - 1;
-      _G.table.insert(tbl, _G.string.char(self.b[idx]));
-    end;
-    do return _G.table.concat(tbl, "") end;
-  end;
-end
-__haxe_io_Bytes.prototype.toString = function(self) 
-  do return self:getString(0, self.length) end
-end
-
-__haxe_io_Bytes.prototype.__class__ =  __haxe_io_Bytes
-
-__haxe_io_BytesBuffer.new = function() 
-  local self = _hx_new(__haxe_io_BytesBuffer.prototype)
-  __haxe_io_BytesBuffer.super(self)
-  return self
-end
-__haxe_io_BytesBuffer.super = function(self) 
-  self.b = Array.new();
-end
-__haxe_io_BytesBuffer.__name__ = true
-__haxe_io_BytesBuffer.prototype = _hx_e();
-__haxe_io_BytesBuffer.prototype.b= nil;
-__haxe_io_BytesBuffer.prototype.getBytes = function(self) 
-  local bytes = __haxe_io_Bytes.new(self.b.length, self.b);
-  self.b = nil;
-  do return bytes end
-end
-
-__haxe_io_BytesBuffer.prototype.__class__ =  __haxe_io_BytesBuffer
-
-__haxe_io_Eof.new = function() 
-  local self = _hx_new(__haxe_io_Eof.prototype)
-  __haxe_io_Eof.super(self)
-  return self
-end
-__haxe_io_Eof.super = function(self) 
-end
-__haxe_io_Eof.__name__ = true
-__haxe_io_Eof.prototype = _hx_e();
-__haxe_io_Eof.prototype.toString = function(self) 
-  do return "Eof" end
-end
-
-__haxe_io_Eof.prototype.__class__ =  __haxe_io_Eof
-_hxClasses["haxe.io.Error"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Blocked","Overflow","OutsideBounds","Custom"},4)}
-__haxe_io_Error = _hxClasses["haxe.io.Error"];
-__haxe_io_Error.Blocked = _hx_tab_array({[0]="Blocked",0,__enum__ = __haxe_io_Error},2)
-
-__haxe_io_Error.Overflow = _hx_tab_array({[0]="Overflow",1,__enum__ = __haxe_io_Error},2)
-
-__haxe_io_Error.OutsideBounds = _hx_tab_array({[0]="OutsideBounds",2,__enum__ = __haxe_io_Error},2)
-
-__haxe_io_Error.Custom = function(e) local _x = _hx_tab_array({[0]="Custom",3,e,__enum__=__haxe_io_Error}, 3); return _x; end 
-
-__haxe_iterators_ArrayIterator.new = function(array) 
-  local self = _hx_new(__haxe_iterators_ArrayIterator.prototype)
-  __haxe_iterators_ArrayIterator.super(self,array)
-  return self
-end
-__haxe_iterators_ArrayIterator.super = function(self,array) 
-  self.current = 0;
-  self.array = array;
-end
-__haxe_iterators_ArrayIterator.__name__ = true
-__haxe_iterators_ArrayIterator.prototype = _hx_e();
-__haxe_iterators_ArrayIterator.prototype.array= nil;
-__haxe_iterators_ArrayIterator.prototype.current= nil;
-__haxe_iterators_ArrayIterator.prototype.hasNext = function(self) 
-  do return self.current < self.array.length end
-end
-__haxe_iterators_ArrayIterator.prototype.next = function(self) 
-  do return self.array[(function() 
-  local _hx_obj = self;
-  local _hx_fld = 'current';
-  local _ = _hx_obj[_hx_fld];
-  _hx_obj[_hx_fld] = _hx_obj[_hx_fld]  + 1;
-   return _;
-   end)()] end
-end
-
-__haxe_iterators_ArrayIterator.prototype.__class__ =  __haxe_iterators_ArrayIterator
-
-__haxe_iterators_ArrayKeyValueIterator.new = function(array) 
-  local self = _hx_new(__haxe_iterators_ArrayKeyValueIterator.prototype)
-  __haxe_iterators_ArrayKeyValueIterator.super(self,array)
-  return self
-end
-__haxe_iterators_ArrayKeyValueIterator.super = function(self,array) 
-  self.array = array;
-end
-__haxe_iterators_ArrayKeyValueIterator.__name__ = true
-__haxe_iterators_ArrayKeyValueIterator.prototype = _hx_e();
-__haxe_iterators_ArrayKeyValueIterator.prototype.array= nil;
-
-__haxe_iterators_ArrayKeyValueIterator.prototype.__class__ =  __haxe_iterators_ArrayKeyValueIterator
-
-__haxe_iterators_MapKeyValueIterator.new = function(map) 
-  local self = _hx_new(__haxe_iterators_MapKeyValueIterator.prototype)
-  __haxe_iterators_MapKeyValueIterator.super(self,map)
-  return self
-end
-__haxe_iterators_MapKeyValueIterator.super = function(self,map) 
-  self.map = map;
-  self.keys = map:keys();
-end
-__haxe_iterators_MapKeyValueIterator.__name__ = true
-__haxe_iterators_MapKeyValueIterator.prototype = _hx_e();
-__haxe_iterators_MapKeyValueIterator.prototype.map= nil;
-__haxe_iterators_MapKeyValueIterator.prototype.keys= nil;
-__haxe_iterators_MapKeyValueIterator.prototype.hasNext = function(self) 
-  do return self.keys:hasNext() end
-end
-__haxe_iterators_MapKeyValueIterator.prototype.next = function(self) 
-  local key = self.keys:next();
-  do return _hx_o({__fields__={value=true,key=true},value=self.map:get(key),key=key}) end
-end
-
-__haxe_iterators_MapKeyValueIterator.prototype.__class__ =  __haxe_iterators_MapKeyValueIterator
-
-__lua_Boot.new = {}
-__lua_Boot.__name__ = true
-__lua_Boot.__instanceof = function(o,cl) 
-  if (cl == nil) then 
-    do return false end;
-  end;
-  local cl1 = cl;
-  if (cl1) == Array then 
-    do return __lua_Boot.isArray(o) end;
-  elseif (cl1) == Bool then 
-    do return _G.type(o) == "boolean" end;
-  elseif (cl1) == Dynamic then 
-    do return o ~= nil end;
-  elseif (cl1) == Float then 
-    do return _G.type(o) == "number" end;
-  elseif (cl1) == Int then 
-    if (_G.type(o) == "number") then 
-      do return _hx_bit_clamp(o) == o end;
-    else
-      do return false end;
-    end;
-  elseif (cl1) == String then 
-    do return _G.type(o) == "string" end;
-  elseif (cl1) == _G.table then 
-    do return _G.type(o) == "table" end;
-  elseif (cl1) == __lua_Thread then 
-    do return _G.type(o) == "thread" end;
-  elseif (cl1) == __lua_UserData then 
-    do return _G.type(o) == "userdata" end;else
-  if (((o ~= nil) and (_G.type(o) == "table")) and (_G.type(cl) == "table")) then 
-    local tmp;
-    if (__lua_Boot.__instanceof(o, Array)) then 
-      tmp = Array;
-    else
-      if (__lua_Boot.__instanceof(o, String)) then 
-        tmp = String;
-      else
-        local cl = o.__class__;
-        tmp = (function() 
-          local _hx_1
-          if (cl ~= nil) then 
-          _hx_1 = cl; else 
-          _hx_1 = nil; end
-          return _hx_1
-        end )();
-      end;
-    end;
-    if (__lua_Boot.extendsOrImplements(tmp, cl)) then 
-      do return true end;
-    end;
-    if ((function() 
-      local _hx_2
-      if (cl == Class) then 
-      _hx_2 = o.__name__ ~= nil; else 
-      _hx_2 = false; end
-      return _hx_2
-    end )()) then 
-      do return true end;
-    end;
-    if ((function() 
-      local _hx_3
-      if (cl == Enum) then 
-      _hx_3 = o.__ename__ ~= nil; else 
-      _hx_3 = false; end
-      return _hx_3
-    end )()) then 
-      do return true end;
-    end;
-    do return o.__enum__ == cl end;
-  else
-    do return false end;
-  end; end;
-end
-__lua_Boot.isArray = function(o) 
-  if (_G.type(o) == "table") then 
-    if ((o.__enum__ == nil) and (_G.getmetatable(o) ~= nil)) then 
-      do return _G.getmetatable(o).__index == Array.prototype end;
-    else
-      do return false end;
-    end;
-  else
-    do return false end;
-  end;
-end
-__lua_Boot.dateStr = function(date) 
-  local m = date:getMonth() + 1;
-  local d = date:getDate();
-  local h = date:getHours();
-  local mi = date:getMinutes();
-  local s = date:getSeconds();
-  do return Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(date:getFullYear()) .. Std.string("-")) .. Std.string(((function() 
-    local _hx_1
-    if (m < 10) then 
-    _hx_1 = Std.string("0") .. Std.string(m); else 
-    _hx_1 = Std.string("") .. Std.string(m); end
-    return _hx_1
-  end )()))) .. Std.string("-")) .. Std.string(((function() 
-    local _hx_2
-    if (d < 10) then 
-    _hx_2 = Std.string("0") .. Std.string(d); else 
-    _hx_2 = Std.string("") .. Std.string(d); end
-    return _hx_2
-  end )()))) .. Std.string(" ")) .. Std.string(((function() 
-    local _hx_3
-    if (h < 10) then 
-    _hx_3 = Std.string("0") .. Std.string(h); else 
-    _hx_3 = Std.string("") .. Std.string(h); end
-    return _hx_3
-  end )()))) .. Std.string(":")) .. Std.string(((function() 
-    local _hx_4
-    if (mi < 10) then 
-    _hx_4 = Std.string("0") .. Std.string(mi); else 
-    _hx_4 = Std.string("") .. Std.string(mi); end
-    return _hx_4
-  end )()))) .. Std.string(":")) .. Std.string(((function() 
-    local _hx_5
-    if (s < 10) then 
-    _hx_5 = Std.string("0") .. Std.string(s); else 
-    _hx_5 = Std.string("") .. Std.string(s); end
-    return _hx_5
-  end )())) end;
-end
-__lua_Boot.extendsOrImplements = function(cl1,cl2) 
-  while (true) do 
-    if ((cl1 == nil) or (cl2 == nil)) then 
-      do return false end;
-    else
-      if (cl1 == cl2) then 
-        do return true end;
-      else
-        if (cl1.__interfaces__ ~= nil) then 
-          local intf = cl1.__interfaces__;
-          local _g = 1;
-          local _g1 = _hx_table.maxn(intf) + 1;
-          while (_g < _g1) do 
-            _g = _g + 1;
-            local i = _g - 1;
-            if (__lua_Boot.extendsOrImplements(intf[i], cl2)) then 
-              do return true end;
-            end;
-          end;
-        end;
-      end;
-    end;
-    cl1 = cl1.__super__;
-  end;
-end
-
-__lua_UserData.new = {}
-__lua_UserData.__name__ = true
-
-__lua_Thread.new = {}
-__lua_Thread.__name__ = true
-
-__sys_net_Host.new = function(name) 
-  local self = _hx_new(__sys_net_Host.prototype)
-  __sys_net_Host.super(self,name)
-  return self
-end
-__sys_net_Host.super = function(self,name) 
-  self.host = name;
-  if (_G.string.find(name, "(%d+)%.(%d+)%.(%d+)%.(%d+)") ~= nil) then 
-    self._ip = name;
-  else
-    local _hx_1_res_result, _hx_1_res_message = __lua_lib_luv_net_Dns.getaddrinfo(name);
-    if (_hx_1_res_result == nil) then 
-      _G.error(__haxe_Exception.thrown("Unrecognized node name"),0);
-    end;
-    self._ip = _hx_funcToField(_hx_1_res_result[1].addr);
-    if (self._ip == "::1") then 
-      self._ip = "127.0.0.0";
-    end;
-  end;
-  local num = 0;
-  local _g = 0;
-  local _this = self._ip;
-  local idx = 1;
-  local ret = _hx_tab_array({}, 0);
-  while (idx ~= nil) do 
-    local newidx = 0;
-    if (#"." > 0) then 
-      newidx = _G.string.find(_this, ".", idx, true);
-    else
-      if (idx >= #_this) then 
-        newidx = nil;
-      else
-        newidx = idx + 1;
-      end;
-    end;
-    if (newidx ~= nil) then 
-      ret:push(_G.string.sub(_this, idx, newidx - 1));
-      idx = newidx + #".";
-    else
-      ret:push(_G.string.sub(_this, idx, #_this));
-      idx = nil;
-    end;
-  end;
-  while (_g < ret.length) do 
-    local a = ret[_g];
-    _g = _g + 1;
-    num = (num * 256) + _G.tonumber(a);
-  end;
-  self.ip = num;
-end
-__sys_net_Host.__name__ = true
-__sys_net_Host.prototype = _hx_e();
-__sys_net_Host.prototype.host= nil;
-__sys_net_Host.prototype.ip= nil;
-__sys_net_Host.prototype._ip= nil;
-
-__sys_net_Host.prototype.__class__ =  __sys_net_Host
-
-__sys_net__Socket_SocketInput.new = function(tcp) 
-  local self = _hx_new(__sys_net__Socket_SocketInput.prototype)
-  __sys_net__Socket_SocketInput.super(self,tcp)
-  return self
-end
-__sys_net__Socket_SocketInput.super = function(self,tcp) 
-  self.tcp = tcp;
-end
-__sys_net__Socket_SocketInput.__name__ = true
-__sys_net__Socket_SocketInput.prototype = _hx_e();
-__sys_net__Socket_SocketInput.prototype.tcp= nil;
-__sys_net__Socket_SocketInput.prototype.readByte = function(self) 
-  local _hx_1_res_result, _hx_1_res_message = self.tcp:receive(1);
-  if (_hx_1_res_message == "closed") then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Eof.new()),0);
-  else
-    if (_hx_1_res_message ~= nil) then 
-      _G.error(__haxe_Exception.thrown(Std.string("Error : ") .. Std.string(_hx_1_res_message)),0);
-    end;
-  end;
-  do return _G.string.byte(_hx_1_res_result, 1) end
-end
-__sys_net__Socket_SocketInput.prototype.readBytes = function(self,s,pos,len) 
-  local leftToRead = len;
-  local b = s.b;
-  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
-  end;
-  local readCount = 0;
-  local _hx_status, _hx_result = pcall(function() 
-  
-      while (leftToRead > 0) do 
-        b[pos] = self:readByte();
-        pos = pos + 1;
-        readCount = readCount + 1;
-        leftToRead = leftToRead - 1;
-      end;
-    return _hx_pcall_default
-  end)
-  if not _hx_status and _hx_result == "_hx_pcall_break" then
-  elseif not _hx_status then 
-    local _g = _hx_result;
-    local _g1 = __haxe_Exception.caught(_g):unwrap();
-    if (__lua_Boot.__instanceof(_g1, __haxe_io_Eof)) then 
-      if (readCount == 0) then 
-        _G.error(__haxe_Exception.thrown(_g1),0);
-      end;
-    else
-      _G.error(_g,0);
-    end;
-  elseif _hx_result ~= _hx_pcall_default then
-    return _hx_result
-  end;
-  do return readCount end
-end
-
-__sys_net__Socket_SocketInput.prototype.__class__ =  __sys_net__Socket_SocketInput
-__sys_net__Socket_SocketInput.__super__ = __haxe_io_Input
-setmetatable(__sys_net__Socket_SocketInput.prototype,{__index=__haxe_io_Input.prototype})
-
-__sys_net__Socket_SocketOutput.new = function(tcp) 
-  local self = _hx_new(__sys_net__Socket_SocketOutput.prototype)
-  __sys_net__Socket_SocketOutput.super(self,tcp)
-  return self
-end
-__sys_net__Socket_SocketOutput.super = function(self,tcp) 
-  self.tcp = tcp;
-end
-__sys_net__Socket_SocketOutput.__name__ = true
-__sys_net__Socket_SocketOutput.prototype = _hx_e();
-__sys_net__Socket_SocketOutput.prototype.tcp= nil;
-__sys_net__Socket_SocketOutput.prototype.writeByte = function(self,c) 
-  local char = _G.string.char(c);
-  local _hx_1_res_result, _hx_1_res_message = self.tcp:send(char);
-  if (_hx_1_res_message ~= nil) then 
-    _G.error(__haxe_Exception.thrown(Std.string("Error : Socket writeByte : ") .. Std.string(_hx_1_res_message)),0);
-  end;
-end
-__sys_net__Socket_SocketOutput.prototype.writeBytes = function(self,s,pos,len) 
-  if (((pos < 0) or (len < 0)) or ((pos + len) > s.length)) then 
-    _G.error(__haxe_Exception.thrown(__haxe_io_Error.OutsideBounds),0);
-  end;
-  local _this = s.b:slice(pos, pos + len);
-  local _g = _hx_tab_array({}, 0);
-  local _g1 = 0;
-  while (_g1 < _this.length) do 
-    local i = _this[_g1];
-    _g1 = _g1 + 1;
-    _g:push(_G.string.char(i));
-  end;
-  local encoded = _G.table.concat(_g, nil, 0);
-  local _hx_1_res_result, _hx_1_res_message = self.tcp:send(encoded);
-  if (_hx_1_res_message ~= nil) then 
-    _G.error(__haxe_Exception.thrown(Std.string("Error : Socket writeByte : ") .. Std.string(_hx_1_res_message)),0);
-  end;
-  do return len end
-end
-
-__sys_net__Socket_SocketOutput.prototype.__class__ =  __sys_net__Socket_SocketOutput
-__sys_net__Socket_SocketOutput.__super__ = __haxe_io_Output
-setmetatable(__sys_net__Socket_SocketOutput.prototype,{__index=__haxe_io_Output.prototype})
-
-__tink_json_Writer4.new = function() 
-  local self = _hx_new(__tink_json_Writer4.prototype)
-  __tink_json_Writer4.super(self)
-  return self
-end
-__tink_json_Writer4.super = function(self) 
+__tink_json_Writer200.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer4.__name__ = true
-__tink_json_Writer4.prototype = _hx_e();
-__tink_json_Writer4.prototype.process0 = function(self,value) 
+__tink_json_Writer200.__name__ = true
+__tink_json_Writer200.prototype = _hx_e();
+__tink_json_Writer200.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -9659,7 +8048,7 @@ __tink_json_Writer4.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer4.prototype.process1 = function(self,value) 
+__tink_json_Writer200.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -9802,7 +8191,7 @@ __tink_json_Writer4.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer4.prototype.process2 = function(self,value) 
+__tink_json_Writer200.prototype.process2 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -10014,7 +8403,7 @@ __tink_json_Writer4.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer4.prototype.process3 = function(self,value) 
+__tink_json_Writer200.prototype.process3 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -10043,15 +8432,15 @@ __tink_json_Writer4.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer4.prototype.write = function(self,value) 
+__tink_json_Writer200.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer4.prototype.__class__ =  __tink_json_Writer4
-__tink_json_Writer4.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer4.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer200.prototype.__class__ =  __tink_json_Writer200
+__tink_json_Writer200.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer200.prototype,{__index=__tink_json_BasicWriter.prototype})
 -- require this for lua 5.1
 pcall(require, 'bit')
 if bit then
@@ -10101,7 +8490,11 @@ _hx_array_mt.__index = Array.prototype
 local _hx_static_init = function()
   
   String.__name__ = true;
-  Array.__name__ = true;__gmdebug_Cross.FOLDER = "gmdebug";
+  Array.__name__ = true;__haxe_ds_StringMap.tnull = ({});
+  
+  __lua_Boot.MAXSTACKSIZE = 1000;
+  
+  __gmdebug_Cross.FOLDER = "gmdebug";
   
   __gmdebug_Cross.INPUT = __haxe_io_Path.join(_hx_tab_array({[0]=__gmdebug_Cross.FOLDER, "in.dat"}, 2));
   
@@ -10110,16 +8503,6 @@ local _hx_static_init = function()
   __gmdebug_Cross.READY = __haxe_io_Path.join(_hx_tab_array({[0]=__gmdebug_Cross.FOLDER, "ready.dat"}, 2));
   
   __gmdebug_Cross.JIT = __haxe_io_Path.join(_hx_tab_array({[0]=__gmdebug_Cross.FOLDER, "jitchoice.txt"}, 2));
-  
-  __gmdebug_lua_DebugLoop.breakpoints = __haxe_ds_StringMap.new();
-  
-  __gmdebug_lua_DebugLoop.functionBP = __haxe_ds_ObjectMap.new();
-  
-  __gmdebug_lua_DebugLoop.breakLocsCache = __haxe_ds_StringMap.new();
-  
-  __gmdebug_lua_DebugLoop.sourceCache = __gmdebug_lua_DebugLoop.makeSourceCache();
-  
-  __gmdebug_lua_DebugLoop.lineInfoFuncCache = __haxe_ds_ObjectMap.new();
   
   __gmdebug_lua_DebugLoop.highestStackHeight = _G.math.huge;
   
@@ -10145,8 +8528,6 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Debugee.inpauseloop = false;
   
-  __gmdebug_lua_Debugee.playerThreads = _hx_tab_array({}, 0);
-  
   __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=4,stepDebugLoop=5,except=5,pause=5});
   
   __gmdebug_lua_Debugee.minheight = 3;
@@ -10155,22 +8536,9 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Debugee.hooksActive = false;
   
-  __gmdebug_lua_Debugee.methodsPossible = (function() 
-    local _hx_1
-    
-    local _g = __haxe_ds_EnumValueMap.new();
-    
-    _g:set(__gmdebug_CommMethod.Pipe, true);
-    
-    _hx_1 = _g;
-    return _hx_1
-  end )();
-  
   __gmdebug_lua_Debugee.dest = "";
   
   __gmdebug_lua_Debugee.shouldDebug = true;
-  
-  __gmdebug_lua_Debugee.outputter = __gmdebug_lua_Outputter.new();
   
   __gmdebug_lua_Debugee.ignores = __haxe_ds_StringMap.new();
   
@@ -10180,144 +8548,6 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Exceptions.hookTime = 0;
   
-  __gmdebug_lua_Sources.uniqueSources = __haxe_ds_StringMap.new();
-  
-  __gmdebug_lua_Sources.sources = _hx_tab_array({}, 0);
-  
-  __gmdebug_lua_Sources.readSourceTime = 0;
-  
-  __gmdebug_lua_Handlers.handlerMap = (function() 
-    local _hx_2
-    
-    local _g = __haxe_ds_StringMap.new();
-    
-    local value = __gmdebug_lua_Handlers.h_pause;
-    if (value == nil) then 
-      _g.h.pause = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.pause = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_stackTrace;
-    if (value == nil) then 
-      _g.h.stackTrace = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.stackTrace = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_stepIn;
-    if (value == nil) then 
-      _g.h.stepIn = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.stepIn = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_stepOut;
-    if (value == nil) then 
-      _g.h.stepOut = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.stepOut = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_threads;
-    if (value == nil) then 
-      _g.h.threads = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.threads = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_scopes;
-    if (value == nil) then 
-      _g.h.scopes = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.scopes = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_next;
-    if (value == nil) then 
-      _g.h.next = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.next = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_variables;
-    if (value == nil) then 
-      _g.h.variables = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.variables = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_sources;
-    if (value == nil) then 
-      _g.h.loadedSources = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.loadedSources = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_setBreakpoints;
-    if (value == nil) then 
-      _g.h.setBreakpoints = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.setBreakpoints = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_configurationDone;
-    if (value == nil) then 
-      _g.h.configurationDone = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.configurationDone = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_modules;
-    if (value == nil) then 
-      _g.h.modules = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.modules = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_disconnect;
-    if (value == nil) then 
-      _g.h.disconnect = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.disconnect = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_setExceptionBreakpoints;
-    if (value == nil) then 
-      _g.h.setExceptionBreakpoints = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.setExceptionBreakpoints = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_setFunctionBreakpoints;
-    if (value == nil) then 
-      _g.h.setFunctionBreakpoints = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.setFunctionBreakpoints = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_evaluate;
-    if (value == nil) then 
-      _g.h.evaluate = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.evaluate = value;
-    end;
-    
-    local value = __gmdebug_lua_Handlers.h_breakpointLocations;
-    if (value == nil) then 
-      _g.h.breakpointLocations = __haxe_ds_StringMap.tnull;
-    else
-      _g.h.breakpointLocations = value;
-    end;
-    
-    _hx_2 = _g;
-    return _hx_2
-  end )();
-  
-  __gmdebug_lua_Handlers.storedVariables = _hx_tab_array({[0]=nil}, 1);
-  
-  __gmdebug_lua_Handlers.bpID = 0;
-  
   __gmdebug_lua_Jit.netJit = NETMESSAGE_gmdebug_netJit.new();
   
   __gmdebug_lua_Jit.jitActive = false;
@@ -10326,15 +8556,13 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Jit.autostart = true;
   
+  __gmdebug_lua_SourceContainer.readSourceTime = 0;
+  
   __haxe_EntryPoint.pending = Array.new();
   
   __haxe_EntryPoint.threadCount = 0;
   
   __haxe_ds_IntMap.tnull = ({});
-  
-  __haxe_ds_StringMap.tnull = ({});
-  
-  __lua_Boot.MAXSTACKSIZE = 1000;
   
   
 end

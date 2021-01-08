@@ -11,15 +11,18 @@ import lua.NativeStringTools;
 import gmdebug.lua.handlers.IHandler;
 
 class HEvaluate implements IHandler<EvaluateRequest> {
-	public function new(vm:VariableManager) {}
+    
+    public function new(vm:VariableManager) {
+        variableManager = vm;
+    }
 
 	var variableManager:VariableManager;
 
-	inline function translateEvalError(err:String) {
+	public static inline function translateEvalError(err:String) {
 		return NativeStringTools.gsub(err, '^%[string %"X%"%]%:%d+%: ', "");
 	}
 
-	function createEvalEnvironment(stackLevel:Int):AnyTable {
+	public static function createEvalEnvironment(stackLevel:Int):AnyTable {
 		final env = Table.create();
 		final unsettables:AnyTable = Table.create();
 		final set = function(k, v) {

@@ -1,33 +1,45 @@
 package gmdebug.lua;
 
+import haxe.Constraints.Function;
+import haxe.ds.ObjectMap;
+import gmdebug.lua.handlers.IHandler;
 import gmod.Gmod;
 import gmod.Hook.GMHook;
 import gmod.libs.HookLib;
 import gmdebug.lua.DebugLoop.SourceInfo;
 import gmdebug.composer.*;
-
+using gmod.WeakTools;
 using Safety;
 using Lambda;
 
-class SourceContainer implements IHandler<SourceRequest> {
-	static final uniqueSources:Map<String, Null<Source>> = [];
+class SourceContainer {
+	
+	final uniqueSources:Map<String, Null<Source>> = [];
 
-	public static var sources:Array<Source> = [];
+	public var sources:Array<Source> = [];
 
-	public var sourceCache = makeSourceCache();
+	public var sourceCache:ObjectMap<Function,SourceInfo>;
 
-	public function handle() {}
+	public function new() {
+		HookLib.Add(GMHook.Think, "source-get", () -> {
+			if (Gmod.CurTime() > readSourceTime) {
+				readSourceTime = Gmod.CurTime() + 1;
+				readSourceInfo();
+			}
+		});
+		sourceCache = makeSourceCache();
+	}
 
 	function makeSourceCache() {
-		final sc = new haxe.ds.ObjectMap<Function, SourceInfo>();
+		final sc = new haxe.ds.ObjectMap<haxe.Constraints.Function, SourceInfo>();
 		sc.setWeakKeysM();
 		return sc;
 	}
 
-	static function readSourceInfo() {
+	function readSourceInfo() {
 		if (Debugee.dest == "")
 			return;
-		for (si in DebugLoop.sourceCache) {
+		for (si in sourceCache) {
 			if (!uniqueSources.exists(si.source)) {
 				final result = infoToSource(si);
 				if (result != null) {
@@ -43,15 +55,6 @@ class SourceContainer implements IHandler<SourceRequest> {
 	}
 
 	static var readSourceTime:Float = 0;
-
-	public static function init() {
-		HookLib.Add(GMHook.Think, "source-get", () -> {
-			if (Gmod.CurTime() > readSourceTime) {
-				readSourceTime = Gmod.CurTime() + 1;
-				readSourceInfo();
-			}
-		});
-	}
 
 	static function infoToSource(info:SourceInfo):Null<Source> {
 		return switch (info.source) {

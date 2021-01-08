@@ -1,9 +1,8 @@
 package gmdebug.dap;
 
+import gmdebug.composer.EventString;
 import js.node.ChildProcess;
 import vscode.debugAdapter.Protocol;
-import gmdebug.RequestString;
-
 class Intercepter {
 	public static function event(ceptedEvent:Event<Dynamic>, threadId:Int) {
 		switch ((ceptedEvent.event : EventString<Dynamic>)) {

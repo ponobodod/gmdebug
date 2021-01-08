@@ -1,6 +1,6 @@
 package gmdebug.lua.handlers;
 
-class HStepIn implements IHandler<NextRequest> {
+class HNext implements IHandler<NextRequest> {
 	public function new() {}
 
 	public function handle(nextReq:NextRequest):HandlerResponse {
