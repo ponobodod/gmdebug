@@ -21,7 +21,7 @@ class SourceContainer {
 	public var sourceCache:ObjectMap<Function,SourceInfo>;
 
 	public function new() {
-		HookLib.Add(GMHook.Think, "source-get", () -> {
+		HookLib.Add(GMHook.Think, "gmdebug-source-get", () -> {
 			if (Gmod.CurTime() > readSourceTime) {
 				readSourceTime = Gmod.CurTime() + 1;
 				readSourceInfo();

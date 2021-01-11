@@ -435,6 +435,128 @@ Object.assign(haxe_io_Path.prototype, {
 	,ext: null
 	,backslash: null
 });
+class js_Boot {
+	static getClass(o) {
+		if(o == null) {
+			return null;
+		} else if(((o) instanceof Array)) {
+			return Array;
+		} else {
+			let cl = o.__class__;
+			if(cl != null) {
+				return cl;
+			}
+			let name = js_Boot.__nativeClassName(o);
+			if(name != null) {
+				return js_Boot.__resolveNativeClass(name);
+			}
+			return null;
+		}
+	}
+	static __string_rec(o,s) {
+		if(o == null) {
+			return "null";
+		}
+		if(s.length >= 5) {
+			return "<...>";
+		}
+		let t = typeof(o);
+		if(t == "function" && (o.__name__ || o.__ename__)) {
+			t = "object";
+		}
+		switch(t) {
+		case "function":
+			return "<function>";
+		case "object":
+			if(o.__enum__) {
+				let e = $hxEnums[o.__enum__];
+				let n = e.__constructs__[o._hx_index];
+				let con = e[n];
+				if(con.__params__) {
+					s = s + "\t";
+					return n + "(" + ((function($this) {
+						var $r;
+						let _g = [];
+						{
+							let _g1 = 0;
+							let _g2 = con.__params__;
+							while(true) {
+								if(!(_g1 < _g2.length)) {
+									break;
+								}
+								let p = _g2[_g1];
+								_g1 = _g1 + 1;
+								_g.push(js_Boot.__string_rec(o[p],s));
+							}
+						}
+						$r = _g;
+						return $r;
+					}(this))).join(",") + ")";
+				} else {
+					return n;
+				}
+			}
+			if(((o) instanceof Array)) {
+				let str = "[";
+				s += "\t";
+				let _g = 0;
+				let _g1 = o.length;
+				while(_g < _g1) {
+					let i = _g++;
+					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
+				}
+				str += "]";
+				return str;
+			}
+			let tostr;
+			try {
+				tostr = o.toString;
+			} catch( _g ) {
+				return "???";
+			}
+			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
+				let s2 = o.toString();
+				if(s2 != "[object Object]") {
+					return s2;
+				}
+			}
+			let str = "{\n";
+			s += "\t";
+			let hasp = o.hasOwnProperty != null;
+			let k = null;
+			for( k in o ) {
+			if(hasp && !o.hasOwnProperty(k)) {
+				continue;
+			}
+			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
+				continue;
+			}
+			if(str.length != 2) {
+				str += ", \n";
+			}
+			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
+			}
+			s = s.substring(1);
+			str += "\n" + s + "}";
+			return str;
+		case "string":
+			return o;
+		default:
+			return String(o);
+		}
+	}
+	static __nativeClassName(o) {
+		let name = js_Boot.__toStr.call(o).slice(8,-1);
+		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
+			return null;
+		}
+		return name;
+	}
+	static __resolveNativeClass(name) {
+		return $global[name];
+	}
+}
+js_Boot.__name__ = true;
 class gmdebug_Cross {
 	static readHeader(x) {
 		let content_length = x.readLine();
@@ -1006,7 +1128,7 @@ class gmdebug_dap_Handlers {
 	}
 	static setupDebugger(serverFolder) {
 		let addonFolder = haxe_io_Path.join([serverFolder,"addons"]);
-		let debugFolder = haxe_io_Path.join([addonFolder,"debugee-auto"]);
+		let debugFolder = haxe_io_Path.join([addonFolder,"debugee"]);
 		if(!js_node_Fs.existsSync(debugFolder)) {
 			js_node_ChildProcess.execSync("cp -r ../generated/debugee " + addonFolder,{ cwd : haxe_io_Path.directory(__filename)});
 		}
@@ -1155,23 +1277,6 @@ var gmdebug_dap_DapMode = $hxEnums["gmdebug.dap.DapMode"] = { __ename__ : true, 
 	,ATTACH: {_hx_index:0,__enum__:"gmdebug.dap.DapMode",toString:$estr}
 	,LAUNCH: ($_=function(child) { return {_hx_index:1,child:child,__enum__:"gmdebug.dap.DapMode",toString:$estr}; },$_.__params__ = ["child"],$_)
 };
-class haxe_ds_IntMap {
-	constructor() {
-		this.h = { };
-	}
-	remove(key) {
-		if(!this.h.hasOwnProperty(key)) {
-			return false;
-		}
-		delete(this.h[key]);
-		return true;
-	}
-}
-haxe_ds_IntMap.__name__ = true;
-Object.assign(haxe_ds_IntMap.prototype, {
-	__class__: haxe_ds_IntMap
-	,h: null
-});
 class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 	constructor(x,y) {
 		super(x,y);
@@ -1674,6 +1779,23 @@ haxe_ValueException.__super__ = haxe_Exception;
 Object.assign(haxe_ValueException.prototype, {
 	__class__: haxe_ValueException
 	,value: null
+});
+class haxe_ds_IntMap {
+	constructor() {
+		this.h = { };
+	}
+	remove(key) {
+		if(!this.h.hasOwnProperty(key)) {
+			return false;
+		}
+		delete(this.h[key]);
+		return true;
+	}
+}
+haxe_ds_IntMap.__name__ = true;
+Object.assign(haxe_ds_IntMap.prototype, {
+	__class__: haxe_ds_IntMap
+	,h: null
 });
 class haxe_ds_StringMap {
 	constructor() {
@@ -2443,128 +2565,6 @@ Object.assign(haxe_iterators_ArrayIterator.prototype, {
 	,array: null
 	,current: null
 });
-class js_Boot {
-	static getClass(o) {
-		if(o == null) {
-			return null;
-		} else if(((o) instanceof Array)) {
-			return Array;
-		} else {
-			let cl = o.__class__;
-			if(cl != null) {
-				return cl;
-			}
-			let name = js_Boot.__nativeClassName(o);
-			if(name != null) {
-				return js_Boot.__resolveNativeClass(name);
-			}
-			return null;
-		}
-	}
-	static __string_rec(o,s) {
-		if(o == null) {
-			return "null";
-		}
-		if(s.length >= 5) {
-			return "<...>";
-		}
-		let t = typeof(o);
-		if(t == "function" && (o.__name__ || o.__ename__)) {
-			t = "object";
-		}
-		switch(t) {
-		case "function":
-			return "<function>";
-		case "object":
-			if(o.__enum__) {
-				let e = $hxEnums[o.__enum__];
-				let n = e.__constructs__[o._hx_index];
-				let con = e[n];
-				if(con.__params__) {
-					s = s + "\t";
-					return n + "(" + ((function($this) {
-						var $r;
-						let _g = [];
-						{
-							let _g1 = 0;
-							let _g2 = con.__params__;
-							while(true) {
-								if(!(_g1 < _g2.length)) {
-									break;
-								}
-								let p = _g2[_g1];
-								_g1 = _g1 + 1;
-								_g.push(js_Boot.__string_rec(o[p],s));
-							}
-						}
-						$r = _g;
-						return $r;
-					}(this))).join(",") + ")";
-				} else {
-					return n;
-				}
-			}
-			if(((o) instanceof Array)) {
-				let str = "[";
-				s += "\t";
-				let _g = 0;
-				let _g1 = o.length;
-				while(_g < _g1) {
-					let i = _g++;
-					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
-				}
-				str += "]";
-				return str;
-			}
-			let tostr;
-			try {
-				tostr = o.toString;
-			} catch( _g ) {
-				return "???";
-			}
-			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
-				let s2 = o.toString();
-				if(s2 != "[object Object]") {
-					return s2;
-				}
-			}
-			let str = "{\n";
-			s += "\t";
-			let hasp = o.hasOwnProperty != null;
-			let k = null;
-			for( k in o ) {
-			if(hasp && !o.hasOwnProperty(k)) {
-				continue;
-			}
-			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
-				continue;
-			}
-			if(str.length != 2) {
-				str += ", \n";
-			}
-			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
-			}
-			s = s.substring(1);
-			str += "\n" + s + "}";
-			return str;
-		case "string":
-			return o;
-		default:
-			return String(o);
-		}
-	}
-	static __nativeClassName(o) {
-		let name = js_Boot.__toStr.call(o).slice(8,-1);
-		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
-			return null;
-		}
-		return name;
-	}
-	static __resolveNativeClass(name) {
-		return $global[name];
-	}
-}
-js_Boot.__name__ = true;
 var js_node_ChildProcess = require("child_process");
 var js_node_Fs = require("fs");
 var js_node_Net = require("net");

@@ -40,7 +40,7 @@ class Exceptions {
 	}
 
 	public static function hookOnChange() {
-		HookLib.Add(GMHook.Think, "enable-hooks", hookContinously);
+		HookLib.Add(GMHook.Think, "gmdebug-enable-hooks", hookContinously);
 	}
 
 	public static inline function isExcepted(x:Function):Bool {

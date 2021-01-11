@@ -133,37 +133,6 @@ class StringTools {
 			return false;
 		}
 	}
-	static isSpace(s,pos) {
-		let c = HxOverrides.cca(s,pos);
-		if(!(c > 8 && c < 14)) {
-			return c == 32;
-		} else {
-			return true;
-		}
-	}
-	static ltrim(s) {
-		let l = s.length;
-		let r = 0;
-		while(r < l && StringTools.isSpace(s,r)) ++r;
-		if(r > 0) {
-			return HxOverrides.substr(s,r,l - r);
-		} else {
-			return s;
-		}
-	}
-	static rtrim(s) {
-		let l = s.length;
-		let r = 0;
-		while(r < l && StringTools.isSpace(s,l - r - 1)) ++r;
-		if(r > 0) {
-			return HxOverrides.substr(s,0,l - r);
-		} else {
-			return s;
-		}
-	}
-	static trim(s) {
-		return StringTools.ltrim(StringTools.rtrim(s));
-	}
 	static lpad(s,c,l) {
 		if(c.length <= 0) {
 			return s;
@@ -1156,7 +1125,7 @@ class gmdebug_dap_Handlers {
 		let addonFolder = haxe_io_Path.join([serverFolder,"addons"]);
 		let debugFolder = haxe_io_Path.join([addonFolder,"debugee-auto"]);
 		if(!js_node_Fs.existsSync(debugFolder)) {
-			js_node_ChildProcess.execSync("cp -r ../generated " + addonFolder,{ cwd : haxe_io_Path.directory(__filename)});
+			js_node_ChildProcess.execSync("cp -r ../generated/debugee " + addonFolder,{ cwd : haxe_io_Path.directory(__filename)});
 		}
 	}
 	static h_attach(x) {
@@ -1719,17 +1688,11 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		if(gmdebug_dap_LuaDebugger.inst == null) {
 			gmdebug_dap_LuaDebugger.inst = this;
 		}
-		try {
-			if(message.type == "request") {
-				haxe_Log.trace("recieved message from client " + message.command,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 337, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
-				gmdebug_dap_Handlers.handle(message);
-			} else {
-				haxe_Log.trace("unhandled message from client",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 340, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
-			}
-		} catch( _g ) {
-			let e = haxe_Exception.caught(_g);
-			haxe_Log.trace(e.details(),{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 343, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
-			this.shutdown();
+		if(message.type == "request") {
+			haxe_Log.trace("recieved message from client " + message.command,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 337, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
+			gmdebug_dap_Handlers.handle(message);
+		} else {
+			haxe_Log.trace("unhandled message from client",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 340, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
 		}
 	}
 }
@@ -1788,180 +1751,12 @@ var haxe_StackItem = $hxEnums["haxe.StackItem"] = { __ename__ : true, __construc
 	,Method: ($_=function(classname,method) { return {_hx_index:3,classname:classname,method:method,__enum__:"haxe.StackItem",toString:$estr}; },$_.__params__ = ["classname","method"],$_)
 	,LocalFunction: ($_=function(v) { return {_hx_index:4,v:v,__enum__:"haxe.StackItem",toString:$estr}; },$_.__params__ = ["v"],$_)
 };
-class haxe_CallStack {
-	static toString(stack) {
-		let b = new StringBuf();
-		let _g = 0;
-		let _g1 = stack;
-		while(_g < _g1.length) {
-			let s = _g1[_g];
-			++_g;
-			b.b += "\nCalled from ";
-			haxe_CallStack.itemToString(b,s);
-		}
-		return b.b;
-	}
-	static subtract(this1,stack) {
-		let startIndex = -1;
-		let i = -1;
-		while(++i < this1.length) {
-			let _g = 0;
-			let _g1 = stack.length;
-			while(_g < _g1) {
-				let j = _g++;
-				if(haxe_CallStack.equalItems(this1[i],stack[j])) {
-					if(startIndex < 0) {
-						startIndex = i;
-					}
-					++i;
-					if(i >= this1.length) {
-						break;
-					}
-				} else {
-					startIndex = -1;
-				}
-			}
-			if(startIndex >= 0) {
-				break;
-			}
-		}
-		if(startIndex >= 0) {
-			return this1.slice(0,startIndex);
-		} else {
-			return this1;
-		}
-	}
-	static equalItems(item1,item2) {
-		if(item1 == null) {
-			if(item2 == null) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			switch(item1._hx_index) {
-			case 0:
-				if(item2 == null) {
-					return false;
-				} else if(item2._hx_index == 0) {
-					return true;
-				} else {
-					return false;
-				}
-				break;
-			case 1:
-				if(item2 == null) {
-					return false;
-				} else if(item2._hx_index == 1) {
-					return item1.m == item2.m;
-				} else {
-					return false;
-				}
-				break;
-			case 2:
-				if(item2 == null) {
-					return false;
-				} else if(item2._hx_index == 2) {
-					if(item1.file == item2.file && item1.line == item2.line && item1.column == item2.column) {
-						return haxe_CallStack.equalItems(item1.s,item2.s);
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-				break;
-			case 3:
-				if(item2 == null) {
-					return false;
-				} else if(item2._hx_index == 3) {
-					if(item1.classname == item2.classname) {
-						return item1.method == item2.method;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-				break;
-			case 4:
-				if(item2 == null) {
-					return false;
-				} else if(item2._hx_index == 4) {
-					return item1.v == item2.v;
-				} else {
-					return false;
-				}
-				break;
-			}
-		}
-	}
-	static itemToString(b,s) {
-		switch(s._hx_index) {
-		case 0:
-			b.b += "a C function";
-			break;
-		case 1:
-			let _g = s.m;
-			b.b = (b.b += "module ") + (_g == null ? "null" : "" + _g);
-			break;
-		case 2:
-			let _g1 = s.column;
-			let _g2 = s.line;
-			let _g3 = s.file;
-			let _g4 = s.s;
-			if(_g4 != null) {
-				haxe_CallStack.itemToString(b,_g4);
-				b.b += " (";
-			}
-			b.b = (b.b += _g3 == null ? "null" : "" + _g3) + " line ";
-			b.b += _g2 == null ? "null" : "" + _g2;
-			if(_g1 != null) {
-				b.b = (b.b += " column ") + (_g1 == null ? "null" : "" + _g1);
-			}
-			if(_g4 != null) {
-				b.b += ")";
-			}
-			break;
-		case 3:
-			let _g5 = s.method;
-			let _g6 = s.classname;
-			b.b = (b.b += Std.string(_g6 == null ? "<unknown>" : _g6)) + ".";
-			b.b += _g5 == null ? "null" : "" + _g5;
-			break;
-		case 4:
-			let _g7 = s.v;
-			b.b = (b.b += "local function #") + (_g7 == null ? "null" : "" + _g7);
-			break;
-		}
-	}
-}
 class haxe_Exception extends Error {
 	constructor(message,previous,native) {
 		super(message);
 		this.message = message;
 		this.__previousException = previous;
 		this.__nativeException = native != null ? native : this;
-		this.__skipStack = 0;
-		let old = Error.prepareStackTrace;
-		Error.prepareStackTrace = function(e) { return e.stack; }
-		if(((native) instanceof Error)) {
-			this.stack = native.stack;
-		} else {
-			let e = null;
-			if(Error.captureStackTrace) {
-				Error.captureStackTrace(this,haxe_Exception);
-				e = this;
-			} else {
-				e = new Error();
-				if(typeof(e.stack) == "undefined") {
-					try { throw e; } catch(_) {}
-					this.__skipStack++;
-				}
-			}
-			this.stack = e.stack;
-		}
-		Error.prepareStackTrace = old;
 	}
 	unwrap() {
 		return this.__nativeException;
@@ -1969,58 +1764,11 @@ class haxe_Exception extends Error {
 	toString() {
 		return this.get_message();
 	}
-	details() {
-		if(this.get_previous() == null) {
-			let tmp = "Exception: " + this.get_message();
-			let tmp1 = this.get_stack();
-			return tmp + (tmp1 == null ? "null" : haxe_CallStack.toString(tmp1));
-		} else {
-			let result = "";
-			let e = this;
-			let prev = null;
-			while(e != null) {
-				if(prev == null) {
-					let result1 = "Exception: " + e.get_message();
-					let tmp = e.get_stack();
-					result = result1 + (tmp == null ? "null" : haxe_CallStack.toString(tmp)) + result;
-				} else {
-					let prevStack = haxe_CallStack.subtract(e.get_stack(),prev.get_stack());
-					result = "Exception: " + e.get_message() + (prevStack == null ? "null" : haxe_CallStack.toString(prevStack)) + "\n\nNext " + result;
-				}
-				prev = e;
-				e = e.get_previous();
-			}
-			return result;
-		}
-	}
-	__shiftStack() {
-		this.__skipStack++;
-	}
 	get_message() {
 		return this.message;
 	}
-	get_previous() {
-		return this.__previousException;
-	}
 	get_native() {
 		return this.__nativeException;
-	}
-	get_stack() {
-		let _g = this.__exceptionStack;
-		if(_g == null) {
-			let value = haxe_NativeStackTrace.toHaxe(haxe_NativeStackTrace.normalize(this.stack),this.__skipStack);
-			this.setProperty("__exceptionStack",value);
-			return value;
-		} else {
-			return _g;
-		}
-	}
-	setProperty(name,value) {
-		try {
-			Object.defineProperty(this,name,{ value : value});
-		} catch( _g ) {
-			this[name] = value;
-		}
 	}
 	static caught(value) {
 		if(((value) instanceof haxe_Exception)) {
@@ -2038,7 +1786,6 @@ class haxe_Exception extends Error {
 			return value;
 		} else {
 			let e = new haxe_ValueException(value);
-			e.__skipStack++;
 			return e;
 		}
 	}
@@ -2077,91 +1824,10 @@ class haxe_Log {
 	}
 }
 haxe_Log.__name__ = true;
-class haxe_NativeStackTrace {
-	static toHaxe(s,skip) {
-		if(skip == null) {
-			skip = 0;
-		}
-		if(s == null) {
-			return [];
-		} else if(typeof(s) == "string") {
-			let stack = s.split("\n");
-			if(stack[0] == "Error") {
-				stack.shift();
-			}
-			let m = [];
-			let _g = 0;
-			let _g1 = stack.length;
-			while(_g < _g1) {
-				let i = _g++;
-				if(skip > i) {
-					continue;
-				}
-				let line = stack[i];
-				let matched = line.match(/^    at ([A-Za-z0-9_. ]+) \(([^)]+):([0-9]+):([0-9]+)\)$/);
-				if(matched != null) {
-					let path = matched[1].split(".");
-					if(path[0] == "$hxClasses") {
-						path.shift();
-					}
-					let meth = path.pop();
-					let file = matched[2];
-					let line = Std.parseInt(matched[3]);
-					let column = Std.parseInt(matched[4]);
-					m.push(haxe_StackItem.FilePos(meth == "Anonymous function" ? haxe_StackItem.LocalFunction() : meth == "Global code" ? null : haxe_StackItem.Method(path.join("."),meth),file,line,column));
-				} else {
-					m.push(haxe_StackItem.Module(StringTools.trim(line)));
-				}
-			}
-			return m;
-		} else if(skip > 0 && Array.isArray(s)) {
-			return s.slice(skip);
-		} else {
-			return s;
-		}
-	}
-	static normalize(stack,skipItems) {
-		if(skipItems == null) {
-			skipItems = 0;
-		}
-		if(Array.isArray(stack) && skipItems > 0) {
-			return stack.slice(skipItems);
-		} else if(typeof(stack) == "string") {
-			switch(stack.substring(0,6)) {
-			case "Error\n":case "Error:":
-				++skipItems;
-				break;
-			default:
-			}
-			return haxe_NativeStackTrace.skipLines(stack,skipItems);
-		} else {
-			return stack;
-		}
-	}
-	static skipLines(stack,skip,pos) {
-		if(pos == null) {
-			pos = 0;
-		}
-		while(true) if(skip > 0) {
-			pos = stack.indexOf("\n",pos);
-			if(pos < 0) {
-				return "";
-			} else {
-				skip = --skip;
-				pos += 1;
-				continue;
-			}
-		} else {
-			return stack.substring(pos);
-		}
-	}
-}
-haxe_NativeStackTrace.__name__ = true;
 class haxe_ValueException extends haxe_Exception {
 	constructor(value,previous,native) {
 		super(String(value),previous,native);
 		this.value = value;
-		this.__skipStack++;
 	}
 	unwrap() {
 		return this.value;

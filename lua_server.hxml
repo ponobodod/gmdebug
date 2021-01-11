@@ -13,4 +13,4 @@
 -dce full
 --macro gmod.macros.InitMacro.init()
 -main gmdebug.lua.Debugee
--lua out/lua/debugee.lua
+-lua /dev/null

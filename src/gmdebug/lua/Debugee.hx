@@ -181,13 +181,13 @@ class Debugee {
 
 	#if server
 	static function hookPlayer() {
-		HookLib.Add(PlayerInitialSpawn, "debugee-newplayer", (ply, _) -> {
+		HookLib.Add(PlayerInitialSpawn, "gmdebug-newplayer", (ply, _) -> {
 			new ComposedGmDebugMessage(playerAdded, {
 				name: ply.Name(),
 				playerID: ply.UserID()
 			}).send();
 		});
-		HookLib.Add(PlayerDisconnected, "debugee-byeplayer", (ply) -> {
+		HookLib.Add(PlayerDisconnected, "gmdebug-byeplayer", (ply) -> {
 			new ComposedGmDebugMessage(playerRemoved, {
 				playerID: ply.UserID()
 			}).send();
@@ -302,7 +302,7 @@ class Debugee {
 		#if client
 		Jit.init();
 		#end
-		TimerLib.Create("debugee-start", 3, 0, () -> {
+		TimerLib.Create("gmdebug-start", 3, 0, () -> {
 			#if server
 			Jit.jitActivate();
 			#end
@@ -318,7 +318,7 @@ class Debugee {
 			DebugLoopProfile.report();
 		});
 		var pollTime = 0.0;
-		HookLib.Add(GMHook.Think, "debugee-poll", () -> {
+		HookLib.Add(GMHook.Think, "gmdebug-poll", () -> {
 			if (Gmod.CurTime() > pollTime) {
 				pollTime = Gmod.CurTime() + 0.1;
 				shouldDebug = false;
@@ -326,8 +326,6 @@ class Debugee {
 				shouldDebug = true;
 			}
 		});
-
-		HookLib.Remove(GMHook.Think, "woopee");
 	}
 
 	public static function normalPath(x:String):String {

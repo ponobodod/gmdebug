@@ -245,7 +245,7 @@ class Handlers {
 
 	static function setupDebugger(serverFolder:String) {
 		final addonFolder = haxe.io.Path.join([serverFolder, "addons"]);
-		final debugFolder = haxe.io.Path.join([addonFolder, "debugee-auto"]);
+		final debugFolder = haxe.io.Path.join([addonFolder, "debugee"]);
 		if (!Fs.existsSync(debugFolder)) {
 			js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
 		}
