@@ -290,8 +290,6 @@ class Debugee {
 		fbm = new FunctionBreakpointManager();
 		hc = new HandlerContainer(vm,bm,fbm);
 		DebugLoop.init(bm,sc);
-		trace("oogie?");
-		
 		FileLib.CreateDir("gmdebug");
 		
 		#if server

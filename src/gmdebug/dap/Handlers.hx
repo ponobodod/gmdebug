@@ -189,7 +189,7 @@ class Handlers {
 		for (arg in arrArgs) {
 			argResult += arg + " ";
 		}
-		final childProcess = js.node.ChildProcess.spawn('script -c \'$programPath -norestart $argResult\' /dev/null', {
+		final childProcess = js.node.ChildProcess.spawn('script -c \'$programPath -norestart $argResult +sv_hibernate_think 1\' /dev/null', {
 			cwd: haxe.io.Path.directory(programPath),
 			env: Node.process.env,
 			shell: true
@@ -246,9 +246,8 @@ class Handlers {
 	static function setupDebugger(serverFolder:String) {
 		final addonFolder = haxe.io.Path.join([serverFolder, "addons"]);
 		final debugFolder = haxe.io.Path.join([addonFolder, "debugee"]);
-		if (!Fs.existsSync(debugFolder)) {
-			js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
-		}
+		js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
+		
 	}
 
 	static function h_attach(x:GmDebugAttachRequest) {

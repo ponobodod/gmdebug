@@ -138,27 +138,3 @@ private extern class G {
 
 	static function __gmdebugTraceback():Void;
 }
-
-// static function getoldinclude() {
-//     final _g = untyped __lua__("_G");
-//     _g.__oldinclude = (_g.__oldinclude : Any).or(_g.include);
-//     return _g.__oldinclude;
-// }
-// static var __oldinclude:Function = getoldinclude();
-// public static function hookInclude() {
-//     final _g =  untyped __lua__("_G");
-//     _g.include = @:nullSafety(Off) function (file:String) {
-//         //test all places relative to file. ugh
-//         return if (FileLib.Exists(file,DATA)) {
-//             final result = Lua.xpcall(Gmod.CompileFile,traceback,file);
-//             if (result.status) {
-//                 Gmod.include(file);
-//             } else {
-//                 Lua.error(result.value,99);
-//                 null; //never hit
-//             }
-//         } else {
-//             null;
-//         }
-//     }
-// }
