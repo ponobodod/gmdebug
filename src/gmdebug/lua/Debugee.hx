@@ -71,10 +71,17 @@ class Debugee {
 	public static var dapMode:Null<DapModeStr>;
 
 	public static final stackOffset = {
+		#if !gmddebug
 		step: 4,
 		stepDebugLoop: 5,
 		except: 5,
 		pause: 5
+		#else
+		step : 5,
+		stepDebugLoop : 6,
+		except : 6,
+		pause : 6
+		#end
 	};
 
 	public static var minheight:Int = 3;
@@ -154,9 +161,9 @@ class Debugee {
 		Exceptions.hookGamemodeHooks();
 		Exceptions.hookEntityHooks();
 		
-		outputter.hookprint();
+		// outputter.hookprint();
 		// getAllBpLines();
-		Debug.sethook(DebugLoop.debugloop, "c");
+		DebugHook.addHook(DebugLoop.debugloop, "c");
 		hooksActive = true;
 		return true;
 	}
@@ -273,7 +280,7 @@ class Debugee {
 	}
 
 	public static function main() {
-		Debug.sethook();
+		DebugHook.addHook();
 		if (G.previousSocket != null) {
 			G.previousSocket.close();
 		}
@@ -360,7 +367,7 @@ class Debugee {
 	#end
 
 	static function abortDebugee() {
-		Debug.sethook();
+		DebugHook.addHook();
 		socket.run((sock) -> {
 			sock.close();
 			socket = null;

@@ -7,7 +7,7 @@
 -D addonName=debugee
 -D analyzer-optimize
 -D generateLuaInit
--D gmodAddonFolder=/home/steam/.steam/SteamApps/common/GarrysModDS/garrysmod/addons/
+# -D gmodAddonFolder=/home/steam/.steam/SteamApps/common/GarrysModDS/garrysmod/addons/
 -D lua-ver=5.1
 -dce full
 --macro nullSafety("gmdebug")
