@@ -34,6 +34,7 @@ class HandlerContainer {
 		handlerMap.set(setFunctionBreakpoints,new HSetFunctionBreakpoints(fbm));
 		handlerMap.set(setExceptionBreakpoints,new HSetExceptionBreakpoints());
 		handlerMap.set(evaluate,new HEvaluate(vm));
+		handlerMap.set(configurationDone,new HConfigurationDone());
 		
 	}
 

@@ -8,4 +8,5 @@ enum HandlerResponse {
 	WAIT;
 	CONTINUE;
 	DISCONNECT;
+	CONFIG_DONE;
 }

@@ -128,7 +128,10 @@ class Debugee {
 	static var bm:Null<BreakpointManager>;
 
 	static var fbm:Null<FunctionBreakpointManager>;
-	
+
+	static final TIMEOUT_CONNECT = 10;
+
+	static final TIMEOUT_CONFIG = 5;
 
 	public static function start() {
 		if (active)
@@ -136,15 +139,12 @@ class Debugee {
 		try {
 			socket = new PipeSocket();
 		} catch (e) {
-			trace('failed to start $e');
 			socket = null;
 		}
-
 		if (socket == null) {
-			trace("no");
 			return false;
 		}
-		trace("attached to server");
+		trace("Connected to server...");
 		active = true;
 		final ce = new ComposedEvent(initialized);
 		ce.send();
@@ -157,12 +157,10 @@ class Debugee {
 		hookPlayer();
 		new ComposedEvent(continued, {threadId: 0, allThreadsContinued: true}).send();
 		#end
-		Exceptions.hookOnChange();
-		Exceptions.hookGamemodeHooks();
-		Exceptions.hookEntityHooks();
-		
-		// outputter.hookprint();
-		// getAllBpLines();
+		if (!startLoop()) {
+			trace("Failed to setup debugger after timeout");
+			return false;
+		}
 		DebugHook.addHook(DebugLoop.debugloop, "c");
 		hooksActive = true;
 		return true;
@@ -246,36 +244,44 @@ class Debugee {
 		return DebugLib.traceback(err);
 	}
 
-	inline static function recvMessage(x:Input):MessageResult {
+	inline static function parseInput(x:Input):MessageResult {
 		socket.unsafe().output.writeString("\004");
 		socket.unsafe().output.flush();
 		return Cross.recvMessage(x);
 	}
 
+	static function recvMessage():RecvMessageResult {
+		return try {
+			switch (parseInput(socket.unsafe().input)) {
+				case ACK:
+					ACK;
+				case MESSAGE(msg):
+					MESSAGE(msg);
+			}
+		} catch (e:String) {
+			if (e == "Error : timeout") {
+				RecvMessageResult.TIMEOUT;
+			} else {
+				ERROR(e);
+			}
+		}
+	}
+
 	public static function poll() {
 		if (socket == null)
 			return;
-		var data:Request<Dynamic>;
-		try {
-			data = switch ((recvMessage(socket.unsafe().input)) : MessageResult) {
-				case ACK:
-					return;
-				case MESSAGE(msg):
-					msg;
-			};
-		} catch (e:String) {
-			if (e == "Error : timeout") {
+		final msg = switch (recvMessage()) {
+			case ACK | TIMEOUT:
 				return;
-			} else {
-				throw e;
-			}
-		} catch (e:haxe.io.Eof) {
-			trace("eof");
-			abortDebugee();
-			return;
+			case MESSAGE(msg):
+				msg;		
+			case ERROR(s):
+				throw s;
 		}
-		if (chooseHandler(data) == DISCONNECT) {
-			abortDebugee();
+		switch (chooseHandler(msg)) {
+			case DISCONNECT:
+				abortDebugee();
+			case WAIT | CONTINUE | CONFIG_DONE:
 		}
 	}
 
@@ -380,34 +386,53 @@ class Debugee {
 		Exceptions.unhookEntityHooks();
 	}
 
-	static function haltLoop() {
-		while (true) {
-			var msg;
-			try {
-				msg = switch (recvMessage(socket.unsafe().input)) {
-					case ACK: // CLEANUP maybe change to thrown exception for consistency
-						continue;
-					case MESSAGE(msg):
-						msg;
-				};
-			} catch (s:String) {
-				if (s != "Error : timeout") {
-					abortDebugee();
-					throw s;
-				} else {
+	static function startLoop() {
+		var success = false;
+		final timeoutTime = Gmod.SysTime() + TIMEOUT_CONFIG;
+		while (Gmod.SysTime() < timeoutTime) {
+			final msg = switch (recvMessage()) {
+				case ACK | TIMEOUT:
 					continue;
-				}
+				case MESSAGE(msg):
+					msg;		
+				case ERROR(s):
+					throw s;
 			}
 			switch (chooseHandler(msg)) {
-				case WAIT:
+				case WAIT | CONTINUE:
+				case DISCONNECT:
+					abortDebugee();
+					success = false;
+					break;
+				case CONFIG_DONE:
+					success = true;
+					break;
+				
+			}
+		}
+		return success;
+	}
+
+
+	static function haltLoop() {
+		while (true) {			
+			final msg = switch (recvMessage()) {
+				case ACK | TIMEOUT:
+					continue;
+				case MESSAGE(msg):
+					msg;		
+				case ERROR(s):
+					throw s;
+			}
+			switch (chooseHandler(msg)) {
+				case WAIT | CONFIG_DONE:
 				case CONTINUE:
 					break;
 				case DISCONNECT:
 					abortDebugee();
 					break;
 			}
-		}
-		// trace("halt loop exited");
+		}		
 		Debugee.inpauseloop = false;
 	}
 
@@ -447,4 +472,12 @@ enum DebugState {
 	WAIT;
 	STEP(targetHeight:Null<Int>);
 	OUT(outFunc:Function, lowestLine:Int);
+}
+
+enum RecvMessageResult {
+	TIMEOUT;
+	ACK;
+	ERROR(s:String);
+	MESSAGE(msg:Dynamic);
+
 }
