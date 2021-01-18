@@ -177,12 +177,12 @@ class DebugLoop {
 		if (!Debugee.shouldDebug || Debugee.tracing)
 			return;
 		DebugLoopProfile.profile("getinfo", true);
-		final func = DebugLib.getinfo(2, 'f').func; // activelines causes MASSIVE slowdown (6x)
+		final func = DebugLib.getinfo(DebugHook.DEBUG_OFFSET, 'f').func; // activelines causes MASSIVE slowdown (6x)
 		final result = sc.sourceCache.get(func);
 		final sinfo = if (result != null) {
 			result;
 		} else {
-			final tmp = DebugLib.getinfo(2, 'S');
+			final tmp = DebugLib.getinfo(DebugHook.DEBUG_OFFSET, 'S');
 			sc.sourceCache.set(func, tmp);
 			tmp;
 		}

@@ -318,21 +318,13 @@ local _hx_obj_mt = {__newindex=_hx_obj_newindex, __tostring=_hx_tostring}
 local _hx_exports = _hx_exports or {}
 local Array = _hx_e()
 local Date = _hx_e()
-__haxe_Exception = _hx_e()
-__haxe_IMap = _hx_e()
-__haxe_ds_StringMap = _hx_e()
-__lua_Boot = _hx_e()
-local String = _hx_e()
-__lua_Thread = _hx_e()
-__lua_UserData = _hx_e()
-__haxe_ValueException = _hx_e()
-local Std = _hx_e()
-__haxe_NativeStackTrace = _hx_e()
 local Lambda = _hx_e()
 local LuaLambdaKeys = _hx_e()
 local Math = _hx_e()
 local NETMESSAGE_gmdebug_netJit = _hx_e()
 local Reflect = _hx_e()
+local String = _hx_e()
+local Std = _hx_e()
 local StringBuf = _hx_e()
 local StringTools = _hx_e()
 local Sys = _hx_e()
@@ -352,6 +344,7 @@ __gmdebug_composer_ComposedResponse = _hx_e()
 __gmdebug_lua_CustomHandlers = _hx_e()
 __gmdebug_lua__DebugHook_DDebugHook = _hx_e()
 __gmdebug_lua_CatchOut = _hx_e()
+__haxe_IMap = _hx_e()
 __haxe_ds_ObjectMap = _hx_e()
 __gmdebug_lua_DebugLoop = _hx_e()
 __gmdebug_lua_ProfilingState = _hx_e()
@@ -399,11 +392,15 @@ __gmod__PairTools_KeyTable_Impl_ = _hx_e()
 __gmod_WeakTools = _hx_e()
 __gmod_macros_include___ForceExpose = _hx_e()
 __haxe_EntryPoint = _hx_e()
+__haxe_Exception = _hx_e()
 __haxe_Json = _hx_e()
 __haxe_Log = _hx_e()
 __haxe_MainEvent = _hx_e()
 __haxe_MainLoop = _hx_e()
+__haxe_NativeStackTrace = _hx_e()
+__haxe_ValueException = _hx_e()
 __haxe_ds_IntMap = _hx_e()
+__haxe_ds_StringMap = _hx_e()
 __haxe_format_JsonParser = _hx_e()
 __haxe_format_JsonPrinter = _hx_e()
 __haxe_io_Bytes = _hx_e()
@@ -414,13 +411,16 @@ __haxe_io_Error = _hx_e()
 __haxe_iterators_ArrayIterator = _hx_e()
 __haxe_iterators_ArrayKeyValueIterator = _hx_e()
 __haxe_iterators_MapKeyValueIterator = _hx_e()
+__lua_Boot = _hx_e()
+__lua_UserData = _hx_e()
+__lua_Thread = _hx_e()
 __safety_SafetyException = _hx_e()
 __safety_NullPointerException = _hx_e()
 __tink_core_Annex = _hx_e()
 __tink_json_BasicWriter = _hx_e()
-__tink_json_Writer51 = _hx_e()
-__tink_json_Writer52 = _hx_e()
-__tink_json_Writer53 = _hx_e()
+__tink_json_Writer1 = _hx_e()
+__tink_json_Writer2 = _hx_e()
+__tink_json_Writer3 = _hx_e()
 
 local _hx_bind, _hx_bit, _hx_staticToInstance, _hx_funcToField, _hx_maxn, _hx_print, _hx_apply_self, _hx_box_mr, _hx_bit_clamp, _hx_table, _hx_bit_raw
 local _hx_pcall_default = {};
@@ -782,266 +782,125 @@ end
 
 Date.prototype.__class__ =  Date
 
-__haxe_Exception.new = function(message,previous,native) 
-  local self = _hx_new(__haxe_Exception.prototype)
-  __haxe_Exception.super(self,message,previous,native)
-  return self
-end
-__haxe_Exception.super = function(self,message,previous,native) 
-  self.__skipStack = 0;
-  self.__exceptionMessage = message;
-  self.__previousException = previous;
-  if (native ~= nil) then 
-    self.__nativeException = native;
-    self.__nativeStack = __haxe_NativeStackTrace.exceptionStack();
-  else
-    self.__nativeException = self;
-    self.__nativeStack = __haxe_NativeStackTrace.callStack();
-    self.__skipStack = 1;
-  end;
-end
-__haxe_Exception.__name__ = true
-__haxe_Exception.caught = function(value) 
-  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
-    do return value end;
-  else
-    do return __haxe_ValueException.new(value, nil, value) end;
-  end;
-end
-__haxe_Exception.thrown = function(value) 
-  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
-    do return value:get_native() end;
-  else
-    local e = __haxe_ValueException.new(value);
-    e.__skipStack = e.__skipStack + 1;
-    do return e end;
-  end;
-end
-__haxe_Exception.prototype = _hx_e();
-__haxe_Exception.prototype.__exceptionMessage= nil;
-__haxe_Exception.prototype.__nativeStack= nil;
-__haxe_Exception.prototype.__skipStack= nil;
-__haxe_Exception.prototype.__nativeException= nil;
-__haxe_Exception.prototype.__previousException= nil;
-__haxe_Exception.prototype.unwrap = function(self) 
-  do return self.__nativeException end
-end
-__haxe_Exception.prototype.toString = function(self) 
-  do return self:get_message() end
-end
-__haxe_Exception.prototype.get_message = function(self) 
-  do return self.__exceptionMessage end
-end
-__haxe_Exception.prototype.get_native = function(self) 
-  do return self.__nativeException end
-end
-
-__haxe_Exception.prototype.__class__ =  __haxe_Exception
-
-__haxe_IMap.new = {}
-__haxe_IMap.__name__ = true
-__haxe_IMap.prototype = _hx_e();
-__haxe_IMap.prototype.get= nil;
-__haxe_IMap.prototype.set= nil;
-__haxe_IMap.prototype.keys= nil;
-
-__haxe_IMap.prototype.__class__ =  __haxe_IMap
-
-__haxe_ds_StringMap.new = function() 
-  local self = _hx_new(__haxe_ds_StringMap.prototype)
-  __haxe_ds_StringMap.super(self)
-  return self
-end
-__haxe_ds_StringMap.super = function(self) 
-  self.h = ({});
-end
-__haxe_ds_StringMap.__name__ = true
-__haxe_ds_StringMap.__interfaces__ = {__haxe_IMap}
-__haxe_ds_StringMap.prototype = _hx_e();
-__haxe_ds_StringMap.prototype.h= nil;
-__haxe_ds_StringMap.prototype.set = function(self,key,value) 
-  if (value == nil) then 
-    self.h[key] = __haxe_ds_StringMap.tnull;
-  else
-    self.h[key] = value;
-  end;
-end
-__haxe_ds_StringMap.prototype.get = function(self,key) 
-  local ret = self.h[key];
-  if (ret == __haxe_ds_StringMap.tnull) then 
-    ret = nil;
-  end;
-  do return ret end
-end
-__haxe_ds_StringMap.prototype.keys = function(self) 
-  local _gthis = self;
-  local next = _G.next;
-  local cur = next(self.h, nil);
-  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
-    local ret = cur;
-    cur = next(_gthis.h, cur);
-    do return ret end;
-  end,hasNext=function(self) 
-    do return cur ~= nil end;
-  end}) end
-end
-__haxe_ds_StringMap.prototype.iterator = function(self) 
-  local _gthis = self;
-  local it = self:keys();
-  do return _hx_o({__fields__={hasNext=true,next=true},hasNext=function(self) 
-    do return it:hasNext() end;
-  end,next=function(self) 
-    do return _gthis.h[it:next()] end;
-  end}) end
-end
-
-__haxe_ds_StringMap.prototype.__class__ =  __haxe_ds_StringMap
-
-__lua_Boot.new = {}
-__lua_Boot.__name__ = true
-__lua_Boot.__instanceof = function(o,cl) 
-  if (cl == nil) then 
-    do return false end;
-  end;
-  local cl1 = cl;
-  if (cl1) == Array then 
-    do return __lua_Boot.isArray(o) end;
-  elseif (cl1) == Bool then 
-    do return _G.type(o) == "boolean" end;
-  elseif (cl1) == Dynamic then 
-    do return o ~= nil end;
-  elseif (cl1) == Float then 
-    do return _G.type(o) == "number" end;
-  elseif (cl1) == Int then 
-    if (_G.type(o) == "number") then 
-      do return _hx_bit_clamp(o) == o end;
-    else
-      do return false end;
-    end;
-  elseif (cl1) == String then 
-    do return _G.type(o) == "string" end;
-  elseif (cl1) == _G.table then 
-    do return _G.type(o) == "table" end;
-  elseif (cl1) == __lua_Thread then 
-    do return _G.type(o) == "thread" end;
-  elseif (cl1) == __lua_UserData then 
-    do return _G.type(o) == "userdata" end;else
-  if (((o ~= nil) and (_G.type(o) == "table")) and (_G.type(cl) == "table")) then 
-    local tmp;
-    if (__lua_Boot.__instanceof(o, Array)) then 
-      tmp = Array;
-    else
-      if (__lua_Boot.__instanceof(o, String)) then 
-        tmp = String;
-      else
-        local cl = o.__class__;
-        tmp = (function() 
-          local _hx_1
-          if (cl ~= nil) then 
-          _hx_1 = cl; else 
-          _hx_1 = nil; end
-          return _hx_1
-        end )();
-      end;
-    end;
-    if (__lua_Boot.extendsOrImplements(tmp, cl)) then 
+Lambda.new = {}
+Lambda.__name__ = true
+Lambda.has = function(it,elt) 
+  local x = it:iterator();
+  while (x:hasNext()) do 
+    if (x:next() == elt) then 
       do return true end;
     end;
-    if ((function() 
+  end;
+  do return false end;
+end
+
+LuaLambdaKeys.new = {}
+LuaLambdaKeys.__name__ = true
+LuaLambdaKeys.fold = function(it,f,first) 
+  local x = __gmod__PairTools_KeyTable_Impl_.iterator(it);
+  while (x:hasNext()) do 
+    first = f(x:next(), first);
+  end;
+  do return first end;
+end
+
+Math.new = {}
+Math.__name__ = true
+Math.isNaN = function(f) 
+  do return f ~= f end;
+end
+Math.isFinite = function(f) 
+  if (f > -_G.math.huge) then 
+    do return f < _G.math.huge end;
+  else
+    do return false end;
+  end;
+end
+Math.min = function(a,b) 
+  if (Math.isNaN(a) or Math.isNaN(b)) then 
+    do return (0/0) end;
+  else
+    do return _G.math.min(a, b) end;
+  end;
+end
+
+NETMESSAGE_gmdebug_netJit.new = function() 
+  local self = _hx_new(NETMESSAGE_gmdebug_netJit.prototype)
+  NETMESSAGE_gmdebug_netJit.super(self)
+  return self
+end
+NETMESSAGE_gmdebug_netJit.super = function(self) 
+  _G.util.AddNetworkString("gmdebug_netJit");
+end
+NETMESSAGE_gmdebug_netJit.__name__ = true
+NETMESSAGE_gmdebug_netJit.prototype = _hx_e();
+NETMESSAGE_gmdebug_netJit.prototype.broadcast = function(self,data,unreliable) 
+  if (unreliable == nil) then 
+    unreliable = false;
+  end;
+  _G.net.Start("gmdebug_netJit", unreliable);
+  _G.net.Broadcast();
+end
+
+NETMESSAGE_gmdebug_netJit.prototype.__class__ =  NETMESSAGE_gmdebug_netJit
+
+Reflect.new = {}
+Reflect.__name__ = true
+Reflect.field = function(o,field) 
+  if (_G.type(o) == "string") then 
+    if (field == "length") then 
+      do return _hx_wrap_if_string_field(o,'length') end;
+    else
+      do return String.prototype[field] end;
+    end;
+  else
+    local _hx_status, _hx_result = pcall(function() 
+    
+        do return o[field] end;
+      return _hx_pcall_default
+    end)
+    if not _hx_status and _hx_result == "_hx_pcall_break" then
+    elseif not _hx_status then 
+      local _g = _hx_result;
+      do return nil end;
+    elseif _hx_result ~= _hx_pcall_default then
+      return _hx_result
+    end;
+  end;
+end
+Reflect.fields = function(o) 
+  local _hx_continue_1 = false;
+  while (true) do repeat 
+    if (_G.type(o) == "string") then 
+      o = String.prototype;
+      break;
+    else
+      do return _hx_field_arr(o) end;
+    end;until true
+    if _hx_continue_1 then 
+    _hx_continue_1 = false;
+    break;
+    end;
+    
+  end;
+end
+Reflect.isFunction = function(f) 
+  if (_G.type(f) == "function") then 
+    do return not ((function() 
+      local _hx_1
+      if (_G.type(f) ~= "table") then 
+      _hx_1 = false; else 
+      _hx_1 = f.__name__; end
+      return _hx_1
+    end )() or (function() 
       local _hx_2
-      if (cl == Class) then 
-      _hx_2 = o.__name__ ~= nil; else 
-      _hx_2 = false; end
+      if (_G.type(f) ~= "table") then 
+      _hx_2 = false; else 
+      _hx_2 = f.__ename__; end
       return _hx_2
-    end )()) then 
-      do return true end;
-    end;
-    if ((function() 
-      local _hx_3
-      if (cl == Enum) then 
-      _hx_3 = o.__ename__ ~= nil; else 
-      _hx_3 = false; end
-      return _hx_3
-    end )()) then 
-      do return true end;
-    end;
-    do return o.__enum__ == cl end;
+    end )()) end;
   else
     do return false end;
-  end; end;
-end
-__lua_Boot.isArray = function(o) 
-  if (_G.type(o) == "table") then 
-    if ((o.__enum__ == nil) and (_G.getmetatable(o) ~= nil)) then 
-      do return _G.getmetatable(o).__index == Array.prototype end;
-    else
-      do return false end;
-    end;
-  else
-    do return false end;
-  end;
-end
-__lua_Boot.dateStr = function(date) 
-  local m = date:getMonth() + 1;
-  local d = date:getDate();
-  local h = date:getHours();
-  local mi = date:getMinutes();
-  local s = date:getSeconds();
-  do return Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(date:getFullYear()) .. Std.string("-")) .. Std.string(((function() 
-    local _hx_1
-    if (m < 10) then 
-    _hx_1 = Std.string("0") .. Std.string(m); else 
-    _hx_1 = Std.string("") .. Std.string(m); end
-    return _hx_1
-  end )()))) .. Std.string("-")) .. Std.string(((function() 
-    local _hx_2
-    if (d < 10) then 
-    _hx_2 = Std.string("0") .. Std.string(d); else 
-    _hx_2 = Std.string("") .. Std.string(d); end
-    return _hx_2
-  end )()))) .. Std.string(" ")) .. Std.string(((function() 
-    local _hx_3
-    if (h < 10) then 
-    _hx_3 = Std.string("0") .. Std.string(h); else 
-    _hx_3 = Std.string("") .. Std.string(h); end
-    return _hx_3
-  end )()))) .. Std.string(":")) .. Std.string(((function() 
-    local _hx_4
-    if (mi < 10) then 
-    _hx_4 = Std.string("0") .. Std.string(mi); else 
-    _hx_4 = Std.string("") .. Std.string(mi); end
-    return _hx_4
-  end )()))) .. Std.string(":")) .. Std.string(((function() 
-    local _hx_5
-    if (s < 10) then 
-    _hx_5 = Std.string("0") .. Std.string(s); else 
-    _hx_5 = Std.string("") .. Std.string(s); end
-    return _hx_5
-  end )())) end;
-end
-__lua_Boot.extendsOrImplements = function(cl1,cl2) 
-  while (true) do 
-    if ((cl1 == nil) or (cl2 == nil)) then 
-      do return false end;
-    else
-      if (cl1 == cl2) then 
-        do return true end;
-      else
-        if (cl1.__interfaces__ ~= nil) then 
-          local intf = cl1.__interfaces__;
-          local _g = 1;
-          local _g1 = _hx_table.maxn(intf) + 1;
-          while (_g < _g1) do 
-            _g = _g + 1;
-            local i = _g - 1;
-            if (__lua_Boot.extendsOrImplements(intf[i], cl2)) then 
-              do return true end;
-            end;
-          end;
-        end;
-      end;
-    end;
-    cl1 = cl1.__super__;
   end;
 end
 
@@ -1226,32 +1085,6 @@ end
 
 String.prototype.__class__ =  String
 
-__lua_Thread.new = {}
-__lua_Thread.__name__ = true
-
-__lua_UserData.new = {}
-__lua_UserData.__name__ = true
-
-__haxe_ValueException.new = function(value,previous,native) 
-  local self = _hx_new(__haxe_ValueException.prototype)
-  __haxe_ValueException.super(self,value,previous,native)
-  return self
-end
-__haxe_ValueException.super = function(self,value,previous,native) 
-  __haxe_Exception.super(self,Std.string(value),previous,native);
-  self.value = value;
-end
-__haxe_ValueException.__name__ = true
-__haxe_ValueException.prototype = _hx_e();
-__haxe_ValueException.prototype.value= nil;
-__haxe_ValueException.prototype.unwrap = function(self) 
-  do return self.value end
-end
-
-__haxe_ValueException.prototype.__class__ =  __haxe_ValueException
-__haxe_ValueException.__super__ = __haxe_Exception
-setmetatable(__haxe_ValueException.prototype,{__index=__haxe_Exception.prototype})
-
 Std.new = {}
 Std.__name__ = true
 Std.string = function(s) 
@@ -1361,165 +1194,6 @@ Std.parseFloat = function(x)
     do return result end;
   else
     do return (0/0) end;
-  end;
-end
-
-__haxe_NativeStackTrace.new = {}
-__haxe_NativeStackTrace.__name__ = true
-__haxe_NativeStackTrace.saveStack = function(exception) 
-end
-__haxe_NativeStackTrace.callStack = function() 
-  local _g = debug.traceback();
-  if (_g == nil) then 
-    do return _hx_tab_array({}, 0) end;
-  else
-    local idx = 1;
-    local ret = _hx_tab_array({}, 0);
-    while (idx ~= nil) do 
-      local newidx = 0;
-      if (#"\n" > 0) then 
-        newidx = _G.string.find(_g, "\n", idx, true);
-      else
-        if (idx >= #_g) then 
-          newidx = nil;
-        else
-          newidx = idx + 1;
-        end;
-      end;
-      if (newidx ~= nil) then 
-        ret:push(_G.string.sub(_g, idx, newidx - 1));
-        idx = newidx + #"\n";
-      else
-        ret:push(_G.string.sub(_g, idx, #_g));
-        idx = nil;
-      end;
-    end;
-    do return ret:slice(3) end;
-  end;
-end
-__haxe_NativeStackTrace.exceptionStack = function() 
-  do return _hx_tab_array({}, 0) end;
-end
-
-Lambda.new = {}
-Lambda.__name__ = true
-Lambda.has = function(it,elt) 
-  local x = it:iterator();
-  while (x:hasNext()) do 
-    if (x:next() == elt) then 
-      do return true end;
-    end;
-  end;
-  do return false end;
-end
-
-LuaLambdaKeys.new = {}
-LuaLambdaKeys.__name__ = true
-LuaLambdaKeys.fold = function(it,f,first) 
-  local x = __gmod__PairTools_KeyTable_Impl_.iterator(it);
-  while (x:hasNext()) do 
-    first = f(x:next(), first);
-  end;
-  do return first end;
-end
-
-Math.new = {}
-Math.__name__ = true
-Math.isNaN = function(f) 
-  do return f ~= f end;
-end
-Math.isFinite = function(f) 
-  if (f > -_G.math.huge) then 
-    do return f < _G.math.huge end;
-  else
-    do return false end;
-  end;
-end
-Math.min = function(a,b) 
-  if (Math.isNaN(a) or Math.isNaN(b)) then 
-    do return (0/0) end;
-  else
-    do return _G.math.min(a, b) end;
-  end;
-end
-
-NETMESSAGE_gmdebug_netJit.new = function() 
-  local self = _hx_new(NETMESSAGE_gmdebug_netJit.prototype)
-  NETMESSAGE_gmdebug_netJit.super(self)
-  return self
-end
-NETMESSAGE_gmdebug_netJit.super = function(self) 
-  _G.util.AddNetworkString("gmdebug_netJit");
-end
-NETMESSAGE_gmdebug_netJit.__name__ = true
-NETMESSAGE_gmdebug_netJit.prototype = _hx_e();
-NETMESSAGE_gmdebug_netJit.prototype.broadcast = function(self,data,unreliable) 
-  if (unreliable == nil) then 
-    unreliable = false;
-  end;
-  _G.net.Start("gmdebug_netJit", unreliable);
-  _G.net.Broadcast();
-end
-
-NETMESSAGE_gmdebug_netJit.prototype.__class__ =  NETMESSAGE_gmdebug_netJit
-
-Reflect.new = {}
-Reflect.__name__ = true
-Reflect.field = function(o,field) 
-  if (_G.type(o) == "string") then 
-    if (field == "length") then 
-      do return _hx_wrap_if_string_field(o,'length') end;
-    else
-      do return String.prototype[field] end;
-    end;
-  else
-    local _hx_status, _hx_result = pcall(function() 
-    
-        do return o[field] end;
-      return _hx_pcall_default
-    end)
-    if not _hx_status and _hx_result == "_hx_pcall_break" then
-    elseif not _hx_status then 
-      local _g = _hx_result;
-      do return nil end;
-    elseif _hx_result ~= _hx_pcall_default then
-      return _hx_result
-    end;
-  end;
-end
-Reflect.fields = function(o) 
-  local _hx_continue_1 = false;
-  while (true) do repeat 
-    if (_G.type(o) == "string") then 
-      o = String.prototype;
-      break;
-    else
-      do return _hx_field_arr(o) end;
-    end;until true
-    if _hx_continue_1 then 
-    _hx_continue_1 = false;
-    break;
-    end;
-    
-  end;
-end
-Reflect.isFunction = function(f) 
-  if (_G.type(f) == "function") then 
-    do return not ((function() 
-      local _hx_1
-      if (_G.type(f) ~= "table") then 
-      _hx_1 = false; else 
-      _hx_1 = f.__name__; end
-      return _hx_1
-    end )() or (function() 
-      local _hx_2
-      if (_G.type(f) ~= "table") then 
-      _hx_2 = false; else 
-      _hx_2 = f.__ename__; end
-      return _hx_2
-    end )()) end;
-  else
-    do return false end;
   end;
 end
 
@@ -2337,8 +2011,6 @@ __gmdebug_lua__DebugHook_DDebugHook.addHook = function(ident,fun,str)
     ret = nil;
   end;
   local flagMap = ret.flagsMap;
-  local startIndex = nil;
-  startIndex = 1;
   local r = _G.string.find(str, "l", 1, true);
   if ((function() 
     local _hx_1
@@ -2351,8 +2023,6 @@ __gmdebug_lua__DebugHook_DDebugHook.addHook = function(ident,fun,str)
   else
     flagMap:set(0, false);
   end;
-  local startIndex = nil;
-  startIndex = 1;
   local r = _G.string.find(str, "c", 1, true);
   if ((function() 
     local _hx_2
@@ -2410,6 +2080,15 @@ __gmdebug_lua_CatchOut = _hxClasses["gmdebug.lua.CatchOut"];
 __gmdebug_lua_CatchOut.NONE = _hx_tab_array({[0]="NONE",0,__enum__ = __gmdebug_lua_CatchOut},2)
 
 __gmdebug_lua_CatchOut.OUT = function(outFunc) local _x = _hx_tab_array({[0]="OUT",1,outFunc,__enum__=__gmdebug_lua_CatchOut}, 3); return _x; end 
+
+__haxe_IMap.new = {}
+__haxe_IMap.__name__ = true
+__haxe_IMap.prototype = _hx_e();
+__haxe_IMap.prototype.get= nil;
+__haxe_IMap.prototype.set= nil;
+__haxe_IMap.prototype.keys= nil;
+
+__haxe_IMap.prototype.__class__ =  __haxe_IMap
 
 __haxe_ds_ObjectMap.new = function() 
   local self = _hx_new(__haxe_ds_ObjectMap.prototype)
@@ -2472,13 +2151,13 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
   if (not __gmdebug_lua_Debugee.shouldDebug or __gmdebug_lua_Debugee.tracing) then 
     do return end;
   end;
-  local func = _G.debug.getinfo(2, "f").func;
+  local func = _G.debug.getinfo(3, "f").func;
   local result = __gmdebug_lua_DebugLoop.sc.sourceCache.h[func];
   local sinfo;
   if (result ~= nil) then 
     sinfo = result;
   else
-    local tmp = _G.debug.getinfo(2, "S");
+    local tmp = _G.debug.getinfo(3, "S");
     local _this = __gmdebug_lua_DebugLoop.sc.sourceCache;
     _this.h[func] = tmp;
     _this.k[func] = true;
@@ -3884,7 +3563,7 @@ __gmdebug_lua_handlers_HSetBreakpoints.prototype.handle = function(self,req)
     end;
   end;
   local resp = __gmdebug_composer_ComposeTools.compose(req, "setBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse}));
-  local js = __tink_json_Writer51.new():write(resp);
+  local js = __tink_json_Writer1.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4025,7 +3704,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
   local args = x.arguments;
   if (not __gmdebug_lua_Debugee.inpauseloop) then 
     local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=_hx_tab_array({}, 0),totalFrames=0}));
-    local js = __tink_json_Writer53.new():write(response);
+    local js = __tink_json_Writer3.new():write(response);
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -4237,7 +3916,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
     stackFrames:push(target);
   end;
   local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=stackFrames,totalFrames=stackFrames.length}));
-  local js = __tink_json_Writer53.new():write(response);
+  local js = __tink_json_Writer3.new():write(response);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4576,7 +4255,7 @@ __gmdebug_lua_handlers_HVariables.prototype.handle = function(self,req)
   local variablesArr = _g;
   self:fixupNames(variablesArr);
   local resp = __gmdebug_composer_ComposeTools.compose(req, "variables", _hx_o({__fields__={variables=true},variables=variablesArr}));
-  local js = __tink_json_Writer52.new():write(resp);
+  local js = __tink_json_Writer2.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -5201,6 +4880,62 @@ __haxe_EntryPoint.run = function()
   end;
 end
 
+__haxe_Exception.new = function(message,previous,native) 
+  local self = _hx_new(__haxe_Exception.prototype)
+  __haxe_Exception.super(self,message,previous,native)
+  return self
+end
+__haxe_Exception.super = function(self,message,previous,native) 
+  self.__skipStack = 0;
+  self.__exceptionMessage = message;
+  self.__previousException = previous;
+  if (native ~= nil) then 
+    self.__nativeException = native;
+    self.__nativeStack = __haxe_NativeStackTrace.exceptionStack();
+  else
+    self.__nativeException = self;
+    self.__nativeStack = __haxe_NativeStackTrace.callStack();
+    self.__skipStack = 1;
+  end;
+end
+__haxe_Exception.__name__ = true
+__haxe_Exception.caught = function(value) 
+  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
+    do return value end;
+  else
+    do return __haxe_ValueException.new(value, nil, value) end;
+  end;
+end
+__haxe_Exception.thrown = function(value) 
+  if (__lua_Boot.__instanceof(value, __haxe_Exception)) then 
+    do return value:get_native() end;
+  else
+    local e = __haxe_ValueException.new(value);
+    e.__skipStack = e.__skipStack + 1;
+    do return e end;
+  end;
+end
+__haxe_Exception.prototype = _hx_e();
+__haxe_Exception.prototype.__exceptionMessage= nil;
+__haxe_Exception.prototype.__nativeStack= nil;
+__haxe_Exception.prototype.__skipStack= nil;
+__haxe_Exception.prototype.__nativeException= nil;
+__haxe_Exception.prototype.__previousException= nil;
+__haxe_Exception.prototype.unwrap = function(self) 
+  do return self.__nativeException end
+end
+__haxe_Exception.prototype.toString = function(self) 
+  do return self:get_message() end
+end
+__haxe_Exception.prototype.get_message = function(self) 
+  do return self.__exceptionMessage end
+end
+__haxe_Exception.prototype.get_native = function(self) 
+  do return self.__nativeException end
+end
+
+__haxe_Exception.prototype.__class__ =  __haxe_Exception
+
 __haxe_Json.new = {}
 __haxe_Json.__name__ = true
 __haxe_Json.parse = function(text) 
@@ -5359,6 +5094,63 @@ __haxe_MainLoop.tick = function()
   do return wait end;
 end
 
+__haxe_NativeStackTrace.new = {}
+__haxe_NativeStackTrace.__name__ = true
+__haxe_NativeStackTrace.saveStack = function(exception) 
+end
+__haxe_NativeStackTrace.callStack = function() 
+  local _g = debug.traceback();
+  if (_g == nil) then 
+    do return _hx_tab_array({}, 0) end;
+  else
+    local idx = 1;
+    local ret = _hx_tab_array({}, 0);
+    while (idx ~= nil) do 
+      local newidx = 0;
+      if (#"\n" > 0) then 
+        newidx = _G.string.find(_g, "\n", idx, true);
+      else
+        if (idx >= #_g) then 
+          newidx = nil;
+        else
+          newidx = idx + 1;
+        end;
+      end;
+      if (newidx ~= nil) then 
+        ret:push(_G.string.sub(_g, idx, newidx - 1));
+        idx = newidx + #"\n";
+      else
+        ret:push(_G.string.sub(_g, idx, #_g));
+        idx = nil;
+      end;
+    end;
+    do return ret:slice(3) end;
+  end;
+end
+__haxe_NativeStackTrace.exceptionStack = function() 
+  do return _hx_tab_array({}, 0) end;
+end
+
+__haxe_ValueException.new = function(value,previous,native) 
+  local self = _hx_new(__haxe_ValueException.prototype)
+  __haxe_ValueException.super(self,value,previous,native)
+  return self
+end
+__haxe_ValueException.super = function(self,value,previous,native) 
+  __haxe_Exception.super(self,Std.string(value),previous,native);
+  self.value = value;
+end
+__haxe_ValueException.__name__ = true
+__haxe_ValueException.prototype = _hx_e();
+__haxe_ValueException.prototype.value= nil;
+__haxe_ValueException.prototype.unwrap = function(self) 
+  do return self.value end
+end
+
+__haxe_ValueException.prototype.__class__ =  __haxe_ValueException
+__haxe_ValueException.__super__ = __haxe_Exception
+setmetatable(__haxe_ValueException.prototype,{__index=__haxe_Exception.prototype})
+
 __haxe_ds_IntMap.new = function() 
   local self = _hx_new(__haxe_ds_IntMap.prototype)
   __haxe_ds_IntMap.super(self)
@@ -5399,6 +5191,56 @@ __haxe_ds_IntMap.prototype.keys = function(self)
 end
 
 __haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
+
+__haxe_ds_StringMap.new = function() 
+  local self = _hx_new(__haxe_ds_StringMap.prototype)
+  __haxe_ds_StringMap.super(self)
+  return self
+end
+__haxe_ds_StringMap.super = function(self) 
+  self.h = ({});
+end
+__haxe_ds_StringMap.__name__ = true
+__haxe_ds_StringMap.__interfaces__ = {__haxe_IMap}
+__haxe_ds_StringMap.prototype = _hx_e();
+__haxe_ds_StringMap.prototype.h= nil;
+__haxe_ds_StringMap.prototype.set = function(self,key,value) 
+  if (value == nil) then 
+    self.h[key] = __haxe_ds_StringMap.tnull;
+  else
+    self.h[key] = value;
+  end;
+end
+__haxe_ds_StringMap.prototype.get = function(self,key) 
+  local ret = self.h[key];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  do return ret end
+end
+__haxe_ds_StringMap.prototype.keys = function(self) 
+  local _gthis = self;
+  local next = _G.next;
+  local cur = next(self.h, nil);
+  do return _hx_o({__fields__={next=true,hasNext=true},next=function(self) 
+    local ret = cur;
+    cur = next(_gthis.h, cur);
+    do return ret end;
+  end,hasNext=function(self) 
+    do return cur ~= nil end;
+  end}) end
+end
+__haxe_ds_StringMap.prototype.iterator = function(self) 
+  local _gthis = self;
+  local it = self:keys();
+  do return _hx_o({__fields__={hasNext=true,next=true},hasNext=function(self) 
+    do return it:hasNext() end;
+  end,next=function(self) 
+    do return _gthis.h[it:next()] end;
+  end}) end
+end
+
+__haxe_ds_StringMap.prototype.__class__ =  __haxe_ds_StringMap
 
 __haxe_format_JsonParser.new = function(str) 
   local self = _hx_new(__haxe_format_JsonParser.prototype)
@@ -6415,6 +6257,160 @@ end
 
 __haxe_iterators_MapKeyValueIterator.prototype.__class__ =  __haxe_iterators_MapKeyValueIterator
 
+__lua_Boot.new = {}
+__lua_Boot.__name__ = true
+__lua_Boot.__instanceof = function(o,cl) 
+  if (cl == nil) then 
+    do return false end;
+  end;
+  local cl1 = cl;
+  if (cl1) == Array then 
+    do return __lua_Boot.isArray(o) end;
+  elseif (cl1) == Bool then 
+    do return _G.type(o) == "boolean" end;
+  elseif (cl1) == Dynamic then 
+    do return o ~= nil end;
+  elseif (cl1) == Float then 
+    do return _G.type(o) == "number" end;
+  elseif (cl1) == Int then 
+    if (_G.type(o) == "number") then 
+      do return _hx_bit_clamp(o) == o end;
+    else
+      do return false end;
+    end;
+  elseif (cl1) == String then 
+    do return _G.type(o) == "string" end;
+  elseif (cl1) == _G.table then 
+    do return _G.type(o) == "table" end;
+  elseif (cl1) == __lua_Thread then 
+    do return _G.type(o) == "thread" end;
+  elseif (cl1) == __lua_UserData then 
+    do return _G.type(o) == "userdata" end;else
+  if (((o ~= nil) and (_G.type(o) == "table")) and (_G.type(cl) == "table")) then 
+    local tmp;
+    if (__lua_Boot.__instanceof(o, Array)) then 
+      tmp = Array;
+    else
+      if (__lua_Boot.__instanceof(o, String)) then 
+        tmp = String;
+      else
+        local cl = o.__class__;
+        tmp = (function() 
+          local _hx_1
+          if (cl ~= nil) then 
+          _hx_1 = cl; else 
+          _hx_1 = nil; end
+          return _hx_1
+        end )();
+      end;
+    end;
+    if (__lua_Boot.extendsOrImplements(tmp, cl)) then 
+      do return true end;
+    end;
+    if ((function() 
+      local _hx_2
+      if (cl == Class) then 
+      _hx_2 = o.__name__ ~= nil; else 
+      _hx_2 = false; end
+      return _hx_2
+    end )()) then 
+      do return true end;
+    end;
+    if ((function() 
+      local _hx_3
+      if (cl == Enum) then 
+      _hx_3 = o.__ename__ ~= nil; else 
+      _hx_3 = false; end
+      return _hx_3
+    end )()) then 
+      do return true end;
+    end;
+    do return o.__enum__ == cl end;
+  else
+    do return false end;
+  end; end;
+end
+__lua_Boot.isArray = function(o) 
+  if (_G.type(o) == "table") then 
+    if ((o.__enum__ == nil) and (_G.getmetatable(o) ~= nil)) then 
+      do return _G.getmetatable(o).__index == Array.prototype end;
+    else
+      do return false end;
+    end;
+  else
+    do return false end;
+  end;
+end
+__lua_Boot.dateStr = function(date) 
+  local m = date:getMonth() + 1;
+  local d = date:getDate();
+  local h = date:getHours();
+  local mi = date:getMinutes();
+  local s = date:getSeconds();
+  do return Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(Std.string(date:getFullYear()) .. Std.string("-")) .. Std.string(((function() 
+    local _hx_1
+    if (m < 10) then 
+    _hx_1 = Std.string("0") .. Std.string(m); else 
+    _hx_1 = Std.string("") .. Std.string(m); end
+    return _hx_1
+  end )()))) .. Std.string("-")) .. Std.string(((function() 
+    local _hx_2
+    if (d < 10) then 
+    _hx_2 = Std.string("0") .. Std.string(d); else 
+    _hx_2 = Std.string("") .. Std.string(d); end
+    return _hx_2
+  end )()))) .. Std.string(" ")) .. Std.string(((function() 
+    local _hx_3
+    if (h < 10) then 
+    _hx_3 = Std.string("0") .. Std.string(h); else 
+    _hx_3 = Std.string("") .. Std.string(h); end
+    return _hx_3
+  end )()))) .. Std.string(":")) .. Std.string(((function() 
+    local _hx_4
+    if (mi < 10) then 
+    _hx_4 = Std.string("0") .. Std.string(mi); else 
+    _hx_4 = Std.string("") .. Std.string(mi); end
+    return _hx_4
+  end )()))) .. Std.string(":")) .. Std.string(((function() 
+    local _hx_5
+    if (s < 10) then 
+    _hx_5 = Std.string("0") .. Std.string(s); else 
+    _hx_5 = Std.string("") .. Std.string(s); end
+    return _hx_5
+  end )())) end;
+end
+__lua_Boot.extendsOrImplements = function(cl1,cl2) 
+  while (true) do 
+    if ((cl1 == nil) or (cl2 == nil)) then 
+      do return false end;
+    else
+      if (cl1 == cl2) then 
+        do return true end;
+      else
+        if (cl1.__interfaces__ ~= nil) then 
+          local intf = cl1.__interfaces__;
+          local _g = 1;
+          local _g1 = _hx_table.maxn(intf) + 1;
+          while (_g < _g1) do 
+            _g = _g + 1;
+            local i = _g - 1;
+            if (__lua_Boot.extendsOrImplements(intf[i], cl2)) then 
+              do return true end;
+            end;
+          end;
+        end;
+      end;
+    end;
+    cl1 = cl1.__super__;
+  end;
+end
+
+__lua_UserData.new = {}
+__lua_UserData.__name__ = true
+
+__lua_Thread.new = {}
+__lua_Thread.__name__ = true
+
 __safety_SafetyException.new = function(message,previous,native) 
   local self = _hx_new(__safety_SafetyException.prototype)
   __safety_SafetyException.super(self,message,previous,native)
@@ -6486,17 +6482,17 @@ end
 
 __tink_json_BasicWriter.prototype.__class__ =  __tink_json_BasicWriter
 
-__tink_json_Writer51.new = function() 
-  local self = _hx_new(__tink_json_Writer51.prototype)
-  __tink_json_Writer51.super(self)
+__tink_json_Writer1.new = function() 
+  local self = _hx_new(__tink_json_Writer1.prototype)
+  __tink_json_Writer1.super(self)
   return self
 end
-__tink_json_Writer51.super = function(self) 
+__tink_json_Writer1.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer51.__name__ = true
-__tink_json_Writer51.prototype = _hx_e();
-__tink_json_Writer51.prototype.process0 = function(self,value) 
+__tink_json_Writer1.__name__ = true
+__tink_json_Writer1.prototype = _hx_e();
+__tink_json_Writer1.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6602,7 +6598,7 @@ __tink_json_Writer51.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.process1 = function(self,value) 
+__tink_json_Writer1.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6634,7 +6630,7 @@ __tink_json_Writer51.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.process2 = function(self,value) 
+__tink_json_Writer1.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6826,7 +6822,7 @@ __tink_json_Writer51.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.process3 = function(self,value) 
+__tink_json_Writer1.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7038,7 +7034,7 @@ __tink_json_Writer51.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.process4 = function(self,value) 
+__tink_json_Writer1.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7067,7 +7063,7 @@ __tink_json_Writer51.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.process5 = function(self,value) 
+__tink_json_Writer1.prototype.process5 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7279,27 +7275,27 @@ __tink_json_Writer51.prototype.process5 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer51.prototype.write = function(self,value) 
+__tink_json_Writer1.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer51.prototype.__class__ =  __tink_json_Writer51
-__tink_json_Writer51.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer51.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer1.prototype.__class__ =  __tink_json_Writer1
+__tink_json_Writer1.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer1.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer52.new = function() 
-  local self = _hx_new(__tink_json_Writer52.prototype)
-  __tink_json_Writer52.super(self)
+__tink_json_Writer2.new = function() 
+  local self = _hx_new(__tink_json_Writer2.prototype)
+  __tink_json_Writer2.super(self)
   return self
 end
-__tink_json_Writer52.super = function(self) 
+__tink_json_Writer2.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer52.__name__ = true
-__tink_json_Writer52.prototype = _hx_e();
-__tink_json_Writer52.prototype.process0 = function(self,value) 
+__tink_json_Writer2.__name__ = true
+__tink_json_Writer2.prototype = _hx_e();
+__tink_json_Writer2.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7405,7 +7401,7 @@ __tink_json_Writer52.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer52.prototype.process1 = function(self,value) 
+__tink_json_Writer2.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7437,7 +7433,7 @@ __tink_json_Writer52.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer52.prototype.process2 = function(self,value) 
+__tink_json_Writer2.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7594,7 +7590,7 @@ __tink_json_Writer52.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer52.prototype.process3 = function(self,value) 
+__tink_json_Writer2.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7686,27 +7682,27 @@ __tink_json_Writer52.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer52.prototype.write = function(self,value) 
+__tink_json_Writer2.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer52.prototype.__class__ =  __tink_json_Writer52
-__tink_json_Writer52.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer52.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer2.prototype.__class__ =  __tink_json_Writer2
+__tink_json_Writer2.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer2.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer53.new = function() 
-  local self = _hx_new(__tink_json_Writer53.prototype)
-  __tink_json_Writer53.super(self)
+__tink_json_Writer3.new = function() 
+  local self = _hx_new(__tink_json_Writer3.prototype)
+  __tink_json_Writer3.super(self)
   return self
 end
-__tink_json_Writer53.super = function(self) 
+__tink_json_Writer3.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer53.__name__ = true
-__tink_json_Writer53.prototype = _hx_e();
-__tink_json_Writer53.prototype.process0 = function(self,value) 
+__tink_json_Writer3.__name__ = true
+__tink_json_Writer3.prototype = _hx_e();
+__tink_json_Writer3.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7812,7 +7808,7 @@ __tink_json_Writer53.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.process1 = function(self,value) 
+__tink_json_Writer3.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7864,7 +7860,7 @@ __tink_json_Writer53.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.process2 = function(self,value) 
+__tink_json_Writer3.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8003,7 +7999,7 @@ __tink_json_Writer53.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.process3 = function(self,value) 
+__tink_json_Writer3.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -8215,7 +8211,7 @@ __tink_json_Writer53.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.process4 = function(self,value) 
+__tink_json_Writer3.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8244,7 +8240,7 @@ __tink_json_Writer53.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.process5 = function(self,value) 
+__tink_json_Writer3.prototype.process5 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -8456,15 +8452,15 @@ __tink_json_Writer53.prototype.process5 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer53.prototype.write = function(self,value) 
+__tink_json_Writer3.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer53.prototype.__class__ =  __tink_json_Writer53
-__tink_json_Writer53.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer53.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer3.prototype.__class__ =  __tink_json_Writer3
+__tink_json_Writer3.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer3.prototype,{__index=__tink_json_BasicWriter.prototype})
 -- require this for lua 5.1
 pcall(require, 'bit')
 if bit then
@@ -8514,11 +8510,7 @@ _hx_array_mt.__index = Array.prototype
 local _hx_static_init = function()
   
   String.__name__ = true;
-  Array.__name__ = true;__haxe_ds_StringMap.tnull = ({});
-  
-  __lua_Boot.MAXSTACKSIZE = 1000;
-  
-  __gmdebug_Cross.FOLDER = "gmdebug";
+  Array.__name__ = true;__gmdebug_Cross.FOLDER = "gmdebug";
   
   __gmdebug_Cross.INPUT = __haxe_io_Path.join(_hx_tab_array({[0]=__gmdebug_Cross.FOLDER, "in.dat"}, 2));
   
@@ -8591,6 +8583,10 @@ local _hx_static_init = function()
   __haxe_EntryPoint.threadCount = 0;
   
   __haxe_ds_IntMap.tnull = ({});
+  
+  __haxe_ds_StringMap.tnull = ({});
+  
+  __lua_Boot.MAXSTACKSIZE = 1000;
   
   
 end

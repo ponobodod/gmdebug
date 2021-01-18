@@ -8,14 +8,19 @@ using gmod.macros.CallStatic;
 #if !gmddebug
 extern class DebugHook {
 
+    static inline final DEBUG_OFFSET = 2;
+
     static inline function addHook(fun:Function,?str:String=""):Void {
         DebugHook.addHook(fun,str);
     }
+
 }
 
 #else
 @:native("_G.DebugHook")
 extern class DebugHook {
+
+    static inline final DEBUG_OFFSET = 3;
 
     static final hooks:Map<String,FunctionHook>;
 
@@ -25,6 +30,7 @@ extern class DebugHook {
     static inline function addHook(?fun:Function,?str:String):Void {
         _addHook("gmdebug",fun,str);
     }
+
 }
 
 @:expose("DebugHook")
