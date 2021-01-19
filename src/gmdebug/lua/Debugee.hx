@@ -77,10 +77,10 @@ class Debugee {
 		except: 5,
 		pause: 5
 		#else
-		step : 5,
-		stepDebugLoop : 6,
-		except : 6,
-		pause : 6
+		step : 4,
+		stepDebugLoop : 5,
+		except : 5,
+		pause : 5
 		#end
 	};
 

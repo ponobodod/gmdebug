@@ -8546,7 +8546,7 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Debugee.inpauseloop = false;
   
-  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=5,stepDebugLoop=6,except=6,pause=6});
+  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=4,stepDebugLoop=5,except=5,pause=5});
   
   __gmdebug_lua_Debugee.minheight = 3;
   
