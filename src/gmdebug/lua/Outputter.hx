@@ -22,7 +22,7 @@ class Outputter {
 		if (G.__oldprint == null) {
 			G.__oldprint = G.print;
 		}
-		G.print = untyped __lua__("function (...) local succ,err = pcall({0},{1},true,{...}) if not succ then _G.__oldprint(\"Debug output failed: \",err) end if {2}() then _G.__oldprint(...) end end",
+		G.print = untyped __lua__("function (...) local succ,err = pcall({0},{1},true,{...}) if not succ then _G.__oldprint(...) _G.__oldprint(\"Debug output failed: \",err) end if {2}() then _G.__oldprint(...) end end",
 			output, OutputEventCategory.Console, shouldForward);
 	}
 
@@ -30,17 +30,29 @@ class Outputter {
 		return Debugee.dapMode == Attach;
 	}
 
+	public function sendOutput(cat:OutputEventCategory,out:String) {
+		final body:TOutputEvent = {
+			category : cat,
+			output: out + "\n"
+		};
+		final event = new ComposedEvent(EventString.output, body);
+		final js = tink.Json.stringify((cast event : OutputEvent));
+		event.sendtink(js);
+	} 
+
 	function output(cat:OutputEventCategory, print:Bool, vargs:Table<Int, Dynamic>) {
 		if (ignoreTrace || Debugee.socket == null)
 			return;
 		ignoreTrace = true;
 		var out:String = "";
 		final arr:Array<Dynamic> = [];
-		for (dyn in vargs) {
-			out += Gmod.tostring(dyn) + "\t";
-			final varref = vm.generateVariablesReference(dyn);
-			if (varref > 0) {
-				arr.push(dyn);
+		if (vargs != null) {
+			for (dyn in vargs) {
+				out += Gmod.tostring(dyn) + "\t";
+				final varref = vm.generateVariablesReference(dyn);
+				if (varref > 0) {
+					arr.push(dyn);
+				}
 			}
 		}
 		out += "\n";

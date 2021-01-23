@@ -383,6 +383,7 @@ __gmdebug_lua_handlers_HStackTrace = _hx_e()
 __gmdebug_lua_handlers_HStepIn = _hx_e()
 __gmdebug_lua_handlers_HStepOut = _hx_e()
 __gmdebug_lua_handlers_HVariables = _hx_e()
+__gmdebug_lua_handlers_FakeChild = _hx_e()
 __gmdebug_lua_handlers_HandlerResponse = _hx_e()
 __gmdebug_lua_io_DebugIO = _hx_e()
 __gmdebug_lua_io_PipeSocket = _hx_e()
@@ -420,10 +421,10 @@ __safety_SafetyException = _hx_e()
 __safety_NullPointerException = _hx_e()
 __tink_core_Annex = _hx_e()
 __tink_json_BasicWriter = _hx_e()
-__tink_json_Writer0 = _hx_e()
-__tink_json_Writer1 = _hx_e()
-__tink_json_Writer2 = _hx_e()
-__tink_json_Writer3 = _hx_e()
+__tink_json_Writer521 = _hx_e()
+__tink_json_Writer522 = _hx_e()
+__tink_json_Writer523 = _hx_e()
+__tink_json_Writer524 = _hx_e()
 
 local _hx_bind, _hx_bit, _hx_staticToInstance, _hx_funcToField, _hx_maxn, _hx_print, _hx_apply_self, _hx_box_mr, _hx_bit_clamp, _hx_table, _hx_bit_raw
 local _hx_pcall_default = {};
@@ -2340,6 +2341,8 @@ __gmdebug_lua__DebugHook_DDebugHook.addHook = function(ident,fun,str)
     ret = nil;
   end;
   local flagMap = ret.flagsMap;
+  local startIndex = nil;
+  startIndex = 1;
   local r = _G.string.find(str, "l", 1, true);
   if ((function() 
     local _hx_1
@@ -2352,6 +2355,8 @@ __gmdebug_lua__DebugHook_DDebugHook.addHook = function(ident,fun,str)
   else
     flagMap:set(0, false);
   end;
+  local startIndex = nil;
+  startIndex = 1;
   local r = _G.string.find(str, "c", 1, true);
   if ((function() 
     local _hx_2
@@ -2570,7 +2575,7 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
       elseif (tmp) == 2 then 
         local condFunc = _g1[2];
         local bp = _g;
-        _G.setfenv(condFunc, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(1));
+        _G.setfenv(condFunc, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(2));
         local _g = __gmdebug_lua_Util.runCompiledFunction(condFunc);
         local tmp = _g[1];
         if (tmp) == 0 then 
@@ -3701,7 +3706,7 @@ __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment = function(stackLevel)
     unsettables[k] = v;
   end;
   local info = _G.debug.getinfo(stackLevel + 2, "f");
-  local fenv = nil;
+  local fenv = _G;
   if ((info ~= nil) and (info.func ~= nil)) then 
     local _g = 1;
     while (_g < 9999) do 
@@ -3715,36 +3720,43 @@ __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment = function(stackLevel)
       set(_hx_1_upv_a, _hx_1_upv_b);
     end;
     local func = info.func;
-    fenv = _G.debug.getfenv(func);
+    local value = _G.debug.getfenv(func);
+    local defaultValue = _G;
+    fenv = (function() 
+      local _hx_2
+      if (value == nil) then 
+      _hx_2 = defaultValue; else 
+      _hx_2 = value; end
+      return _hx_2
+    end )();
   end;
   local _g = 1;
   while (_g < 9999) do 
     _g = _g + 1;
     local i = _g - 1;
-    local _hx_2_lcl_a, _hx_2_lcl_b = _G.debug.getlocal(stackLevel + 2, i);
-    if (_hx_2_lcl_a == nil) then 
+    local _hx_3_lcl_a, _hx_3_lcl_b = _G.debug.getlocal(stackLevel + 2, i);
+    if (_hx_3_lcl_a == nil) then 
       break;
     end;
-    set(_hx_2_lcl_a, _hx_2_lcl_b);
+    set(_hx_3_lcl_a, _hx_3_lcl_b);
   end;
   local metatable = ({});
   metatable.__newindex = function(t,k,v) 
     if (_G.rawget(unsettables, k) ~= nil) then 
       _G.error("Cannot alter upvalues and locals", 2);
     else
-      _G[k] = v;
+      fenv[k] = v;
     end;
   end;
   metatable.__index = unsettables;
   local unsetmeta = ({});
-  local defaultValue = _G;
-  unsetmeta.__index = (function() 
-    local _hx_3
-    if (fenv == nil) then 
-    _hx_3 = defaultValue; else 
-    _hx_3 = fenv; end
-    return _hx_3
-  end )();
+  unsetmeta.__index = function(t,k) 
+    if (k == "_G") then 
+      do return _G end;
+    else
+      do return fenv[k] end;
+    end;
+  end;
   _G.setmetatable(env, metatable);
   _G.setmetatable(unsettables, unsetmeta);
   do return env end;
@@ -3803,7 +3815,7 @@ __gmdebug_lua_handlers_HEvaluate.prototype.handle = function(self,evalReq)
   if (args.context == "hover") then 
     expr1 = _G.string.gsub(expr1, ":", ".");
   end;
-  __haxe_Log.trace(Std.string("expr : ") .. Std.string(expr1), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HEvaluate.hx",lineNumber=83,className="gmdebug.lua.handlers.HEvaluate",methodName="handle"}));
+  __haxe_Log.trace(Std.string("expr : ") .. Std.string(expr1), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HEvaluate.hx",lineNumber=89,className="gmdebug.lua.handlers.HEvaluate",methodName="handle"}));
   local resp;
   local _g = __gmdebug_lua_Util.compileString(expr1, "GmDebug");
   local resp1 = _g[1];
@@ -3944,7 +3956,7 @@ __gmdebug_lua_handlers_HScopes.prototype.handle = function(self,scopeReq)
       return _hx_1
     end )(); end;
   local resp = __gmdebug_composer_ComposeTools.compose(scopeReq, "scopes", _hx_o({__fields__={scopes=true},scopes=resp}));
-  local js = __tink_json_Writer0.new():write(resp);
+  local js = __tink_json_Writer521.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -3980,7 +3992,7 @@ __gmdebug_lua_handlers_HSetBreakpoints.prototype.handle = function(self,req)
     end;
   end;
   local resp = __gmdebug_composer_ComposeTools.compose(req, "setBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse}));
-  local js = __tink_json_Writer1.new():write(resp);
+  local js = __tink_json_Writer522.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4121,7 +4133,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
   local args = x.arguments;
   if (not __gmdebug_lua_Debugee.inpauseloop) then 
     local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=_hx_tab_array({}, 0),totalFrames=0}));
-    local js = __tink_json_Writer3.new():write(response);
+    local js = __tink_json_Writer524.new():write(response);
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -4333,7 +4345,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
     stackFrames:push(target);
   end;
   local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=stackFrames,totalFrames=stackFrames.length}));
-  local js = __tink_json_Writer3.new():write(response);
+  local js = __tink_json_Writer524.new():write(response);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4415,12 +4427,7 @@ __gmdebug_lua_handlers_HVariables.__name__ = true
 __gmdebug_lua_handlers_HVariables.__interfaces__ = {__gmdebug_lua_handlers_IHandler}
 __gmdebug_lua_handlers_HVariables.prototype = _hx_e();
 __gmdebug_lua_handlers_HVariables.prototype.variableManager= nil;
-__gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref) 
-  local addVars = _hx_tab_array({}, 0);
-  local storedvar = self.variableManager:getVar(ref);
-  if (storedvar == nil) then 
-    __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=25,className="gmdebug.lua.handlers.HVariables",methodName="child"}));
-  end;
+__gmdebug_lua_handlers_HVariables.prototype.realChild = function(self,storedvar,addVars) 
   local _g = _G.TypeID(storedvar);
   if (_g) == _G.TYPE_ENTITY then 
     local ent = storedvar;
@@ -4448,24 +4455,22 @@ __gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref)
     local info = _G.debug.getinfo(storedvar, "S");
     addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true,noquote=true},name="(source)",value=_G.tostring(info.short_src),virtual=true,noquote=true}));
     addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(line)",value=info.linedefined,virtual=true}));
-    local _g = 1;
-    while (_g < 9999) do 
-      _g = _g + 1;
-      local _hx_3_upv_a, _hx_3_upv_b = _G.debug.getupvalue(storedvar, _g - 1);
-      if (_hx_3_upv_a == nil) then 
-        break;
-      end;
-      addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_3_upv_a,value=_hx_3_upv_b}));
+    local fenv = _G.debug.getfenv(storedvar);
+    if (fenv ~= nil) then 
+      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(fenv)",value=fenv,virtual=true}));
+    end;
+    if (debug.getupvalue(storedvar, 1) ~= nil) then 
+      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(upvalues)",value=self:generateFakeChild(storedvar, __gmdebug_lua_handlers_FakeChild.Upvalues),virtual=true}));
     end;
   elseif (_g) == _G.TYPE_TABLE then 
     local table = storedvar;
-    local _hx_4_p_next, _hx_4_p_table, _hx_4_p_index = _G.pairs(table);
-    local next = _hx_4_p_next;
-    local i = _hx_4_p_index;
+    local _hx_3_p_next, _hx_3_p_table, _hx_3_p_index = _G.pairs(table);
+    local next = _hx_3_p_next;
+    local i = _hx_3_p_index;
     local _g_next = function() 
-      local _hx_5_res_index, _hx_5_res_value = next(table, i);
-      i = _hx_5_res_index;
-      do return _hx_o({__fields__={key=true,value=true},key=_hx_5_res_index,value=_hx_5_res_value}) end;
+      local _hx_4_res_index, _hx_4_res_value = next(table, i);
+      i = _hx_4_res_index;
+      do return _hx_o({__fields__={key=true,value=true},key=_hx_4_res_index,value=_hx_4_res_value}) end;
     end;
     local _g_hasNext = function() 
       do return _G.select(2, _G.next(table, i)) ~= nil end;
@@ -4474,9 +4479,44 @@ __gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref)
       local _g = _g_next();
       addVars:push(_hx_o({__fields__={name=true,value=true},name=_g.key,value=_g.value}));
     end;else end;
+end
+__gmdebug_lua_handlers_HVariables.prototype.fakeChild = function(self,realChild,type,addVars) 
+  local _g = 1;
+  while (_g < 9999) do 
+    _g = _g + 1;
+    local _hx_1_upv_a, _hx_1_upv_b = _G.debug.getupvalue(realChild, _g - 1);
+    if (_hx_1_upv_a == nil) then 
+      break;
+    end;
+    addVars:push(_hx_o({__fields__={name=true,value=true},name=_hx_1_upv_a,value=_hx_1_upv_b}));
+  end;
+end
+__gmdebug_lua_handlers_HVariables.prototype.generateFakeChild = function(self,child,type) 
+  local tab = ({});
+  local meta = ({});
+  local fakechild = ({});
+  _G.setmetatable(tab, meta);
+  meta.__gmdebugFakeChild = fakechild;
+  fakechild.child = child;
+  fakechild.type = type;
+  do return tab end
+end
+__gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref) 
+  local addVars = _hx_tab_array({}, 0);
+  local storedvar = self.variableManager:getVar(ref);
+  if (storedvar == nil) then 
+    __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=86,className="gmdebug.lua.handlers.HVariables",methodName="child"}));
+  end;
   local mt = _G.debug.getmetatable(storedvar);
   if (mt ~= nil) then 
-    addVars:push(_hx_o({__fields__={name=true,value=true},name="(metatable)",value=mt}));
+    if (mt.__gmdebugFakeChild ~= nil) then 
+      self:fakeChild(mt.__gmdebugFakeChild.child, mt.__gmdebugFakeChild.type, addVars);
+    else
+      addVars:push(_hx_o({__fields__={name=true,value=true,virtual=true},name="(metatable)",value=mt,virtual=true}));
+      self:realChild(storedvar, addVars);
+    end;
+  else
+    self:realChild(storedvar, addVars);
   end;
   do return addVars end
 end
@@ -4602,7 +4642,7 @@ __gmdebug_lua_handlers_HVariables.prototype.global = function(self,scope)
       local _g = _g:next();
       local i = _g.key;
       local ply = _g.value;
-      __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=148,className="gmdebug.lua.handlers.HVariables",methodName="global"}));
+      __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=187,className="gmdebug.lua.handlers.HVariables",methodName="global"}));
       addVars:push(_hx_o({__fields__={name=true,value=true},name=ply:GetName(),value=ply}));
     end;
   elseif (scope) == 2 then 
@@ -4672,7 +4712,7 @@ __gmdebug_lua_handlers_HVariables.prototype.handle = function(self,req)
   local variablesArr = _g;
   self:fixupNames(variablesArr);
   local resp = __gmdebug_composer_ComposeTools.compose(req, "variables", _hx_o({__fields__={variables=true},variables=variablesArr}));
-  local js = __tink_json_Writer2.new():write(resp);
+  local js = __tink_json_Writer523.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4680,6 +4720,10 @@ __gmdebug_lua_handlers_HVariables.prototype.handle = function(self,req)
 end
 
 __gmdebug_lua_handlers_HVariables.prototype.__class__ =  __gmdebug_lua_handlers_HVariables
+_hxClasses["gmdebug.lua.handlers.FakeChild"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Upvalues"},1)}
+__gmdebug_lua_handlers_FakeChild = _hxClasses["gmdebug.lua.handlers.FakeChild"];
+__gmdebug_lua_handlers_FakeChild.Upvalues = _hx_tab_array({[0]="Upvalues",0,__enum__ = __gmdebug_lua_handlers_FakeChild},2)
+
 _hxClasses["gmdebug.lua.handlers.HandlerResponse"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","CONTINUE","DISCONNECT","CONFIG_DONE"},4)}
 __gmdebug_lua_handlers_HandlerResponse = _hxClasses["gmdebug.lua.handlers.HandlerResponse"];
 __gmdebug_lua_handlers_HandlerResponse.WAIT = _hx_tab_array({[0]="WAIT",0,__enum__ = __gmdebug_lua_handlers_HandlerResponse},2)
@@ -5066,6 +5110,18 @@ __gmdebug_lua_managers_Breakpoint.super = function(self,id,source,bp,ls)
   self.id = id;
   self.path = _hx_funcToField(source.path);
   self.line = _hx_funcToField(bp.line);
+  local tmp = ls[1];
+  if (tmp) == 0 then 
+    self.verified = true;
+    self.message = "This breakpoint could not be confirmed.";
+  elseif (tmp) == 1 then 
+    self.verified = false;
+    self.message = "Lua does not consider this an active line.";
+  elseif (tmp) == 2 then 
+    self.verified = true;
+    self.message = "This file has not been visited by running code yet.";
+  elseif (tmp) == 3 then 
+    self.verified = true; end;
   local tmp;
   if (bp.condition == nil) then 
     tmp = __gmdebug_lua_managers_BreakpointType.NORMAL;
@@ -5089,18 +5145,6 @@ __gmdebug_lua_managers_Breakpoint.super = function(self,id,source,bp,ls)
       tmp = __gmdebug_lua_managers_BreakpointType.CONDITIONAL(_g[2]); end;
   end;
   self.breakpointType = tmp;
-  local tmp = ls[1];
-  if (tmp) == 0 then 
-    self.verified = true;
-    self.message = "This breakpoint could not be confirmed.";
-  elseif (tmp) == 1 then 
-    self.verified = false;
-    self.message = "Lua does not consider this an active line.";
-  elseif (tmp) == 2 then 
-    self.verified = true;
-    self.message = "This file has not been visited by running code yet.";
-  elseif (tmp) == 3 then 
-    self.verified = true; end;
 end
 __gmdebug_lua_managers_Breakpoint.__name__ = true
 __gmdebug_lua_managers_Breakpoint.prototype = _hx_e();
@@ -6589,17 +6633,17 @@ end
 
 __tink_json_BasicWriter.prototype.__class__ =  __tink_json_BasicWriter
 
-__tink_json_Writer0.new = function() 
-  local self = _hx_new(__tink_json_Writer0.prototype)
-  __tink_json_Writer0.super(self)
+__tink_json_Writer521.new = function() 
+  local self = _hx_new(__tink_json_Writer521.prototype)
+  __tink_json_Writer521.super(self)
   return self
 end
-__tink_json_Writer0.super = function(self) 
+__tink_json_Writer521.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer0.__name__ = true
-__tink_json_Writer0.prototype = _hx_e();
-__tink_json_Writer0.prototype.process0 = function(self,value) 
+__tink_json_Writer521.__name__ = true
+__tink_json_Writer521.prototype = _hx_e();
+__tink_json_Writer521.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6705,7 +6749,7 @@ __tink_json_Writer0.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process1 = function(self,value) 
+__tink_json_Writer521.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6737,7 +6781,7 @@ __tink_json_Writer0.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process2 = function(self,value) 
+__tink_json_Writer521.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6927,13 +6971,19 @@ __tink_json_Writer0.prototype.process2 = function(self,value)
     local _this = self.buf;
     _G.table.insert(_this.b, "\"source\":");
     _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
   end;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process3 = function(self,value) 
+__tink_json_Writer521.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7134,7 +7184,7 @@ __tink_json_Writer0.prototype.process3 = function(self,value)
           _G.table.insert(_this.b, _G.string.char(44));
           _this.length = _this.length + 1;
         end;
-        self:process5(value);
+        self:process3(value);
       end;
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(93));
@@ -7145,7 +7195,7 @@ __tink_json_Writer0.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process4 = function(self,value) 
+__tink_json_Writer521.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7174,239 +7224,27 @@ __tink_json_Writer0.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer0.prototype.process5 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer0.prototype.write = function(self,value) 
+__tink_json_Writer521.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer0.prototype.__class__ =  __tink_json_Writer0
-__tink_json_Writer0.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer0.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer521.prototype.__class__ =  __tink_json_Writer521
+__tink_json_Writer521.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer521.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer1.new = function() 
-  local self = _hx_new(__tink_json_Writer1.prototype)
-  __tink_json_Writer1.super(self)
+__tink_json_Writer522.new = function() 
+  local self = _hx_new(__tink_json_Writer522.prototype)
+  __tink_json_Writer522.super(self)
   return self
 end
-__tink_json_Writer1.super = function(self) 
+__tink_json_Writer522.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer1.__name__ = true
-__tink_json_Writer1.prototype = _hx_e();
-__tink_json_Writer1.prototype.process0 = function(self,value) 
+__tink_json_Writer522.__name__ = true
+__tink_json_Writer522.prototype = _hx_e();
+__tink_json_Writer522.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7512,7 +7350,7 @@ __tink_json_Writer1.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer1.prototype.process1 = function(self,value) 
+__tink_json_Writer522.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7544,7 +7382,7 @@ __tink_json_Writer1.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer1.prototype.process2 = function(self,value) 
+__tink_json_Writer522.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7730,13 +7568,19 @@ __tink_json_Writer1.prototype.process2 = function(self,value)
     local _this = self.buf;
     _G.table.insert(_this.b, "\"source\":");
     _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
   end;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer1.prototype.process3 = function(self,value) 
+__tink_json_Writer522.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7937,7 +7781,7 @@ __tink_json_Writer1.prototype.process3 = function(self,value)
           _G.table.insert(_this.b, _G.string.char(44));
           _this.length = _this.length + 1;
         end;
-        self:process5(value);
+        self:process3(value);
       end;
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(93));
@@ -7948,7 +7792,7 @@ __tink_json_Writer1.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer1.prototype.process4 = function(self,value) 
+__tink_json_Writer522.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7977,239 +7821,27 @@ __tink_json_Writer1.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer1.prototype.process5 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer1.prototype.write = function(self,value) 
+__tink_json_Writer522.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer1.prototype.__class__ =  __tink_json_Writer1
-__tink_json_Writer1.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer1.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer522.prototype.__class__ =  __tink_json_Writer522
+__tink_json_Writer522.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer522.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer2.new = function() 
-  local self = _hx_new(__tink_json_Writer2.prototype)
-  __tink_json_Writer2.super(self)
+__tink_json_Writer523.new = function() 
+  local self = _hx_new(__tink_json_Writer523.prototype)
+  __tink_json_Writer523.super(self)
   return self
 end
-__tink_json_Writer2.super = function(self) 
+__tink_json_Writer523.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer2.__name__ = true
-__tink_json_Writer2.prototype = _hx_e();
-__tink_json_Writer2.prototype.process0 = function(self,value) 
+__tink_json_Writer523.__name__ = true
+__tink_json_Writer523.prototype = _hx_e();
+__tink_json_Writer523.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8315,7 +7947,7 @@ __tink_json_Writer2.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer2.prototype.process1 = function(self,value) 
+__tink_json_Writer523.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8347,7 +7979,7 @@ __tink_json_Writer2.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer2.prototype.process2 = function(self,value) 
+__tink_json_Writer523.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8504,7 +8136,7 @@ __tink_json_Writer2.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer2.prototype.process3 = function(self,value) 
+__tink_json_Writer523.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -8596,27 +8228,27 @@ __tink_json_Writer2.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer2.prototype.write = function(self,value) 
+__tink_json_Writer523.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer2.prototype.__class__ =  __tink_json_Writer2
-__tink_json_Writer2.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer2.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer523.prototype.__class__ =  __tink_json_Writer523
+__tink_json_Writer523.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer523.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer3.new = function() 
-  local self = _hx_new(__tink_json_Writer3.prototype)
-  __tink_json_Writer3.super(self)
+__tink_json_Writer524.new = function() 
+  local self = _hx_new(__tink_json_Writer524.prototype)
+  __tink_json_Writer524.super(self)
   return self
 end
-__tink_json_Writer3.super = function(self) 
+__tink_json_Writer524.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer3.__name__ = true
-__tink_json_Writer3.prototype = _hx_e();
-__tink_json_Writer3.prototype.process0 = function(self,value) 
+__tink_json_Writer524.__name__ = true
+__tink_json_Writer524.prototype = _hx_e();
+__tink_json_Writer524.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8722,7 +8354,7 @@ __tink_json_Writer3.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process1 = function(self,value) 
+__tink_json_Writer524.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8774,7 +8406,7 @@ __tink_json_Writer3.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process2 = function(self,value) 
+__tink_json_Writer524.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8907,13 +8539,19 @@ __tink_json_Writer3.prototype.process2 = function(self,value)
     local _this = self.buf;
     _G.table.insert(_this.b, "\"source\":");
     _this.length = _this.length + #"\"source\":";
-    self:process3(_g);
+    if (_g == nil) then 
+      local _this = self.buf;
+      _G.table.insert(_this.b, "null");
+      _this.length = _this.length + #"null";
+    else
+      self:process3(_g);
+    end;
   end;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process3 = function(self,value) 
+__tink_json_Writer524.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -9114,7 +8752,7 @@ __tink_json_Writer3.prototype.process3 = function(self,value)
           _G.table.insert(_this.b, _G.string.char(44));
           _this.length = _this.length + 1;
         end;
-        self:process5(value);
+        self:process3(value);
       end;
       local _this = self.buf;
       _G.table.insert(_this.b, _G.string.char(93));
@@ -9125,7 +8763,7 @@ __tink_json_Writer3.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process4 = function(self,value) 
+__tink_json_Writer524.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -9154,227 +8792,15 @@ __tink_json_Writer3.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer3.prototype.process5 = function(self,value) 
-  local __first = true;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(123));
-  _this.length = _this.length + 1;
-  if (value.adapterData ~= nil) then 
-    __first = false;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"adapterData\":");
-    _this.length = _this.length + #"\"adapterData\":";
-    self:writeDynamic(value.adapterData);
-  end;
-  if (value.checksums ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"checksums\":");
-    _this.length = _this.length + #"\"checksums\":";
-    local value = value.checksums;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process4(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  if (value.name ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"name\":");
-    _this.length = _this.length + #"\"name\":";
-    local value = value.name;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.origin ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"origin\":");
-    _this.length = _this.length + #"\"origin\":";
-    local value = value.origin;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.path ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"path\":");
-    _this.length = _this.length + #"\"path\":";
-    local value = value.path;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.presentationHint ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"presentationHint\":");
-    _this.length = _this.length + #"\"presentationHint\":";
-    local value = value.presentationHint;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = __haxe_format_JsonPrinter.print(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sourceReference ~= nil) then 
-    if (__first) then 
-      __first = false;
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sourceReference\":");
-    _this.length = _this.length + #"\"sourceReference\":";
-    local value = value.sourceReference;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local s = Std.string(value);
-      local _this = self.buf;
-      local str = Std.string(s);
-      _G.table.insert(_this.b, str);
-      _this.length = _this.length + #str;
-    end;
-  end;
-  if (value.sources ~= nil) then 
-    if (not __first) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(44));
-      _this.length = _this.length + 1;
-    end;
-    local _this = self.buf;
-    _G.table.insert(_this.b, "\"sources\":");
-    _this.length = _this.length + #"\"sources\":";
-    local value = value.sources;
-    if (value == nil) then 
-      local _this = self.buf;
-      _G.table.insert(_this.b, "null");
-      _this.length = _this.length + #"null";
-    else
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(91));
-      _this.length = _this.length + 1;
-      local first = true;
-      local _g = 0;
-      while (_g < value.length) do 
-        local value = value[_g];
-        _g = _g + 1;
-        if (first) then 
-          first = false;
-        else
-          local _this = self.buf;
-          _G.table.insert(_this.b, _G.string.char(44));
-          _this.length = _this.length + 1;
-        end;
-        self:process5(value);
-      end;
-      local _this = self.buf;
-      _G.table.insert(_this.b, _G.string.char(93));
-      _this.length = _this.length + 1;
-    end;
-  end;
-  local _this = self.buf;
-  _G.table.insert(_this.b, _G.string.char(125));
-  _this.length = _this.length + 1;
-end
-__tink_json_Writer3.prototype.write = function(self,value) 
+__tink_json_Writer524.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer3.prototype.__class__ =  __tink_json_Writer3
-__tink_json_Writer3.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer3.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer524.prototype.__class__ =  __tink_json_Writer524
+__tink_json_Writer524.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer524.prototype,{__index=__tink_json_BasicWriter.prototype})
 -- require this for lua 5.1
 pcall(require, 'bit')
 if bit then
