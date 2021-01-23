@@ -29,7 +29,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 			Reflect.setField(unsettables, k, v);
 		}
 		var info = DebugLib.getinfo(stackLevel + 2, "f"); // used to be 1
-		var fenv:Null<AnyTable> = null;
+		var fenv:Null<AnyTable> = untyped __lua__("_G");
 		if (info != null && info.func != null) {
 			for (i in 1...9999) {
 				final func = info.func; // otherwise _hx_bind..?
@@ -39,7 +39,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 				set(upv.a, upv.b);
 			}
 			final func = info.func; // otherwise _hx_bind..?
-			fenv = DebugLib.getfenv(func);
+			fenv = DebugLib.getfenv(func).or(untyped __lua__("_G"));
 			// Gmod.print(fenv);
 		}
 		for (i in 1...9999) {
@@ -53,11 +53,17 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 			if (Lua.rawget(unsettables, k) != null)
 				Gmod.error("Cannot alter upvalues and locals", 2);
 			else
-				untyped __lua__("_G")[k] = v;
+				fenv[k] = v;
 		}
 		metatable.__index = unsettables;
 		var unsetmeta:AnyTable = Table.create();
-		unsetmeta.__index = fenv.or(untyped __lua__("_G"));
+		unsetmeta.__index = (t,k) -> {
+			return if (k == "_G") {
+				untyped __lua__("_G"); //_G is always avaliable, for convience
+			} else {
+				fenv[cast k];
+			}
+		};
 		Gmod.setmetatable(env, metatable);
 		Gmod.setmetatable(unsettables, unsetmeta);
 		return env;
