@@ -1,6 +1,8 @@
 package gmdebug.lua.handlers;
 
 
+import lua.Debug;
+import gmod.enums.SENSORBONE;
 import gmdebug.lua.handlers.HScopes.FrameLocalScope;
 import lua.NativeStringTools;
 import gmod.libs.PlayerLib;
@@ -18,11 +20,7 @@ class HVariables implements IHandler<VariablesRequest> {
         variableManager = vm;
     }
 
-    function child(ref:Int):Array<AddVar> {
-        var addVars:Array<AddVar> = [];
-        var storedvar:Dynamic = (variableManager.getVar(ref) : Any).unsafe();
-        if (storedvar == null)
-            trace('Variable requested with nothing stored! $ref');
+    function realChild(storedvar:Dynamic,addVars:Array<AddVar>) {
         switch Gmod.TypeID(storedvar) {
             case TYPE_TABLE:
                 for (ind => val in (storedvar : AnyTable)) {
@@ -37,11 +35,12 @@ class HVariables implements IHandler<VariablesRequest> {
                     noquote: true
                 });
                 addVars.push({name: "(line)", value: info.linedefined, virtual: true});
-                for (i in 1...9999) {
-                    var upv = DebugLib.getupvalue(storedvar, i);
-                    if (upv.a == null)
-                        break;
-                    addVars.push({name: upv.a, value: upv.b});
+                final fenv = DebugLib.getfenv(storedvar);
+                if (fenv != null) {
+                    addVars.push({name : "(fenv)",value : fenv,virtual : true});
+                }
+                if (Debug.getupvalue(storedvar,1) != null) {
+                    addVars.push({name : "(upvalues)",value : generateFakeChild(storedvar,Upvalues),virtual : true});
                 }
             case TYPE_ENTITY:
                 var ent:Entity = cast storedvar;
@@ -55,9 +54,49 @@ class HVariables implements IHandler<VariablesRequest> {
                 }
             default:
         }
+    }
+
+    function fakeChild(realChild:Dynamic,type:FakeChild,addVars:Array<AddVar>) {
+        switch (type) {
+            case Upvalues:
+                for (i in 1...9999) {
+                    var upv = DebugLib.getupvalue(realChild, i);
+                    if (upv.a == null)
+                        break;
+                    addVars.push({name: upv.a, value: upv.b});
+                }
+        }
+    }
+
+    function generateFakeChild(child:Dynamic,type:FakeChild) {
+        final tab = Table.create();
+        final meta = Table.create();
+        final fakechild = Table.create();
+        Lua.setmetatable(tab,meta);
+        meta.__gmdebugFakeChild = fakechild;
+        fakechild.child = child;
+        fakechild.type = type;
+        return tab;
+    }
+
+    function child(ref:Int):Array<AddVar> {
+        var addVars:Array<AddVar> = [];
+        var storedvar:Dynamic = (variableManager.getVar(ref) : Any).unsafe();
+        if (storedvar == null)
+            trace('Variable requested with nothing stored! $ref');
+        
         var mt = DebugLib.getmetatable(storedvar);
         if (mt != null) {
-            addVars.push({name: "(metatable)", value: mt});
+            if (mt.__gmdebugFakeChild != null) {
+                var realChild = mt.__gmdebugFakeChild.child;
+                var type = mt.__gmdebugFakeChild.type;
+                fakeChild(realChild,type,addVars);
+            } else {
+                addVars.push({name: "(metatable)", value: mt,virtual : true});
+                realChild(storedvar,addVars);
+            }
+        } else {
+            realChild(storedvar,addVars);
         }
         return addVars;
 
@@ -202,4 +241,9 @@ class HVariables implements IHandler<VariablesRequest> {
 	}
 
     
+}
+
+enum FakeChild {
+    Upvalues;
+
 }
