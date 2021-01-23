@@ -117,19 +117,6 @@ class Breakpoint {
 		this.id = id;
 		path = source.path;
 		line = bp.line;
-		breakpointType = if (bp.condition == null) {
-			NORMAL;
-		} else {
-			final eval = Util.processReturnable(bp.condition);
-			switch (Util.compileString(eval, "Gmdebug Conditional BP: ")) {
-				case Error(err):
-					verified = false;
-					message = 'Failed to compile condition $err';
-					INACTIVE;
-				case Success(compiledFunc):
-					CONDITIONAL(compiledFunc);
-			}
-		}
 		switch (ls) {
 			case NOT_VISITED:
 				verified = true;
@@ -145,6 +132,19 @@ class Breakpoint {
 			
 		}
 
+		breakpointType = if (bp.condition == null) {
+			NORMAL;
+		} else {
+			final eval = Util.processReturnable(bp.condition);
+			switch (Util.compileString(eval, "Gmdebug Conditional BP: ")) {
+				case Error(err):
+					verified = false;
+					message = 'Failed to compile condition $err';
+					INACTIVE;
+				case Success(compiledFunc):
+					CONDITIONAL(compiledFunc);
+			}
+		}
 	}
 }
 
