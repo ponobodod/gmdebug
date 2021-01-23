@@ -11,7 +11,7 @@ extern class DebugHook {
     static inline final DEBUG_OFFSET = 2;
 
     static inline function addHook(fun:Function,?str:String=""):Void {
-        DebugHook.addHook(fun,str);
+        Debug.sethook(fun,str);
     }
 
 }

@@ -15,6 +15,10 @@ class BreakpointManager {
 		
 	}
 
+	public function clearBreakpoints() {
+		breakpoints = [];
+	}
+
 	public function retrieveSourceLineInfo(source:String):Map<Int, Bool> {
 		return switch (breakLocsCache.get(source)) {
 			case null:
@@ -43,6 +47,7 @@ class BreakpointManager {
 	
 	public function breakpointWithinRange(source:String,min:Int,max:Int) {
 		final bpTable = breakpoints.get(source);
+		if (bpTable == null) return false;
 		for (k in bpTable.keys()) {
 			if (k >= min && k <= max) {
 				return true;
