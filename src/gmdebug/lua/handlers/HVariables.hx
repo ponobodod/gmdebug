@@ -67,36 +67,36 @@ class HVariables implements IHandler<VariablesRequest> {
         var addVars:Array<AddVar> = [];
         switch (scope) {
             case Arguments:
-                var info = DebugLib.getinfo(frame + 1, "u");
+                var info = DebugLib.getinfo(frame + 2, "u");
                 for (i in 1...info.nparams + 1) {
-                    var result = DebugLib.getlocal(frame + 1, i);
+                    var result = DebugLib.getlocal(frame + 2, i);
                     if (result.a == null)
                         break;
                     // trace('locals ${result.a} ${result.b}');
                     addVars.push({name: result.a, value: result.b});
                 }
                 for (i in 1...9999) {
-                    var result = DebugLib.getlocal(frame + 1, -i);
+                    var result = DebugLib.getlocal(frame + 2, -i);
                     if (result.a == null)
                         break;
                     addVars.push({name: result.a, value: result.b});
                 }
             case Locals:
                 for (i in 1...9999) {
-                    var result = DebugLib.getlocal(frame + 1, i);
+                    var result = DebugLib.getlocal(frame + 2, i);
                     if (result.a == null)
                         break;
                     // trace('locals ${result.a} ${result.b}');
                     addVars.push({name: result.a, value: result.b});
                 }
                 for (i in 1...9999) {
-                    var result = DebugLib.getlocal(frame + 1, -i);
+                    var result = DebugLib.getlocal(frame + 2, -i);
                     if (result.a == null)
                         break;
                     addVars.push({name: result.a, value: result.b});
                 }
             case Upvalues:
-                var info = DebugLib.getinfo(frame + 1, "f");
+                var info = DebugLib.getinfo(frame + 2, "f");
                 if (info != null && info.func != null) {
                     for (i in 1...9999) {
                         var func = info.func; // otherwise _hx_bind..?
@@ -107,7 +107,7 @@ class HVariables implements IHandler<VariablesRequest> {
                     }
                 }
             case Fenv:
-                var info = DebugLib.getinfo(frame + 1, "f");
+                var info = DebugLib.getinfo(frame + 2, "f");
                 if (info != null && info.func != null) {
                     final func = info.func;
                     final tbl = DebugLib.getfenv(func);

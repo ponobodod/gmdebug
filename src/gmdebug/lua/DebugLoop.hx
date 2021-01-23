@@ -138,13 +138,13 @@ class DebugLoop {
 				true;
 			case STEP(x):
 				true;
-			case OUT(outFunc, lowest) if (outFunc == func && curLine.unsafe() == lowest):
+			case OUT(outFunc, lowest,_) if (outFunc == func && curLine.unsafe() == lowest):
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
 				DebugHook.addHook(debugloop, "c");
 				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
 				true;
-			case OUT(outFunc, _) if (outFunc != func):
+			case OUT(outFunc, _,tarHeight) if (outFunc != func && Debugee.stackHeight <= tarHeight):
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
 				DebugHook.addHook(debugloop, "c");
@@ -191,7 +191,7 @@ class DebugLoop {
 		DebugLoopProfile.profile("getbptable");
 		if (Exceptions.exceptFuncs != null && func != null && Exceptions.exceptFuncs.exists(func))
 			return;
-		final bpValid = if (bm == null || !bm.valid())
+		final bpValid = if (bm != null && bm.valid())
 				true;
 			else
 				false;

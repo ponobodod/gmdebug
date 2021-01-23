@@ -5,8 +5,9 @@ class HNext implements IHandler<NextRequest> {
 
 	public function handle(nextReq:NextRequest):HandlerResponse {
 		var resp = nextReq.compose(next);
-		trace('our stack height ${Debugee.stackHeight} ${Debugee.stackOffset.step}');
-		var tarheight = Debugee.stackHeight - Debugee.stackOffset.step;
+		var tarheight = Debugee.stepHeight;
+		trace('targeting $tarheight - (${Debugee.stackHeight} ${Debugee.stackOffset.step})');
+
 		Debugee.state = STEP(tarheight);
 		resp.send();
 		DebugLoop.activateLineStepping();

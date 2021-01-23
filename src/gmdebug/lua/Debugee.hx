@@ -72,17 +72,23 @@ class Debugee {
 
 	public static final stackOffset = {
 		#if !gmddebug
-		step: 4,
+		step: 3,
 		stepDebugLoop: 5,
 		except: 5,
 		pause: 5
 		#else
-		step : 4,
+		step : 3,
 		stepDebugLoop : 5,
 		except : 5,
 		pause : 5
 		#end
 	};
+
+	public static var stepHeight(get,never):Int;
+	
+	public static extern inline function get_stepHeight():Int {
+		return stackHeight - stackOffset.step;
+	}
 
 	public static var minheight:Int = 3;
 
@@ -290,12 +296,6 @@ class Debugee {
 		if (G.previousSocket != null) {
 			G.previousSocket.close();
 		}
-		Log.trace = function(v, ?infos) {
-			var str = Log.formatOutput(v, infos.unsafe());
-			untyped __lua__("_hx_print_2({0})", str);
-		}
-		trace(NativeStringTools.rep("abcdefghijklmnopqrstuvwxyz", 45));
-		trace("Hello from debugee");
 		vm = new VariableManager();
 		sc = new SourceContainer();
 		outputter = new Outputter(vm);
@@ -304,7 +304,6 @@ class Debugee {
 		hc = new HandlerContainer(vm,bm,fbm);
 		DebugLoop.init(bm,sc);
 		FileLib.CreateDir("gmdebug");
-		
 		#if server
 		GameLib.ConsoleCommand("sv_timeout 999999\n");
 		#elseif client
@@ -356,9 +355,9 @@ class Debugee {
 			reason: reason,
 			text: txt
 		}
-		trace("sending stopped");
 		var e = new ComposedEvent(stopped, tstop);
 		e.send();
+		trace("HALT LOOP");
 		haltLoop();
 	}
 
@@ -422,6 +421,7 @@ class Debugee {
 				case MESSAGE(msg):
 					msg;		
 				case ERROR(s):
+					trace("Errored");
 					throw s;
 			}
 			switch (chooseHandler(msg)) {
@@ -432,7 +432,8 @@ class Debugee {
 					abortDebugee();
 					break;
 			}
-		}		
+		}
+		trace("exiting halt lopp");
 		Debugee.inpauseloop = false;
 	}
 
@@ -471,7 +472,7 @@ typedef LineMap = Map<Int, Bool>;
 enum DebugState {
 	WAIT;
 	STEP(targetHeight:Null<Int>);
-	OUT(outFunc:Function, lowestLine:Int);
+	OUT(outFunc:Function, lowestLine:Int,targetHeight:Int);
 }
 
 enum RecvMessageResult {
