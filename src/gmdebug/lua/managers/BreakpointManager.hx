@@ -15,8 +15,8 @@ class BreakpointManager {
 		
 	}
 
-	public function clearBreakpoints() {
-		breakpoints = [];
+	public function clearBreakpoints(source:String) {
+		breakpoints.set(source,[]);
 	}
 
 	public function retrieveSourceLineInfo(source:String):Map<Int, Bool> {

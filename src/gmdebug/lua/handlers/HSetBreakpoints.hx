@@ -15,7 +15,7 @@ class HSetBreakpoints implements IHandler<SetBreakpointsRequest> {
     public function handle(req:SetBreakpointsRequest):HandlerResponse {
         final args = req.arguments.unsafe();
         final bpResponse:Array<Breakpoint> = [];
-        bm.clearBreakpoints();
+        bm.clearBreakpoints(args.source.path);
 		if (args.breakpoints != null) {
 			for (bp in args.breakpoints) {
                 final breakPoint = bm.newBreakpoint(args.source,bp);
