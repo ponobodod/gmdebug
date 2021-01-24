@@ -32,21 +32,22 @@ import js.node.child_process.ChildProcess;
 using Lambda;
 
 @:keep @:await class LuaDebugger extends DebugSession {
-	public static final commMethod:CommMethod = Pipe;
+	
+	public final commMethod:CommMethod;
 
 	public static var inst(default, null):LuaDebugger;
 
-	public static var clients:Array<FileSocket> = []; // 0 = server.
+	public var clients:Array<FileSocket>; // 0 = server.
 
-	public static var clientFiles:Array<ClientFiles> = [];
+	public var clientFiles:Array<ClientFiles>;
 
-	public static var dapMode:DapMode = ATTACH;
+	public var dapMode:DapMode;
 
-	static var autoLaunch:Bool = false;
+	var autoLaunch:Bool;
 
-	public static var mapClientName:Map<Int, String> = [];
+	public var mapClientName:Map<Int, String>;
 
-	static var mapClientID:Map<Int, Int> = [];
+	var mapClientID:Map<Int, Int>;
 
 	public var serverFolder:String;
 
@@ -62,6 +63,13 @@ using Lambda;
 		clientLocations = [];
 		serverFolder = null;
 		clientsTaken = [];
+		mapClientID = [];
+		mapClientName = [];
+		dapMode = ATTACH;
+		autoLaunch = true;
+		clientFiles = [];
+		clients = [];
+		commMethod = Pipe;
 		bytesProcessor = new BytesProcessor();
 		Node.process.on("uncaughtException", uncaughtException);
 	}
@@ -328,21 +336,17 @@ using Lambda;
 		clients[client].writeS.write(composeMessage(msg));
 	}
 
-	override function handleMessage(message:ProtocolMessage) {
+	public override function handleMessage(message:ProtocolMessage) {
 		if (LuaDebugger.inst == null)
 			LuaDebugger.inst = this;
-		// try {
-			switch (message.type) {
-				case Request:
-					untyped trace('recieved message from client ${message.command}');
-					Handlers.handle(cast message);
-				default:
-					trace("unhandled message from client");
-			}
-		// } catch (e) {
-			// trace(e.details());
-			// shutdown();
-		// }
+		
+		switch (message.type) {
+			case Request:
+				untyped trace('recieved message from client ${message.command}');
+				Handlers.handle(cast message);
+			default:
+				trace("unhandled message from client");
+		}
 	}
 }
 

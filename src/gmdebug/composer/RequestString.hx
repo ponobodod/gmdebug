@@ -21,7 +21,7 @@ enum abstract RequestString<X:Request<Dynamic>, Y:Response<Dynamic>>(String) fro
 	var goto:RequestString<GotoRequest, GotoResponse>;
 	var variables:RequestString<VariablesRequest, VariablesResponse>;
 	var scopes:RequestString<ScopesRequest, ScopesResponse>;
-	var _continue:RequestString<ContinueRequest, ContinueResponse> = "_continue";
+	var _continue:RequestString<ContinueRequest, ContinueResponse> = #if lua "_continue" #else "continue" #end;
 	var evaluate:RequestString<EvaluateRequest, EvaluateResponse>;
 	var stackTrace:RequestString<StackTraceRequest, StackTraceResponse>;
 	var threads:RequestString<ThreadsRequest, ThreadsResponse>;

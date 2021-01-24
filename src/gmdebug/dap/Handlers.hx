@@ -72,9 +72,9 @@ class Handlers {
 
 	static function h_threads(x:ThreadsRequest) {
 		final threadArr = [{name: "Server", id: 0}];
-		for (i in 1...LuaDebugger.clients.length) {
+		for (i in 1...LuaDebugger.inst.clients.length) {
 			threadArr.push({
-				name: LuaDebugger.mapClientName.get(i),
+				name: LuaDebugger.inst.mapClientName.get(i),
 				id: i
 			});
 		}
@@ -117,7 +117,7 @@ class Handlers {
 	static function h_evaluate(x:EvaluateRequest) {
 		final expr = x.arguments.expression;
 		if (expr.charAt(0) == "/") {
-			switch (LuaDebugger.dapMode) {
+			switch (LuaDebugger.inst.dapMode) {
 				case LAUNCH(child):
 					final actual = expr.substr(1);
 					child.stdin.write(actual + "\n");
@@ -234,7 +234,7 @@ class Handlers {
 		final serverSlash = haxe.io.Path.addTrailingSlash(x.arguments.serverFolder);
 		LuaDebugger.inst.serverFolder = serverSlash;
 		LuaDebugger.inst.clientLocations = clientFolders;
-		LuaDebugger.dapMode = LAUNCH(childProcess);
+		LuaDebugger.inst.dapMode = LAUNCH(childProcess);
 		LuaDebugger.inst.startServer(Pipe, x);
 	}
 

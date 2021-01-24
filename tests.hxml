@@ -1,0 +1,19 @@
+-lib hxnodejs
+-lib vscode-debugadapter
+-lib vscode
+-lib safety
+-lib tink_await
+-lib tink_io
+-lib utest
+-lib tink_await
+-cp src
+-cp test/src
+-D analyzer-optimize
+--dce=full
+-D js-es=6
+-D haxeJSON
+-debug
+-main test.Main
+-js test/test.js
+
+--cmd node test/test.js

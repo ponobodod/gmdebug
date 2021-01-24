@@ -16,7 +16,7 @@ class ComposedRequest<T,X> extends ComposedProtocolMessage {
     public function new(str:RequestString<Request<T>,Response<X>>,?args:T) {
         super(Request);
         command = str;
-        args = arguments;
+        arguments = args;
     }
 
 }
