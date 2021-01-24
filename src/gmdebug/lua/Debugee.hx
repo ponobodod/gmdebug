@@ -302,7 +302,7 @@ class Debugee {
 		bm = new BreakpointManager();
 		fbm = new FunctionBreakpointManager();
 		hc = new HandlerContainer(vm,bm,fbm);
-		DebugLoop.init(bm,sc);
+		DebugLoop.init(bm,sc,fbm);
 		FileLib.CreateDir("gmdebug");
 		#if server
 		GameLib.ConsoleCommand("sv_timeout 999999\n");

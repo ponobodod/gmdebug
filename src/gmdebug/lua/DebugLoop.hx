@@ -34,7 +34,7 @@ class DebugLoop {
 	static var fbm:Null<FunctionBreakpointManager>;
 
 
-	public static function init(bm:BreakpointManager,sc:SourceContainer) {
+	public static function init(bm:BreakpointManager,sc:SourceContainer,fbm:FunctionBreakpointManager) {
 		DebugLoop.bm = bm;
 		DebugLoop.sc = sc;
 		DebugLoop.fbm = fbm;
