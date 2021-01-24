@@ -63,12 +63,12 @@ class HScopes implements IHandler<ScopesRequest> {
 		var resp = scopeReq.compose(scopes, {
 			scopes: switch (info.what) {
 				case C:
-					[arguments, locals, entities, players, globals, enums];
+					[arguments, locals, globals, entities, players, enums];
 				case Lua:
 					if (hasFenv) {
-						[arguments, locals, upvalues, entities, players, globals, enums, env];
+						[arguments, locals, upvalues, env, globals, entities, players, enums];
 					} else {
-						[arguments, locals, upvalues, entities, players, globals, enums];
+						[arguments, locals, upvalues, globals, entities, players, enums];
 					}
 			}
 		});
