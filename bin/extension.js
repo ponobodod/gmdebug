@@ -550,6 +550,7 @@ class gmdebug_composer_ComposedRequest extends gmdebug_composer_ComposedProtocol
 	constructor(str,args) {
 		super("request");
 		this.command = str;
+		this.arguments = args;
 	}
 }
 gmdebug_composer_ComposedRequest.__name__ = true;
@@ -557,6 +558,7 @@ gmdebug_composer_ComposedRequest.__super__ = gmdebug_composer_ComposedProtocolMe
 Object.assign(gmdebug_composer_ComposedRequest.prototype, {
 	__class__: gmdebug_composer_ComposedRequest
 	,command: null
+	,'arguments': null
 });
 class gmdebug_composer_ComposedResponse extends gmdebug_composer_ComposedProtocolMessage {
 	constructor(req,body) {
@@ -766,11 +768,11 @@ class gmdebug_dap_Handlers {
 			gmdebug_dap_Handlers.h_attach(req);
 			break;
 		case "configurationDone":
-			let tmp = gmdebug_dap_LuaDebugger.clients[0].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			let _this = gmdebug_dap_LuaDebugger.inst.clients[0].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json = haxe_format_JsonPrinter.print(req,null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
-			tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
 			break;
 		case "disconnect":
 			gmdebug_dap_Handlers.h_disconnect(req);
@@ -778,12 +780,12 @@ class gmdebug_dap_Handlers {
 		case "evaluate":
 			gmdebug_dap_Handlers.h_evaluate(req);
 			break;
-		case "_continue":case "breakpointLocations":case "goto":case "gotoTargets":case "loadedSources":case "modules":
-			let tmp1 = gmdebug_dap_LuaDebugger.clients[0].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		case "breakpointLocations":case "goto":case "gotoTargets":case "loadedSources":case "modules":
+			let _this1 = gmdebug_dap_LuaDebugger.inst.clients[0].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json1 = haxe_format_JsonPrinter.print(req,null,null);
 			let len1 = haxe_io_Bytes.ofString(json1).length;
-			tmp1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 			break;
 		case "initialize":
 			gmdebug_dap_Handlers.h_initialize(req);
@@ -805,11 +807,11 @@ class gmdebug_dap_Handlers {
 			break;
 		case "continue":case "next":case "pause":case "stackTrace":case "stepIn":case "stepOut":
 			let id = req.arguments.threadId;
-			let tmp2 = gmdebug_dap_LuaDebugger.clients[id].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			let _this2 = gmdebug_dap_LuaDebugger.inst.clients[id].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json2 = haxe_format_JsonPrinter.print(req,null,null);
 			let len2 = haxe_io_Bytes.ofString(json2).length;
-			tmp2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
+			_this2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
 			break;
 		case "threads":
 			gmdebug_dap_Handlers.h_threads(req);
@@ -820,12 +822,13 @@ class gmdebug_dap_Handlers {
 		}
 	}
 	static sendAll(x) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		let _this = gmdebug_dap_LuaDebugger.inst;
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		let msg = "Content-Length: " + len + "\r\n\r\n" + json;
 		let _g = 0;
-		let _g1 = gmdebug_dap_LuaDebugger.clients;
+		let _g1 = _this.clients;
 		while(_g < _g1.length) {
 			let client = _g1[_g];
 			++_g;
@@ -839,10 +842,10 @@ class gmdebug_dap_Handlers {
 	static h_threads(x) {
 		let threadArr = [{ name : "Server", id : 0}];
 		let _g = 1;
-		let _g1 = gmdebug_dap_LuaDebugger.clients.length;
+		let _g1 = gmdebug_dap_LuaDebugger.inst.clients.length;
 		while(_g < _g1) {
 			let i = _g++;
-			threadArr.push({ name : gmdebug_dap_LuaDebugger.mapClientName.h[i], id : i});
+			threadArr.push({ name : gmdebug_dap_LuaDebugger.inst.mapClientName.h[i], id : i});
 		}
 		let _this = gmdebug_composer_ComposeTools.compose(x,"threads",{ threads : threadArr});
 		console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + _this.command);
@@ -875,32 +878,32 @@ class gmdebug_dap_Handlers {
 		let _g = gmdebug_VariableReference.getValue(ref);
 		switch(_g._hx_index) {
 		case 0:
-			let tmp = gmdebug_dap_LuaDebugger.clients[_g.clientID].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			let _this = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json = haxe_format_JsonPrinter.print(x,null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
-			tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
 			break;
 		case 1:
-			let tmp1 = gmdebug_dap_LuaDebugger.clients[_g.clientID].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			let _this1 = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json1 = haxe_format_JsonPrinter.print(x,null,null);
 			let len1 = haxe_io_Bytes.ofString(json1).length;
-			tmp1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 			break;
 		case 2:
-			let tmp2 = gmdebug_dap_LuaDebugger.clients[_g.clientID].writeS;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			let _this2 = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json2 = haxe_format_JsonPrinter.print(x,null,null);
 			let len2 = haxe_io_Bytes.ofString(json2).length;
-			tmp2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
+			_this2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
 			break;
 		}
 	}
 	static h_evaluate(x) {
 		let expr = x.arguments.expression;
 		if(expr.charAt(0) == "/") {
-			let _g = gmdebug_dap_LuaDebugger.dapMode;
+			let _g = gmdebug_dap_LuaDebugger.inst.dapMode;
 			if(_g._hx_index == 1) {
 				let actual = HxOverrides.substr(expr,1,null);
 				_g.child.stdin.write(actual + "\n");
@@ -912,11 +915,11 @@ class gmdebug_dap_Handlers {
 		}
 		let _g = x.arguments.frameId;
 		let client = _g == null ? 0 : gmdebug_FrameID.getValue(_g).clientID;
-		let tmp = gmdebug_dap_LuaDebugger.clients[client].writeS;
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		let _this = gmdebug_dap_LuaDebugger.inst.clients[client].writeS;
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
-		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
 	}
 	static h_initialize(x) {
 		let response = { seq : 0, request_seq : x.seq, command : "initialize", type : "response", body : { }, success : true};
@@ -993,16 +996,16 @@ class gmdebug_dap_Handlers {
 		let serverSlash = haxe_io_Path.addTrailingSlash(x.arguments.serverFolder);
 		gmdebug_dap_LuaDebugger.inst.serverFolder = serverSlash;
 		gmdebug_dap_LuaDebugger.inst.clientLocations = clientFolders;
-		gmdebug_dap_LuaDebugger.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
+		gmdebug_dap_LuaDebugger.inst.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
 		gmdebug_dap_LuaDebugger.inst.startServer(gmdebug_CommMethod.Pipe,x);
 	}
 	static h_scopes(x) {
 		let client = gmdebug_FrameID.getValue(x.arguments.frameId).clientID;
-		let tmp = gmdebug_dap_LuaDebugger.clients[client].writeS;
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		let _this = gmdebug_dap_LuaDebugger.inst.clients[client].writeS;
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
-		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
 	}
 	static setupDebugger(serverFolder) {
 		let addonFolder = haxe_io_Path.join([serverFolder,"addons"]);
@@ -1149,27 +1152,6 @@ class gmdebug_dap_Intercepter {
 }
 gmdebug_dap_Intercepter.__name__ = true;
 var vscode_debugAdapter_DebugSession = require("vscode-debugadapter").DebugSession;
-var gmdebug_dap_DapMode = $hxEnums["gmdebug.dap.DapMode"] = { __ename__ : true, __constructs__ : ["ATTACH","LAUNCH"]
-	,ATTACH: {_hx_index:0,__enum__:"gmdebug.dap.DapMode",toString:$estr}
-	,LAUNCH: ($_=function(child) { return {_hx_index:1,child:child,__enum__:"gmdebug.dap.DapMode",toString:$estr}; },$_.__params__ = ["child"],$_)
-};
-class haxe_ds_IntMap {
-	constructor() {
-		this.h = { };
-	}
-	remove(key) {
-		if(!this.h.hasOwnProperty(key)) {
-			return false;
-		}
-		delete(this.h[key]);
-		return true;
-	}
-}
-haxe_ds_IntMap.__name__ = true;
-Object.assign(haxe_ds_IntMap.prototype, {
-	__class__: haxe_ds_IntMap
-	,h: null
-});
 class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 	constructor(x,y) {
 		super(x,y);
@@ -1177,12 +1159,19 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.clientLocations = [];
 		this.serverFolder = null;
 		this.clientsTaken = new haxe_ds_IntMap();
+		this.mapClientID = new haxe_ds_IntMap();
+		this.mapClientName = new haxe_ds_IntMap();
+		this.dapMode = gmdebug_dap_DapMode.ATTACH;
+		this.autoLaunch = true;
+		this.clientFiles = [];
+		this.clients = [];
+		this.commMethod = gmdebug_CommMethod.Pipe;
 		this.bytesProcessor = new gmdebug_dap_BytesProcessor();
 		process.on("uncaughtException",$bind(this,this.uncaughtException));
 	}
 	uncaughtException(err,origin) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:70:",err.message);
-		console.log("src/gmdebug/dap/LuaDebugger.hx:71:",err.stack);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:78:",err.message);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:79:",err.stack);
 		this.shutdown();
 	}
 	playerAddedMessage(x) {
@@ -1197,7 +1186,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 					this.clientsTaken.h[_g1_key] = true;
 					break;
 				} catch( _g ) {
-					console.log("src/gmdebug/dap/LuaDebugger.hx:83:","can't aquire in " + _g1_value);
+					console.log("src/gmdebug/dap/LuaDebugger.hx:91:","can't aquire in " + _g1_value);
 				}
 			}
 		}
@@ -1231,39 +1220,39 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 					throw haxe_Exception.thrown(_g.failure);
 				}
 				let write = __t1_result;
-				let number = gmdebug_dap_LuaDebugger.clients.length;
+				let number = _gthis.clients.length;
 				read.on("data",function(x) {
 					_gthis.readGmodBuffer(x,number);
 				});
-				gmdebug_dap_LuaDebugger.clients.push({ readS : read, writeS : write});
-				gmdebug_dap_LuaDebugger.clientFiles[number] = { write : input, read : out};
+				_gthis.clients.push({ readS : read, writeS : write});
+				_gthis.clientFiles[number] = { write : input, read : out};
 				js_node_Fs.writeFileSync(ready,"");
 				write.write("\x04\r\n");
 				let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : number, reason : "started"});
 				console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
 				gmdebug_dap_LuaDebugger.inst.sendEvent(_this);
-				gmdebug_dap_LuaDebugger.mapClientName.h[number] = playerName;
-				gmdebug_dap_LuaDebugger.mapClientID.h[number] = clientNo;
+				_gthis.mapClientName.h[number] = playerName;
+				_gthis.mapClientID.h[number] = clientNo;
 				let msg = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder});
-				let tmp = gmdebug_dap_LuaDebugger.clients[number].writeS;
-				console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+				let _gthis1 = _gthis.clients[number].writeS;
+				console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 				let json = haxe_format_JsonPrinter.print(msg,null,null);
 				let len = haxe_io_Bytes.ofString(json).length;
-				tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+				_gthis1.write("Content-Length: " + len + "\r\n\r\n" + json);
 				let msg1 = new gmdebug_composer_ComposedGmDebugMessage(2,{ id : number});
-				let tmp1 = gmdebug_dap_LuaDebugger.clients[number].writeS;
-				console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+				let _gthis2 = _gthis.clients[number].writeS;
+				console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 				let json1 = haxe_format_JsonPrinter.print(msg1,null,null);
 				let len1 = haxe_io_Bytes.ofString(json1).length;
-				tmp1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+				_gthis2.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 			});
 		});
 	}
 	playerRemovedMessage(x) {
-		let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : gmdebug_dap_LuaDebugger.mapClientID.h[x.playerID], reason : "exited"});
+		let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : this.mapClientID.h[x.playerID], reason : "exited"});
 		console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
 		gmdebug_dap_LuaDebugger.inst.sendEvent(_this);
-		this.clientsTaken.remove(gmdebug_dap_LuaDebugger.mapClientID.h[x.playerID]);
+		this.clientsTaken.remove(this.mapClientID.h[x.playerID]);
 	}
 	serverInfoMessage(x) {
 		let sp = x.ip.split(":");
@@ -1272,7 +1261,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		js_node_ChildProcess.spawn("xdg-open steam://connect/" + ip + ":" + port,{ shell : true});
 	}
 	processCustomMessages(x) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:141:","custom message");
+		console.log("src/gmdebug/dap/LuaDebugger.hx:149:","custom message");
 		switch(x.msg) {
 		case 0:
 			this.playerAddedMessage(x.body);
@@ -1334,7 +1323,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 							return;
 						}
 						let fd = __t3_result;
-						console.log("src/gmdebug/dap/LuaDebugger.hx:163:",fd);
+						console.log("src/gmdebug/dap/LuaDebugger.hx:171:",fd);
 						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, readable : false})));
 						return;
 					} catch( _g ) {
@@ -1382,33 +1371,33 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 									return;
 								}
 								let gmodOutput = __t5_result;
-								gmdebug_dap_LuaDebugger.clients[0] = { writeS : gmodInput, readS : gmodOutput};
-								gmdebug_dap_LuaDebugger.clientFiles[0] = { write : input, read : output};
+								_gthis.clients[0] = { writeS : gmodInput, readS : gmodOutput};
+								_gthis.clientFiles[0] = { write : input, read : output};
 								gmodOutput.on("data",function(x) {
 									_gthis.readGmodBuffer(x,0);
 								});
 								let msg = new gmdebug_composer_ComposedGmDebugMessage(2,{ id : 0});
-								let p = gmdebug_dap_LuaDebugger.clients[0].writeS;
-								console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+								let _gthis1 = _gthis.clients[0].writeS;
+								console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 								let json = haxe_format_JsonPrinter.print(msg,null,null);
 								let len = haxe_io_Bytes.ofString(json).length;
-								p.write("Content-Length: " + len + "\r\n\r\n" + json);
-								switch(gmdebug_dap_LuaDebugger.dapMode._hx_index) {
+								_gthis1.write("Content-Length: " + len + "\r\n\r\n" + json);
+								switch(_gthis.dapMode._hx_index) {
 								case 0:
 									let msg1 = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Attach"});
-									let p1 = gmdebug_dap_LuaDebugger.clients[0].writeS;
-									console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+									let _gthis2 = _gthis.clients[0].writeS;
+									console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 									let json1 = haxe_format_JsonPrinter.print(msg1,null,null);
 									let len1 = haxe_io_Bytes.ofString(json1).length;
-									p1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+									_gthis2.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 									break;
 								case 1:
 									let msg2 = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Launch"});
-									let p2 = gmdebug_dap_LuaDebugger.clients[0].writeS;
-									console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+									let _gthis3 = _gthis.clients[0].writeS;
+									console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 									let json2 = haxe_format_JsonPrinter.print(msg2,null,null);
 									let len2 = haxe_io_Bytes.ofString(json2).length;
-									p2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
+									_gthis3.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
 									break;
 								}
 								js_node_Fs.writeFileSync(ready,"");
@@ -1447,7 +1436,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			this.processDebugeeMessage(msg,clientNo);
 		}
 		if(this.bytesProcessor.fillRequested) {
-			gmdebug_dap_LuaDebugger.clients[clientNo].writeS.write("\x04\r\n");
+			this.clients[clientNo].writeS.write("\x04\r\n");
 		}
 	}
 	processDebugeeMessage(debugeeMessage,threadId) {
@@ -1456,7 +1445,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		case "event":
 			let event = debugeeMessage;
 			let cmd = event.event;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:224:","evented, " + cmd);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:232:","evented, " + cmd);
 			gmdebug_dap_Intercepter.event(event,threadId);
 			this.sendEvent(event);
 			break;
@@ -1465,38 +1454,38 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			break;
 		case "response":
 			let cmd1 = debugeeMessage.command;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:229:","responded, " + cmd1);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:237:","responded, " + cmd1);
 			this.sendResponse(debugeeMessage);
 			break;
 		default:
-			console.log("src/gmdebug/dap/LuaDebugger.hx:234:","bad...");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:242:","bad...");
 			throw haxe_Exception.thrown("unhandled");
 		}
 	}
 	shutdown() {
-		let _g = gmdebug_dap_LuaDebugger.dapMode;
+		let _g = this.dapMode;
 		if(_g._hx_index == 1) {
 			let _g1 = _g.child;
 			_g1.stdin.write("quit\n");
 			_g1.kill();
 		}
-		let _this = gmdebug_dap_LuaDebugger.clients;
+		let _this = this.clients;
 		let _g2_current = 0;
 		while(_g2_current < _this.length) {
 			let _g3_value = _this[_g2_current];
 			let _g3_key = _g2_current++;
 			let client = _g3_value.writeS;
 			let msg = new gmdebug_composer_ComposedRequest("disconnect",{ });
-			console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 			let json = haxe_format_JsonPrinter.print(msg,null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
 			client.write("Content-Length: " + len + "\r\n\r\n" + json);
 			_g3_value.readS.end();
 			_g3_value.writeS.end();
-			js_node_Fs.unlinkSync(gmdebug_dap_LuaDebugger.clientFiles[_g3_key].read);
-			js_node_Fs.unlinkSync(gmdebug_dap_LuaDebugger.clientFiles[_g3_key].write);
+			js_node_Fs.unlinkSync(this.clientFiles[_g3_key].read);
+			js_node_Fs.unlinkSync(this.clientFiles[_g3_key].write);
 		}
-		gmdebug_dap_LuaDebugger.clients.length = 0;
+		this.clients.length = 0;
 		super.shutdown();
 	}
 	startServer(commMethod,attachReq) {
@@ -1506,14 +1495,14 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			this.pokeServerNamedPipes(attachReq).handle(function(out) {
 				switch(out._hx_index) {
 				case 0:
-					console.log("src/gmdebug/dap/LuaDebugger.hx:294:","suceed");
+					console.log("src/gmdebug/dap/LuaDebugger.hx:302:","suceed");
 					let resp = gmdebug_composer_ComposeTools.compose(attachReq,"attach");
 					console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp.command);
 					gmdebug_dap_LuaDebugger.inst.sendResponse(resp);
 					break;
 				case 1:
 					let _g = out.failure;
-					console.log("src/gmdebug/dap/LuaDebugger.hx:298:",_g);
+					console.log("src/gmdebug/dap/LuaDebugger.hx:306:",_g);
 					let resp1 = gmdebug_composer_ComposeTools.composeFail(attachReq,"attach fail " + _g.message,{ id : 1, format : "Failed to attach to server " + _g.message});
 					console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp1.command);
 					gmdebug_dap_LuaDebugger.inst.sendResponse(resp1);
@@ -1524,18 +1513,18 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		case 1:
 			let luaServer = js_node_Net.createServer(function(sock) {
 				sock.setKeepAlive(true);
-				gmdebug_dap_LuaDebugger.clients[0] = { writeS : sock, readS : sock};
+				_gthis.clients[0] = { writeS : sock, readS : sock};
 				let aresp = gmdebug_composer_ComposeTools.compose(attachReq,"attach");
 				console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + aresp.command);
 				gmdebug_dap_LuaDebugger.inst.sendResponse(aresp);
 				sock.addListener("error",function(list) {
-					console.log("src/gmdebug/dap/LuaDebugger.hx:274:",list);
-					console.log("src/gmdebug/dap/LuaDebugger.hx:275:",list.message);
+					console.log("src/gmdebug/dap/LuaDebugger.hx:282:",list);
+					console.log("src/gmdebug/dap/LuaDebugger.hx:283:",list.message);
 					throw haxe_Exception.thrown("Socket error");
 				});
 				sock.addListener("error",function(x) {
-					console.log("src/gmdebug/dap/LuaDebugger.hx:279:","could not recieve packet");
-					console.log("src/gmdebug/dap/LuaDebugger.hx:280:",x);
+					console.log("src/gmdebug/dap/LuaDebugger.hx:287:","could not recieve packet");
+					console.log("src/gmdebug/dap/LuaDebugger.hx:288:",x);
 					_gthis.shutdown();
 					throw x;
 				});
@@ -1544,24 +1533,24 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 				});
 			});
 			luaServer.listen({ port : 56789, host : "localhost"},function() {
-				console.log("src/gmdebug/dap/LuaDebugger.hx:289:",luaServer.address());
+				console.log("src/gmdebug/dap/LuaDebugger.hx:297:",luaServer.address());
 			});
 			break;
 		}
 	}
 	composeMessage(msg) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		return "Content-Length: " + len + "\r\n\r\n" + json;
 	}
 	sendToAll(msg) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		let msg1 = "Content-Length: " + len + "\r\n\r\n" + json;
 		let _g = 0;
-		let _g1 = gmdebug_dap_LuaDebugger.clients;
+		let _g1 = this.clients;
 		while(_g < _g1.length) {
 			let client = _g1[_g];
 			++_g;
@@ -1569,15 +1558,15 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		}
 	}
 	sendToServer(msg) {
-		let tmp = gmdebug_dap_LuaDebugger.clients[0].writeS;
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		let tmp = this.clients[0].writeS;
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
 	}
 	sendToClient(client,msg) {
-		let tmp = gmdebug_dap_LuaDebugger.clients[client].writeS;
-		console.log("src/gmdebug/dap/LuaDebugger.hx:310:","composing message");
+		let tmp = this.clients[client].writeS;
+		console.log("src/gmdebug/dap/LuaDebugger.hx:318:","composing message");
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
@@ -1587,10 +1576,10 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			gmdebug_dap_LuaDebugger.inst = this;
 		}
 		if(message.type == "request") {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:337:","recieved message from client " + message.command);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:345:","recieved message from client " + message.command);
 			gmdebug_dap_Handlers.handle(message);
 		} else {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:340:","unhandled message from client");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:348:","unhandled message from client");
 		}
 	}
 }
@@ -1598,11 +1587,22 @@ gmdebug_dap_LuaDebugger.__name__ = true;
 gmdebug_dap_LuaDebugger.__super__ = vscode_debugAdapter_DebugSession;
 Object.assign(gmdebug_dap_LuaDebugger.prototype, {
 	__class__: gmdebug_dap_LuaDebugger
+	,commMethod: null
+	,clients: null
+	,clientFiles: null
+	,dapMode: null
+	,autoLaunch: null
+	,mapClientName: null
+	,mapClientID: null
 	,serverFolder: null
 	,clientLocations: null
 	,clientsTaken: null
 	,bytesProcessor: null
 });
+var gmdebug_dap_DapMode = $hxEnums["gmdebug.dap.DapMode"] = { __ename__ : true, __constructs__ : ["ATTACH","LAUNCH"]
+	,ATTACH: {_hx_index:0,__enum__:"gmdebug.dap.DapMode",toString:$estr}
+	,LAUNCH: ($_=function(child) { return {_hx_index:1,child:child,__enum__:"gmdebug.dap.DapMode",toString:$estr}; },$_.__params__ = ["child"],$_)
+};
 var gmdebug_lib_js_Ip = require("ip");
 var haxe_StackItem = $hxEnums["haxe.StackItem"] = { __ename__ : true, __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"]
 	,CFunction: {_hx_index:0,__enum__:"haxe.StackItem",toString:$estr}
@@ -1672,6 +1672,23 @@ haxe_ValueException.__super__ = haxe_Exception;
 Object.assign(haxe_ValueException.prototype, {
 	__class__: haxe_ValueException
 	,value: null
+});
+class haxe_ds_IntMap {
+	constructor() {
+		this.h = { };
+	}
+	remove(key) {
+		if(!this.h.hasOwnProperty(key)) {
+			return false;
+		}
+		delete(this.h[key]);
+		return true;
+	}
+}
+haxe_ds_IntMap.__name__ = true;
+Object.assign(haxe_ds_IntMap.prototype, {
+	__class__: haxe_ds_IntMap
+	,h: null
 });
 class haxe_ds_StringMap {
 	constructor() {
@@ -3078,13 +3095,6 @@ gmdebug_Cross.READY = haxe_io_Path.join([gmdebug_Cross.FOLDER,"ready.dat"]);
 gmdebug_Cross.DATA = "data";
 gmdebug_composer_ComposedProtocolMessage._hx_skip_constructor = false;
 $hx_exports["runMode"] = gmdebug_dap_Extension.runMode = "inline";
-gmdebug_dap_LuaDebugger.commMethod = gmdebug_CommMethod.Pipe;
-gmdebug_dap_LuaDebugger.clients = [];
-gmdebug_dap_LuaDebugger.clientFiles = [];
-gmdebug_dap_LuaDebugger.dapMode = gmdebug_dap_DapMode.ATTACH;
-gmdebug_dap_LuaDebugger.autoLaunch = false;
-gmdebug_dap_LuaDebugger.mapClientName = new haxe_ds_IntMap();
-gmdebug_dap_LuaDebugger.mapClientID = new haxe_ds_IntMap();
 tink_core_Callback.depth = 0;
 tink_core_SimpleDisposable._hx_skip_constructor = false;
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
