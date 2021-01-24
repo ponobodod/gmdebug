@@ -41,7 +41,6 @@ class Main {
 				final str = haxe.Log.formatOutput(v, infos);
 				Node.console.error(str);
 			};
-			trace("started stdin");
 		}
 	}
 }
