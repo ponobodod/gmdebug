@@ -100,7 +100,7 @@ class DebugLoop {
 				trace("hit bp");
 				Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
 			case bp = {breakpointType : CONDITIONAL(condFunc)}:
-				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(2));
+				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(3 + DebugHook.HOOK_USED));
 				switch (Util.runCompiledFunction(condFunc)) {
 					case Error(err):
 						final message = HEvaluate.translateEvalError(err);

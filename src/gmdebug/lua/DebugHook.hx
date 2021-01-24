@@ -10,7 +10,9 @@ extern class DebugHook {
 
     static inline final DEBUG_OFFSET = 2;
 
-    static inline function addHook(fun:Function,?str:String=""):Void {
+    static inline final HOOK_USED = 0;
+
+    static inline function addHook(?fun:Function,?str:String=""):Void {
         Debug.sethook(fun,str);
     }
 
@@ -21,6 +23,8 @@ extern class DebugHook {
 extern class DebugHook {
 
     static inline final DEBUG_OFFSET = 3;
+
+    static inline final HOOK_USED = 1;
 
     static final hooks:Map<String,FunctionHook>;
 

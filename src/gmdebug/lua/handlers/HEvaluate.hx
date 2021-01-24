@@ -28,7 +28,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 		final set = function(k, v) {
 			Reflect.setField(unsettables, k, v);
 		}
-		var info = DebugLib.getinfo(stackLevel + 2, "f"); // used to be 1
+		var info = DebugLib.getinfo(stackLevel, "f"); // used to be 1
 		var fenv:Null<AnyTable> = untyped __lua__("_G");
 		if (info != null && info.func != null) {
 			for (i in 1...9999) {
@@ -43,7 +43,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 			// Gmod.print(fenv);
 		}
 		for (i in 1...9999) {
-			final lcl = DebugLib.getlocal(stackLevel + 2, i); // used to be 1 :)
+			final lcl = DebugLib.getlocal(stackLevel, i); // used to be 1 :)
 			if (lcl.a == null)
 				break;
 			set(lcl.a, lcl.b);
@@ -92,7 +92,7 @@ class HEvaluate implements IHandler<EvaluateRequest> {
 				evalReq.composeFail(translateEvalError(err));
 			case Success(func):
 				if (fid != null) {
-					final eval = createEvalEnvironment(fid.getValue().actualFrame);
+					final eval = createEvalEnvironment(fid.getValue().actualFrame + 2);
 					Gmod.setfenv(func, eval);
 				}
 				switch (Util.runCompiledFunction(func)) {

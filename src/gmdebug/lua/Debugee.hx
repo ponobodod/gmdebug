@@ -73,9 +73,9 @@ class Debugee {
 	public static final stackOffset = {
 		#if !gmddebug
 		step: 3,
-		stepDebugLoop: 5,
-		except: 5,
-		pause: 5
+		stepDebugLoop: 4,
+		except: 4,
+		pause: 4
 		#else
 		step : 3,
 		stepDebugLoop : 5,
