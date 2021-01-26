@@ -80,6 +80,16 @@ class Lambda {
 		}
 		return false;
 	}
+	static exists(it,f) {
+		let x = $getIterator(it);
+		while(x.hasNext()) {
+			let x1 = x.next();
+			if(f(x1)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	static iter(it,f) {
 		let x = $getIterator(it);
 		while(x.hasNext()) {
@@ -95,6 +105,7 @@ class Reflect {
 		try {
 			return o[field];
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			return null;
 		}
 	}
@@ -282,6 +293,7 @@ class haxe_io_Input {
 				--k;
 			}
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			if(!((haxe_Exception.caught(_g).unwrap()) instanceof haxe_io_Eof)) {
 				throw _g;
 			}
@@ -315,6 +327,7 @@ class haxe_io_Input {
 				s = HxOverrides.substr(s,0,-1);
 			}
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			if(((_g1) instanceof haxe_io_Eof)) {
 				let e = _g1;
@@ -599,6 +612,221 @@ Object.assign(haxe_io_Path.prototype, {
 	,ext: null
 	,backslash: null
 });
+class js_Boot {
+	static getClass(o) {
+		if(o == null) {
+			return null;
+		} else if(((o) instanceof Array)) {
+			return Array;
+		} else {
+			let cl = o.__class__;
+			if(cl != null) {
+				return cl;
+			}
+			let name = js_Boot.__nativeClassName(o);
+			if(name != null) {
+				return js_Boot.__resolveNativeClass(name);
+			}
+			return null;
+		}
+	}
+	static __string_rec(o,s) {
+		if(o == null) {
+			return "null";
+		}
+		if(s.length >= 5) {
+			return "<...>";
+		}
+		let t = typeof(o);
+		if(t == "function" && (o.__name__ || o.__ename__)) {
+			t = "object";
+		}
+		switch(t) {
+		case "function":
+			return "<function>";
+		case "object":
+			if(o.__enum__) {
+				let e = $hxEnums[o.__enum__];
+				let n = e.__constructs__[o._hx_index];
+				let con = e[n];
+				if(con.__params__) {
+					s = s + "\t";
+					return n + "(" + ((function($this) {
+						var $r;
+						let _g = [];
+						{
+							let _g1 = 0;
+							let _g2 = con.__params__;
+							while(true) {
+								if(!(_g1 < _g2.length)) {
+									break;
+								}
+								let p = _g2[_g1];
+								_g1 = _g1 + 1;
+								_g.push(js_Boot.__string_rec(o[p],s));
+							}
+						}
+						$r = _g;
+						return $r;
+					}(this))).join(",") + ")";
+				} else {
+					return n;
+				}
+			}
+			if(((o) instanceof Array)) {
+				let str = "[";
+				s += "\t";
+				let _g = 0;
+				let _g1 = o.length;
+				while(_g < _g1) {
+					let i = _g++;
+					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
+				}
+				str += "]";
+				return str;
+			}
+			let tostr;
+			try {
+				tostr = o.toString;
+			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
+				return "???";
+			}
+			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
+				let s2 = o.toString();
+				if(s2 != "[object Object]") {
+					return s2;
+				}
+			}
+			let str = "{\n";
+			s += "\t";
+			let hasp = o.hasOwnProperty != null;
+			let k = null;
+			for( k in o ) {
+			if(hasp && !o.hasOwnProperty(k)) {
+				continue;
+			}
+			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
+				continue;
+			}
+			if(str.length != 2) {
+				str += ", \n";
+			}
+			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
+			}
+			s = s.substring(1);
+			str += "\n" + s + "}";
+			return str;
+		case "string":
+			return o;
+		default:
+			return String(o);
+		}
+	}
+	static __interfLoop(cc,cl) {
+		while(true) {
+			if(cc == null) {
+				return false;
+			}
+			if(cc == cl) {
+				return true;
+			}
+			let intf = cc.__interfaces__;
+			if(intf != null && (cc.__super__ == null || cc.__super__.__interfaces__ != intf)) {
+				let _g = 0;
+				let _g1 = intf.length;
+				while(_g < _g1) {
+					let i = _g++;
+					let i1 = intf[i];
+					if(i1 == cl || js_Boot.__interfLoop(i1,cl)) {
+						return true;
+					}
+				}
+			}
+			cc = cc.__super__;
+		}
+	}
+	static __instanceof(o,cl) {
+		if(cl == null) {
+			return false;
+		}
+		switch(cl) {
+		case Array:
+			return ((o) instanceof Array);
+		case Bool:
+			return typeof(o) == "boolean";
+		case Dynamic:
+			return o != null;
+		case Float:
+			return typeof(o) == "number";
+		case Int:
+			if(typeof(o) == "number") {
+				return ((o | 0) === o);
+			} else {
+				return false;
+			}
+			break;
+		case String:
+			return typeof(o) == "string";
+		default:
+			if(o != null) {
+				if(typeof(cl) == "function") {
+					if(js_Boot.__downcastCheck(o,cl)) {
+						return true;
+					}
+				} else if(typeof(cl) == "object" && js_Boot.__isNativeObj(cl)) {
+					if(((o) instanceof cl)) {
+						return true;
+					}
+				}
+			} else {
+				return false;
+			}
+			if(cl == Class ? o.__name__ != null : false) {
+				return true;
+			}
+			if(cl == Enum ? o.__ename__ != null : false) {
+				return true;
+			}
+			return o.__enum__ != null ? $hxEnums[o.__enum__] == cl : false;
+		}
+	}
+	static __downcastCheck(o,cl) {
+		if(!((o) instanceof cl)) {
+			if(cl.__isInterface__) {
+				return js_Boot.__interfLoop(js_Boot.getClass(o),cl);
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	static __implements(o,iface) {
+		return js_Boot.__interfLoop(js_Boot.getClass(o),iface);
+	}
+	static __cast(o,t) {
+		if(o == null || js_Boot.__instanceof(o,t)) {
+			return o;
+		} else {
+			throw haxe_Exception.thrown("Cannot cast " + Std.string(o) + " to " + Std.string(t));
+		}
+	}
+	static __nativeClassName(o) {
+		let name = js_Boot.__toStr.call(o).slice(8,-1);
+		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
+			return null;
+		}
+		return name;
+	}
+	static __isNativeObj(o) {
+		return js_Boot.__nativeClassName(o) != null;
+	}
+	static __resolveNativeClass(name) {
+		return $global[name];
+	}
+}
+js_Boot.__name__ = "js.Boot";
 class gmdebug_Cross {
 	static readHeader(x) {
 		let content_length = x.readLine();
@@ -793,6 +1021,7 @@ class gmdebug_dap_BytesProcessor {
 		try {
 			return this.addMessages(input,clientNo);
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g);
 			let _g2 = _g1.unwrap();
 			if(((_g2) instanceof haxe_io_Eof)) {
@@ -930,7 +1159,6 @@ class gmdebug_dap_Handlers {
 			break;
 		case "configurationDone":
 			let _this = gmdebug_dap_LuaDebugger.inst.clients[0].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json = haxe_format_JsonPrinter.print(req,null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
 			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
@@ -943,7 +1171,6 @@ class gmdebug_dap_Handlers {
 			break;
 		case "breakpointLocations":case "goto":case "gotoTargets":case "loadedSources":case "modules":
 			let _this1 = gmdebug_dap_LuaDebugger.inst.clients[0].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json1 = haxe_format_JsonPrinter.print(req,null,null);
 			let len1 = haxe_io_Bytes.ofString(json1).length;
 			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
@@ -969,7 +1196,6 @@ class gmdebug_dap_Handlers {
 		case "continue":case "next":case "pause":case "stackTrace":case "stepIn":case "stepOut":
 			let id = req.arguments.threadId;
 			let _this2 = gmdebug_dap_LuaDebugger.inst.clients[id].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json2 = haxe_format_JsonPrinter.print(req,null,null);
 			let len2 = haxe_io_Bytes.ofString(json2).length;
 			_this2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
@@ -984,7 +1210,6 @@ class gmdebug_dap_Handlers {
 	}
 	static sendAll(x) {
 		let _this = gmdebug_dap_LuaDebugger.inst;
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		let msg = "Content-Length: " + len + "\r\n\r\n" + json;
@@ -1040,21 +1265,18 @@ class gmdebug_dap_Handlers {
 		switch(_g._hx_index) {
 		case 0:
 			let _this = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json = haxe_format_JsonPrinter.print(x,null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
 			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
 			break;
 		case 1:
 			let _this1 = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json1 = haxe_format_JsonPrinter.print(x,null,null);
 			let len1 = haxe_io_Bytes.ofString(json1).length;
 			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 			break;
 		case 2:
 			let _this2 = gmdebug_dap_LuaDebugger.inst.clients[_g.clientID].writeS;
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 			let json2 = haxe_format_JsonPrinter.print(x,null,null);
 			let len2 = haxe_io_Bytes.ofString(json2).length;
 			_this2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
@@ -1077,7 +1299,6 @@ class gmdebug_dap_Handlers {
 		let _g = x.arguments.frameId;
 		let client = _g == null ? 0 : gmdebug_FrameID.getValue(_g).clientID;
 		let _this = gmdebug_dap_LuaDebugger.inst.clients[client].writeS;
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
@@ -1163,7 +1384,6 @@ class gmdebug_dap_Handlers {
 	static h_scopes(x) {
 		let client = gmdebug_FrameID.getValue(x.arguments.frameId).clientID;
 		let _this = gmdebug_dap_LuaDebugger.inst.clients[client].writeS;
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(x,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
@@ -1394,16 +1614,12 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 				gmdebug_dap_LuaDebugger.inst.sendEvent(_this);
 				_gthis.mapClientName.h[number] = playerName;
 				_gthis.mapClientID.h[number] = clientNo;
-				let msg = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder});
 				let _gthis1 = _gthis.clients[number].writeS;
-				haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-				let json = haxe_format_JsonPrinter.print(msg,null,null);
+				let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder}),null,null);
 				let len = haxe_io_Bytes.ofString(json).length;
 				_gthis1.write("Content-Length: " + len + "\r\n\r\n" + json);
-				let msg1 = new gmdebug_composer_ComposedGmDebugMessage(2,{ id : number});
 				let _gthis2 = _gthis.clients[number].writeS;
-				haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-				let json1 = haxe_format_JsonPrinter.print(msg1,null,null);
+				let json1 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(2,{ id : number}),null,null);
 				let len1 = haxe_io_Bytes.ofString(json1).length;
 				_gthis2.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 			});
@@ -1457,11 +1673,13 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, writable : false})));
 						return;
 					} catch( _g ) {
+						haxe_NativeStackTrace.lastError = _g;
 						let _g1 = haxe_Exception.caught(_g).unwrap();
 						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 					}
 				});
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				let _g1 = haxe_Exception.caught(_g).unwrap();
 				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 			}
@@ -1488,11 +1706,13 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, readable : false})));
 						return;
 					} catch( _g ) {
+						haxe_NativeStackTrace.lastError = _g;
 						let _g1 = haxe_Exception.caught(_g).unwrap();
 						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 					}
 				});
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				let _g1 = haxe_Exception.caught(_g).unwrap();
 				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 			}
@@ -1537,26 +1757,20 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 								gmodOutput.on("data",function(x) {
 									_gthis.readGmodBuffer(x,0);
 								});
-								let msg = new gmdebug_composer_ComposedGmDebugMessage(2,{ id : 0});
 								let _gthis1 = _gthis.clients[0].writeS;
-								haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-								let json = haxe_format_JsonPrinter.print(msg,null,null);
+								let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(2,{ id : 0}),null,null);
 								let len = haxe_io_Bytes.ofString(json).length;
 								_gthis1.write("Content-Length: " + len + "\r\n\r\n" + json);
 								switch(_gthis.dapMode._hx_index) {
 								case 0:
-									let msg1 = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Attach"});
 									let _gthis2 = _gthis.clients[0].writeS;
-									haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-									let json1 = haxe_format_JsonPrinter.print(msg1,null,null);
+									let json1 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Attach"}),null,null);
 									let len1 = haxe_io_Bytes.ofString(json1).length;
 									_gthis2.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
 									break;
 								case 1:
-									let msg2 = new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Launch"});
 									let _gthis3 = _gthis.clients[0].writeS;
-									haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-									let json2 = haxe_format_JsonPrinter.print(msg2,null,null);
+									let json2 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Launch"}),null,null);
 									let len2 = haxe_io_Bytes.ofString(json2).length;
 									_gthis3.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
 									break;
@@ -1565,16 +1779,19 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 								__return(tink_core_Outcome.Success(null));
 								return;
 							} catch( _g ) {
+								haxe_NativeStackTrace.lastError = _g;
 								let _g1 = haxe_Exception.caught(_g).unwrap();
 								__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 							}
 						});
 					} catch( _g ) {
+						haxe_NativeStackTrace.lastError = _g;
 						let _g1 = haxe_Exception.caught(_g).unwrap();
 						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 					}
 				});
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				let _g1 = haxe_Exception.caught(_g).unwrap();
 				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
 			}
@@ -1604,22 +1821,22 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		debugeeMessage.seq = 0;
 		switch(debugeeMessage.type) {
 		case "event":
-			let event = debugeeMessage;
-			let cmd = event.event;
-			haxe_Log.trace("evented, " + cmd,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 232, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
-			gmdebug_dap_Intercepter.event(event,threadId);
-			this.sendEvent(event);
+			let cmd = debugeeMessage.event;
+			haxe_Log.trace("recieved event from debugee, " + cmd,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 231, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
+			gmdebug_dap_Intercepter.event(debugeeMessage,threadId);
+			this.sendEvent(debugeeMessage);
 			break;
 		case "gmdebug":
+			let cmd1 = debugeeMessage.msg;
+			haxe_Log.trace("recieved gmdebug from debugee, " + cmd1,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 240, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
 			this.processCustomMessages(debugeeMessage);
 			break;
 		case "response":
-			let cmd1 = debugeeMessage.command;
-			haxe_Log.trace("responded, " + cmd1,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 237, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
+			let cmd2 = debugeeMessage.command;
+			haxe_Log.trace("recieved response from debugee, " + cmd2,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 236, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
 			this.sendResponse(debugeeMessage);
 			break;
 		default:
-			haxe_Log.trace("bad...",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 242, className : "gmdebug.dap.LuaDebugger", methodName : "processDebugeeMessage"});
 			throw haxe_Exception.thrown("unhandled");
 		}
 	}
@@ -1636,9 +1853,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			let _g3_value = _this[_g2_current];
 			let _g3_key = _g2_current++;
 			let client = _g3_value.writeS;
-			let msg = new gmdebug_composer_ComposedRequest("disconnect",{ });
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-			let json = haxe_format_JsonPrinter.print(msg,null,null);
+			let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedRequest("disconnect",{ }),null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
 			client.write("Content-Length: " + len + "\r\n\r\n" + json);
 			_g3_value.readS.end();
@@ -1656,7 +1871,6 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			this.pokeServerNamedPipes(attachReq).handle(function(out) {
 				switch(out._hx_index) {
 				case 0:
-					haxe_Log.trace("suceed",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 302, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
 					let resp = gmdebug_composer_ComposeTools.compose(attachReq,"attach");
 					haxe_Log.trace("sending from dap " + resp.command,{ fileName : "src/gmdebug/composer/ComposedResponse.hx", lineNumber : 51, className : "gmdebug.composer.ComposedResponse", methodName : "send"});
 					gmdebug_dap_LuaDebugger.inst.sendResponse(resp);
@@ -1679,13 +1893,13 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 				haxe_Log.trace("sending from dap " + aresp.command,{ fileName : "src/gmdebug/composer/ComposedResponse.hx", lineNumber : 51, className : "gmdebug.composer.ComposedResponse", methodName : "send"});
 				gmdebug_dap_LuaDebugger.inst.sendResponse(aresp);
 				sock.addListener("error",function(list) {
-					haxe_Log.trace(list,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 282, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
-					haxe_Log.trace(list.message,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 283, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
+					haxe_Log.trace(list,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 283, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
+					haxe_Log.trace(list.message,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 284, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
 					throw haxe_Exception.thrown("Socket error");
 				});
 				sock.addListener("error",function(x) {
-					haxe_Log.trace("could not recieve packet",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 287, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
-					haxe_Log.trace(x,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 288, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
+					haxe_Log.trace("could not recieve packet",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 288, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
+					haxe_Log.trace(x,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 289, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
 					_gthis.shutdown();
 					throw x;
 				});
@@ -1694,19 +1908,17 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 				});
 			});
 			luaServer.listen({ port : 56789, host : "localhost"},function() {
-				haxe_Log.trace(luaServer.address(),{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 297, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
+				haxe_Log.trace(luaServer.address(),{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 298, className : "gmdebug.dap.LuaDebugger", methodName : "startServer"});
 			});
 			break;
 		}
 	}
 	composeMessage(msg) {
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		return "Content-Length: " + len + "\r\n\r\n" + json;
 	}
 	sendToAll(msg) {
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		let msg1 = "Content-Length: " + len + "\r\n\r\n" + json;
@@ -1720,14 +1932,12 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 	}
 	sendToServer(msg) {
 		let tmp = this.clients[0].writeS;
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
 	}
 	sendToClient(client,msg) {
 		let tmp = this.clients[client].writeS;
-		haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
 		let json = haxe_format_JsonPrinter.print(msg,null,null);
 		let len = haxe_io_Bytes.ofString(json).length;
 		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
@@ -1737,10 +1947,10 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			gmdebug_dap_LuaDebugger.inst = this;
 		}
 		if(message.type == "request") {
-			haxe_Log.trace("recieved message from client " + message.command,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 345, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
+			haxe_Log.trace("recieved request from client " + message.command,{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 344, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
 			gmdebug_dap_Handlers.handle(message);
 		} else {
-			haxe_Log.trace("unhandled message from client",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 348, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
+			haxe_Log.trace("not a request from client",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 347, className : "gmdebug.dap.LuaDebugger", methodName : "handleMessage"});
 		}
 	}
 }
@@ -2238,6 +2448,10 @@ Object.assign(haxe_ValueException.prototype, {
 	__class__: haxe_ValueException
 	,value: null
 });
+var haxe_ds_Either = $hxEnums["haxe.ds.Either"] = { __ename__ : "haxe.ds.Either", __constructs__ : ["Left","Right"]
+	,Left: ($_=function(v) { return {_hx_index:0,v:v,__enum__:"haxe.ds.Either",toString:$estr}; },$_.__params__ = ["v"],$_)
+	,Right: ($_=function(v) { return {_hx_index:1,v:v,__enum__:"haxe.ds.Either",toString:$estr}; },$_.__params__ = ["v"],$_)
+};
 class haxe_ds_IntMap {
 	constructor() {
 		this.h = { };
@@ -3130,220 +3344,6 @@ class haxe_rtti_Meta {
 	}
 }
 haxe_rtti_Meta.__name__ = "haxe.rtti.Meta";
-class js_Boot {
-	static getClass(o) {
-		if(o == null) {
-			return null;
-		} else if(((o) instanceof Array)) {
-			return Array;
-		} else {
-			let cl = o.__class__;
-			if(cl != null) {
-				return cl;
-			}
-			let name = js_Boot.__nativeClassName(o);
-			if(name != null) {
-				return js_Boot.__resolveNativeClass(name);
-			}
-			return null;
-		}
-	}
-	static __string_rec(o,s) {
-		if(o == null) {
-			return "null";
-		}
-		if(s.length >= 5) {
-			return "<...>";
-		}
-		let t = typeof(o);
-		if(t == "function" && (o.__name__ || o.__ename__)) {
-			t = "object";
-		}
-		switch(t) {
-		case "function":
-			return "<function>";
-		case "object":
-			if(o.__enum__) {
-				let e = $hxEnums[o.__enum__];
-				let n = e.__constructs__[o._hx_index];
-				let con = e[n];
-				if(con.__params__) {
-					s = s + "\t";
-					return n + "(" + ((function($this) {
-						var $r;
-						let _g = [];
-						{
-							let _g1 = 0;
-							let _g2 = con.__params__;
-							while(true) {
-								if(!(_g1 < _g2.length)) {
-									break;
-								}
-								let p = _g2[_g1];
-								_g1 = _g1 + 1;
-								_g.push(js_Boot.__string_rec(o[p],s));
-							}
-						}
-						$r = _g;
-						return $r;
-					}(this))).join(",") + ")";
-				} else {
-					return n;
-				}
-			}
-			if(((o) instanceof Array)) {
-				let str = "[";
-				s += "\t";
-				let _g = 0;
-				let _g1 = o.length;
-				while(_g < _g1) {
-					let i = _g++;
-					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
-				}
-				str += "]";
-				return str;
-			}
-			let tostr;
-			try {
-				tostr = o.toString;
-			} catch( _g ) {
-				return "???";
-			}
-			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
-				let s2 = o.toString();
-				if(s2 != "[object Object]") {
-					return s2;
-				}
-			}
-			let str = "{\n";
-			s += "\t";
-			let hasp = o.hasOwnProperty != null;
-			let k = null;
-			for( k in o ) {
-			if(hasp && !o.hasOwnProperty(k)) {
-				continue;
-			}
-			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
-				continue;
-			}
-			if(str.length != 2) {
-				str += ", \n";
-			}
-			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
-			}
-			s = s.substring(1);
-			str += "\n" + s + "}";
-			return str;
-		case "string":
-			return o;
-		default:
-			return String(o);
-		}
-	}
-	static __interfLoop(cc,cl) {
-		while(true) {
-			if(cc == null) {
-				return false;
-			}
-			if(cc == cl) {
-				return true;
-			}
-			let intf = cc.__interfaces__;
-			if(intf != null && (cc.__super__ == null || cc.__super__.__interfaces__ != intf)) {
-				let _g = 0;
-				let _g1 = intf.length;
-				while(_g < _g1) {
-					let i = _g++;
-					let i1 = intf[i];
-					if(i1 == cl || js_Boot.__interfLoop(i1,cl)) {
-						return true;
-					}
-				}
-			}
-			cc = cc.__super__;
-		}
-	}
-	static __instanceof(o,cl) {
-		if(cl == null) {
-			return false;
-		}
-		switch(cl) {
-		case Array:
-			return ((o) instanceof Array);
-		case Bool:
-			return typeof(o) == "boolean";
-		case Dynamic:
-			return o != null;
-		case Float:
-			return typeof(o) == "number";
-		case Int:
-			if(typeof(o) == "number") {
-				return ((o | 0) === o);
-			} else {
-				return false;
-			}
-			break;
-		case String:
-			return typeof(o) == "string";
-		default:
-			if(o != null) {
-				if(typeof(cl) == "function") {
-					if(js_Boot.__downcastCheck(o,cl)) {
-						return true;
-					}
-				} else if(typeof(cl) == "object" && js_Boot.__isNativeObj(cl)) {
-					if(((o) instanceof cl)) {
-						return true;
-					}
-				}
-			} else {
-				return false;
-			}
-			if(cl == Class ? o.__name__ != null : false) {
-				return true;
-			}
-			if(cl == Enum ? o.__ename__ != null : false) {
-				return true;
-			}
-			return o.__enum__ != null ? $hxEnums[o.__enum__] == cl : false;
-		}
-	}
-	static __downcastCheck(o,cl) {
-		if(!((o) instanceof cl)) {
-			if(cl.__isInterface__) {
-				return js_Boot.__interfLoop(js_Boot.getClass(o),cl);
-			} else {
-				return false;
-			}
-		} else {
-			return true;
-		}
-	}
-	static __implements(o,iface) {
-		return js_Boot.__interfLoop(js_Boot.getClass(o),iface);
-	}
-	static __cast(o,t) {
-		if(o == null || js_Boot.__instanceof(o,t)) {
-			return o;
-		} else {
-			throw haxe_Exception.thrown("Cannot cast " + Std.string(o) + " to " + Std.string(t));
-		}
-	}
-	static __nativeClassName(o) {
-		let name = js_Boot.__toStr.call(o).slice(8,-1);
-		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
-			return null;
-		}
-		return name;
-	}
-	static __isNativeObj(o) {
-		return js_Boot.__nativeClassName(o) != null;
-	}
-	static __resolveNativeClass(name) {
-		return $global[name];
-	}
-}
-js_Boot.__name__ = "js.Boot";
 var js_node_ChildProcess = require("child_process");
 var js_node_Fs = require("fs");
 var js_node_Net = require("net");
@@ -3368,6 +3368,7 @@ class sys_FileSystem {
 			js_node_Fs.accessSync(path);
 			return true;
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			return false;
 		}
 	}
@@ -3454,60 +3455,55 @@ class test_HandlerTests extends utest_Test {
 		};
 		let launchArgs = { serverFolder : "/home/g/gmodDS/garrysmod/", programPath : "auto"};
 		test_TestHelper.send(new gmdebug_composer_ComposedRequest("launch",launchArgs));
-		this.session.waitForEvent("initialized").handle(function(__t0) {
-			let __t0_result;
-			let _g = tink_await_OutcomeTools.getOutcome(null,__t0);
+		this.session.waitForEvent("initialized").handle(function(__t6) {
+			let __t6_result;
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t6);
 			switch(_g._hx_index) {
 			case 0:
 				let v = _g.data;
-				__t0_result = v;
+				__t6_result = v;
 				break;
 			case 1:
 				let e = _g.failure;
 				throw haxe_Exception.thrown(e);
 			}
 			test_TestHelper.send(new gmdebug_composer_ComposedRequest("configurationDone",{ }));
-			async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 36, className : "test.HandlerTests", methodName : "setupClass"});
+			async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 39, className : "test.HandlerTests", methodName : "setupClass"});
 		});
 	}
 	testPause(async) {
+		haxe_Log.trace("starting test",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 44, className : "test.HandlerTests", methodName : "testPause"});
 		test_TestHelper.send(new gmdebug_composer_ComposedRequest("pause",{ threadId : 0}));
+		let pause = tink_core_Future.and(this.session.waitForResponse("pause"),this.session.waitForEvent("stopped"));
 		let _gthis = this;
-		this.session.waitForResponse("pause").handle(function(__t1) {
-			let __t1_result;
-			let _g = tink_await_OutcomeTools.getOutcome(null,__t1);
+		pause.handle(function(__t7) {
+			let __t7_result;
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t7);
 			switch(_g._hx_index) {
 			case 0:
-				__t1_result = _g.data;
+				__t7_result = _g.data;
 				break;
 			case 1:
 				throw haxe_Exception.thrown(_g.failure);
 			}
-			let pause = __t1_result;
-			test_TestHelper.ok(pause);
-			_gthis.session.waitForEvent("stopped").handle(function(__t2) {
-				let _g = tink_await_OutcomeTools.getOutcome(null,__t2);
+			let dothing = __t7_result;
+			haxe_Log.trace("found both",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 48, className : "test.HandlerTests", methodName : "testPause"});
+			test_TestHelper.ok(dothing.a);
+			test_TestHelper.send(new gmdebug_composer_ComposedRequest("continue",{ threadId : 0}));
+			_gthis.session.waitForResponse("continue").handle(function(__t8) {
+				let __t8_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t8);
 				switch(_g._hx_index) {
 				case 0:
+					__t8_result = _g.data;
 					break;
 				case 1:
 					throw haxe_Exception.thrown(_g.failure);
 				}
-				test_TestHelper.send(new gmdebug_composer_ComposedRequest("continue",{ threadId : 0}));
-				_gthis.session.waitForResponse("continue").handle(function(__t3) {
-					let __t3_result;
-					let _g = tink_await_OutcomeTools.getOutcome(null,__t3);
-					switch(_g._hx_index) {
-					case 0:
-						__t3_result = _g.data;
-						break;
-					case 1:
-						throw haxe_Exception.thrown(_g.failure);
-					}
-					let cont = __t3_result;
-					test_TestHelper.ok(cont);
-					async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 48, className : "test.HandlerTests", methodName : "testPause"});
-				});
+				let cont = __t8_result;
+				test_TestHelper.ok(cont);
+				haxe_Log.trace("continued ok",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 53, className : "test.HandlerTests", methodName : "testPause"});
+				async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 54, className : "test.HandlerTests", methodName : "testPause"});
 			});
 		});
 	}
@@ -3520,40 +3516,114 @@ class test_HandlerTests extends utest_Test {
 	testBreakpoint(async) {
 		this.sendBreakpoint();
 		let _gthis = this;
-		this.session.waitForResponse("setBreakpoints").handle(function(__t4) {
-			let __t4_result;
-			let _g = tink_await_OutcomeTools.getOutcome(null,__t4);
+		this.session.waitForResponse("setBreakpoints").handle(function(__t9) {
+			let __t9_result;
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t9);
 			switch(_g._hx_index) {
 			case 0:
-				__t4_result = _g.data;
+				__t9_result = _g.data;
 				break;
 			case 1:
 				throw haxe_Exception.thrown(_g.failure);
 			}
-			let rep = __t4_result;
+			let rep = __t9_result;
 			test_TestHelper.ok(rep);
-			_gthis.session.waitForEvent("stopped").handle(function(__t5) {
-				let __t5_result;
-				let _g = tink_await_OutcomeTools.getOutcome(null,__t5);
+			_gthis.session.waitForEvent("stopped").handle(function(__t10) {
+				let __t10_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t10);
 				switch(_g._hx_index) {
 				case 0:
-					__t5_result = _g.data;
+					__t10_result = _g.data;
 					break;
 				case 1:
 					throw haxe_Exception.thrown(_g.failure);
 				}
-				let breakpoint = __t5_result;
-				utest_Assert.equals("breakpoint",breakpoint.body.reason,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 73, className : "test.HandlerTests", methodName : "testBreakpoint"});
+				let breakpoint = __t10_result;
+				utest_Assert.equals("breakpoint",breakpoint.body.reason,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 79, className : "test.HandlerTests", methodName : "testBreakpoint"});
 				_gthis.ridBreakpoint();
-				async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 75, className : "test.HandlerTests", methodName : "testBreakpoint"});
+				_gthis.session.waitForResponse("setBreakpoints").handle(function(__t11) {
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t11);
+					switch(_g._hx_index) {
+					case 0:
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+					async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 82, className : "test.HandlerTests", methodName : "testBreakpoint"});
+				});
+			});
+		});
+	}
+	wait(ms) {
+		return tink_core_Future.irreversible(function(cb) {
+			haxe_Timer.delay(function() {
+				cb(null);
+			},ms);
+		});
+	}
+	testBreakpointOnOff(async) {
+		this.sendBreakpoint();
+		let _gthis = this;
+		this.session.waitForResponse("setBreakpoints").handle(function(__t12) {
+			let __t12_result;
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t12);
+			switch(_g._hx_index) {
+			case 0:
+				__t12_result = _g.data;
+				break;
+			case 1:
+				throw haxe_Exception.thrown(_g.failure);
+			}
+			let rep = __t12_result;
+			test_TestHelper.ok(rep);
+			_gthis.session.waitForEvent("stopped").handle(function(__t13) {
+				let __t13_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t13);
+				switch(_g._hx_index) {
+				case 0:
+					__t13_result = _g.data;
+					break;
+				case 1:
+					throw haxe_Exception.thrown(_g.failure);
+				}
+				let breakpoint = __t13_result;
+				utest_Assert.equals("breakpoint",breakpoint.body.reason,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 96, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+				_gthis.ridBreakpoint();
+				_gthis.session.waitForResponse("setBreakpoints").handle(function(__t14) {
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t14);
+					switch(_g._hx_index) {
+					case 0:
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+					test_TestHelper.send(new gmdebug_composer_ComposedRequest("continue",{ threadId : 0}));
+					async.setTimeout(600,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 102, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+					let pass = _gthis.wait(500);
+					let stoppedAgain = _gthis.session.waitForEvent("stopped");
+					let result = tink_core_Future.either(stoppedAgain,pass);
+					result.handle(function(val) {
+						haxe_Log.trace("dot dot dot",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 108, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+						switch(val._hx_index) {
+						case 0:
+							utest_Assert.fail("Stopped after breakpoint removed",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 111, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+							break;
+						case 1:
+							haxe_Log.trace("pass",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 113, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+							utest_Assert.pass(null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 114, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+							break;
+						}
+						async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 117, className : "test.HandlerTests", methodName : "testBreakpointOnOff"});
+					});
+				});
 			});
 		});
 	}
 	testStackHeight(async) {
 		this.sendBreakpoint();
 		let _gthis = this;
-		this.session.waitForEvent("stopped").handle(function(__t6) {
-			let _g = tink_await_OutcomeTools.getOutcome(null,__t6);
+		this.session.waitForEvent("stopped").handle(function(__t15) {
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t15);
 			switch(_g._hx_index) {
 			case 0:
 				break;
@@ -3561,43 +3631,212 @@ class test_HandlerTests extends utest_Test {
 				throw haxe_Exception.thrown(_g.failure);
 			}
 			test_TestHelper.send(new gmdebug_composer_ComposedRequest("stackTrace",{ threadId : 0}));
-			_gthis.session.waitForResponse("stackTrace").handle(function(__t7) {
-				let __t7_result;
-				let _g = tink_await_OutcomeTools.getOutcome(null,__t7);
+			_gthis.session.waitForResponse("stackTrace").handle(function(__t16) {
+				let __t16_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t16);
 				switch(_g._hx_index) {
 				case 0:
-					__t7_result = _g.data;
+					__t16_result = _g.data;
 					break;
 				case 1:
 					throw haxe_Exception.thrown(_g.failure);
 				}
-				let stackRep = __t7_result;
+				let stackRep = __t16_result;
 				let stackFrames = stackRep.body.stackFrames;
-				utest_Assert.equals(1,stackFrames.length,"Incorrect stack height!!!",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 85, className : "test.HandlerTests", methodName : "testStackHeight"});
-				utest_Assert.equals(84,stackFrames[0].line,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 86, className : "test.HandlerTests", methodName : "testStackHeight"});
+				utest_Assert.equals(1,stackFrames.length,"Incorrect stack height!!!",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 131, className : "test.HandlerTests", methodName : "testStackHeight"});
+				utest_Assert.equals(84,stackFrames[0].line,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 132, className : "test.HandlerTests", methodName : "testStackHeight"});
 				_gthis.ridBreakpoint();
-				async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 88, className : "test.HandlerTests", methodName : "testStackHeight"});
+				_gthis.session.waitForResponse("setBreakpoints").handle(function(__t17) {
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t17);
+					switch(_g._hx_index) {
+					case 0:
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+					async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 135, className : "test.HandlerTests", methodName : "testStackHeight"});
+				});
+			});
+		});
+	}
+	testScopes(async) {
+		this.sendBreakpoint();
+		let _gthis = this;
+		this.session.waitForEvent("stopped").handle(function(__t18) {
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t18);
+			switch(_g._hx_index) {
+			case 0:
+				break;
+			case 1:
+				throw haxe_Exception.thrown(_g.failure);
+			}
+			test_TestHelper.send(new gmdebug_composer_ComposedRequest("stackTrace",{ threadId : 0}));
+			_gthis.session.waitForResponse("stackTrace").handle(function(__t19) {
+				let __t19_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t19);
+				switch(_g._hx_index) {
+				case 0:
+					__t19_result = _g.data;
+					break;
+				case 1:
+					throw haxe_Exception.thrown(_g.failure);
+				}
+				let stackRep = __t19_result;
+				let stackFrames = stackRep.body.stackFrames;
+				test_TestHelper.send(new gmdebug_composer_ComposedRequest("scopes",{ frameId : stackFrames[0].id}));
+				_gthis.session.waitForResponse("scopes").handle(function(__t20) {
+					let __t20_result;
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t20);
+					switch(_g._hx_index) {
+					case 0:
+						__t20_result = _g.data;
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+					let scopesRep = __t20_result;
+					test_TestHelper.ok(scopesRep);
+					utest_Assert.notEquals(0,scopesRep.body.scopes.length,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 149, className : "test.HandlerTests", methodName : "testScopes"});
+					_gthis.ridBreakpoint();
+					_gthis.session.waitForResponse("setBreakpoints").handle(function(__t21) {
+						let _g = tink_await_OutcomeTools.getOutcome(null,__t21);
+						switch(_g._hx_index) {
+						case 0:
+							break;
+						case 1:
+							throw haxe_Exception.thrown(_g.failure);
+						}
+						async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 152, className : "test.HandlerTests", methodName : "testScopes"});
+					});
+				});
+			});
+		});
+	}
+	testArgs(async) {
+		this.sendBreakpoint();
+		let _gthis = this;
+		this.session.waitForEvent("stopped").handle(function(__t22) {
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t22);
+			switch(_g._hx_index) {
+			case 0:
+				break;
+			case 1:
+				throw haxe_Exception.thrown(_g.failure);
+			}
+			test_TestHelper.send(new gmdebug_composer_ComposedRequest("stackTrace",{ threadId : 0}));
+			_gthis.session.waitForResponse("stackTrace").handle(function(__t23) {
+				let __t23_result;
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t23);
+				switch(_g._hx_index) {
+				case 0:
+					__t23_result = _g.data;
+					break;
+				case 1:
+					throw haxe_Exception.thrown(_g.failure);
+				}
+				let stackRep = __t23_result;
+				let stackFrames = stackRep.body.stackFrames;
+				test_TestHelper.send(new gmdebug_composer_ComposedRequest("scopes",{ frameId : stackFrames[0].id}));
+				_gthis.session.waitForResponse("scopes").handle(function(__t24) {
+					let __t24_result;
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t24);
+					switch(_g._hx_index) {
+					case 0:
+						__t24_result = _g.data;
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+					let scopesRep = __t24_result;
+					utest_Assert.isTrue(Lambda.exists(scopesRep.body.scopes,function(scope) {
+						return scope.name == "Arguments";
+					}),"No arguments scope...",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 165, className : "test.HandlerTests", methodName : "testArgs"});
+					test_TestHelper.send(new gmdebug_composer_ComposedRequest("variables",{ variablesReference : gmdebug_VariableReference.encode(gmdebug_VariableReferenceVal.FrameLocal(0,stackFrames[0].id,0))}));
+					_gthis.session.waitForResponse("variables").handle(function(__t25) {
+						let __t25_result;
+						let _g = tink_await_OutcomeTools.getOutcome(null,__t25);
+						switch(_g._hx_index) {
+						case 0:
+							__t25_result = _g.data;
+							break;
+						case 1:
+							throw haxe_Exception.thrown(_g.failure);
+						}
+						let variablesRep = __t25_result;
+						test_TestHelper.ok(variablesRep);
+						let variablesArr = variablesRep.body.variables;
+						utest_Assert.equals(2,variablesArr.length,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 172, className : "test.HandlerTests", methodName : "testArgs"});
+						utest_Assert.equals("name",variablesArr[0].name,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 173, className : "test.HandlerTests", methodName : "testArgs"});
+						utest_Assert.equals("gm",variablesArr[1].name,null,{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 174, className : "test.HandlerTests", methodName : "testArgs"});
+						_gthis.ridBreakpoint();
+						_gthis.session.waitForResponse("setBreakpoints").handle(function(__t26) {
+							let _g = tink_await_OutcomeTools.getOutcome(null,__t26);
+							switch(_g._hx_index) {
+							case 0:
+								break;
+							case 1:
+								throw haxe_Exception.thrown(_g.failure);
+							}
+							async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 177, className : "test.HandlerTests", methodName : "testArgs"});
+						});
+					});
+				});
+			});
+		});
+	}
+	testSteps() {
+		this.sendBreakpoint();
+		let _gthis = this;
+		this.session.waitForEvent("stopped").handle(function(__t27) {
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t27);
+			switch(_g._hx_index) {
+			case 0:
+				break;
+			case 1:
+				throw haxe_Exception.thrown(_g.failure);
+			}
+			test_TestHelper.send(new gmdebug_composer_ComposedRequest("stackTrace",{ threadId : 0}));
+			_gthis.session.waitForResponse("stackTrace").handle(function(__t28) {
+				let _g = tink_await_OutcomeTools.getOutcome(null,__t28);
+				switch(_g._hx_index) {
+				case 0:
+					break;
+				case 1:
+					throw haxe_Exception.thrown(_g.failure);
+				}
+				test_TestHelper.send(new gmdebug_composer_ComposedRequest("stepIn",{ threadId : 0}));
+				_gthis.session.waitForEvent("stopped").handle(function(__t29) {
+					let _g = tink_await_OutcomeTools.getOutcome(null,__t29);
+					switch(_g._hx_index) {
+					case 0:
+						break;
+					case 1:
+						throw haxe_Exception.thrown(_g.failure);
+					}
+				});
 			});
 		});
 	}
 	teardown(async) {
 		this.session.clearHandlers();
+		haxe_Log.trace("tearing down...",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 195, className : "test.HandlerTests", methodName : "teardown"});
 		test_TestHelper.send(new gmdebug_composer_ComposedRequest("continue",{ threadId : 0}));
 		let _gthis = this;
-		this.session.waitForResponse("continue").handle(function(__t8) {
-			let __t8_result;
-			let _g = tink_await_OutcomeTools.getOutcome(null,__t8);
+		this.session.waitForResponse("continue").handle(function(__t30) {
+			let __t30_result;
+			let _g = tink_await_OutcomeTools.getOutcome(null,__t30);
 			switch(_g._hx_index) {
 			case 0:
-				__t8_result = _g.data;
+				__t30_result = _g.data;
 				break;
 			case 1:
 				throw haxe_Exception.thrown(_g.failure);
 			}
-			let contRep = __t8_result;
+			let contRep = __t30_result;
 			test_TestHelper.ok(contRep);
+			haxe_Log.trace("tore down",{ fileName : "test/src/test/HandlerTests.hx", lineNumber : 199, className : "test.HandlerTests", methodName : "teardown"});
 			_gthis.session.clearHandlers();
-			async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 98, className : "test.HandlerTests", methodName : "teardown"});
+			async.done({ fileName : "test/src/test/HandlerTests.hx", lineNumber : 201, className : "test.HandlerTests", methodName : "teardown"});
 		});
 	}
 	teardownClass() {
@@ -3612,7 +3851,7 @@ class test_HandlerTests extends utest_Test {
 			return async;
 		};
 		init.accessories.teardown = function() {
-			let async = new utest_Async(1000);
+			let async = new utest_Async(2000);
 			_gthis.teardown(async);
 			return async;
 		};
@@ -3620,19 +3859,38 @@ class test_HandlerTests extends utest_Test {
 			_gthis.teardownClass();
 			return utest_Async.getResolved();
 		};
-		init.tests.push({ name : "testStackHeight", dependencies : [], execute : function() {
+		init.tests.push({ name : "testBreakpoint", dependencies : [], execute : function() {
+			let async = new utest_Async(2000);
+			_gthis.testBreakpoint(async);
+			return async;
+		}});
+		init.tests.push({ name : "testStackHeight", dependencies : ["testBreakpoint"], execute : function() {
 			let async = new utest_Async(1000);
 			_gthis.testStackHeight(async);
 			return async;
+		}});
+		init.tests.push({ name : "testScopes", dependencies : ["testStackHeight"], execute : function() {
+			let async = new utest_Async(1000);
+			_gthis.testScopes(async);
+			return async;
+		}});
+		init.tests.push({ name : "testSteps", dependencies : ["testScopes"], execute : function() {
+			_gthis.testSteps();
+			return utest_Async.getResolved();
 		}});
 		init.tests.push({ name : "testPause", dependencies : [], execute : function() {
 			let async = new utest_Async(1000);
 			_gthis.testPause(async);
 			return async;
 		}});
-		init.tests.push({ name : "testBreakpoint", dependencies : [], execute : function() {
+		init.tests.push({ name : "testBreakpointOnOff", dependencies : ["testBreakpoint"], execute : function() {
+			let async = new utest_Async(2500);
+			_gthis.testBreakpointOnOff(async);
+			return async;
+		}});
+		init.tests.push({ name : "testArgs", dependencies : ["testStackHeight"], execute : function() {
 			let async = new utest_Async(1000);
-			_gthis.testBreakpoint(async);
+			_gthis.testArgs(async);
 			return async;
 		}});
 		return init;
@@ -3659,26 +3917,29 @@ class test_LuaDebuggerTest extends gmdebug_dap_LuaDebugger {
 	}
 	sendResponse(response) {
 		let responseName = response.command;
-		if(Object.prototype.hasOwnProperty.call(this.responseEvents.h,responseName)) {
-			Lambda.iter(this.responseEvents.h[responseName],function(fun) {
-				fun(response);
-			});
+		let handlers = this.responseEvents.h[responseName];
+		if(handlers != null) {
+			haxe_Log.trace("bye " + responseName,{ fileName : "test/src/test/LuaDebuggerTest.hx", lineNumber : 42, className : "test.LuaDebuggerTest", methodName : "sendResponse"});
 			let _this = this.responseEvents;
 			if(Object.prototype.hasOwnProperty.call(_this.h,responseName)) {
 				delete(_this.h[responseName]);
 			}
+			Lambda.iter(handlers,function(fun) {
+				fun(response);
+			});
 		}
 	}
 	sendEvent(event) {
 		let eventName = event.event;
+		let handlers = this.eventEvents.h[eventName];
 		if(Object.prototype.hasOwnProperty.call(this.eventEvents.h,eventName)) {
-			Lambda.iter(this.eventEvents.h[eventName],function(fun) {
-				fun(event);
-			});
 			let _this = this.eventEvents;
 			if(Object.prototype.hasOwnProperty.call(_this.h,eventName)) {
 				delete(_this.h[eventName]);
 			}
+			Lambda.iter(handlers,function(fun) {
+				fun(event);
+			});
 		}
 	}
 	shutdown() {
@@ -3694,9 +3955,7 @@ class test_LuaDebuggerTest extends gmdebug_dap_LuaDebugger {
 			let _g3_value = _this[_g2_current];
 			let _g3_key = _g2_current++;
 			let client = _g3_value.writeS;
-			let msg = new gmdebug_composer_ComposedRequest("disconnect",{ });
-			haxe_Log.trace("composing message",{ fileName : "src/gmdebug/dap/LuaDebugger.hx", lineNumber : 318, className : "gmdebug.dap.LuaDebugger", methodName : "composeMessage"});
-			let json = haxe_format_JsonPrinter.print(msg,null,null);
+			let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedRequest("disconnect",{ }),null,null);
 			let len = haxe_io_Bytes.ofString(json).length;
 			client.write("Content-Length: " + len + "\r\n\r\n" + json);
 			_g3_value.readS.end();
@@ -3812,6 +4071,36 @@ tink_core_LinkObject.__isInterface__ = true;
 Object.assign(tink_core_LinkObject.prototype, {
 	__class__: tink_core_LinkObject
 	,cancel: null
+});
+class tink_core__$Callback_LinkPair {
+	constructor(a,b) {
+		this.dissolved = false;
+		this.a = a;
+		this.b = b;
+	}
+	cancel() {
+		if(!this.dissolved) {
+			this.dissolved = true;
+			let this1 = this.a;
+			if(this1 != null) {
+				this1.cancel();
+			}
+			let this2 = this.b;
+			if(this2 != null) {
+				this2.cancel();
+			}
+			this.a = null;
+			this.b = null;
+		}
+	}
+}
+tink_core__$Callback_LinkPair.__name__ = "tink.core._Callback.LinkPair";
+tink_core__$Callback_LinkPair.__interfaces__ = [tink_core_LinkObject];
+Object.assign(tink_core__$Callback_LinkPair.prototype, {
+	__class__: tink_core__$Callback_LinkPair
+	,a: null
+	,b: null
+	,dissolved: null
 });
 class tink_core__$Callback_ListCell {
 	constructor(cb,list) {
@@ -4121,7 +4410,23 @@ tink_core__$Future_FutureObject.__name__ = "tink.core._Future.FutureObject";
 tink_core__$Future_FutureObject.__isInterface__ = true;
 Object.assign(tink_core__$Future_FutureObject.prototype, {
 	__class__: tink_core__$Future_FutureObject
+	,getStatus: null
 	,handle: null
+});
+class tink_core__$Future_NeverFuture {
+	constructor() {
+	}
+	getStatus() {
+		return tink_core_FutureStatus.NeverEver;
+	}
+	handle(callback) {
+		return null;
+	}
+}
+tink_core__$Future_NeverFuture.__name__ = "tink.core._Future.NeverFuture";
+tink_core__$Future_NeverFuture.__interfaces__ = [tink_core__$Future_FutureObject];
+Object.assign(tink_core__$Future_NeverFuture.prototype, {
+	__class__: tink_core__$Future_NeverFuture
 });
 class tink_core__$Lazy_Computable {
 }
@@ -4129,7 +4434,9 @@ tink_core__$Lazy_Computable.__name__ = "tink.core._Lazy.Computable";
 tink_core__$Lazy_Computable.__isInterface__ = true;
 Object.assign(tink_core__$Lazy_Computable.prototype, {
 	__class__: tink_core__$Lazy_Computable
+	,isComputed: null
 	,compute: null
+	,underlying: null
 });
 class tink_core__$Lazy_LazyObject {
 }
@@ -4144,10 +4451,16 @@ class tink_core__$Lazy_LazyConst {
 	constructor(value) {
 		this.value = value;
 	}
+	isComputed() {
+		return true;
+	}
 	get() {
 		return this.value;
 	}
 	compute() {
+	}
+	underlying() {
+		return null;
 	}
 }
 tink_core__$Lazy_LazyConst.__name__ = "tink.core._Lazy.LazyConst";
@@ -4156,7 +4469,95 @@ Object.assign(tink_core__$Lazy_LazyConst.prototype, {
 	__class__: tink_core__$Lazy_LazyConst
 	,value: null
 });
+class tink_core__$Future_SyncFuture {
+	constructor(value) {
+		this.value = value;
+	}
+	getStatus() {
+		return tink_core_FutureStatus.Ready(this.value);
+	}
+	handle(cb) {
+		tink_core_Callback.invoke(cb,tink_core_Lazy.get(this.value));
+		return null;
+	}
+}
+tink_core__$Future_SyncFuture.__name__ = "tink.core._Future.SyncFuture";
+tink_core__$Future_SyncFuture.__interfaces__ = [tink_core__$Future_FutureObject];
+Object.assign(tink_core__$Future_SyncFuture.prototype, {
+	__class__: tink_core__$Future_SyncFuture
+	,value: null
+});
 class tink_core_Future {
+	static first(this1,that) {
+		let _g = this1;
+		switch(_g.getStatus()._hx_index) {
+		case 3:
+			switch(that.getStatus()._hx_index) {
+			case 3:
+				return _g;
+			case 4:
+				return _g;
+			default:
+				return _g;
+			}
+			break;
+		case 4:
+			let v = that;
+			return v;
+		default:
+			switch(that.getStatus()._hx_index) {
+			case 3:
+				let v1 = that;
+				return v1;
+			case 4:
+				return _g;
+			default:
+				return new tink_core__$Future_SuspendableFuture(function(fire) {
+					return new tink_core__$Callback_LinkPair(this1.handle(fire),that.handle(fire));
+				});
+			}
+		}
+	}
+	static map(this1,f,gather) {
+		let _g = this1.getStatus();
+		switch(_g._hx_index) {
+		case 3:
+			let this2 = _g.result;
+			let f1 = f;
+			return new tink_core__$Future_SyncFuture(new tink_core__$Lazy_LazyFunc(function() {
+				return f1(this2.get());
+			},this2));
+		case 4:
+			return tink_core_Future.NEVER;
+		default:
+			return new tink_core__$Future_SuspendableFuture(function(fire) {
+				return this1.handle(function(v) {
+					fire(f(v));
+				});
+			});
+		}
+	}
+	static merge(this1,that,combine) {
+		let _g = that.getStatus();
+		if(this1.getStatus()._hx_index == 4) {
+			return tink_core_Future.NEVER;
+		} else if(_g._hx_index == 4) {
+			return tink_core_Future.NEVER;
+		} else {
+			return new tink_core__$Future_SuspendableFuture(function($yield) {
+				let check = function(v) {
+					let _g = that.getStatus();
+					let _g1 = this1.getStatus();
+					if(_g1._hx_index == 3) {
+						if(_g._hx_index == 3) {
+							$yield(combine(tink_core_Lazy.get(_g1.result),tink_core_Lazy.get(_g.result)));
+						}
+					}
+				};
+				return new tink_core__$Callback_LinkPair(this1.handle(check),that.handle(check));
+			});
+		}
+	}
 	static ofJsPromise(promise) {
 		return tink_core_Future.irreversible(function(cb) {
 			promise.then(function(a) {
@@ -4174,6 +4575,15 @@ class tink_core_Future {
 		return new tink_core__$Future_SuspendableFuture(function($yield) {
 			init($yield);
 			return null;
+		});
+	}
+	static either(a,b) {
+		return tink_core_Future.first(tink_core_Future.map(a,haxe_ds_Either.Left),tink_core_Future.map(b,haxe_ds_Either.Right));
+	}
+	static and(a,b) {
+		return tink_core_Future.merge(a,b,function(a,b) {
+			let this1 = new tink_core_MPair(a,b);
+			return this1;
 		});
 	}
 }
@@ -4206,6 +4616,9 @@ class tink_core__$Future_SuspendableFuture {
 				_gthis.arm();
 			}
 		};
+	}
+	getStatus() {
+		return this.status;
 	}
 	trigger(value) {
 		if(this.status._hx_index != 3) {
@@ -4267,10 +4680,76 @@ class tink_core_Lazy {
 		return this1.get();
 	}
 }
+class tink_core__$Lazy_LazyFunc {
+	constructor(f,from) {
+		this.busy = false;
+		this.f = f;
+		this.from = from;
+	}
+	underlying() {
+		return this.from;
+	}
+	isComputed() {
+		return this.f == null;
+	}
+	get() {
+		return this.result;
+	}
+	compute() {
+		if(this.busy) {
+			throw haxe_Exception.thrown(new tink_core_TypedError(null,"circular lazyness",{ fileName : "tink/core/Lazy.hx", lineNumber : 85, className : "tink.core._Lazy.LazyFunc", methodName : "compute"}));
+		}
+		let _g = this.f;
+		if(_g != null) {
+			this.busy = true;
+			this.f = null;
+			let _g1 = this.from;
+			if(_g1 != null) {
+				let cur = _g1;
+				this.from = null;
+				let stack = [];
+				while(cur != null && !cur.isComputed()) {
+					stack.push(cur);
+					cur = cur.underlying();
+				}
+				stack.reverse();
+				let _g = 0;
+				while(_g < stack.length) {
+					let c = stack[_g];
+					++_g;
+					c.compute();
+				}
+			}
+			this.result = _g();
+			this.busy = false;
+		}
+	}
+}
+tink_core__$Lazy_LazyFunc.__name__ = "tink.core._Lazy.LazyFunc";
+tink_core__$Lazy_LazyFunc.__interfaces__ = [tink_core__$Lazy_LazyObject];
+Object.assign(tink_core__$Lazy_LazyFunc.prototype, {
+	__class__: tink_core__$Lazy_LazyFunc
+	,f: null
+	,from: null
+	,result: null
+	,busy: null
+});
 var tink_core_Outcome = $hxEnums["tink.core.Outcome"] = { __ename__ : "tink.core.Outcome", __constructs__ : ["Success","Failure"]
 	,Success: ($_=function(data) { return {_hx_index:0,data:data,__enum__:"tink.core.Outcome",toString:$estr}; },$_.__params__ = ["data"],$_)
 	,Failure: ($_=function(failure) { return {_hx_index:1,failure:failure,__enum__:"tink.core.Outcome",toString:$estr}; },$_.__params__ = ["failure"],$_)
 };
+class tink_core_MPair {
+	constructor(a,b) {
+		this.a = a;
+		this.b = b;
+	}
+}
+tink_core_MPair.__name__ = "tink.core.MPair";
+Object.assign(tink_core_MPair.prototype, {
+	__class__: tink_core_MPair
+	,a: null
+	,b: null
+});
 class utest_Assert {
 	static isTrue(cond,msg,pos) {
 		if(utest_Assert.results == null) {
@@ -4280,6 +4759,18 @@ class utest_Assert {
 			utest_Assert.results.add(utest_Assertation.Success(pos));
 		} else {
 			utest_Assert.results.add(utest_Assertation.Failure(msg != null ? msg : "expected true",pos));
+		}
+		return cond;
+	}
+	static notEquals(expected,value,msg,pos) {
+		let cond = expected != value;
+		if(utest_Assert.results == null) {
+			throw haxe_Exception.thrown("Assert at " + pos.fileName + ":" + pos.lineNumber + " out of context. Most likely you are trying to assert after a test timeout.");
+		}
+		if(cond) {
+			utest_Assert.results.add(utest_Assertation.Success(pos));
+		} else {
+			utest_Assert.results.add(utest_Assertation.Failure(msg != null ? msg : "expected " + utest_Assert.q(expected) + " and test value " + utest_Assert.q(value) + " should be different",pos));
 		}
 		return cond;
 	}
@@ -4749,6 +5240,19 @@ class utest_Async {
 			cb();
 		}
 	}
+	setTimeout(timeoutMs,pos) {
+		if(this.resolved) {
+			throw haxe_Exception.thrown("Cannot setTimeout(" + timeoutMs + ") at " + pos.fileName + ":" + pos.lineNumber + " because async is done.");
+		}
+		if(this.timedOut) {
+			throw haxe_Exception.thrown("Cannot setTimeout(" + timeoutMs + ") at " + pos.fileName + ":" + pos.lineNumber + " because async is timed out.");
+		}
+		this.timer.stop();
+		this.timeoutMs = timeoutMs;
+		let hrtime = process.hrtime();
+		let delay = timeoutMs - Math.round(1000 * (hrtime[0] + hrtime[1] / 1e9 - this.startTime));
+		this.timer = haxe_Timer.delay($bind(this,this.setTimedOutState),delay);
+	}
 	then(cb) {
 		if(this.resolved) {
 			cb();
@@ -4803,6 +5307,7 @@ class utest_Dispatcher {
 			}
 			return true;
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			if(js_Boot.__instanceof(haxe_Exception.caught(_g).unwrap(),utest__$Dispatcher_EventException)) {
 				return false;
 			} else {
@@ -4831,6 +5336,7 @@ class utest_Notifier {
 			}
 			return true;
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			if(js_Boot.__instanceof(haxe_Exception.caught(_g).unwrap(),utest__$Dispatcher_EventException)) {
 				return false;
 			} else {
@@ -4885,6 +5391,7 @@ class utest_TestHandler {
 				this.executeFixtureMethod();
 			}
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.SetupError(_g1,utest_TestHandler.exceptionStack()));
 		}
@@ -4897,6 +5404,7 @@ class utest_TestHandler {
 		try {
 			this.executeMethod(this.fixture.method);
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.Error(_g1,utest_TestHandler.exceptionStack()));
 		}
@@ -4966,6 +5474,7 @@ class utest_TestHandler {
 				handler.bindHandler();
 				f();
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				let _g1 = haxe_Exception.caught(_g).unwrap();
 				handler.results.add(utest_Assertation.AsyncError(_g1,utest_TestHandler.exceptionStack(0)));
 			}
@@ -4987,6 +5496,7 @@ class utest_TestHandler {
 				handler.bindHandler();
 				f(e);
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				let _g1 = haxe_Exception.caught(_g).unwrap();
 				handler.results.add(utest_Assertation.AsyncError(_g1,utest_TestHandler.exceptionStack(0)));
 			}
@@ -5038,6 +5548,7 @@ class utest_TestHandler {
 			this.executeMethod(this.fixture.teardown);
 			this.executeAsyncMethod(this.fixture.teardownAsync,complete);
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.TeardownError(_g1,utest_TestHandler.exceptionStack(2)));
 		}
@@ -5098,6 +5609,7 @@ class utest_ITestHandler extends utest_TestHandler {
 		try {
 			this.setupAsync = this.fixture.setupMethod();
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.SetupError(_g1,haxe_CallStack.exceptionStack()));
 			this.completedFinally();
@@ -5117,6 +5629,7 @@ class utest_ITestHandler extends utest_TestHandler {
 		try {
 			this.testAsync = this.test.execute();
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.Error(_g1,haxe_CallStack.exceptionStack()));
 			this.runTeardown();
@@ -5143,6 +5656,7 @@ class utest_ITestHandler extends utest_TestHandler {
 		try {
 			this.teardownAsync = this.fixture.teardownMethod();
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			let _g1 = haxe_Exception.caught(_g).unwrap();
 			this.results.add(utest_Assertation.TeardownError(_g1,haxe_CallStack.exceptionStack()));
 			this.completedFinally();
@@ -5327,6 +5841,7 @@ class utest_Runner {
 		try {
 			return Reflect.isFunction(Reflect.field(test,name));
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			return false;
 		}
 	}
@@ -5487,6 +6002,7 @@ class utest__$Runner_ITestRunner {
 			try {
 				this.setupAsync = data.setupClass();
 			} catch( _g ) {
+				haxe_NativeStackTrace.lastError = _g;
 				this.setupFailed(utest_Assertation.SetupError("setupClass failed: " + Std.string(haxe_Exception.caught(_g).unwrap()),haxe_CallStack.exceptionStack()));
 				return;
 			}
@@ -5535,6 +6051,7 @@ class utest__$Runner_ITestRunner {
 		try {
 			this.teardownAsync = this.teardownClass();
 		} catch( _g ) {
+			haxe_NativeStackTrace.lastError = _g;
 			this.teardownFailed(utest_Assertation.TeardownError("teardownClass failed: " + Std.string(haxe_Exception.caught(_g).unwrap()),haxe_CallStack.exceptionStack()));
 			return true;
 		}
@@ -6574,6 +7091,8 @@ gmdebug_Cross.DATA = "data";
 gmdebug_composer_ComposedProtocolMessage._hx_skip_constructor = false;
 tink_core_Callback.depth = 0;
 tink_core_SimpleDisposable._hx_skip_constructor = false;
+tink_core__$Future_NeverFuture.inst = new tink_core__$Future_NeverFuture();
+tink_core_Future.NEVER = tink_core__$Future_NeverFuture.inst;
 utest_ui_text_PlainTextReport._hx_skip_constructor = false;
 test_Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);

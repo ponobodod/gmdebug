@@ -37,17 +37,22 @@ class LuaDebuggerTest extends LuaDebugger {
 
     override function sendResponse<T>(response:Response<T>) {
         final responseName = response.command;
-        if (responseEvents.exists(responseName)) {
-            responseEvents.get(responseName).iter((fun) -> fun(response));
+        final handlers = responseEvents.get(responseName);
+        if (handlers != null) {
+            trace('bye $responseName');
             responseEvents.remove(responseName);
+            handlers.iter((fun) -> fun(response));
+            
+            
         }
     }
 
     override function sendEvent<T>(event:Event<T>) {
         final eventName = event.event;
+        final handlers = eventEvents.get(eventName);
         if (eventEvents.exists(eventName)) {
-            eventEvents.get(eventName).iter((fun) -> fun(event));
             eventEvents.remove(eventName);
+            handlers.iter((fun) -> fun(event));
         }
     }
 
