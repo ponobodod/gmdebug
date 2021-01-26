@@ -7,7 +7,7 @@ class HStepIn implements IHandler<StepInRequest> {
 		Debugee.state = STEP(null);
 		var rep = stepInReq.compose(stepIn);
 		rep.send();
-		DebugLoop.activateLineStepping();
+		DebugLoop.enableLineStep();
 		return CONTINUE;
 	}
 }

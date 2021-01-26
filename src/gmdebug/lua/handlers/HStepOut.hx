@@ -28,7 +28,7 @@ class HStepOut implements IHandler<StepOutRequest> {
 		} else {
 			Debugee.state = STEP(tarheight);
 		}
-		DebugLoop.activateLineStepping();
+		DebugLoop.enableLineStep();
 		final stepoutResp = stepOutReq.compose(stepOut);
 		stepoutResp.send();
 		return CONTINUE;

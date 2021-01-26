@@ -10,7 +10,7 @@ class HNext implements IHandler<NextRequest> {
 
 		Debugee.state = STEP(tarheight);
 		resp.send();
-		DebugLoop.activateLineStepping();
+		DebugLoop.enableLineStep();
 		return CONTINUE;
 	}
 }

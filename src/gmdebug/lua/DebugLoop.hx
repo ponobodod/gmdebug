@@ -27,6 +27,8 @@ class DebugLoop {
 
 	static var prevStackHeight:Int = 0;
 
+	static var lineSteppin:Bool = false;
+
 	static var bm:Null<BreakpointManager>;
 
 	static var sc:Null<SourceContainer>;
@@ -51,8 +53,14 @@ class DebugLoop {
 		return stop;
 	}
 
-	public static extern inline function activateLineStepping() {
+	public static extern inline function enableLineStep() {
 		DebugHook.addHook(debugloop, "cl");
+		lineSteppin = true;
+	}
+
+	public static extern inline function disableLineStep() {
+		DebugHook.addHook(debugloop,"c");
+		lineSteppin = false;
 	}
 
 	static inline function shouldStopLine(curFunc:Function, sh:Int) {
@@ -66,7 +74,7 @@ class DebugLoop {
 		return stackHeight || isEscape;
 	}
 
-	static function currentStackHeight(func:Function) {
+	static inline extern function currentStackHeight(func:Function) {
 		return if (func != prevFunc) {
 			prevStackHeight = Debugee.stackHeight;
 			prevStackHeight;
@@ -77,17 +85,17 @@ class DebugLoop {
 
 	static extern inline function debug_switchHookState(cur:HookState, func:Function, ?sinfo:SourceInfo) {
 		if (sinfo != null && highestStackHeight != null && escapeHatch != null) {
-			if (cur == Call && bm.unsafe().breakpointWithinRange(sinfo.source, sinfo.linedefined,sinfo.lastlinedefined)) {
+			if (!lineSteppin && bm.unsafe().breakpointWithinRange(sinfo.source.gPath(), sinfo.linedefined,sinfo.lastlinedefined)) {
 				final sh = currentStackHeight(func);
-				if (sh < highestStackHeight) {
-					DebugHook.addHook(debugloop, "cl");
+				if (sh <= highestStackHeight) {
+					enableLineStep();
 					highestStackHeight = sh;
 				}
-			} else if (cur == Line && currentStackHeight(func) == Debugee.minheight && escapeHatch == NONE) {
+			} else if (cur == Line && currentStackHeight(func) == 4 && escapeHatch == NONE) {
 				escapeHatch = OUT(func);
 			} else if (cur == Line && shouldStopLine(func, currentStackHeight(func))) {
 				escapeHatch = NONE;
-				DebugHook.addHook(debugloop, "c");
+				disableLineStep();
 				highestStackHeight = Math.POSITIVE_INFINITY;
 			}
 		}
@@ -133,7 +141,7 @@ class DebugLoop {
 			case STEP(target) if (target == null || Debugee.stackHeight <= target):
 				trace('stepped $target ${Debugee.stackHeight}');
 				Debugee.state = WAIT;
-				DebugHook.addHook(debugloop, "c");
+				disableLineStep();
 				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
 				true;
 			case STEP(x):
@@ -141,13 +149,13 @@ class DebugLoop {
 			case OUT(outFunc, lowest,_) if (outFunc == func && curLine.unsafe() == lowest):
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
-				DebugHook.addHook(debugloop, "c");
+				disableLineStep();
 				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
 				true;
 			case OUT(outFunc, _,tarHeight) if (outFunc != func && Debugee.stackHeight <= tarHeight):
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
-				DebugHook.addHook(debugloop, "c");
+				disableLineStep();
 				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
 				true;
 			case OUT(outFunc, _):
