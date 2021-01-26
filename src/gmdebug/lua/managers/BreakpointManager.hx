@@ -3,11 +3,13 @@ package gmdebug.lua.managers;
 import gmdebug.lua.handlers.IHandler;
 import haxe.Constraints.Function;
 
+using gmdebug.lua.GmodPath;
+
 class BreakpointManager {
 
-	var breakLocsCache:Map<String, Map<Int, Bool>> = [];
+	var breakLocsCache:Map<GmodPath, Map<Int, Bool>> = [];
 
-	var breakpoints(default, null):Map<String, Map<Int, Breakpoint>> = [];
+	var breakpoints(default, null):Map<GmodPath, Map<Int, Breakpoint>> = [];
 
 	var bpID:Int = 0;
 
@@ -16,10 +18,19 @@ class BreakpointManager {
 	}
 
 	public function clearBreakpoints(source:String) {
-		breakpoints.set(source,[]);
+		breakpoints.set(getRealPath(source),[]);
 	}
 
-	public function retrieveSourceLineInfo(source:String):Map<Int, Bool> {
+	inline function getRealPath(source:String):GmodPath {
+		return switch (Debugee.fullPathToGmod(source)) {
+			case Some(v):
+				v;
+			case None:
+				cast source;
+		}
+	}
+
+	public function retrieveSourceLineInfo(source:GmodPath):Map<Int, Bool> {
 		return switch (breakLocsCache.get(source)) {
 			case null:
 				var map:Map<Int, Bool> = [];
@@ -30,7 +41,7 @@ class BreakpointManager {
 		}
 	}
 
-	function retrieveBreakpointTable(source:String):Map<Int,Breakpoint> {
+	function retrieveBreakpointTable(source:GmodPath):Map<Int,Breakpoint> {
 		return switch (breakpoints.get(source)) {
 			case null:
 				var map:Map<Int, Breakpoint> = [];
@@ -45,7 +56,7 @@ class BreakpointManager {
 		return breakpoints != null;
 	}
 	
-	public function breakpointWithinRange(source:String,min:Int,max:Int) {
+	public function breakpointWithinRange(source:GmodPath,min:Int,max:Int) {
 		final bpTable = breakpoints.get(source);
 		if (bpTable == null) return false;
 		for (k in bpTable.keys()) {
@@ -56,7 +67,7 @@ class BreakpointManager {
 		return false;
 	}
 
-	public function getBreakpointForLine(source:String,line:Int):Null<Breakpoint> {
+	public function getBreakpointForLine(source:GmodPath,line:Int):Null<Breakpoint> {
 		final bp = breakpoints.get(source);
 		return if (bp == null)
 			null;
@@ -65,16 +76,21 @@ class BreakpointManager {
 	}
 
 	public function newBreakpoint(source:Source,bp:SourceBreakpoint):Breakpoint {
-		final status = breakpointStatus(Debugee.fullPathToGmod(source.path).or(""),bp.line);
+		final status = switch (Debugee.fullPathToGmod(source.path)) { 
+			case Some(v):
+				breakpointStatus(v,bp.line);
+			case None:
+				NOT_VISITED;
+		}
 		final breakpoint = new Breakpoint(bpID++,source,bp,status);
 		if (breakpoint.breakpointType != INACTIVE) {
-			final map = retrieveBreakpointTable(Debugee.fullPathToGmod(source.path).or(source.path));
+			final map = retrieveBreakpointTable(getRealPath(source.path));
 			map.set(breakpoint.line,breakpoint);
 		}
 		return breakpoint;
 	}
 
-	public function breakpointStatus(path:String,line:Int):LineStatus {
+	function breakpointStatus(path:GmodPath,line:Int):LineStatus {
 		final possibles = breakLocsCache.get(path);
 		return switch (possibles) {
 			case null:

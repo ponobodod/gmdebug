@@ -13,6 +13,7 @@ import gmdebug.lua.managers.BreakpointManager;
 using gmod.WeakTools;
 using Safety;
 using tink.CoreApi;
+using gmdebug.lua.GmodPath;
 
 class DebugLoop {
 	static var lineInfoFuncCache:haxe.ds.ObjectMap<Function, Bool> = new haxe.ds.ObjectMap();
@@ -102,10 +103,9 @@ class DebugLoop {
 	}
 
 	static extern inline function debug_checkBreakpoints(sinfo:SourceInfo, line:Int) {
-		switch (bm.getBreakpointForLine(sinfo.source,line)) {
+		switch (bm.getBreakpointForLine(sinfo.source.gPath(),line)) {
 			case null | {breakpointType : INACTIVE}:
 			case {breakpointType : NORMAL}:
-				trace("hit bp");
 				Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
 			case bp = {breakpointType : CONDITIONAL(condFunc)}:
 				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(3 + DebugHook.HOOK_USED));

@@ -347,6 +347,7 @@ class Debugee {
 	}
 
 	public static function startHaltLoop(reason:StopReason, bd:Int, ?txt:String) {
+		if (Debugee.inpauseloop) return;
 		Debugee.inpauseloop = true;
 		baseDepth = bd;
 		final tstop:TStoppedEvent = {
@@ -451,16 +452,18 @@ class Debugee {
 		}
 	}
 
-	public static function fullPathToGmod(fullPath:String):Null<String> {
-		if (fullPath.contains(Debugee.dest)) {
+	public static function fullPathToGmod(fullPath:String):Option<GmodPath> {
+		return if (fullPath.contains(Debugee.dest)) {
 			var result = fullPath.replace(Debugee.dest, "");
 			result = "@" + result;
-			return result;
+			Some(cast result);
 		} else {
-			return null;
+			None;
 		}
 	}
 }
+
+
 
 typedef LineMap = Map<Int, Bool>;
 

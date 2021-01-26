@@ -29,10 +29,12 @@ class CustomHandlers {
 	static function h_initalInfo(x:GmDebugMessage<GmDebugIntialInfo>) {
 		Debugee.dest = x.body.location;
 		if (x.body.dapMode == Launch) {
+			#if server
 			new ComposedGmDebugMessage(serverInfo, {
 				ip: GameLib.GetIPAddress(),
 				isLan: isLan()
 			}).send();
+			#end
 			Debugee.dapMode = Launch;
 		} else {
 			Debugee.dapMode = Attach;
