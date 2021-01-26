@@ -6,6 +6,7 @@ import gmod.libs.DebugLib;
 import gmod.Gmod;
 import lua.Lua;
 import lua.NativeStringTools;
+import gmdebug.VariableReference;
 import gmdebug.lua.handlers.IHandler;
 
 using gmod.PairTools;
@@ -59,7 +60,7 @@ class VariableManager {
 			},
 			variablesReference: switch id {
 				case _ if (name == "_G"):
-					ScopeConsts.Globals;
+					ScopeConsts.Globals; //TODO update
 				case TYPE_ENTITY if (!Gmod.IsValid(val)):
 					0;
 				case TYPE_TABLE | TYPE_FUNCTION | TYPE_USERDATA | TYPE_ENTITY:

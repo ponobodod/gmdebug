@@ -2,8 +2,8 @@ package gmdebug;
 
 enum VariableReferenceVal {
 	Child(clientID:Int, ref:Int);
-	FrameLocal(clientID:Int, frameID:Int, ref:Int);
-	Global(clientID:Int, ref:Int);
+	FrameLocal(clientID:Int, frameID:Int, ref:FrameLocalScope);
+	Global(clientID:Int, ref:ScopeConsts);
 }
 
 enum abstract VariableRefBit(Int) {
@@ -45,4 +45,18 @@ abstract VariableReference(Int) from Int to Int {
 				val | ref++;
 		}
 	}
+}
+
+enum abstract ScopeConsts(Int) to Int from Int {
+	var Globals;
+	var Players;
+	var Entities;
+	var Enums;
+}
+
+enum abstract FrameLocalScope(Int) to Int from Int {
+	var Arguments;
+	var Locals;
+	var Upvalues;
+	var Fenv;
 }

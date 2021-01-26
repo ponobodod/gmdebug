@@ -12,46 +12,46 @@ class HScopes implements IHandler<ScopesRequest> {
 		var arguments:Scope = {
 			name: "Arguments",
 			presentationHint: Arguments,
-			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, FrameLocalScope.Arguments)),
+			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Arguments)),
 			expensive: false
 		}
 		var locals:Scope = {
 			name: "Locals",
 			presentationHint: Locals,
-			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, FrameLocalScope.Locals)),
+			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Locals)),
 			expensive: false,
 			line: info.linedefined,
 			endLine: info.lastlinedefined
 		};
 		var upvalues:Scope = {
 			name: "Upvalues",
-			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, FrameLocalScope.Upvalues)),
+			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Upvalues)),
 			expensive: false,
 		};
 		var globals:Scope = {
 			name: "Globals",
-			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), ScopeConsts.Globals)),
+			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), Globals)),
 			expensive: true,
 		}
 		var players:Scope = {
 			name: "Players",
-			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), ScopeConsts.Players)),
+			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), Players)),
 			expensive: true
 		}
 		var entities:Scope = {
 			name: "Entities",
-			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), ScopeConsts.Entities)),
+			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), Entities)),
 			expensive: true,
 		}
 		var enums:Scope = {
 			name: "Enums",
-			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), ScopeConsts.Enums)),
+			variablesReference: VariableReference.encode(Global(Debugee.clientID.unsafe(), Enums)),
 			expensive: true
 		}
 
 		var env:Scope = {
 			name: "Function Environment",
-			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, FrameLocalScope.Fenv)),
+			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Fenv)),
 			expensive: true
 		}
 		var hasFenv:Bool = if (info != null && info.func != null) {
@@ -78,16 +78,6 @@ class HScopes implements IHandler<ScopesRequest> {
 	}
 }
 
-enum abstract FrameLocalScope(Int) to Int from Int {
-	var Arguments;
-	var Locals;
-	var Upvalues;
-	var Fenv;
-}
 
-enum abstract ScopeConsts(Int) to Int from Int {
-	var Globals;
-	var Players;
-	var Entities;
-	var Enums;
-}
+
+

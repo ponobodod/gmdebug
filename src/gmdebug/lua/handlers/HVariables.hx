@@ -3,11 +3,10 @@ package gmdebug.lua.handlers;
 
 import lua.Debug;
 import gmod.enums.SENSORBONE;
-import gmdebug.lua.handlers.HScopes.FrameLocalScope;
 import lua.NativeStringTools;
 import gmod.libs.PlayerLib;
 import gmod.libs.EntsLib;
-import gmdebug.lua.handlers.HScopes.ScopeConsts;
+import gmdebug.VariableReference;
 import gmdebug.lua.managers.VariableManager;
 import gmod.gclass.Entity;
 import gmod.libs.DebugLib;
