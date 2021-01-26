@@ -34,10 +34,7 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 				firstFrame + (x - 1);
 		}
 		final stackFrames:Array<StackFrame> = [];
-		trace('levels ${args.startFrame} ${args.levels}');
-		trace('first ${firstFrame - 1} last $lastFrame stackheight ${Debugee.stackHeight}');
 		for (i in firstFrame...lastFrame) {
-			trace(i);
 			var info = DebugLib.getinfo((i + 1), "lnSfu");
 			if (info == null)
 				break;
@@ -124,7 +121,6 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 					case null:
 						null;
 					case path:
-						trace(path);
 						var pth = @:nullSafety(Off) path.split("/");
 						{
 							name: pth[pth.length - 1],

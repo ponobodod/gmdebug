@@ -227,19 +227,19 @@ using Lambda;
 		// trace(debugeeMessage);
 		switch (debugeeMessage.type) {
 			case Event:
-				final event:Event<Dynamic> = cast debugeeMessage;
-				final cmd = event.event;
-				trace('evented, $cmd');
-				Intercepter.event(event, threadId);
-				sendEvent(event);
+				final cmd = (cast debugeeMessage : Event<Dynamic>).event;
+				trace('recieved event from debugee, $cmd');
+				Intercepter.event(cast debugeeMessage, threadId);
+				sendEvent(cast debugeeMessage);
 			case Response:
 				final cmd = (cast debugeeMessage : Response<Dynamic>).command;
-				trace('responded, $cmd');
+				trace('recieved response from debugee, $cmd');
 				sendResponse(cast debugeeMessage);
 			case "gmdebug":
+				final cmd = (cast debugeeMessage : GmDebugMessage<Dynamic>).msg;
+				trace('recieved gmdebug from debugee, $cmd');
 				processCustomMessages(cast debugeeMessage);
 			default:
-				trace("bad...");
 				throw "unhandled";
 		}
 	}
@@ -299,7 +299,6 @@ using Lambda;
 				pokeServerNamedPipes(attachReq).handle((out) -> {
 					switch (out) {
 						case Success(_):
-							trace("suceed");
 							final resp = attachReq.compose(attach);
 							resp.send();
 						case Failure(fail):
@@ -315,7 +314,6 @@ using Lambda;
 	}
 
 	inline function composeMessage(msg:Dynamic):String {
-		trace("composing message");
 		final json = Json.stringify(msg);
 		final len = Bytes.ofString(json).length;
 		return 'Content-Length: $len\r\n\r\n$json';
@@ -342,10 +340,10 @@ using Lambda;
 		
 		switch (message.type) {
 			case Request:
-				untyped trace('recieved message from client ${message.command}');
+				untyped trace('recieved request from client ${message.command}');
 				Handlers.handle(cast message);
 			default:
-				trace("unhandled message from client");
+				trace("not a request from client");
 		}
 	}
 }

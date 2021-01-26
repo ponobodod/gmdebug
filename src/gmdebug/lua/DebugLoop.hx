@@ -108,7 +108,7 @@ class DebugLoop {
 			case null | {breakpointType : INACTIVE}:
 			case {breakpointType : NORMAL}:
 				Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
-			case bp = {breakpointType : CONDITIONAL(condFunc)}:
+			case {breakpointType : CONDITIONAL(condFunc), id : bpID}:
 				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(3 + DebugHook.HOOK_USED));
 				switch (Util.runCompiledFunction(condFunc)) {
 					case Error(err):
@@ -116,7 +116,7 @@ class DebugLoop {
 						final resp = new ComposedEvent(breakpoint, {
 							reason: Changed,
 							breakpoint: {
-								id: bp.id,
+								id: bpID,
 								verified: false,
 								message: 'Errored on run: $message'
 							}
