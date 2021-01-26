@@ -9,6 +9,7 @@ import lua.Lua;
 import gmod.libs.DebugLib;
 import gmod.Gmod;
 import gmdebug.lua.managers.BreakpointManager;
+import gmdebug.lua.util.PrintTimer.print_time;
 
 using gmod.WeakTools;
 using Safety;
