@@ -5,7 +5,8 @@
 -lib tink_json
 -lib tink_core
 -lib profiler
-#-D gmddebug
+-D profile
+-D gmddebug
 -D addonName=debugee
 -D analyzer-optimize
 -D generateLuaInit

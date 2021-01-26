@@ -10,7 +10,6 @@
 # -D gmodAddonFolder=/home/steam/.steam/SteamApps/common/GarrysModDS/garrysmod/addons/
 -D lua-ver=5.1
 -dce full
---macro nullSafety("gmdebug")
 --macro gmod.macros.InitMacro.init()
 -main gmdebug.lua.Debugee
 -lua out/lua/debugee_cl.lua

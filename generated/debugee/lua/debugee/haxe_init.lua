@@ -350,6 +350,7 @@ __gmdebug_composer_ComposedEvent = _hx_e()
 __gmdebug_composer_ComposedGmDebugMessage = _hx_e()
 __gmdebug_composer_ComposedResponse = _hx_e()
 __gmdebug_lua_CustomHandlers = _hx_e()
+__gmdebug_lua__DebugHook_DDebugHook = _hx_e()
 __gmdebug_lua_CatchOut = _hx_e()
 __haxe_ds_ObjectMap = _hx_e()
 __gmdebug_lua_DebugLoop = _hx_e()
@@ -406,6 +407,7 @@ __haxe_Log = _hx_e()
 __haxe_MainEvent = _hx_e()
 __haxe_MainLoop = _hx_e()
 __haxe_ds_IntMap = _hx_e()
+__haxe_ds_Option = _hx_e()
 __haxe_format_JsonParser = _hx_e()
 __haxe_format_JsonPrinter = _hx_e()
 __haxe_io_Bytes = _hx_e()
@@ -420,10 +422,10 @@ __safety_SafetyException = _hx_e()
 __safety_NullPointerException = _hx_e()
 __tink_core_Annex = _hx_e()
 __tink_json_BasicWriter = _hx_e()
-__tink_json_Writer5 = _hx_e()
-__tink_json_Writer6 = _hx_e()
-__tink_json_Writer7 = _hx_e()
-__tink_json_Writer8 = _hx_e()
+__tink_json_Writer31 = _hx_e()
+__tink_json_Writer32 = _hx_e()
+__tink_json_Writer33 = _hx_e()
+__tink_json_Writer34 = _hx_e()
 
 local _hx_bind, _hx_bit, _hx_staticToInstance, _hx_funcToField, _hx_maxn, _hx_print, _hx_apply_self, _hx_box_mr, _hx_bit_clamp, _hx_table, _hx_bit_raw
 local _hx_pcall_default = {};
@@ -845,6 +847,7 @@ __haxe_IMap.new = {}
 __haxe_IMap.__name__ = true
 __haxe_IMap.prototype = _hx_e();
 __haxe_IMap.prototype.get= nil;
+__haxe_IMap.prototype.set= nil;
 __haxe_IMap.prototype.keys= nil;
 
 __haxe_IMap.prototype.__class__ =  __haxe_IMap
@@ -861,6 +864,13 @@ __haxe_ds_StringMap.__name__ = true
 __haxe_ds_StringMap.__interfaces__ = {__haxe_IMap}
 __haxe_ds_StringMap.prototype = _hx_e();
 __haxe_ds_StringMap.prototype.h= nil;
+__haxe_ds_StringMap.prototype.set = function(self,key,value) 
+  if (value == nil) then 
+    self.h[key] = __haxe_ds_StringMap.tnull;
+  else
+    self.h[key] = value;
+  end;
+end
 __haxe_ds_StringMap.prototype.get = function(self,key) 
   local ret = self.h[key];
   if (ret == __haxe_ds_StringMap.tnull) then 
@@ -878,6 +888,15 @@ __haxe_ds_StringMap.prototype.keys = function(self)
     do return ret end;
   end,hasNext=function(self) 
     do return cur ~= nil end;
+  end}) end
+end
+__haxe_ds_StringMap.prototype.iterator = function(self) 
+  local _gthis = self;
+  local it = self:keys();
+  do return _hx_o({__fields__={hasNext=true,next=true},hasNext=function(self) 
+    do return it:hasNext() end;
+  end,next=function(self) 
+    do return _gthis.h[it:next()] end;
   end}) end
 end
 
@@ -2283,6 +2302,114 @@ __gmdebug_lua_CustomHandlers.h_initalInfo = function(x)
     __gmdebug_lua_Debugee.dapMode = "Attach";
   end;
 end
+
+__gmdebug_lua__DebugHook_DDebugHook.new = {}
+_hx_exports["DebugHook"] = __gmdebug_lua__DebugHook_DDebugHook
+__gmdebug_lua__DebugHook_DDebugHook.__name__ = true
+__gmdebug_lua__DebugHook_DDebugHook.getHooks = function() 
+  local value = _G.DebugHook.hooks;
+  if (value == nil) then 
+    do return __haxe_ds_StringMap.new() end;
+  else
+    do return value end;
+  end;
+end
+__gmdebug_lua__DebugHook_DDebugHook.addHook = function(ident,fun,str) 
+  if (str == nil) then 
+    str = "";
+  end;
+  if (fun == nil) then 
+    fun = function(a,b) 
+      do return end;
+    end;
+  end;
+  if (__gmdebug_lua__DebugHook_DDebugHook.hooks.h[ident] == nil) then 
+    local value = _hx_o({__fields__={flagsMap=true,fun=true},flagsMap=__haxe_ds_IntMap.new(),fun=fun});
+    local _this = __gmdebug_lua__DebugHook_DDebugHook.hooks;
+    if (value == nil) then 
+      _this.h[ident] = __haxe_ds_StringMap.tnull;
+    else
+      _this.h[ident] = value;
+    end;
+  end;
+  local ret = __gmdebug_lua__DebugHook_DDebugHook.hooks.h[ident];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  ret.fun = fun;
+  local ret = __gmdebug_lua__DebugHook_DDebugHook.hooks.h[ident];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local flagMap = ret.flagsMap;
+  local startIndex = nil;
+  startIndex = 1;
+  local r = _G.string.find(str, "l", 1, true);
+  if ((function() 
+    local _hx_1
+    if ((r ~= nil) and (r > 0)) then 
+    _hx_1 = r - 1; else 
+    _hx_1 = -1; end
+    return _hx_1
+  end )() ~= -1) then 
+    flagMap:set(0, true);
+  else
+    flagMap:set(0, false);
+  end;
+  local startIndex = nil;
+  startIndex = 1;
+  local r = _G.string.find(str, "c", 1, true);
+  if ((function() 
+    local _hx_2
+    if ((r ~= nil) and (r > 0)) then 
+    _hx_2 = r - 1; else 
+    _hx_2 = -1; end
+    return _hx_2
+  end )() ~= -1) then 
+    flagMap:set(1, true);
+  else
+    flagMap:set(1, false);
+  end;
+  local lineSet = false;
+  local callSet = false;
+  local map = __gmdebug_lua__DebugHook_DDebugHook.hooks:iterator();
+  while (map:hasNext()) do 
+    local map = map:next();
+    if (map.flagsMap:get(0)) then 
+      lineSet = true;
+    end;
+    if (map.flagsMap:get(1)) then 
+      callSet = true;
+    end;
+  end;
+  if (lineSet) then 
+    if (callSet) then 
+      debug.sethook(__gmdebug_lua__DebugHook_DDebugHook.hookFun, "cl");
+    else
+      debug.sethook(__gmdebug_lua__DebugHook_DDebugHook.hookFun, "l");
+    end;
+  else
+    if (callSet) then 
+      debug.sethook(__gmdebug_lua__DebugHook_DDebugHook.hookFun, "c");
+    else
+      debug.sethook();
+    end;
+  end;
+end
+__gmdebug_lua__DebugHook_DDebugHook.hookFun = function(cur,currentLine) 
+  local funHook = __gmdebug_lua__DebugHook_DDebugHook.hooks:iterator();
+  while (funHook:hasNext()) do 
+    local funHook = funHook:next();
+    local map = funHook.flagsMap;
+    if ((cur == "line") and map:get(0)) then 
+      funHook.fun(cur, currentLine);
+    else
+      if ((cur == "call") and map:get(1)) then 
+        funHook.fun(cur, currentLine);
+      end;
+    end;
+  end;
+end
 _hxClasses["gmdebug.lua.CatchOut"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="NONE","OUT"},2)}
 __gmdebug_lua_CatchOut = _hxClasses["gmdebug.lua.CatchOut"];
 __gmdebug_lua_CatchOut.NONE = _hx_tab_array({[0]="NONE",0,__enum__ = __gmdebug_lua_CatchOut},2)
@@ -2303,6 +2430,10 @@ __haxe_ds_ObjectMap.__interfaces__ = {__haxe_IMap}
 __haxe_ds_ObjectMap.prototype = _hx_e();
 __haxe_ds_ObjectMap.prototype.h= nil;
 __haxe_ds_ObjectMap.prototype.k= nil;
+__haxe_ds_ObjectMap.prototype.set = function(self,key,value) 
+  self.h[key] = value;
+  self.k[key] = true;
+end
 __haxe_ds_ObjectMap.prototype.get = function(self,key) 
   do return self.h[key] end
 end
@@ -2329,35 +2460,32 @@ __haxe_ds_ObjectMap.prototype.__class__ =  __haxe_ds_ObjectMap
 
 __gmdebug_lua_DebugLoop.new = {}
 __gmdebug_lua_DebugLoop.__name__ = true
-__gmdebug_lua_DebugLoop.init = function(bm,sc) 
+__gmdebug_lua_DebugLoop.init = function(bm,sc,fbm) 
   __gmdebug_lua_DebugLoop.bm = bm;
   __gmdebug_lua_DebugLoop.sc = sc;
-  __gmdebug_lua_DebugLoop.fbm = __gmdebug_lua_DebugLoop.fbm;
-end
-__gmdebug_lua_DebugLoop.currentStackHeight = function(func) 
-  if (func ~= __gmdebug_lua_DebugLoop.prevFunc) then 
-    __gmdebug_lua_DebugLoop.prevStackHeight = __gmdebug_lua_Debugee.get_stackHeight();
-    do return __gmdebug_lua_DebugLoop.prevStackHeight end;
-  else
-    do return __gmdebug_lua_DebugLoop.prevStackHeight end;
-  end;
+  __gmdebug_lua_DebugLoop.fbm = fbm;
 end
 __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine) 
   if (not __gmdebug_lua_Debugee.shouldDebug or __gmdebug_lua_Debugee.tracing) then 
     do return end;
   end;
-  local func = _G.debug.getinfo(2, "f").func;
+  if (cur == "call") then 
+    __gmdebug_lua_DebugLoop.runs = __gmdebug_lua_DebugLoop.runs + 1;
+  end;
+  __gmdebug_lua_DebugLoopProfile.profile("getinfo", true);
+  local func = _G.debug.getinfo(3, "f").func;
   local result = __gmdebug_lua_DebugLoop.sc.sourceCache.h[func];
   local sinfo;
   if (result ~= nil) then 
     sinfo = result;
   else
-    local tmp = _G.debug.getinfo(2, "S");
+    local tmp = _G.debug.getinfo(3, "S");
     local _this = __gmdebug_lua_DebugLoop.sc.sourceCache;
     _this.h[func] = tmp;
     _this.k[func] = true;
     sinfo = tmp;
   end;
+  __gmdebug_lua_DebugLoopProfile.profile("step");
   local stepping;
   local _g = __gmdebug_lua_Debugee.state;
   if (_g == nil) then 
@@ -2369,13 +2497,10 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
     elseif (stepping1) == 1 then 
       local target = _g[2];
       if ((target == nil) or (__gmdebug_lua_Debugee.get_stackHeight() <= target)) then 
-        __haxe_Log.trace(Std.string(Std.string(Std.string("stepped ") .. Std.string(target)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=134,className="gmdebug.lua.DebugLoop",methodName="debug_step"}));
+        __haxe_Log.trace(Std.string(Std.string(Std.string("stepped ") .. Std.string(target)) .. Std.string(" ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=143,className="gmdebug.lua.DebugLoop",methodName="debug_step"}));
         __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
-        local str = "c";
-        if (str == nil) then 
-          str = "";
-        end;
-        debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+        _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "c");
+        __gmdebug_lua_DebugLoop.lineSteppin = false;
         __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
         stepping = true;
       else
@@ -2387,11 +2512,8 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
       if ((outFunc == func) and (currentLine == _g[3])) then 
         __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
         _G.print(outFunc, func);
-        local str = "c";
-        if (str == nil) then 
-          str = "";
-        end;
-        debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+        _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "c");
+        __gmdebug_lua_DebugLoop.lineSteppin = false;
         __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
         stepping = true;
       else
@@ -2399,11 +2521,8 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
         if ((outFunc ~= func) and (__gmdebug_lua_Debugee.get_stackHeight() <= _g[4])) then 
           __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.WAIT;
           _G.print(outFunc, func);
-          local str = "c";
-          if (str == nil) then 
-            str = "";
-          end;
-          debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+          _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "c");
+          __gmdebug_lua_DebugLoop.lineSteppin = false;
           __gmdebug_lua_Debugee.startHaltLoop("step", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
           stepping = true;
         else
@@ -2412,65 +2531,87 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
         end;
       end; end;
   end;
+  __gmdebug_lua_DebugLoopProfile.profile("getbptable");
   if (((__gmdebug_lua_Exceptions.exceptFuncs ~= nil) and (func ~= nil)) and (__gmdebug_lua_Exceptions.exceptFuncs.k[func] ~= nil)) then 
     do return end;
   end;
   local bpValid = (__gmdebug_lua_DebugLoop.bm ~= nil) and __gmdebug_lua_DebugLoop.bm:valid();
+  __gmdebug_lua_DebugLoopProfile.profile("switchhookstate");
   if (not stepping and bpValid) then 
     if (((sinfo ~= nil) and (__gmdebug_lua_DebugLoop.highestStackHeight ~= nil)) and (__gmdebug_lua_DebugLoop.escapeHatch ~= nil)) then 
-      if ((cur == "call") and __gmdebug_lua_DebugLoop.bm:breakpointWithinRange(sinfo.source, sinfo.linedefined, sinfo.lastlinedefined)) then 
-        local sh = __gmdebug_lua_DebugLoop.currentStackHeight(func);
-        if (sh < __gmdebug_lua_DebugLoop.highestStackHeight) then 
-          local str = "cl";
-          if (str == nil) then 
-            str = "";
-          end;
-          debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+      if (not __gmdebug_lua_DebugLoop.lineSteppin and __gmdebug_lua_DebugLoop.bm:breakpointWithinRange(sinfo.source, sinfo.linedefined, sinfo.lastlinedefined)) then 
+        local sh;
+        if (func ~= __gmdebug_lua_DebugLoop.prevFunc) then 
+          __gmdebug_lua_DebugLoop.prevStackHeight = __gmdebug_lua_Debugee.get_stackHeight();
+          sh = __gmdebug_lua_DebugLoop.prevStackHeight;
+        else
+          sh = __gmdebug_lua_DebugLoop.prevStackHeight;
+        end;
+        if (sh <= __gmdebug_lua_DebugLoop.highestStackHeight) then 
+          _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "cl");
+          __gmdebug_lua_DebugLoop.lineSteppin = true;
           __gmdebug_lua_DebugLoop.highestStackHeight = sh;
         end;
       else
-        if (((cur == "line") and (__gmdebug_lua_DebugLoop.currentStackHeight(func) == __gmdebug_lua_Debugee.minheight)) and (__gmdebug_lua_DebugLoop.escapeHatch == __gmdebug_lua_CatchOut.NONE)) then 
+        local tmp;
+        if (cur == "line") then 
+          local tmp1;
+          if (func ~= __gmdebug_lua_DebugLoop.prevFunc) then 
+            __gmdebug_lua_DebugLoop.prevStackHeight = __gmdebug_lua_Debugee.get_stackHeight();
+            tmp1 = __gmdebug_lua_DebugLoop.prevStackHeight;
+          else
+            tmp1 = __gmdebug_lua_DebugLoop.prevStackHeight;
+          end;
+          tmp = tmp1 == 4;
+        else
+          tmp = false;
+        end;
+        if (tmp and (__gmdebug_lua_DebugLoop.escapeHatch == __gmdebug_lua_CatchOut.NONE)) then 
           __gmdebug_lua_DebugLoop.escapeHatch = __gmdebug_lua_CatchOut.OUT(func);
         else
           local tmp;
           if (cur == "line") then 
-            local stackHeight = __gmdebug_lua_DebugLoop.currentStackHeight(func) < __gmdebug_lua_DebugLoop.highestStackHeight;
+            local sh;
+            if (func ~= __gmdebug_lua_DebugLoop.prevFunc) then 
+              __gmdebug_lua_DebugLoop.prevStackHeight = __gmdebug_lua_Debugee.get_stackHeight();
+              sh = __gmdebug_lua_DebugLoop.prevStackHeight;
+            else
+              sh = __gmdebug_lua_DebugLoop.prevStackHeight;
+            end;
             local _g = __gmdebug_lua_DebugLoop.escapeHatch;
-            tmp = stackHeight or ((_g[1] == 1) and (_g[2] ~= func));
+            tmp = (sh < __gmdebug_lua_DebugLoop.highestStackHeight) or ((_g[1] == 1) and (_g[2] ~= func));
           else
             tmp = false;
           end;
           if (tmp) then 
             __gmdebug_lua_DebugLoop.escapeHatch = __gmdebug_lua_CatchOut.NONE;
-            local str = "c";
-            if (str == nil) then 
-              str = "";
-            end;
-            debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+            _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "c");
+            __gmdebug_lua_DebugLoop.lineSteppin = false;
             __gmdebug_lua_DebugLoop.highestStackHeight = _G.math.huge;
           end;
         end;
       end;
     end;
   end;
+  __gmdebug_lua_DebugLoopProfile.profile("checkBreakpoints");
   if ((cur == "line") and bpValid) then 
     local _g = __gmdebug_lua_DebugLoop.bm:getBreakpointForLine(sinfo.source, currentLine);
     if (_g ~= nil) then 
-      local _g1 = _g.breakpointType;
-      local tmp = _g1[1];
+      local _g1 = _g.id;
+      local _g = _g.breakpointType;
+      local tmp = _g[1];
       if (tmp) == 0 then 
       elseif (tmp) == 1 then 
-        __haxe_Log.trace("hit bp", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoop.hx",lineNumber=100,className="gmdebug.lua.DebugLoop",methodName="debug_checkBreakpoints"}));
         __gmdebug_lua_Debugee.startHaltLoop("breakpoint", __gmdebug_lua_Debugee.stackOffset.stepDebugLoop);
       elseif (tmp) == 2 then 
-        local condFunc = _g1[2];
-        local bp = _g;
-        _G.setfenv(condFunc, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(3));
+        local bpID = _g1;
+        local condFunc = _g[2];
+        _G.setfenv(condFunc, __gmdebug_lua_handlers_HEvaluate.createEvalEnvironment(4));
         local _g = __gmdebug_lua_Util.runCompiledFunction(condFunc);
         local tmp = _g[1];
         if (tmp) == 0 then 
           local message = _G.string.gsub(_g[2], "^%[string %\"X%\"%]%:%d+%: ", "");
-          local resp = __gmdebug_composer_ComposedEvent.new("breakpoint", _hx_o({__fields__={reason=true,breakpoint=true},reason="changed",breakpoint=_hx_o({__fields__={id=true,verified=true,message=true},id=bp.id,verified=false,message=Std.string("Errored on run: ") .. Std.string(message)})}));
+          local resp = __gmdebug_composer_ComposedEvent.new("breakpoint", _hx_o({__fields__={reason=true,breakpoint=true},reason="changed",breakpoint=_hx_o({__fields__={id=true,verified=true,message=true},id=bpID,verified=false,message=Std.string("Errored on run: ") .. Std.string(message)})}));
           _G.print(Std.string(Std.string(Std.string(Std.string("Conditional breakpoint in file ") .. Std.string(sinfo.short_src)) .. Std.string(":")) .. Std.string(currentLine)) .. Std.string(" failed!"));
           _G.print(Std.string("Error: ") .. Std.string(message));
           local js = __haxe_Json.stringify(resp);
@@ -2483,6 +2624,7 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
           end; end; end;
     end;
   end;
+  __gmdebug_lua_DebugLoopProfile.profile("functionalbp");
   if (cur == "call") then 
     __gmdebug_lua_DebugLoop.currentFunc = nil;
   end;
@@ -2492,6 +2634,7 @@ __gmdebug_lua_DebugLoop.debugloop = function(cur,currentLine)
     end;
     __gmdebug_lua_DebugLoop.currentFunc = func;
   end;
+  __gmdebug_lua_DebugLoopProfile.resetprofile();
 end
 _hxClasses["gmdebug.lua.ProfilingState"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="NOT_PROFILING","PROFILING","PROFILE_FINISHED"},3)}
 __gmdebug_lua_ProfilingState = _hxClasses["gmdebug.lua.ProfilingState"];
@@ -2547,12 +2690,67 @@ __gmdebug_lua_DebugLoopProfile.report = function()
   local _g = __haxe_iterators_MapKeyValueIterator.new(avg);
   while (_g:hasNext()) do 
     local _g = _g:next();
-    __haxe_Log.trace(Std.string(Std.string(Std.string("average ") .. Std.string(_g.key)) .. Std.string(" : ")) .. Std.string(_g.value), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=38,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+    __haxe_Log.trace(Std.string(Std.string(Std.string("average ") .. Std.string(_g.key)) .. Std.string(" : ")) .. Std.string(_g.value), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=39,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   end;
-  __haxe_Log.trace(Std.string(Std.string(Std.string("Cumulative time ") .. Std.string(__gmdebug_lua_DebugLoopProfile.cumulativeTime)) .. Std.string(" / Total time ")) .. Std.string(__gmdebug_lua_DebugLoopProfile.totalProfileTime), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=40,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace(Std.string("Runs per second:  ") .. Std.string(__gmdebug_lua_DebugLoopProfile.totalProfileTime / __gmdebug_lua_DebugLoopProfile.cumulativeTime), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=42,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace(Std.string(Std.string(Std.string("Cumulative time ") .. Std.string(__gmdebug_lua_DebugLoopProfile.cumulativeTime)) .. Std.string(" / Total time ")) .. Std.string(__gmdebug_lua_DebugLoopProfile.totalProfileTime), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=43,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   local percent = _G.math.Round((__gmdebug_lua_DebugLoopProfile.cumulativeTime / __gmdebug_lua_DebugLoopProfile.totalProfileTime) * 100, 3);
-  __haxe_Log.trace(Std.string("Overall runtime impact ") .. Std.string(percent), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=42,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
+  __haxe_Log.trace(Std.string("Overall runtime impact ") .. Std.string(percent), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/DebugLoopProfile.hx",lineNumber=45,className="gmdebug.lua.DebugLoopProfile",methodName="report"}));
   __gmdebug_lua_DebugLoopProfile.profileState = __gmdebug_lua_ProfilingState.NOT_PROFILING;
+end
+__gmdebug_lua_DebugLoopProfile.profile = function(zone,first) 
+  if (first == nil) then 
+    first = false;
+  end;
+  if (__gmdebug_lua_DebugLoopProfile.profileState ~= __gmdebug_lua_ProfilingState.PROFILING) then 
+    do return end;
+  end;
+  if (not first) then 
+    __gmdebug_lua_DebugLoopProfile.profileend();
+  end;
+  if (__gmdebug_lua_DebugLoopProfile.inital[__gmdebug_lua_DebugLoopProfile.pass] == nil) then 
+    __gmdebug_lua_DebugLoopProfile.inital[__gmdebug_lua_DebugLoopProfile.pass] = __haxe_ds_StringMap.new();
+    __gmdebug_lua_DebugLoopProfile.vinal[__gmdebug_lua_DebugLoopProfile.pass] = __haxe_ds_StringMap.new();
+  end;
+  local this1 = __gmdebug_lua_DebugLoopProfile.inital[__gmdebug_lua_DebugLoopProfile.pass];
+  local value = _G.SysTime();
+  local _this = this1;
+  if (value == nil) then 
+    _this.h[zone] = __haxe_ds_StringMap.tnull;
+  else
+    _this.h[zone] = value;
+  end;
+  __gmdebug_lua_DebugLoopProfile.lastname = zone;
+end
+__gmdebug_lua_DebugLoopProfile.profileend = function() 
+  if (__gmdebug_lua_DebugLoopProfile.profileState ~= __gmdebug_lua_ProfilingState.PROFILING) then 
+    do return end;
+  end;
+  local diff = _G.SysTime();
+  local ret = __gmdebug_lua_DebugLoopProfile.inital[__gmdebug_lua_DebugLoopProfile.pass].h[__gmdebug_lua_DebugLoopProfile.lastname];
+  if (ret == __haxe_ds_StringMap.tnull) then 
+    ret = nil;
+  end;
+  local diff = diff - ret;
+  local key = __gmdebug_lua_DebugLoopProfile.lastname;
+  local _this = __gmdebug_lua_DebugLoopProfile.vinal[__gmdebug_lua_DebugLoopProfile.pass];
+  if (diff == nil) then 
+    _this.h[key] = __haxe_ds_StringMap.tnull;
+  else
+    _this.h[key] = diff;
+  end;
+  __gmdebug_lua_DebugLoopProfile.cumulativeTime = __gmdebug_lua_DebugLoopProfile.cumulativeTime + diff;
+end
+__gmdebug_lua_DebugLoopProfile.resetprofile = function() 
+  if (__gmdebug_lua_DebugLoopProfile.profileState ~= __gmdebug_lua_ProfilingState.PROFILING) then 
+    do return end;
+  end;
+  __gmdebug_lua_DebugLoopProfile.profileend();
+  if (__gmdebug_lua_DebugLoopProfile.pass > 25000) then 
+    __gmdebug_lua_DebugLoopProfile.totalProfileTime = _G.SysTime() - __gmdebug_lua_DebugLoopProfile.totalProfileTime;
+    __gmdebug_lua_DebugLoopProfile.profileState = __gmdebug_lua_ProfilingState.PROFILE_FINISHED;
+  end;
+  __gmdebug_lua_DebugLoopProfile.pass = __gmdebug_lua_DebugLoopProfile.pass + 1;
 end
 _hxClasses["gmdebug.lua.DebugState"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="WAIT","STEP","OUT"},3)}
 __gmdebug_lua_DebugState = _hxClasses["gmdebug.lua.DebugState"];
@@ -2612,11 +2810,13 @@ __gmdebug_lua_Debugee.start = function()
     __haxe_Log.trace("Failed to setup debugger after timeout", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=167,className="gmdebug.lua.Debugee",methodName="start"}));
     do return false end;
   end;
-  local str = "c";
-  if (str == nil) then 
-    str = "";
-  end;
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+  local prevCheck = .0;
+  _G.timer.Create("run_profile", 1, 0, function() 
+    __haxe_Log.trace(Std.string("runs / sec : ") .. Std.string(__gmdebug_lua_DebugLoop.runs / (_G.SysTime() - prevCheck)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=173,className="gmdebug.lua.Debugee",methodName="start"}));
+    prevCheck = _G.SysTime();
+    __gmdebug_lua_DebugLoop.runs = 0;
+  end);
+  _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "c");
   __gmdebug_lua_Debugee.hooksActive = true;
   do return true end;
 end
@@ -2687,7 +2887,7 @@ __gmdebug_lua_Debugee.traceback = function(err)
     do return _err end;
   end;
   if (__gmdebug_lua_Debugee.inpauseloop or __gmdebug_lua_Debugee.tracing) then 
-    __haxe_Log.trace("no...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=229,className="gmdebug.lua.Debugee",methodName="traceback"}));
+    __haxe_Log.trace("no...", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=236,className="gmdebug.lua.Debugee",methodName="traceback"}));
     do return _err end;
   end;
   local tmp;
@@ -2782,7 +2982,8 @@ __gmdebug_lua_Debugee.poll = function()
 end
 __gmdebug_lua_Debugee.main = function() 
   local fun = nil;
-  debug.sethook(fun, "");
+  local str = nil;
+  _G.DebugHook.addHook("gmdebug", fun, str);
   if (_G.previousSocket ~= nil) then 
     _G.previousSocket:close();
   end;
@@ -2792,7 +2993,7 @@ __gmdebug_lua_Debugee.main = function()
   __gmdebug_lua_Debugee.bm = __gmdebug_lua_managers_BreakpointManager.new();
   __gmdebug_lua_Debugee.fbm = __gmdebug_lua_managers_FunctionBreakpointManager.new();
   __gmdebug_lua_Debugee.hc = __gmdebug_lua_HandlerContainer.new(__gmdebug_lua_Debugee.vm, __gmdebug_lua_Debugee.bm, __gmdebug_lua_Debugee.fbm);
-  __gmdebug_lua_DebugLoop.init(__gmdebug_lua_Debugee.bm, __gmdebug_lua_Debugee.sc);
+  __gmdebug_lua_DebugLoop.init(__gmdebug_lua_Debugee.bm, __gmdebug_lua_Debugee.sc, __gmdebug_lua_Debugee.fbm);
   _G.file.CreateDir("gmdebug");
   _G.game.ConsoleCommand("sv_timeout 999999\n");
   _G.timer.Create("gmdebug-start", 3, 0, function() 
@@ -2811,7 +3012,7 @@ __gmdebug_lua_Debugee.main = function()
         if (value ~= nil) then 
           value:close();
         end;
-        __haxe_Log.trace("closed socket on error", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=323,className="gmdebug.lua.Debugee",methodName="main"}));
+        __haxe_Log.trace("closed socket on error", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=330,className="gmdebug.lua.Debugee",methodName="main"}));
         _G.error(__haxe_Exception.thrown(_g1),0);
       else
         _G.error(_g,0);
@@ -2843,18 +3044,22 @@ __gmdebug_lua_Debugee.normalPath = function(x)
   do return x end;
 end
 __gmdebug_lua_Debugee.startHaltLoop = function(reason,bd,txt) 
+  if (__gmdebug_lua_Debugee.inpauseloop) then 
+    do return end;
+  end;
   __gmdebug_lua_Debugee.inpauseloop = true;
   __gmdebug_lua_Debugee.baseDepth = bd;
   local js = __haxe_Json.stringify(__gmdebug_composer_ComposedEvent.new("stopped", _hx_o({__fields__={threadId=true,allThreadsStopped=true,reason=true,text=true},threadId=__gmdebug_lua_Debugee.clientID,allThreadsStopped=false,reason=reason,text=txt})));
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
-  __haxe_Log.trace("HALT LOOP", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=360,className="gmdebug.lua.Debugee",methodName="startHaltLoop"}));
+  __haxe_Log.trace("HALT LOOP", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=368,className="gmdebug.lua.Debugee",methodName="startHaltLoop"}));
   __gmdebug_lua_Debugee.haltLoop();
 end
 __gmdebug_lua_Debugee.abortDebugee = function() 
   local fun = nil;
-  debug.sethook(fun, "");
+  local str = nil;
+  _G.DebugHook.addHook("gmdebug", fun, str);
   local value = __gmdebug_lua_Debugee.socket;
   if (value ~= nil) then 
     value:close();
@@ -2863,7 +3068,7 @@ __gmdebug_lua_Debugee.abortDebugee = function()
   __gmdebug_lua_Debugee.hooksActive = false;
   __gmdebug_lua_Debugee.set_socket(nil);
   __gmdebug_lua_Debugee.active = false;
-  __haxe_Log.trace("Debugging aborted", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=383,className="gmdebug.lua.Debugee",methodName="abortDebugee"}));
+  __haxe_Log.trace("Debugging aborted", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=391,className="gmdebug.lua.Debugee",methodName="abortDebugee"}));
   __gmdebug_lua_Exceptions.unhookGamemodeHooks();
   __gmdebug_lua_Exceptions.unhookEntityHooks();
 end
@@ -2907,7 +3112,7 @@ __gmdebug_lua_Debugee.haltLoop = function()
     if (msg1) == 0 or (msg1) == 1 then 
       break;
     elseif (msg1) == 2 then 
-      __haxe_Log.trace("Errored", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=424,className="gmdebug.lua.Debugee",methodName="haltLoop"}));
+      __haxe_Log.trace("Errored", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=432,className="gmdebug.lua.Debugee",methodName="haltLoop"}));
       _G.error(__haxe_Exception.thrown(_g[2]),0);
     elseif (msg1) == 3 then 
       msg = _g[2]; end;
@@ -2924,7 +3129,7 @@ __gmdebug_lua_Debugee.haltLoop = function()
     end;
     
   end;
-  __haxe_Log.trace("exiting halt lopp", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=436,className="gmdebug.lua.Debugee",methodName="haltLoop"}));
+  __haxe_Log.trace("exiting halt lopp", _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/Debugee.hx",lineNumber=444,className="gmdebug.lua.Debugee",methodName="haltLoop"}));
   __gmdebug_lua_Debugee.inpauseloop = false;
 end
 __gmdebug_lua_Debugee.chooseHandler = function(incoming) 
@@ -2958,9 +3163,9 @@ __gmdebug_lua_Debugee.fullPathToGmod = function(fullPath)
   if (tmp ~= -1) then 
     local result = StringTools.replace(fullPath, __gmdebug_lua_Debugee.dest, "");
     result = Std.string("@") .. Std.string(result);
-    do return result end;
+    do return __haxe_ds_Option.Some(result) end;
   else
-    do return nil end;
+    do return __haxe_ds_Option.None end;
   end;
 end
 _hxClasses["gmdebug.lua.RecvMessageResult"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="TIMEOUT","ACK","ERROR","MESSAGE"},4)}
@@ -3773,11 +3978,8 @@ __gmdebug_lua_handlers_HNext.prototype.handle = function(self,nextReq)
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
-  local str = "cl";
-  if (str == nil) then 
-    str = "";
-  end;
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+  _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "cl");
+  __gmdebug_lua_DebugLoop.lineSteppin = true;
   do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
 end
 
@@ -3852,7 +4054,7 @@ __gmdebug_lua_handlers_HScopes.prototype.handle = function(self,scopeReq)
       return _hx_1
     end )(); end;
   local resp = __gmdebug_composer_ComposeTools.compose(scopeReq, "scopes", _hx_o({__fields__={scopes=true},scopes=resp}));
-  local js = __tink_json_Writer5.new():write(resp);
+  local js = __tink_json_Writer31.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -3888,7 +4090,7 @@ __gmdebug_lua_handlers_HSetBreakpoints.prototype.handle = function(self,req)
     end;
   end;
   local resp = __gmdebug_composer_ComposeTools.compose(req, "setBreakpoints", _hx_o({__fields__={breakpoints=true},breakpoints=bpResponse}));
-  local js = __tink_json_Writer6.new():write(resp);
+  local js = __tink_json_Writer32.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4029,7 +4231,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
   local args = x.arguments;
   if (not __gmdebug_lua_Debugee.inpauseloop) then 
     local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=_hx_tab_array({}, 0),totalFrames=0}));
-    local js = __tink_json_Writer8.new():write(response);
+    local js = __tink_json_Writer34.new():write(response);
     local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
     __gmdebug_lua_Debugee.socket.output:writeString(str);
     __gmdebug_lua_Debugee.socket.output:flush();
@@ -4059,7 +4261,9 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
     firstFrame = _g + firstFrame1;
   end;
   local _g = args.levels;
-  local lastFrame = (function() 
+  local stackFrames = _hx_tab_array({}, 0);
+  local _g1 = firstFrame;
+  local _g = (function() 
     local _hx_1
     if (_g == nil) then 
     _hx_1 = 9999; elseif (_g == 0) then 
@@ -4067,15 +4271,9 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
     _hx_1 = firstFrame + (_g - 1); end
     return _hx_1
   end )();
-  local stackFrames = _hx_tab_array({}, 0);
-  __haxe_Log.trace(Std.string(Std.string(Std.string("levels ") .. Std.string(args.startFrame)) .. Std.string(" ")) .. Std.string(args.levels), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=37,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
-  __haxe_Log.trace(Std.string(Std.string(Std.string(Std.string(Std.string("first ") .. Std.string((firstFrame - 1))) .. Std.string(" last ")) .. Std.string(lastFrame)) .. Std.string(" stackheight ")) .. Std.string(__gmdebug_lua_Debugee.get_stackHeight()), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=38,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
-  local _g = firstFrame;
-  local _g1 = lastFrame;
-  while (_g < _g1) do 
-    _g = _g + 1;
-    local i = _g - 1;
-    __haxe_Log.trace(i, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=40,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
+  while (_g1 < _g) do 
+    _g1 = _g1 + 1;
+    local i = _g1 - 1;
     local info = _G.debug.getinfo(i + 1, "lnSfu");
     if (info == nil) then 
       break;
@@ -4209,7 +4407,6 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
       target1 = nil;
     else
       local path = path;
-      __haxe_Log.trace(path, _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HStackTrace.hx",lineNumber=127,className="gmdebug.lua.handlers.HStackTrace",methodName="handle"}));
       local idx = 1;
       local ret = _hx_tab_array({}, 0);
       while (idx ~= nil) do 
@@ -4241,7 +4438,7 @@ __gmdebug_lua_handlers_HStackTrace.prototype.handle = function(self,x)
     stackFrames:push(target);
   end;
   local response = __gmdebug_composer_ComposeTools.compose(x, "stackTrace", _hx_o({__fields__={stackFrames=true,totalFrames=true},stackFrames=stackFrames,totalFrames=stackFrames.length}));
-  local js = __tink_json_Writer8.new():write(response);
+  local js = __tink_json_Writer34.new():write(response);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4266,11 +4463,8 @@ __gmdebug_lua_handlers_HStepIn.prototype.handle = function(self,stepInReq)
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
-  local str = "cl";
-  if (str == nil) then 
-    str = "";
-  end;
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+  _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "cl");
+  __gmdebug_lua_DebugLoop.lineSteppin = true;
   do return __gmdebug_lua_handlers_HandlerResponse.CONTINUE end
 end
 
@@ -4305,11 +4499,8 @@ __gmdebug_lua_handlers_HStepOut.prototype.handle = function(self,stepOutReq)
   else
     __gmdebug_lua_Debugee.state = __gmdebug_lua_DebugState.STEP(tarheight);
   end;
-  local str = "cl";
-  if (str == nil) then 
-    str = "";
-  end;
-  debug.sethook(__gmdebug_lua_DebugLoop.debugloop, str);
+  _G.DebugHook.addHook("gmdebug", __gmdebug_lua_DebugLoop.debugloop, "cl");
+  __gmdebug_lua_DebugLoop.lineSteppin = true;
   local js = __haxe_Json.stringify(__gmdebug_composer_ComposeTools.compose(stepOutReq, "stepOut"));
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
@@ -4409,7 +4600,7 @@ __gmdebug_lua_handlers_HVariables.prototype.child = function(self,ref)
   local addVars = _hx_tab_array({}, 0);
   local storedvar = self.variableManager:getVar(ref);
   if (storedvar == nil) then 
-    __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=86,className="gmdebug.lua.handlers.HVariables",methodName="child"}));
+    __haxe_Log.trace(Std.string("Variable requested with nothing stored! ") .. Std.string(ref), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=85,className="gmdebug.lua.handlers.HVariables",methodName="child"}));
   end;
   local mt = _G.debug.getmetatable(storedvar);
   if (mt ~= nil) then 
@@ -4546,7 +4737,7 @@ __gmdebug_lua_handlers_HVariables.prototype.global = function(self,scope)
       local _g = _g:next();
       local i = _g.key;
       local ply = _g.value;
-      __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=187,className="gmdebug.lua.handlers.HVariables",methodName="global"}));
+      __haxe_Log.trace(Std.string(Std.string(Std.string("players ") .. Std.string(i)) .. Std.string(" ")) .. Std.string(Std.string(ply)), _hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="src/gmdebug/lua/handlers/HVariables.hx",lineNumber=186,className="gmdebug.lua.handlers.HVariables",methodName="global"}));
       addVars:push(_hx_o({__fields__={name=true,value=true},name=ply:GetName(),value=ply}));
     end;
   elseif (scope) == 2 then 
@@ -4616,7 +4807,7 @@ __gmdebug_lua_handlers_HVariables.prototype.handle = function(self,req)
   local variablesArr = _g;
   self:fixupNames(variablesArr);
   local resp = __gmdebug_composer_ComposeTools.compose(req, "variables", _hx_o({__fields__={variables=true},variables=variablesArr}));
-  local js = __tink_json_Writer7.new():write(resp);
+  local js = __tink_json_Writer33.new():write(resp);
   local str = "Content-Length: " .. #js .. "\r\n\r\n" .. js;
   __gmdebug_lua_Debugee.socket.output:writeString(str);
   __gmdebug_lua_Debugee.socket.output:flush();
@@ -4873,12 +5064,20 @@ __gmdebug_lua_managers_BreakpointManager.prototype.breakLocsCache= nil;
 __gmdebug_lua_managers_BreakpointManager.prototype.breakpoints= nil;
 __gmdebug_lua_managers_BreakpointManager.prototype.bpID= nil;
 __gmdebug_lua_managers_BreakpointManager.prototype.clearBreakpoints = function(self,source) 
+  local this1 = self.breakpoints;
+  local key;
+  local _g = __gmdebug_lua_Debugee.fullPathToGmod(source);
+  local key1 = _g[1];
+  if (key1) == 0 then 
+    key = _g[2];
+  elseif (key1) == 1 then 
+    key = source; end;
   local value = __haxe_ds_IntMap.new();
-  local _this = self.breakpoints;
+  local _this = this1;
   if (value == nil) then 
-    _this.h[source] = __haxe_ds_StringMap.tnull;
+    _this.h[key] = __haxe_ds_StringMap.tnull;
   else
-    _this.h[source] = value;
+    _this.h[key] = value;
   end;
 end
 __gmdebug_lua_managers_BreakpointManager.prototype.retrieveBreakpointTable = function(self,source) 
@@ -4938,14 +5137,13 @@ __gmdebug_lua_managers_BreakpointManager.prototype.getBreakpointForLine = functi
   end;
 end
 __gmdebug_lua_managers_BreakpointManager.prototype.newBreakpoint = function(self,source,bp) 
-  local value = __gmdebug_lua_Debugee.fullPathToGmod(source.path);
-  local status = self:breakpointStatus((function() 
-    local _hx_1
-    if (value == nil) then 
-    _hx_1 = ""; else 
-    _hx_1 = value; end
-    return _hx_1
-  end )(), bp.line);
+  local status;
+  local _g = __gmdebug_lua_Debugee.fullPathToGmod(source.path);
+  local status1 = _g[1];
+  if (status1) == 0 then 
+    status = self:breakpointStatus(_g[2], bp.line);
+  elseif (status1) == 1 then 
+    status = __gmdebug_lua_managers_LineStatus.NOT_VISITED; end;
   local breakpoint = __gmdebug_lua_managers_Breakpoint.new((function() 
   local _hx_obj = self;
   local _hx_fld = 'bpID';
@@ -4954,14 +5152,15 @@ __gmdebug_lua_managers_BreakpointManager.prototype.newBreakpoint = function(self
    return _;
    end)(), source, bp, status);
   if (breakpoint.breakpointType ~= __gmdebug_lua_managers_BreakpointType.INACTIVE) then 
-    local value = __gmdebug_lua_Debugee.fullPathToGmod(source.path);
-    local map = self:retrieveBreakpointTable((function() 
-      local _hx_2
-      if (value == nil) then 
-      _hx_2 = source.path; else 
-      _hx_2 = value; end
-      return _hx_2
-    end )());
+    local source = source.path;
+    local map;
+    local _g = __gmdebug_lua_Debugee.fullPathToGmod(source);
+    local map1 = _g[1];
+    if (map1) == 0 then 
+      map = _g[2];
+    elseif (map1) == 1 then 
+      map = source; end;
+    local map = self:retrieveBreakpointTable(map);
     local key = breakpoint.line;
     if (breakpoint == nil) then 
       map.h[key] = __haxe_ds_IntMap.tnull;
@@ -5428,6 +5627,13 @@ __haxe_ds_IntMap.__name__ = true
 __haxe_ds_IntMap.__interfaces__ = {__haxe_IMap}
 __haxe_ds_IntMap.prototype = _hx_e();
 __haxe_ds_IntMap.prototype.h= nil;
+__haxe_ds_IntMap.prototype.set = function(self,key,value) 
+  if (value == nil) then 
+    self.h[key] = __haxe_ds_IntMap.tnull;
+  else
+    self.h[key] = value;
+  end;
+end
 __haxe_ds_IntMap.prototype.get = function(self,key) 
   local ret = self.h[key];
   if (ret == __haxe_ds_IntMap.tnull) then 
@@ -5449,6 +5655,11 @@ __haxe_ds_IntMap.prototype.keys = function(self)
 end
 
 __haxe_ds_IntMap.prototype.__class__ =  __haxe_ds_IntMap
+_hxClasses["haxe.ds.Option"] = { __ename__ = true, __constructs__ = _hx_tab_array({[0]="Some","None"},2)}
+__haxe_ds_Option = _hxClasses["haxe.ds.Option"];
+__haxe_ds_Option.Some = function(v) local _x = _hx_tab_array({[0]="Some",0,v,__enum__=__haxe_ds_Option}, 3); return _x; end 
+__haxe_ds_Option.None = _hx_tab_array({[0]="None",1,__enum__ = __haxe_ds_Option},2)
+
 
 __haxe_format_JsonParser.new = function(str) 
   local self = _hx_new(__haxe_format_JsonParser.prototype)
@@ -6536,17 +6747,17 @@ end
 
 __tink_json_BasicWriter.prototype.__class__ =  __tink_json_BasicWriter
 
-__tink_json_Writer5.new = function() 
-  local self = _hx_new(__tink_json_Writer5.prototype)
-  __tink_json_Writer5.super(self)
+__tink_json_Writer31.new = function() 
+  local self = _hx_new(__tink_json_Writer31.prototype)
+  __tink_json_Writer31.super(self)
   return self
 end
-__tink_json_Writer5.super = function(self) 
+__tink_json_Writer31.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer5.__name__ = true
-__tink_json_Writer5.prototype = _hx_e();
-__tink_json_Writer5.prototype.process0 = function(self,value) 
+__tink_json_Writer31.__name__ = true
+__tink_json_Writer31.prototype = _hx_e();
+__tink_json_Writer31.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6652,7 +6863,7 @@ __tink_json_Writer5.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer5.prototype.process1 = function(self,value) 
+__tink_json_Writer31.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6684,7 +6895,7 @@ __tink_json_Writer5.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer5.prototype.process2 = function(self,value) 
+__tink_json_Writer31.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -6886,7 +7097,7 @@ __tink_json_Writer5.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer5.prototype.process3 = function(self,value) 
+__tink_json_Writer31.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7098,7 +7309,7 @@ __tink_json_Writer5.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer5.prototype.process4 = function(self,value) 
+__tink_json_Writer31.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7127,27 +7338,27 @@ __tink_json_Writer5.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer5.prototype.write = function(self,value) 
+__tink_json_Writer31.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer5.prototype.__class__ =  __tink_json_Writer5
-__tink_json_Writer5.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer5.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer31.prototype.__class__ =  __tink_json_Writer31
+__tink_json_Writer31.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer31.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer6.new = function() 
-  local self = _hx_new(__tink_json_Writer6.prototype)
-  __tink_json_Writer6.super(self)
+__tink_json_Writer32.new = function() 
+  local self = _hx_new(__tink_json_Writer32.prototype)
+  __tink_json_Writer32.super(self)
   return self
 end
-__tink_json_Writer6.super = function(self) 
+__tink_json_Writer32.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer6.__name__ = true
-__tink_json_Writer6.prototype = _hx_e();
-__tink_json_Writer6.prototype.process0 = function(self,value) 
+__tink_json_Writer32.__name__ = true
+__tink_json_Writer32.prototype = _hx_e();
+__tink_json_Writer32.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7253,7 +7464,7 @@ __tink_json_Writer6.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer6.prototype.process1 = function(self,value) 
+__tink_json_Writer32.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7285,7 +7496,7 @@ __tink_json_Writer6.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer6.prototype.process2 = function(self,value) 
+__tink_json_Writer32.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7483,7 +7694,7 @@ __tink_json_Writer6.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer6.prototype.process3 = function(self,value) 
+__tink_json_Writer32.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -7695,7 +7906,7 @@ __tink_json_Writer6.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer6.prototype.process4 = function(self,value) 
+__tink_json_Writer32.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7724,27 +7935,27 @@ __tink_json_Writer6.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer6.prototype.write = function(self,value) 
+__tink_json_Writer32.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer6.prototype.__class__ =  __tink_json_Writer6
-__tink_json_Writer6.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer6.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer32.prototype.__class__ =  __tink_json_Writer32
+__tink_json_Writer32.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer32.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer7.new = function() 
-  local self = _hx_new(__tink_json_Writer7.prototype)
-  __tink_json_Writer7.super(self)
+__tink_json_Writer33.new = function() 
+  local self = _hx_new(__tink_json_Writer33.prototype)
+  __tink_json_Writer33.super(self)
   return self
 end
-__tink_json_Writer7.super = function(self) 
+__tink_json_Writer33.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer7.__name__ = true
-__tink_json_Writer7.prototype = _hx_e();
-__tink_json_Writer7.prototype.process0 = function(self,value) 
+__tink_json_Writer33.__name__ = true
+__tink_json_Writer33.prototype = _hx_e();
+__tink_json_Writer33.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7850,7 +8061,7 @@ __tink_json_Writer7.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer7.prototype.process1 = function(self,value) 
+__tink_json_Writer33.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -7882,7 +8093,7 @@ __tink_json_Writer7.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer7.prototype.process2 = function(self,value) 
+__tink_json_Writer33.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8039,7 +8250,7 @@ __tink_json_Writer7.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer7.prototype.process3 = function(self,value) 
+__tink_json_Writer33.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -8131,27 +8342,27 @@ __tink_json_Writer7.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer7.prototype.write = function(self,value) 
+__tink_json_Writer33.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer7.prototype.__class__ =  __tink_json_Writer7
-__tink_json_Writer7.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer7.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer33.prototype.__class__ =  __tink_json_Writer33
+__tink_json_Writer33.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer33.prototype,{__index=__tink_json_BasicWriter.prototype})
 
-__tink_json_Writer8.new = function() 
-  local self = _hx_new(__tink_json_Writer8.prototype)
-  __tink_json_Writer8.super(self)
+__tink_json_Writer34.new = function() 
+  local self = _hx_new(__tink_json_Writer34.prototype)
+  __tink_json_Writer34.super(self)
   return self
 end
-__tink_json_Writer8.super = function(self) 
+__tink_json_Writer34.super = function(self) 
   __tink_json_BasicWriter.super(self);
 end
-__tink_json_Writer8.__name__ = true
-__tink_json_Writer8.prototype = _hx_e();
-__tink_json_Writer8.prototype.process0 = function(self,value) 
+__tink_json_Writer34.__name__ = true
+__tink_json_Writer34.prototype = _hx_e();
+__tink_json_Writer34.prototype.process0 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8257,7 +8468,7 @@ __tink_json_Writer8.prototype.process0 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer8.prototype.process1 = function(self,value) 
+__tink_json_Writer34.prototype.process1 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8309,7 +8520,7 @@ __tink_json_Writer8.prototype.process1 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer8.prototype.process2 = function(self,value) 
+__tink_json_Writer34.prototype.process2 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8454,7 +8665,7 @@ __tink_json_Writer8.prototype.process2 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer8.prototype.process3 = function(self,value) 
+__tink_json_Writer34.prototype.process3 = function(self,value) 
   local __first = true;
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
@@ -8666,7 +8877,7 @@ __tink_json_Writer8.prototype.process3 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer8.prototype.process4 = function(self,value) 
+__tink_json_Writer34.prototype.process4 = function(self,value) 
   local _this = self.buf;
   _G.table.insert(_this.b, _G.string.char(123));
   _this.length = _this.length + 1;
@@ -8695,15 +8906,15 @@ __tink_json_Writer8.prototype.process4 = function(self,value)
   _G.table.insert(_this.b, _G.string.char(125));
   _this.length = _this.length + 1;
 end
-__tink_json_Writer8.prototype.write = function(self,value) 
+__tink_json_Writer34.prototype.write = function(self,value) 
   self:init();
   self:process0(value);
   do return _G.table.concat(self.buf.b) end
 end
 
-__tink_json_Writer8.prototype.__class__ =  __tink_json_Writer8
-__tink_json_Writer8.__super__ = __tink_json_BasicWriter
-setmetatable(__tink_json_Writer8.prototype,{__index=__tink_json_BasicWriter.prototype})
+__tink_json_Writer34.prototype.__class__ =  __tink_json_Writer34
+__tink_json_Writer34.__super__ = __tink_json_BasicWriter
+setmetatable(__tink_json_Writer34.prototype,{__index=__tink_json_BasicWriter.prototype})
 -- require this for lua 5.1
 pcall(require, 'bit')
 if bit then
@@ -8767,15 +8978,25 @@ local _hx_static_init = function()
   
   __gmdebug_Cross.JIT = __haxe_io_Path.join(_hx_tab_array({[0]=__gmdebug_Cross.FOLDER, "jitchoice.txt"}, 2));
   
+  __gmdebug_lua__DebugHook_DDebugHook.hooks = __gmdebug_lua__DebugHook_DDebugHook.getHooks();
+  
   __gmdebug_lua_DebugLoop.highestStackHeight = _G.math.huge;
   
   __gmdebug_lua_DebugLoop.escapeHatch = __gmdebug_lua_CatchOut.NONE;
   
   __gmdebug_lua_DebugLoop.prevStackHeight = 0;
   
+  __gmdebug_lua_DebugLoop.lineSteppin = false;
+  
+  __gmdebug_lua_DebugLoop.runs = 0;
+  
+  __gmdebug_lua_DebugLoopProfile.inital = _hx_tab_array({}, 0);
+  
   __gmdebug_lua_DebugLoopProfile.vinal = _hx_tab_array({}, 0);
   
   __gmdebug_lua_DebugLoopProfile.pass = 0;
+  
+  __gmdebug_lua_DebugLoopProfile.lastname = "";
   
   __gmdebug_lua_DebugLoopProfile.profileState = __gmdebug_lua_ProfilingState.NOT_PROFILING;
   
@@ -8791,7 +9012,7 @@ local _hx_static_init = function()
   
   __gmdebug_lua_Debugee.inpauseloop = false;
   
-  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=3,stepDebugLoop=4,except=4,pause=4});
+  __gmdebug_lua_Debugee.stackOffset = _hx_o({__fields__={step=true,stepDebugLoop=true,except=true,pause=true},step=3,stepDebugLoop=5,except=5,pause=5});
   
   __gmdebug_lua_Debugee.minheight = 3;
   
