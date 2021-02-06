@@ -1,7 +1,6 @@
 --times
 -D haxeJSON
 -D macro-times
--D profile
 main.hxml
 
 --next
