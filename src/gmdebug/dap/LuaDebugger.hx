@@ -32,7 +32,6 @@ import js.node.child_process.ChildProcess;
 using Lambda;
 
 @:keep @:await class LuaDebugger extends DebugSession {
-	
 	public final commMethod:CommMethod;
 
 	public static var inst(default, null):LuaDebugger;
@@ -102,27 +101,33 @@ using Lambda;
 		final ready = haxe.io.Path.join([data, Cross.READY]);
 		final read = @:await aquireReadSocket(out);
 		final write = @:await aquireWriteSocket(input);
-		final number = clients.length;
-		// clientFileDescriptors[number] = write.writeFd;
+		final clientID = clients.length;
 		read.on(Data, (x:Buffer) -> {
-			readGmodBuffer(x, number);
+			readGmodBuffer(x, clientID);
 		});
 		clients.push({
 			readS: read,
 			writeS: write,
 		});
-
-		clientFiles[number] = {write: input, read: out};
+		clientFiles[clientID] = {write: input, read: out};
 		sys.io.File.saveContent(ready, "");
 		write.write("\004\r\n");
 		new ComposedEvent(thread, {
-			threadId: number,
+			threadId: clientID,
 			reason: Started
 		}).send();
-		mapClientName.set(number, playerName);
-		mapClientID.set(number, clientNo);
-		sendToClient(number, new ComposedGmDebugMessage(intialInfo, {location: serverFolder}));
-		sendToClient(number, new ComposedGmDebugMessage(clientID, {id: number}));
+		mapClientName.set(clientID, playerName);
+		mapClientID.set(clientID, clientNo);
+		setupPlayer(clientID);
+	}
+
+	function setupPlayer(clientID:Int) {
+		sendToClient(clientID, new ComposedGmDebugMessage(intialInfo, {location: serverFolder}));
+		sendToClient(clientID, new ComposedGmDebugMessage(GmMsgType.clientID, {id: clientID}));
+		Handlers.latestBreakpoint.run((msg) -> sendToClient(clientID,msg));
+		Handlers.latestFunctionBP.run((msg) -> sendToClient(clientID,msg));
+		Handlers.latestExceptionBP.run((msg) -> sendToClient(clientID,msg));
+		sendToClient(clientID, new ComposedRequest(configurationDone, {}));
 	}
 
 	// todo
@@ -224,7 +229,6 @@ using Lambda;
 
 	function processDebugeeMessage(debugeeMessage:ProtocolMessage, threadId:Int) {
 		debugeeMessage.seq = 0; // must be done, or implementation has a fit
-		// trace(debugeeMessage);
 		switch (debugeeMessage.type) {
 			case Event:
 				final cmd = (cast debugeeMessage : Event<Dynamic>).event;
@@ -337,7 +341,7 @@ using Lambda;
 	public override function handleMessage(message:ProtocolMessage) {
 		if (LuaDebugger.inst == null)
 			LuaDebugger.inst = this;
-		
+
 		switch (message.type) {
 			case Request:
 				untyped trace('recieved request from client ${message.command}');

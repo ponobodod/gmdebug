@@ -3,15 +3,29 @@ package gmdebug.dap;
 import js.node.net.Socket;
 
 class Client {
-	var socket:FileSocket;
+
+	public var clientID:Int;
+
+	var gmodID:Int;
+	
+	final socket:FileSocket;
 
 	var files:ClientFiles;
 
-	var threadName:Int;
+	var threadID:Int;
 
-	var clientName:String;
+	var gmodName:String;
 
-	public var debugeeID:Int;
+	public function new(fs:FileSocket,files:ClientFiles,gmodID:Int,gmodName:String) {
+		socket = fs; 
+		this.files = files; 
+		this.gmodID = gmodID;
+		this.gmodName = gmodName;
+	}
+
+	public function send() {
+
+	}
 }
 
 private typedef FileSocket = {
