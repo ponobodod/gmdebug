@@ -22,6 +22,13 @@ typedef HasThreadID = {
 }
 
 class Handlers {
+
+	public static var latestBreakpoint:Null<SetBreakpointsRequest> = null;
+
+	public static var latestFunctionBP:Null<SetFunctionBreakpointsRequest> = null;
+
+	public static var latestExceptionBP:Null<SetExceptionBreakpointsRequest> = null;
+
 	public static function handle(req:Request<Dynamic>) {
 		final command:AnyRequest = req.command;
 		switch (command) {
@@ -52,7 +59,6 @@ class Handlers {
 				LuaDebugger.inst.sendToServer(req);
 			case threads:
 				h_threads(req);
-
 			case loadedSources | modules | goto | gotoTargets | breakpointLocations | _continue: // _continue: ARRRRGGGHHHH
 				LuaDebugger.inst.sendToServer(req);
 		}
@@ -62,8 +68,6 @@ class Handlers {
 	static function sendAll(x:Request<Dynamic>) {
 		LuaDebugger.inst.sendToAll(x);
 	}
-
-	static var latestBreakpoint:Null<SetBreakpointsRequest> = null;
 
 	static function h_setBreakpoints(x:SetBreakpointsRequest) {
 		latestBreakpoint = x;
@@ -81,7 +85,6 @@ class Handlers {
 		x.compose(threads, {threads: threadArr}).send();
 	}
 
-	static var latestExceptionBP:Null<SetExceptionBreakpointsRequest> = null;
 
 	static function h_setExceptionBreakpoints(x:SetExceptionBreakpointsRequest) {
 		latestExceptionBP = x;
@@ -93,8 +96,6 @@ class Handlers {
 		x.compose(disconnect).send();
 		LuaDebugger.inst.shutdown();
 	}
-
-	static var latestFunctionBP:Null<SetFunctionBreakpointsRequest> = null;
 
 	static function h_setFunctionBreakpoints(x:SetFunctionBreakpointsRequest) {
 		latestFunctionBP = x;
