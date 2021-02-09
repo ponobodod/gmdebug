@@ -6,7 +6,7 @@ class HNext implements IHandler<NextRequest> {
 	public function handle(nextReq:NextRequest):HandlerResponse {
 		var resp = nextReq.compose(next);
 		var tarheight = Debugee.stepHeight;
-		trace('targeting $tarheight - (${Debugee.stackHeight} ${Debugee.stackOffset.step})');
+		trace('targeting $tarheight - (${Debugee.stackHeight} ${ StackConst.STEP})');
 
 		Debugee.state = STEP(tarheight);
 		resp.send();

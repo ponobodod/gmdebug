@@ -10,8 +10,8 @@ class HStepOut implements IHandler<StepOutRequest> {
 
 	public function handle(stepOutReq:StepOutRequest):HandlerResponse {
 		var tarheight = Debugee.stepHeight - 1;
-		trace('stepOut ${tarheight < Debugee.minheight} : $tarheight ${Debugee.minheight}');
-		if (tarheight <= Debugee.minheight) {
+		trace('stepOut ${tarheight < StackConst.MIN_HEIGHT} : $tarheight ${StackConst.MIN_HEIGHT}');
+		if (tarheight <= StackConst.MIN_HEIGHT) {
 			final info = DebugLib.getinfo(Debugee.baseDepth.unsafe() + 1, "fLSl");
 			final func = info.func;
 			trace('${info.source}');

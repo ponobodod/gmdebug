@@ -70,27 +70,11 @@ class Debugee {
 
 	public static var dapMode:Null<DapModeStr>;
 
-	public static final stackOffset = {
-		#if !gmddebug
-		step: 3,
-		stepDebugLoop: 4,
-		except: 4,
-		pause: 4
-		#else
-		step : 3,
-		stepDebugLoop : 5,
-		except : 5,
-		pause : 5
-		#end
-	};
-
 	public static var stepHeight(get,never):Int;
 	
 	public static extern inline function get_stepHeight():Int {
-		return stackHeight - stackOffset.step;
+		return stackHeight - StackConst.STEP;
 	}
-
-	public static var minheight:Int = 3;
 
 	public static var baseDepth:Null<Int>;
 
@@ -245,7 +229,7 @@ class Debugee {
 		GuiLib.EnableScreenClicker(true);
 		GuiLib.ActivateGameUI();
 		#end
-		startHaltLoop(Exception, stackOffset.except, err);
+		startHaltLoop(Exception,  StackConst.EXCEPT, err);
 		tracing = false;
 		return DebugLib.traceback(err);
 	}

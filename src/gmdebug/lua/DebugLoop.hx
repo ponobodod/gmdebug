@@ -93,7 +93,7 @@ class DebugLoop {
 					enableLineStep();
 					highestStackHeight = sh;
 				}
-			} else if (cur == Line && currentStackHeight(func) == 4 && escapeHatch == NONE) {
+			} else if (cur == Line && currentStackHeight(func) == StackConst.MIN_HEIGHT_OUT && escapeHatch == NONE) {
 				escapeHatch = OUT(func);
 			} else if (cur == Line && shouldStopLine(func, currentStackHeight(func))) {
 				escapeHatch = NONE;
@@ -107,7 +107,7 @@ class DebugLoop {
 		switch (bm.getBreakpointForLine(sinfo.source.gPath(),line)) {
 			case null | {breakpointType : INACTIVE}:
 			case {breakpointType : NORMAL}:
-				Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
+				Debugee.startHaltLoop(Breakpoint, StackConst.STEP_DEBUG_LOOP);
 			case {breakpointType : CONDITIONAL(condFunc), id : bpID}:
 				Gmod.setfenv(condFunc, HEvaluate.createEvalEnvironment(3 + DebugHook.HOOK_USED));
 				switch (Util.runCompiledFunction(condFunc)) {
@@ -126,7 +126,7 @@ class DebugLoop {
 						resp.send();
 					case Success(val):
 						if (val) {
-							Debugee.startHaltLoop(Breakpoint, Debugee.stackOffset.stepDebugLoop);
+							Debugee.startHaltLoop(Breakpoint,  StackConst.STEP_DEBUG_LOOP);
 						}
 				}
 		}
@@ -143,7 +143,7 @@ class DebugLoop {
 				trace('stepped $target ${Debugee.stackHeight}');
 				Debugee.state = WAIT;
 				disableLineStep();
-				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
+				Debugee.startHaltLoop(Step,  StackConst.STEP_DEBUG_LOOP);
 				true;
 			case STEP(x):
 				true;
@@ -151,13 +151,13 @@ class DebugLoop {
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
 				disableLineStep();
-				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
+				Debugee.startHaltLoop(Step,  StackConst.STEP_DEBUG_LOOP);
 				true;
 			case OUT(outFunc, _,tarHeight) if (outFunc != func && Debugee.stackHeight <= tarHeight):
 				Debugee.state = WAIT;
 				Lua.print(outFunc, func);
 				disableLineStep();
-				Debugee.startHaltLoop(Step, Debugee.stackOffset.stepDebugLoop);
+				Debugee.startHaltLoop(Step,  StackConst.STEP_DEBUG_LOOP);
 				true;
 			case OUT(outFunc, _):
 				Lua.print(outFunc, func, curLine);
@@ -175,7 +175,7 @@ class DebugLoop {
 		// RUns on entry and exit
 		if (func != null && fbm != null && currentFunc == null) {
 			if (fbm.functionBP.exists(func)) {
-				Debugee.startHaltLoop(FunctionBreakpoint, Debugee.stackOffset.stepDebugLoop);
+				Debugee.startHaltLoop(FunctionBreakpoint,  StackConst.STEP_DEBUG_LOOP);
 			}
 			currentFunc = func;
 		}
@@ -186,7 +186,7 @@ class DebugLoop {
 		if (!Debugee.shouldDebug || Debugee.tracing)
 			return;
 		DebugLoopProfile.profile("getinfo", true);
-		final func = DebugLib.getinfo(DebugHook.DEBUG_OFFSET, 'f').func; // activelines causes MASSIVE slowdown (6x)
+		final func = DebugLib.getinfo(DebugHook.DEBUG_OFFSET, 'f').func;
 		final result = sc.sourceCache.get(func);
 		final sinfo = if (result != null) {
 			result;
