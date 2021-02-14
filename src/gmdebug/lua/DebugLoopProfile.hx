@@ -7,7 +7,7 @@ using Safety;
 
 class DebugLoopProfile {
 	static final inital:Array<Map<String, Float>> = [];
-	static final vinal:Array<Map<String, Float>> = [];
+	static final finish:Array<Map<String, Float>> = [];
 
 	static var pass = 0;
 	static var lastname = "";
@@ -29,7 +29,7 @@ class DebugLoopProfile {
 			return;
 		final avg:Map<String, Float> = [];
 		trace("report");
-		for (pass in vinal) {
+		for (pass in finish) {
 			for (str => time in pass) {
 				avg.set(str, avg.get(str).or(0.0) + time);
 			}
@@ -52,7 +52,7 @@ class DebugLoopProfile {
 
 		if (inital[pass] == null) {
 			inital[pass] = [];
-			vinal[pass] = [];
+			finish[pass] = [];
 		}
 		inital[pass].unsafe().set(zone, Gmod.SysTime());
 		lastname = zone;
@@ -64,7 +64,7 @@ class DebugLoopProfile {
 		if (profileState != PROFILING)
 			return;
 		final diff = Gmod.SysTime() - inital[pass].get(lastname).unsafe();
-		vinal[pass].set(lastname, diff);
+		finish[pass].set(lastname, diff);
 		cumulativeTime += diff;
 		#end
 	}

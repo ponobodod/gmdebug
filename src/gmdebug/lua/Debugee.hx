@@ -5,46 +5,26 @@ import gmdebug.lua.managers.FunctionBreakpointManager;
 import gmdebug.lua.managers.VariableManager;
 import gmdebug.lua.io.PipeSocket;
 import gmdebug.lua.handlers.IHandler.HandlerResponse;
-import gmdebug.lib.lua.Mri;
-import gmod.libs.GuiLib;
-import gmod.libs.VguiLib;
 import gmdebug.Cross;
 import gmdebug.GmDebugMessage;
 import gmod.libs.GameLib;
-import gmod.libs.MathLib;
-import gmdebug.composer.*;
 import gmdebug.lua.HandlerContainer;
-import gmod.libs.Scripted_entsLib;
 import haxe.io.Input;
 import gmdebug.lua.io.DebugIO;
-import gmdebug.Cross.CommMethod;
-import gmdebug.lib.lua.Protocol.TOutputEvent;
-import gmdebug.lib.lua.Protocol.OutputEventCategory;
-import lua.Table;
-import lua.Table.AnyTable;
-import haxe.Log;
-import lua.NativeStringTools;
 import gmod.libs.FileLib;
 import gmod.Gmod;
 import haxe.Constraints.Function;
 import lua.Lua;
 import gmod.libs.PlayerLib;
-import gmod.gclass.Player;
-import lua.lib.luasocket.socket.TcpClient;
 import gmod.Hook.GMHook;
 import gmod.libs.HookLib;
 import gmod.libs.TimerLib;
 import gmdebug.lib.lua.Protocol.TStoppedEvent;
 import gmdebug.lib.lua.Protocol.StopReason;
 import gmdebug.composer.*;
-import lua.Debug;
-import gmdebug.lib.lua.Protocol.Request;
-import haxe.Json;
 import gmod.libs.DebugLib;
 
 using Lambda;
-
-import gmod.gclass.Entity;
 
 using StringTools;
 using gmdebug.composer.ComposeTools;
@@ -60,13 +40,13 @@ import gmod.libs.ChatLib;
 @:keep
 class Debugee {
 
-	public static var clientID:Int = 0;
+	public static var clientID:Int = 0; //go
 
-	public static var state:DebugState = WAIT;
+	public static var state:DebugState = WAIT; //go
 
-	public static var active:Bool = false;
+	public static var active:Bool = false; //keep
 
-	public static var inpauseloop = false;
+	public static var inpauseloop = false; //keep
 
 	public static var dapMode:Null<DapModeStr>;
 
@@ -136,8 +116,8 @@ class Debugee {
 		}
 		trace("Connected to server...");
 		active = true;
-		final ce = new ComposedEvent(initialized);
-		ce.send();
+		final initEvent = new ComposedEvent(initialized);
+		initEvent.send();
 		#if debugdump
 		FileLib.CreateDir("gmdebugdump");
 		Gmod.collectgarbage("collect");
@@ -446,8 +426,6 @@ class Debugee {
 		}
 	}
 }
-
-
 
 typedef LineMap = Map<Int, Bool>;
 

@@ -8,7 +8,9 @@ class StepManager {
 
     }
 
-    public var stepState:StepState = WAIT;
+    public var stepState(default,null):StepState = WAIT;
+
+    public var baseDepth(default,null):Null<Int> = null;
 
 }
 
