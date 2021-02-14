@@ -3,7 +3,7 @@ package gmdebug.dap;
 import gmdebug.composer.EventString;
 import js.node.ChildProcess;
 import vscode.debugAdapter.Protocol;
-class Intercepter {
+class EventIntercepter {
 	public static function event(ceptedEvent:Event<Dynamic>, threadId:Int) {
 		switch ((ceptedEvent.event : EventString<Dynamic>)) {
 			case output:

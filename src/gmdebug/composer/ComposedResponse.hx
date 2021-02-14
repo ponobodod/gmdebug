@@ -47,9 +47,9 @@ class ComposedResponse<T> extends ComposedProtocolMessage {
 	}
 
 	#if js
-	public inline function send() {
+	public inline function send(luaDebug:LuaDebugger) {
 		trace('sending from dap $command');
-		LuaDebugger.inst.sendResponse(cast this); // pls work :)
+		luaDebug.sendResponse(cast this); // pls work :)
 	}
 	#end
 }

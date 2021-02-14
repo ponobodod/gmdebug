@@ -6,6 +6,7 @@ import gmdebug.lua.Debugee;
 import haxe.Json;
 
 class ComposedProtocolMessage {
+
 	public var seq:Int = 0;
 
 	public var type:MessageType;

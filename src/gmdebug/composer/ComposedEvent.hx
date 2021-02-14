@@ -22,9 +22,9 @@ class ComposedEvent<T> extends ComposedProtocolMessage {
 	}
 
 	#if js
-	public inline function send() {
+	public inline function send(luaDebug:LuaDebugger) {
 		trace('sending from dap $event');
-		LuaDebugger.inst.sendEvent(cast this); // pls work :)
+		luaDebug.sendEvent(cast this); // pls work :)
 	}
 	#end
 }

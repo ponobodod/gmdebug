@@ -32,9 +32,8 @@ import js.node.child_process.ChildProcess;
 using Lambda;
 
 @:keep @:await class LuaDebugger extends DebugSession {
-	public final commMethod:CommMethod;
 
-	public static var inst(default, null):LuaDebugger;
+	public final commMethod:CommMethod;
 
 	public var clients:Array<FileSocket>; // 0 = server.
 
@@ -54,11 +53,14 @@ using Lambda;
 
 	public var clientsTaken:Map<Int, Bool>;
 
+	var requestRouter:RequestRouter;
+
 	var bytesProcessor:BytesProcessor;
+
+	var prevRequests:PreviousRequests;
 
 	public function new(?x, ?y) {
 		super(x, y);
-		inst = this;
 		clientLocations = [];
 		serverFolder = null;
 		clientsTaken = [];
@@ -70,6 +72,9 @@ using Lambda;
 		clients = [];
 		commMethod = Pipe;
 		bytesProcessor = new BytesProcessor();
+		prevRequests = new PreviousRequests();
+		requestRouter = new RequestRouter(this,prevRequests);
+		
 		Node.process.on("uncaughtException", uncaughtException);
 	}
 
@@ -115,18 +120,18 @@ using Lambda;
 		new ComposedEvent(thread, {
 			threadId: clientID,
 			reason: Started
-		}).send();
+		}).send(this);
 		mapClientName.set(clientID, playerName);
 		mapClientID.set(clientID, clientNo);
 		setupPlayer(clientID);
 	}
 
 	function setupPlayer(clientID:Int) {
-		sendToClient(clientID, new ComposedGmDebugMessage(intialInfo, {location: serverFolder}));
+		sendToClient(clientID, new ComposedGmDebugMessage(intialInfo, {location: serverFolder,dapMode : Launch}));
 		sendToClient(clientID, new ComposedGmDebugMessage(GmMsgType.clientID, {id: clientID}));
-		Handlers.latestBreakpoint.run((msg) -> sendToClient(clientID,msg));
-		Handlers.latestFunctionBP.run((msg) -> sendToClient(clientID,msg));
-		Handlers.latestExceptionBP.run((msg) -> sendToClient(clientID,msg));
+		prevRequests.get(setBreakpoints).run((msg) -> sendToClient(clientID,msg));
+		prevRequests.get(setExceptionBreakpoints).run((msg) -> sendToClient(clientID,msg));
+		prevRequests.get(setFunctionBreakpoints).run((msg) -> sendToClient(clientID,msg));
 		sendToClient(clientID, new ComposedRequest(configurationDone, {}));
 	}
 
@@ -135,7 +140,7 @@ using Lambda;
 		new ComposedEvent(thread, {
 			threadId: mapClientID.get(x.playerID),
 			reason: Exited
-		}).send();
+		}).send(this);
 		clientsTaken.remove(mapClientID.get(x.playerID));
 	}
 
@@ -233,7 +238,7 @@ using Lambda;
 			case Event:
 				final cmd = (cast debugeeMessage : Event<Dynamic>).event;
 				trace('recieved event from debugee, $cmd');
-				Intercepter.event(cast debugeeMessage, threadId);
+				EventIntercepter.event(cast debugeeMessage, threadId);
 				sendEvent(cast debugeeMessage);
 			case Response:
 				final cmd = (cast debugeeMessage : Response<Dynamic>).command;
@@ -251,7 +256,7 @@ using Lambda;
 	override public function shutdown() {
 		switch (dapMode) {
 			case LAUNCH(child):
-				child.stdin.write("quit\n");
+				child.write("quit\n");
 				child.kill();
 			default:
 		}
@@ -270,51 +275,23 @@ using Lambda;
 	/**
 	 * Async start server. Respond to attach request when attached.
 	**/
-	public function startServer(commMethod:CommMethod, attachReq:Request<Dynamic>) {
-		switch (commMethod) {
-			case Socket:
-				final luaServer = Net.createServer((sock) -> {
-					final luaDebug = sock;
-					sock.setKeepAlive(true);
-					clients[0] = {
-						writeS: luaDebug,
-						readS: luaDebug
-					}
-					var aresp = attachReq.compose(RequestString.attach);
-					aresp.send();
-					luaDebug.addListener(Error, (list:js.lib.Error) -> {
-						trace(list);
-						trace(list.message);
-						throw "Socket error";
+	public function startServer(attachReq:Request<Dynamic>) {
+		
+		pokeServerNamedPipes(attachReq).handle((out) -> {
+			switch (out) {
+				case Success(_):
+					final resp = attachReq.compose(attach);
+					resp.send(this);
+				case Failure(fail):
+					trace(fail);
+					final resp = attachReq.composeFail('attach fail ${fail.message}', {
+						id: 1,
+						format: 'Failed to attach to server ${fail.message}',
 					});
-					sock.addListener(Error, (x) -> {
-						trace("could not recieve packet");
-						trace(x);
-						shutdown();
-						throw x;
-					});
-					sock.addListener(Data, (x) -> readGmodBuffer(x, 0)); // TODO will not work....
-				});
-				luaServer.listen({
-					port: 56789,
-					host: "localhost",
-				}, () -> trace(luaServer.address()));
-			case Pipe:
-				pokeServerNamedPipes(attachReq).handle((out) -> {
-					switch (out) {
-						case Success(_):
-							final resp = attachReq.compose(attach);
-							resp.send();
-						case Failure(fail):
-							trace(fail);
-							final resp = attachReq.composeFail('attach fail ${fail.message}', {
-								id: 1,
-								format: 'Failed to attach to server ${fail.message}',
-							});
-							resp.send();
-					}
-				});
-		}
+					resp.send(this);
+			}
+		});
+		
 	}
 
 	inline function composeMessage(msg:Dynamic):String {
@@ -339,13 +316,10 @@ using Lambda;
 	}
 
 	public override function handleMessage(message:ProtocolMessage) {
-		if (LuaDebugger.inst == null)
-			LuaDebugger.inst = this;
-
 		switch (message.type) {
 			case Request:
 				untyped trace('recieved request from client ${message.command}');
-				Handlers.handle(cast message);
+				requestRouter.route(cast message);
 			default:
 				trace("not a request from client");
 		}
@@ -364,5 +338,5 @@ typedef ClientFiles = {
 
 enum DapMode {
 	ATTACH;
-	LAUNCH(child:ChildProcess);
+	LAUNCH(child:LaunchProcess);
 }
