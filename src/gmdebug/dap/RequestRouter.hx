@@ -9,6 +9,7 @@ import js.node.Fs;
 import gmdebug.composer.*;
 import vscode.debugProtocol.DebugProtocol;
 import gmdebug.VariableReference;
+import gmdebug.GmDebugMessage;
 
 using gmdebug.composer.ComposeTools;
 using gmdebug.dap.DapFailure; 
@@ -16,11 +17,6 @@ using Lambda;
 using Safety;
 using StringTools;
 
-typedef HasThreadID = {
-	arguments:{
-		threadId:Int
-	}
-}
 
 class RequestRouter {
 
@@ -316,35 +312,13 @@ class RequestRouter {
 	}
 }
 
-typedef GmDebugAttachRequest = Request<GmDebugAttachRequestArguments>;
-
-typedef GmDebugBaseRequestArguments = {
-	/**
-		REQUIRED The path to the servers "garrysmod" folder. Must be fully qualified.
-	**/
-	serverFolder:String,
-
-	/**
-		The paths to client(s) "garrysmod" folder. Must be fully qualified.
-	**/
-	?clientFolders:Array<String>
+private typedef HasThreadID = {
+	arguments:{
+		threadId:Int
+	}
 }
 
-typedef GmDebugAttachRequestArguments = AttachRequestArguments & GmDebugBaseRequestArguments;
-typedef GmDebugLaunchRequest = Request<GmDebugLaunchRequestArguments>;
 
-typedef GmDebugLaunchRequestArguments = LaunchRequestArguments &
-	GmDebugBaseRequestArguments & {
-	/**
-		REQUIRED The path to batch file or script used to launch your server
-	**/
-	programPath:String,
 
-	?programArgs:Array<String>,
-	/**
-		If you wish to log the output.
-	**/
-	?fileOutput:String
-}
 
 

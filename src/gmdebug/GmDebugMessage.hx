@@ -54,3 +54,35 @@ typedef GMServerInfoMessage = {
 
 	isLan:Bool
 }
+
+typedef GmDebugAttachRequest = Request<GmDebugAttachRequestArguments>;
+
+typedef GmDebugBaseRequestArguments = {
+	/**
+		REQUIRED The path to the servers "garrysmod" folder. Must be fully qualified.
+	**/
+	serverFolder:String,
+
+	/**
+		The paths to client(s) "garrysmod" folder. Must be fully qualified.
+	**/
+	?clientFolders:Array<String>
+}
+
+typedef GmDebugAttachRequestArguments = AttachRequestArguments & GmDebugBaseRequestArguments;
+
+typedef GmDebugLaunchRequest = Request<GmDebugLaunchRequestArguments>;
+
+typedef GmDebugLaunchRequestArguments = LaunchRequestArguments &
+	GmDebugBaseRequestArguments & {
+	/**
+		REQUIRED The path to batch file or script used to launch your server
+	**/
+	programPath:String,
+
+	?programArgs:Array<String>,
+	/**
+		If you wish to log the output.
+	**/
+	?fileOutput:String
+}
