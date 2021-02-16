@@ -16,8 +16,8 @@ class TestHelper {
         Assert.equals(string,x.command);
     }
 
-    public static function send(x:ComposedRequest<Dynamic,Dynamic>) {
-        LuaDebugger.inst.handleMessage(x);
+    public static function send(x:ComposedRequest<Dynamic,Dynamic>,luaDebug:LuaDebugger) {
+        luaDebug.handleMessage(x);
     }
 
 

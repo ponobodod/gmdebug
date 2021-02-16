@@ -59,7 +59,7 @@ class LuaDebuggerTest extends LuaDebugger {
     override function shutdown() {
         switch (dapMode) {
 			case LAUNCH(child):
-				child.stdin.write("quit\n");
+				child.write("quit\n");
 				child.kill();
 			default:
 		}
