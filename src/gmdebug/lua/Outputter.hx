@@ -7,8 +7,6 @@ import haxe.Constraints.Function;
 import lua.Table;
 import gmod.libs.DebugLib;
 
-using gmod.PairTools;
-
 class Outputter {
 	var ignoreTrace:Bool = false;
 	

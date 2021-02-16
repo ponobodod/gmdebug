@@ -3,7 +3,7 @@ package gmdebug.lua;
 import lua.Debug;
 import gmod.libs.DebugLib;
 import haxe.Constraints.Function;
-using gmod.macros.CallStatic;
+using gmod.helpers.macros.CallStatic;
 
 #if !gmddebug
 extern class DebugHook {

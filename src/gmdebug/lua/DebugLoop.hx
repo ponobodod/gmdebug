@@ -11,7 +11,7 @@ import gmod.Gmod;
 import gmdebug.lua.managers.BreakpointManager;
 import gmdebug.lua.util.PrintTimer.print_time;
 
-using gmod.WeakTools;
+using gmod.helpers.WeakTools;
 using Safety;
 using tink.CoreApi;
 using gmdebug.lua.GmodPath;

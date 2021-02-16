@@ -9,7 +9,6 @@ import lua.NativeStringTools;
 import gmdebug.VariableReference;
 import gmdebug.lua.handlers.IHandler;
 
-using gmod.PairTools;
 
 class VariableManager {
     

@@ -4,11 +4,11 @@ import haxe.Constraints.Function;
 import haxe.ds.ObjectMap;
 import gmdebug.lua.handlers.IHandler;
 import gmod.Gmod;
-import gmod.Hook.GMHook;
+import gmod.stringtypes.Hook.GMHook;
 import gmod.libs.HookLib;
 import gmdebug.lua.DebugLoop.SourceInfo;
 import gmdebug.composer.*;
-using gmod.WeakTools;
+using gmod.helpers.WeakTools;
 using Safety;
 using Lambda;
 

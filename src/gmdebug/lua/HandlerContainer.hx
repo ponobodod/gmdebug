@@ -14,7 +14,6 @@ using gmdebug.composer.ComposeTools;
 import String;
 
 using Safety;
-using gmod.PairTools;
 using Lambda;
 
 class HandlerContainer {

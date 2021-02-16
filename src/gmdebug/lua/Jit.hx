@@ -10,7 +10,7 @@ using StringTools;
 }
 
 class Jit {
-	public static var netJit = new gmod.net.NET_Server<"gmdebug_netJit", {}>();
+	public static var netJit = new gmod.helpers.net.NET_Server<"gmdebug_netJit", {}>();
 
 	public static var jitActive = false;
 

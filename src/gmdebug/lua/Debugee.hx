@@ -16,7 +16,7 @@ import gmod.Gmod;
 import haxe.Constraints.Function;
 import lua.Lua;
 import gmod.libs.PlayerLib;
-import gmod.Hook.GMHook;
+import gmod.stringtypes.Hook.GMHook;
 import gmod.libs.HookLib;
 import gmod.libs.TimerLib;
 import gmdebug.lib.lua.Protocol.TStoppedEvent;
@@ -28,10 +28,9 @@ using Lambda;
 
 using StringTools;
 using gmdebug.composer.ComposeTools;
-using gmod.PairTools;
 using tink.CoreApi;
 using Safety;
-using gmod.WeakTools;
+using gmod.helpers.WeakTools;
 
 #if client
 import gmod.libs.ChatLib;
@@ -240,19 +239,24 @@ class Debugee {
 	public static function poll() {
 		if (socket == null)
 			return;
-		final msg = switch (recvMessage()) {
-			case ACK | TIMEOUT:
-				return;
-			case MESSAGE(msg):
-				msg;		
-			case ERROR(s):
-				throw s;
+		try {
+			final msg = switch (recvMessage()) {
+				case ACK | TIMEOUT:
+					return;
+				case MESSAGE(msg):
+					msg;		
+				case ERROR(s):
+					throw s;
+			}
+			switch (chooseHandler(msg)) {
+				case DISCONNECT:
+					abortDebugee();
+				case WAIT | CONTINUE | CONFIG_DONE:
+			}
+		} catch (e:haxe.Exception) {
+			trace(e.toString());
 		}
-		switch (chooseHandler(msg)) {
-			case DISCONNECT:
-				abortDebugee();
-			case WAIT | CONTINUE | CONFIG_DONE:
-		}
+		
 	}
 
 	public static function main() {
@@ -282,9 +286,10 @@ class Debugee {
 			#end
 			try {
 				start();
-			} catch (ee:String) {
+			} catch (ee) {
 				socket.run((sock) -> sock.close());
-				trace("closed socket on error");
+				trace('closed socket on error ${ee.toString()}');
+				
 				throw ee;
 			}
 		});

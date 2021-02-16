@@ -1,6 +1,6 @@
 package gmdebug.lua;
 
-import gmod.Hook.GMHook;
+import gmod.stringtypes.Hook.GMHook;
 import lua.Lua;
 import haxe.Constraints.Function;
 import gmod.libs.HookLib;
@@ -8,7 +8,6 @@ import gmod.libs.Scripted_entsLib;
 import gmod.Gmod;
 
 using Safety;
-using gmod.PairTools;
 
 class Exceptions {
 	public static final exceptFuncs = getexceptFuncs();

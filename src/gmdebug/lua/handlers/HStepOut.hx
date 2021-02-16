@@ -3,7 +3,6 @@ package gmdebug.lua.handlers;
 import gmod.libs.DebugLib;
 
 using Lambda;
-using gmod.PairTools;
 
 class HStepOut implements IHandler<StepOutRequest> {
 	public function new() {}

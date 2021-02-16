@@ -9,7 +9,7 @@ import utest.Assert;
 import utest.Async;
 import gmdebug.composer.ComposedRequest;
 import js.Node;
-import gmdebug.dap.Handlers.GmDebugLaunchRequestArguments;
+import gmdebug.GmDebugMessage.GmDebugLaunchRequestArguments;
 
 using test.TestHelper;
 using Lambda;
@@ -33,21 +33,21 @@ using tink.CoreApi;
             serverFolder: "/home/g/gmodDS/garrysmod/",
             programPath: "auto"
         }
-        new ComposedRequest(launch,launchArgs).send();
+        new ComposedRequest(launch,launchArgs).send(session);
         @:await session.waitForEvent(initialized);
-        new ComposedRequest(configurationDone,{}).send();
+        new ComposedRequest(configurationDone,{}).send(session);
         async.done();
     }
 
     @:timeout(1000)
     @:await function testPause(async:Async) {
         trace("starting test");
-        new ComposedRequest(pause,{threadId: 0}).send();
+        new ComposedRequest(pause,{threadId: 0}).send(session);
         final pause = session.waitForResponse(pause) && session.waitForEvent(stopped);
         var dothing = @:await pause;
         trace("found both");
         dothing.a.ok();
-        new ComposedRequest(_continue,{threadId: 0}).send();
+        new ComposedRequest(_continue,{threadId: 0}).send(session);
         final cont = @:await session.waitForResponse(_continue);
         cont.ok();
         trace("continued ok");
@@ -60,14 +60,14 @@ using tink.CoreApi;
             breakpoints: [{
                 line: 84,
             }]
-        }).send();
+        }).send(session);
     }
 
     function ridBreakpoint() {
         new ComposedRequest(setBreakpoints,{
             source: {path : "/home/g/gmodDS/garrysmod/lua/includes/modules/hook.lua"},
             breakpoints: []
-        }).send();
+        }).send(session);
     }
 
     @:timeout(2000)    
@@ -98,7 +98,7 @@ using tink.CoreApi;
         @:await session.waitForResponse(setBreakpoints);
         new ComposedRequest(_continue,{
             threadId: 0
-        }).send();
+        }).send(session);
         async.setTimeout(600);
         
         final pass = wait(500);
@@ -125,7 +125,7 @@ using tink.CoreApi;
     @:await function testStackHeight(async:Async) {
         sendBreakpoint();
         @:await session.waitForEvent(stopped);
-        new ComposedRequest(stackTrace,{threadId: 0}).send();
+        new ComposedRequest(stackTrace,{threadId: 0}).send(session);
         final stackRep = @:await session.waitForResponse(stackTrace);
         final stackFrames = stackRep.body.stackFrames;
         Assert.equals(1,stackFrames.length,"Incorrect stack height!!!");
@@ -140,10 +140,10 @@ using tink.CoreApi;
     @:await function testScopes(async:Async) {
         sendBreakpoint();
         @:await session.waitForEvent(stopped);
-        new ComposedRequest(stackTrace,{threadId: 0}).send();
+        new ComposedRequest(stackTrace,{threadId: 0}).send(session);
         final stackRep = @:await session.waitForResponse(stackTrace);
         final stackFrames = stackRep.body.stackFrames;
-        new ComposedRequest(scopes,{frameId: stackFrames[0].id}).send();
+        new ComposedRequest(scopes,{frameId: stackFrames[0].id}).send(session);
         final scopesRep = @:await session.waitForResponse(scopes);
         scopesRep.ok();
         Assert.notEquals(0,scopesRep.body.scopes.length);
@@ -157,15 +157,15 @@ using tink.CoreApi;
     @:await function testArgs(async:Async) {
         sendBreakpoint();
         @:await session.waitForEvent(stopped);
-        new ComposedRequest(stackTrace,{threadId: 0}).send();
+        new ComposedRequest(stackTrace,{threadId: 0}).send(session);
         final stackRep = @:await session.waitForResponse(stackTrace);
         final stackFrames = stackRep.body.stackFrames;
-        new ComposedRequest(scopes,{frameId: stackFrames[0].id}).send();
+        new ComposedRequest(scopes,{frameId: stackFrames[0].id}).send(session);
         final scopesRep = @:await session.waitForResponse(scopes);
         Assert.isTrue(scopesRep.body.scopes.exists((scope) -> scope.name == "Arguments"),"No arguments scope...");
         new ComposedRequest(variables,{
             variablesReference: VariableReference.encode(FrameLocal(0,stackFrames[0].id,Arguments)),
-        }).send();
+        }).send(session);
         final variablesRep = @:await session.waitForResponse(variables);
         variablesRep.ok();
         final variablesArr = variablesRep.body.variables;
@@ -182,9 +182,9 @@ using tink.CoreApi;
     @:await function testSteps() {
         sendBreakpoint();
         @:await session.waitForEvent(stopped);
-        new ComposedRequest(stackTrace,{threadId: 0}).send();
+        new ComposedRequest(stackTrace,{threadId: 0}).send(session);
         @:await session.waitForResponse(stackTrace);
-        new ComposedRequest(stepIn,{threadId: 0}).send();
+        new ComposedRequest(stepIn,{threadId: 0}).send(session);
         @:await session.waitForEvent(stopped);
         
     }
@@ -193,7 +193,7 @@ using tink.CoreApi;
     @:await function teardown(async:Async) {
         session.clearHandlers();
         trace("tearing down...");
-        new ComposedRequest(_continue,{threadId: 0}).send();
+        new ComposedRequest(_continue,{threadId: 0}).send(session);
         final contRep = @:await session.waitForResponse(_continue);
         contRep.ok();
         trace("tore down");
@@ -202,7 +202,7 @@ using tink.CoreApi;
     }
 
     public function teardownClass() {
-        new ComposedRequest(disconnect,{}).send();
+        new ComposedRequest(disconnect,{}).send(session);
     }
 
     public function new() {
