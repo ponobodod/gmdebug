@@ -20,12 +20,15 @@ using StringTools;
 
 class RequestRouter {
 
-	public function new(luaDebug:LuaDebugger,prevRequests:PreviousRequests) {
+	public function new(luaDebug:LuaDebugger,clients:ClientStorage,prevRequests:PreviousRequests) {
 		this.luaDebug = luaDebug;
+		this.clients = clients;
 		this.prevRequests = prevRequests;
 	}
 
 	var luaDebug:LuaDebugger;
+
+	var clients:ClientStorage;
 
 	var prevRequests:PreviousRequests;
 
@@ -34,7 +37,7 @@ class RequestRouter {
 		switch (command) {
 			case pause | stackTrace | stepIn | stepOut | next | "continue":
 				final id = (req : HasThreadID).arguments.threadId;
-				luaDebug.sendToClient(id, req);
+				clients(id, req);
 			case attach:
 				h_attach(req);
 			case disconnect:

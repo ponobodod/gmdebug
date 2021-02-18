@@ -10,33 +10,28 @@ class Client {
 	
 	final socket:FileSocket;
 
-	var files:ClientFiles;
-
 	var threadID:Int;
 
 	var gmodName:String;
 
-	public function new(fs:FileSocket,files:ClientFiles,gmodID:Int,gmodName:String) {
+	public function new(fs:FileSocket,gmodID:Int,gmodName:String) {
 		socket = fs; 
-		this.files = files; 
 		this.gmodID = gmodID;
 		this.gmodName = gmodName;
 	}
 
-	public function send() {
-
+	public function sendRaw(x:String) {
+		socket.write(x);
 	}
+
+	public function disconnect() {
+			
+		
+	}
+
+	
 }
 
-private typedef FileSocket = {
-	readS:Socket,
-	writeS:Socket,
-}
-
-typedef ClientFiles = {
-	read:String,
-	write:String
-}
 
 private enum DebugeeClientType {
 	SERVER;

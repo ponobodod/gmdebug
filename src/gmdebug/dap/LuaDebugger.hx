@@ -59,6 +59,8 @@ using Lambda;
 
 	var prevRequests:PreviousRequests;
 
+	var clients:ClientStorage;
+
 	public function new(?x, ?y) {
 		super(x, y);
 		clientLocations = [];
@@ -73,6 +75,7 @@ using Lambda;
 		commMethod = Pipe;
 		bytesProcessor = new BytesProcessor();
 		prevRequests = new PreviousRequests();
+		clients = new ClientStorage();
 		requestRouter = new RequestRouter(this,prevRequests);
 		
 		Node.process.on("uncaughtException", uncaughtException);
@@ -294,11 +297,7 @@ using Lambda;
 		
 	}
 
-	inline function composeMessage(msg:Dynamic):String {
-		final json = Json.stringify(msg);
-		final len = Bytes.ofString(json).length;
-		return 'Content-Length: $len\r\n\r\n$json';
-	}
+	
 
 	public inline function sendToAll(msg:Dynamic) {
 		final msg = composeMessage(msg);
