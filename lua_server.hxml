@@ -13,6 +13,6 @@
 -D haxeJSON
 -D lua-ver=5.1
 -dce full
---macro gmod.macros.InitMacro.init()
+--macro gmod.helpers.macros.InitMacro.init()
 -main gmdebug.lua.Debugee
 -lua /dev/null
