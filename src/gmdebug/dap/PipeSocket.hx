@@ -8,11 +8,12 @@ import js.node.net.Socket;
 using tink.CoreApi;
 
 typedef PipeSocketLocations = {
-	read:String,
+	read:String, 
 	write:String,
 	ready:String
 }
 	
+typedef ReadFunc = (buf:js.node.Buffer) -> Void;
 
 @:await
 class PipeSocket {
@@ -33,16 +34,16 @@ class PipeSocket {
         this.readFunc = readFunc;
     }
 
-    @:async
-    public function aquire() {
+    @:async public function aquire() {
 		makeFifosIfNotExist(locs.read, locs.write);
-        final readS = @:await aquireReadSocket(locs.read);
-        final writeS = @:await aquireWriteSocket(locs.write);
+        readS = @:await aquireReadSocket(locs.read); 
+		writeS = @:await aquireWriteSocket(locs.write);
 		sys.io.File.saveContent(locs.ready, "");
 		writeS.write("\004\r\n");
 		readS.on(Data,readFunc);
         aquired = true;
-        return Noise;
+		trace("Aquired socket...");
+		return Noise;
     }
 
 	function makeFifosIfNotExist(input:String, output:String) {
@@ -72,7 +73,6 @@ class PipeSocket {
     }
 
     public function end() {
-        
         readS.end();
         writeS.end();
         FileSystem.deleteFile(locs.read);

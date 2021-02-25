@@ -35,25 +35,17 @@ using Lambda;
 
 	public final commMethod:CommMethod;
 
-	public var clients:Array<FileSocket>; // 0 = server.
-
 	public var clientFiles:Array<ClientFiles>;
 
 	public var dapMode:DapMode;
 
-	var autoLaunch:Bool;
-
-	public var mapClientName:Map<Int, String>;
-
-	var mapClientID:Map<Int, Int>;
-
 	public var serverFolder:String;
-
-	public var clientLocations:Array<String>;
 
 	public var clientsTaken:Map<Int, Bool>;
 
 	var requestRouter:RequestRouter;
+
+	var clientLocations:Array<String>;
 
 	var bytesProcessor:BytesProcessor;
 
@@ -66,18 +58,12 @@ using Lambda;
 		clientLocations = [];
 		serverFolder = null;
 		clientsTaken = [];
-		mapClientID = [];
-		mapClientName = [];
 		dapMode = ATTACH;
-		autoLaunch = true;
-		clientFiles = [];
-		clients = [];
 		commMethod = Pipe;
 		bytesProcessor = new BytesProcessor();
 		prevRequests = new PreviousRequests();
-		clients = new ClientStorage();
-		requestRouter = new RequestRouter(this,prevRequests);
-		
+		clients = new ClientStorage(readGmodBuffer);
+		requestRouter = new RequestRouter(this,clients,prevRequests);
 		Node.process.on("uncaughtException", uncaughtException);
 	}
 
@@ -87,64 +73,51 @@ using Lambda;
 		this.shutdown();
 	}
 
-	function playerAddedMessage(x:GMPlayerAddedMessage) {
+	@:async function playerAddedMessage(x:GMPlayerAddedMessage) {
+		var success = false;
 		for (ind => loc in clientLocations) {
 			if (!clientsTaken.exists(ind)) {
 				try {
-					playerTry(loc, x.playerID, x.name);
-					clientsTaken.set(ind, true);
+					@:await playerTry(loc, x.playerID, x.name).eager();
+					
+					success = true;
 					break;
 				} catch (e) {
-					trace('can\'t aquire in $loc');
-				}
+					trace('could not aquire in $loc');
+				}	
 			}
 		}
+		return success;
 	}
 
-	@:await function playerTry(clientLoc:String, clientNo:Int, playerName:String) {
-		final data = haxe.io.Path.join([clientLoc, Cross.DATA]);
-		final input = haxe.io.Path.join([data, Cross.INPUT]);
-		final out = haxe.io.Path.join([data, Cross.OUTPUT]);
-		makeFifosIfNotExist(input, out);
-		final ready = haxe.io.Path.join([data, Cross.READY]);
-		final read = @:await aquireReadSocket(out);
-		final write = @:await aquireWriteSocket(input);
-		final clientID = clients.length;
-		read.on(Data, (x:Buffer) -> {
-			readGmodBuffer(x, clientID);
-		});
-		clients.push({
-			readS: read,
-			writeS: write,
-		});
-		clientFiles[clientID] = {write: input, read: out};
-		sys.io.File.saveContent(ready, "");
-		write.write("\004\r\n");
+	@:async function playerTry(clientLoc:String, gmodID:Int, playerName:String) {
+		final cl = @:await clients.newClient(clientLoc,gmodID,playerName);
+		// clients.sendClient(cl.clID,new ComposedGmDebugMessage(clientID, {id: cl.clID}));
 		new ComposedEvent(thread, {
-			threadId: clientID,
+			threadId: cl.clID,
 			reason: Started
 		}).send(this);
-		mapClientName.set(clientID, playerName);
-		mapClientID.set(clientID, clientNo);
-		setupPlayer(clientID);
+		setupPlayer(cl.clID);
+		return Noise;
+		
 	}
 
 	function setupPlayer(clientID:Int) {
-		sendToClient(clientID, new ComposedGmDebugMessage(intialInfo, {location: serverFolder,dapMode : Launch}));
-		sendToClient(clientID, new ComposedGmDebugMessage(GmMsgType.clientID, {id: clientID}));
-		prevRequests.get(setBreakpoints).run((msg) -> sendToClient(clientID,msg));
-		prevRequests.get(setExceptionBreakpoints).run((msg) -> sendToClient(clientID,msg));
-		prevRequests.get(setFunctionBreakpoints).run((msg) -> sendToClient(clientID,msg));
-		sendToClient(clientID, new ComposedRequest(configurationDone, {}));
+		clients.sendClient(clientID, new ComposedGmDebugMessage(intialInfo, {location: serverFolder,dapMode : Launch}));
+		clients.sendClient(clientID, new ComposedGmDebugMessage(GmMsgType.clientID, {id: clientID}));
+		prevRequests.get(setBreakpoints).run((msg) -> clients.sendClient(clientID,msg));
+		prevRequests.get(setExceptionBreakpoints).run((msg) -> clients.sendClient(clientID,msg));
+		prevRequests.get(setFunctionBreakpoints).run((msg) -> clients.sendClient(clientID,msg));
+		clients.sendClient(clientID, new ComposedRequest(configurationDone, {}));
 	}
 
 	// todo
 	function playerRemovedMessage(x:GMPlayerRemovedMessage) {
 		new ComposedEvent(thread, {
-			threadId: mapClientID.get(x.playerID),
+			threadId: clients.getByGmodID(x.playerID).clID,
 			reason: Exited
 		}).send(this);
-		clientsTaken.remove(mapClientID.get(x.playerID));
+		clientsTaken.remove(clients.getByGmodID(x.playerID).clID);
 	}
 
 	function serverInfoMessage(x:GMServerInfoMessage) {
@@ -162,7 +135,16 @@ using Lambda;
 		trace("custom message");
 		switch (x.msg) {
 			case playerAdded:
-				playerAddedMessage(cast x.body);
+				playerAddedMessage(cast x.body).handle((out) -> {
+					switch (out) {
+						case Success(true):
+							trace("Whater a sucess");
+						case Success(false):
+							trace("Could not add a new player...");
+						case Failure(fail):
+							throw fail;
+					}
+				});
 			case playerRemoved:
 				playerRemovedMessage(cast x.body);
 			case serverInfo:
@@ -172,47 +154,17 @@ using Lambda;
 		}
 	}
 
-	@:async function aquireReadSocket(out:String) { //
-		final open = Promisify.promisify(Fs.open);
-		var fd = @:await open(out, cast Fs.constants.O_RDONLY | Fs.constants.O_NONBLOCK).toPromise();
-		return new Socket({fd: fd, writable: false});
-	}
 
-	@:async function aquireWriteSocket(inp:String) {
-		final open = Promisify.promisify(Fs.open);
-		var fd = @:await open(inp, cast Fs.constants.O_RDWR | Fs.constants.O_NONBLOCK).toPromise();
-		trace(fd);
-		return new Socket({fd: fd, readable: false});
-	}
-
-	@:async function pokeServerNamedPipes(attachReq:AttachRequest) {
-		// if (!FileSystem.exists(haxe.io.Path.join([serverFolder, Cross.DATA]))) {
-		// 	throw "GmDebug is not running on given server";
-		// }
-		final ready = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.READY]);
-		final input = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.INPUT]);
-		final output = haxe.io.Path.join([serverFolder, Cross.DATA, Cross.OUTPUT]);
-		makeFifosIfNotExist(input, output);
-		final gmodInput = @:await aquireWriteSocket(input);
-		// clientFileDescriptors[0] = gmodInput.writeFd;
-		final gmodOutput = @:await aquireReadSocket(output);
-		clients[0] = {
-			writeS: gmodInput,
-			readS: gmodOutput
-		};
-		clientFiles[0] = {write: input, read: output};
-		gmodOutput.on(Data, (x:Buffer) -> {
-			readGmodBuffer(x, 0);
-		});
-		sendToServer(new ComposedGmDebugMessage(clientID, {id: 0}));
+	@:async function pokeServerNamedPipes(attachReq:GmDebugAttachRequest) {
+		@:await clients.newServer(attachReq.arguments.serverFolder);
+		clients.sendServer(new ComposedGmDebugMessage(clientID, {id: 0}));
 		switch (dapMode) {
 			case ATTACH:
-				sendToServer(new ComposedGmDebugMessage(intialInfo, {location: serverFolder, dapMode: Attach}));
+				clients.sendServer(new ComposedGmDebugMessage(intialInfo, {location: serverFolder, dapMode: Attach}));
 			case LAUNCH(_):
-				sendToServer(new ComposedGmDebugMessage(intialInfo, {location: serverFolder, dapMode: Launch}));
+				clients.sendServer(new ComposedGmDebugMessage(intialInfo, {location: serverFolder, dapMode: Launch}));
 		}
-		sys.io.File.saveContent(ready, "");
-		return null;
+		return Noise;
 	}
 
 	function makeFifosIfNotExist(input:String, output:String) {
@@ -231,7 +183,7 @@ using Lambda;
 		}
 		// messages.iter(processDebugeeMessage);
 		if (bytesProcessor.fillRequested) {
-			clients[clientNo].writeS.write("\004\r\n");
+			clients.sendAnyRaw(clientNo,"\004\r\n");
 		}
 	}
 
@@ -263,15 +215,7 @@ using Lambda;
 				child.kill();
 			default:
 		}
-		for (ind => client in clients) {
-			client.writeS.write(composeMessage(new ComposedRequest(disconnect, {})));
-			client.readS.end();
-			client.writeS.end();
-			FileSystem.deleteFile(clientFiles[ind].read);
-			FileSystem.deleteFile(clientFiles[ind].write);
-		}
-		clients.resize(0);
-
+		clients.disconnectAll();
 		super.shutdown();
 	}
 
@@ -283,10 +227,11 @@ using Lambda;
 		pokeServerNamedPipes(attachReq).handle((out) -> {
 			switch (out) {
 				case Success(_):
+					trace("Attatch success");
 					final resp = attachReq.compose(attach);
 					resp.send(this);
 				case Failure(fail):
-					trace(fail);
+					trace(fail.message);
 					final resp = attachReq.composeFail('attach fail ${fail.message}', {
 						id: 1,
 						format: 'Failed to attach to server ${fail.message}',
@@ -297,21 +242,8 @@ using Lambda;
 		
 	}
 
-	
-
-	public inline function sendToAll(msg:Dynamic) {
-		final msg = composeMessage(msg);
-		for (client in clients) {
-			client.writeS.write(msg);
-		}
-	}
-
-	public inline function sendToServer(msg:Dynamic) {
-		clients[0].writeS.write(composeMessage(msg));
-	}
-
-	public inline function sendToClient(client:Int, msg:Dynamic) {
-		clients[client].writeS.write(composeMessage(msg));
+	public function setClientLocations(a:Array<String>) {
+		return clientLocations = a;
 	}
 
 	public override function handleMessage(message:ProtocolMessage) {

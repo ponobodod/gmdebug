@@ -1,39 +1,18 @@
 package gmdebug.dap;
 
 import js.node.net.Socket;
-
-class Client {
-
-	public var clientID:Int;
-
-	var gmodID:Int;
+class Client extends BaseConnected {
 	
-	final socket:FileSocket;
+	public final gmodID:Int;
 
-	var threadID:Int;
+	public final gmodName:String;
 
-	var gmodName:String;
-
-	public function new(fs:FileSocket,gmodID:Int,gmodName:String) {
-		socket = fs; 
+	public function new(fs:PipeSocket, clientID:Int, gmodID:Int, gmodName:String) {
+		super(fs,clientID);
 		this.gmodID = gmodID;
 		this.gmodName = gmodName;
 	}
-
-	public function sendRaw(x:String) {
-		socket.write(x);
-	}
-
-	public function disconnect() {
-			
-		
-	}
-
 	
 }
 
 
-private enum DebugeeClientType {
-	SERVER;
-	CLIENT(gmodPlayerID:Int);
-}

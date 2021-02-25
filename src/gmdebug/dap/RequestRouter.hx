@@ -37,7 +37,7 @@ class RequestRouter {
 		switch (command) {
 			case pause | stackTrace | stepIn | stepOut | next | "continue":
 				final id = (req : HasThreadID).arguments.threadId;
-				clients(id, req);
+				clients.sendAny(id, req);
 			case attach:
 				h_attach(req);
 			case disconnect:
@@ -52,39 +52,39 @@ class RequestRouter {
 				h_evaluate(req);
 			case setBreakpoints:
 				prevRequests.update(req);
-				luaDebug.sendToAll(req);	
+				clients.sendAll(req);	
 			// h_setBreakpoints(req);
 			case setExceptionBreakpoints:
 				prevRequests.update(req);
-				luaDebug.sendToAll(req);
+				clients.sendAll(req);
 			case setFunctionBreakpoints:
 				prevRequests.update(req);
-				luaDebug.sendToAll(req);
+				clients.sendAll(req);
 			case initialize:
 				h_initialize(req);
 			case configurationDone:
-				luaDebug.sendToServer(req);
+				clients.sendServer(req);
 			case threads:
 				h_threads(req);
 			case loadedSources | modules | goto | gotoTargets | breakpointLocations | _continue: // _continue: ARRRRGGGHHHH
-				luaDebug.sendToServer(req);
+				clients.sendServer(req);
 		}
 	}
 
 	function h_threads(req:ThreadsRequest) {
 		final threadArr = [{name: "Server", id: 0}];
-		for (i in 1...luaDebug.clients.length) {
+		for (cl in clients.getClients()) {
 			threadArr.push({
-				name: luaDebug.mapClientName.get(i),
-				id: i
+				name : cl.gmodName,
+				id : cl.clID
 			});
-		}
+		} 
 		req.compose(threads, {threads: threadArr}).send(luaDebug);
 	}
 
 
 	function h_disconnect(req:DisconnectRequest) {
-		luaDebug.sendToAll(req);
+		clients.sendAll(req);
 		req.compose(disconnect).send(luaDebug);
 		luaDebug.shutdown();
 	}
@@ -98,7 +98,7 @@ class RequestRouter {
 		}
 		switch (ref.getValue()) {
 			case Global(clID, _) | FrameLocal(clID, _, _) | Child(clID, _):
-				luaDebug.sendToClient(clID, req);
+				clients.sendAny(clID, req);
 		}
 	}
 
@@ -123,7 +123,7 @@ class RequestRouter {
 			case frame:
 				(frame : FrameID).getValue().clientID;
 		}
-		luaDebug.sendToClient(client, req);
+		clients.sendAny(client, req);
 	}
 
 	function h_initialize(req:InitializeRequest) {
@@ -188,14 +188,14 @@ class RequestRouter {
 		}
 		final serverSlash = haxe.io.Path.addTrailingSlash(req.arguments.serverFolder);
 		luaDebug.serverFolder = serverSlash;
-		luaDebug.clientLocations = clientFolders;
+		luaDebug.setClientLocations(clientFolders);
 		luaDebug.dapMode = LAUNCH(childProcess);
 		luaDebug.startServer(req);
 	}
 
 	function h_scopes(req:ScopesRequest) {
 		final client = (req.arguments.frameId : FrameID).getValue().clientID; // mandatory
-		luaDebug.sendToClient(client, req);
+		clients.sendAny(client, req);
 	}
 
 	function copyLuaFiles(serverFolder:String) {
@@ -223,7 +223,7 @@ class RequestRouter {
 		}
 		final serverSlash = haxe.io.Path.addTrailingSlash(req.arguments.serverFolder);
 		luaDebug.serverFolder = serverSlash;
-		luaDebug.clientLocations = clientFolders;
+		luaDebug.setClientLocations(clientFolders);
 		luaDebug.startServer(req);
 	}
 

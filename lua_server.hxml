@@ -14,5 +14,6 @@
 -D lua-ver=5.1
 -dce full
 --macro gmod.helpers.macros.InitMacro.init()
+--cmd haxe -lib gmodhaxe --run gmod.helpers.macros.PostCompileMacro
 -main gmdebug.lua.Debugee
 -lua /dev/null

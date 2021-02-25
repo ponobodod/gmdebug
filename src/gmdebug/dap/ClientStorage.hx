@@ -7,25 +7,23 @@ import sys.FileSystem;
 
 import js.node.Buffer;
 
-
 using Lambda;
-
-
 
 typedef ClientID = Int;
 
 typedef ReadWithClientID = (buf:Buffer,id:Int) -> Void;
 	
-@:async
+//DebugeeStorage
+@:await
 class ClientStorage {
 
 	static final SERVER_ID = 0;
 
-	final clients:Array<Client> = [];
-
-	final clientGmodNameMap:Map<ClientID,String> = [];
+	final clients:Array<BaseConnected> = [];
 
 	var disconnect = false;
+
+	var gmodIDMap:Map<Int,Client> = [];
 
 	final readFunc:ReadWithClientID;
 
@@ -41,26 +39,40 @@ class ClientStorage {
 		return 'Content-Length: $len\r\n\r\n$json';
 	}
 
-
-	@:await public function newClient(clientID:Int) {
-		final data = haxe.io.Path.join([clientLoc, Cross.DATA]);
+	@:async function makePipeSocket(loc:String,id:Int) {
+		final data = haxe.io.Path.join([loc, Cross.DATA]);
 		final input = haxe.io.Path.join([data, Cross.INPUT]);
 		final output = haxe.io.Path.join([data, Cross.OUTPUT]);
 		final ready = haxe.io.Path.join([data, Cross.READY]);
-		final ps = new PipeSocket({read : input, write : output, ready : ready},(buf:Buffer) -> {
-				readFunc(buf,id);
-		});
-		@:await ps.aquire();
-		final client = new Client();
-		clients.push(client);
-		new ComposedEvent(thread, {
-			threadId: clientID,
-			reason: Started
-		}).send();
-		
+		final ps = new PipeSocket({read : output, write : input, ready : ready},
+			(buf:Buffer) -> readFunc(buf,id)
+		);
+		final gay = @:await ps.aquire();
+		trace("mega aquired");
+		return ps;
 	}
 
-	public function get(id:Int) {
+
+	@:async public function newClient(clientLoc:String, gmodID:Int, gmodName:String) {
+		final clID = clients.length; 
+		final pipesocket = @:await makePipeSocket(clientLoc,clID);
+		final client = new Client(pipesocket,clID,gmodID,gmodName);
+		clients.push(client);
+		trace("client created");
+		gmodIDMap.set(gmodID,client);
+		return client;
+	}
+
+	@:async public function newServer(serverLoc:String) {
+		final clID = SERVER_ID;
+		final pipesocket = @:await makePipeSocket(serverLoc,clID);
+		trace("Server created");
+		final server = new Server(pipesocket, clID);
+		clients[SERVER_ID] = server;
+		return server;
+	}
+
+	function get(id:Int) {
 		return clients[id];
 	}
 
@@ -75,6 +87,10 @@ class ClientStorage {
 		clients[id].sendRaw(composeMessage(msg));
 	}
 
+	public function getClients():Array<Client> {
+		return cast clients.slice(1);
+	}
+
 	public function sendAll(msg:Dynamic) {
 		final comp = composeMessage(msg);
 		clients.iter((c) -> c.sendRaw(comp));
@@ -86,6 +102,10 @@ class ClientStorage {
 
 	public function sendAnyRaw(id:Int,str:String) {
 		clients[id].sendRaw(str);
+	}
+
+	public function getByGmodID(id:Int) {
+		return gmodIDMap.get(id);  
 	}
 
 	public function disconnectAll() {
