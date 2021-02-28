@@ -134,7 +134,9 @@ class Debugee {
 			return false;
 		}
 		DebugHook.addHook(DebugLoop.debugloop, "c");
+		Exceptions.tryHooks();
 		hooksActive = true;
+
 		return true;
 	}
 
@@ -180,19 +182,12 @@ class Debugee {
 
 	@:expose("__gmdebugTraceback")
 	static function traceback(err:Dynamic) {
-		final _err:Dynamic = if (Lua.type(err) == "string") {
-			var _err = DebugLib.traceback(err, 3);
-			var arr = @:nullSafety(Off) _err.split("\n");
-			// getting rid of error handling trace lines
-			arr.splice(-3, 2);
-			arr.join("\n");
-		} else {
-			err;
-		}
+		final _err = err;
+		if (!shouldDebug) return err;
 		if (checkIgnoreError(err))
 			return _err;
 		if (Debugee.inpauseloop || tracing) {
-			trace("no...");
+			trace('traceback failed... ${Debugee.inpauseloop} $tracing');
 			return _err;
 		}
 		#if server
