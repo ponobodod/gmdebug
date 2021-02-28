@@ -1,5 +1,8 @@
 package gmdebug.lua;
 
+import gmod.libs.DebugLib;
+import gmod.libs.FileLib;
+import gmod.libs.GamemodeLib;
 import lua.Debug;
 import gmod.stringtypes.Hook.GMHook;
 import lua.Lua;
@@ -8,6 +11,7 @@ import gmod.libs.HookLib;
 import gmod.libs.Scripted_entsLib;
 import gmod.Gmod;
 import haxe.ds.ObjectMap;
+import haxe.io.Path as HxPath;
 
 using Safety;
 
@@ -32,18 +36,13 @@ class Exceptions {
 		return G.oldFuncs;
 	}
 
-	static var hookTime:Float = 0;
-
 	public static function tryHooks() {
-		// if (Gmod.CurTime() > hookTime) {
-		// 	hookTime = Gmod.CurTime() + 0.5;
-			hookGamemodeHooks();
-			hookEntityHooks();
-		// }
-	}
-
-	public static function hookOnChange() {
-		// HookLib.Add(GMHook.Think, "gmdebug-enable-hooks", hookContinously);
+		unhookGamemodeHooks();
+		unhookEntityHooks();
+		unhookInclude();
+		hookGamemodeHooks();
+		hookEntityHooks();
+		hookInclude();
 	}
 
 	public static inline function isExcepted(x:Function):Bool {
@@ -55,19 +54,7 @@ class Exceptions {
 		var func = untyped __lua__("function (...) local success,vargs = xpcall(_G.__oldFuncs[{0}],{1},...) if success then return vargs else print(\"baddy bad!\", {2}) error(vargs,99) end end",
 			i - 1,
 			G.__gmdebugTraceback,
-			debugNames.get(oldFuncs[i - 1])
-			);
-		// var func2 = (vargs:haxe.Rest<Dynamic>) -> {
-		// 	final result = Lua.xpcall(G.oldFuncs[i - 1],G.__gmdebugTraceback,vargs.toArray());
-		// 	return if (result.status) {
-		// 		result.value;
-		// 	} else {
-		// 		Lua.print("Baddy bad! ",debugNames.get(G.oldFuncs[i - 1]));
-		// 		Lua.error(result.value,99);
-		// 		throw "lel";
-		// 	}
-		// }
-		// func2;
+			debugNames.get(oldFuncs[i - 1]));
 		exceptFuncs.set(func, i - 1);
 		return func;
 	}
@@ -93,7 +80,51 @@ class Exceptions {
 			}
 			
 		}
-		// untyped Gmod.GAMEMODE = createWrapperTable(Gmod.GAMEMODE);
+		G.oldGamemodeRegister = GamemodeLib.Register;
+		untyped GamemodeLib.Register = (gm, name, derived) -> {
+			for (ind => val in gm) {
+				if (shouldExcept(val)) {
+					gm[ind] = addExcept(val);
+				}
+			}
+			G.oldGamemodeRegister(gm, name, derived);
+		}
+		
+	}
+
+	static function hookInclude() {
+		G.oldInclude = Gmod.include;
+		untyped Gmod.include = (str) -> {
+			final info = DebugLib.getinfo(2,"S");
+			final currentPath = info.source.substring(1);
+			final currentDir = HxPath.directory(currentPath);
+			final findPth = HxPath.join([currentDir,str]);
+			final relative = FileLib.Exists(findPth,GAME);
+			final nonrelative = FileLib.Exists(str,LUA);
+			final compileFunc = switch [relative,nonrelative] {
+				case [true,_]:
+					Gmod.CompileString(FileLib.Read(findPth,GAME), findPth, false);
+				case [_,true]:
+					Gmod.CompileString(FileLib.Read(str,LUA), str, false);
+				default:
+					trace('Could not catch exceptions for included file : $str');
+					return G.oldInclude(str);
+			}
+			if (compileFunc is String) {
+				// trace("Could not compile file...);
+			} else {
+				final fun = addExcept(compileFunc);
+				fun();
+			}
+			return G.oldInclude(str);
+		};
+		
+	}
+
+	static function unhookInclude() {
+		if (G.oldInclude != null) {
+			untyped Gmod.include = G.oldInclude;
+		}
 	}
 
 	// public static function 
@@ -102,11 +133,12 @@ class Exceptions {
 		final wrapper:AnyTable = lua.Table.create();
 		final meta:AnyTable = lua.Table.create();
 		meta.__index = target;
-		meta.__newindex = (_,ind,val) -> {
+		meta.__newindex = (_,ind:Dynamic,val) -> {
 			final newVal:Dynamic = if (Gmod.TypeID(val) == TYPE_FUNCTION && shouldExcept(val)) {
 				Lua.print("update ",ind);
 				addExcept(val);
 			} else {
+				Lua.print('not updating... $ind reason ${Gmod.TypeID(val) == TYPE_FUNCTION} ${shouldExcept(val)}');
 				val;
 			}
 			target[ind] = newVal;
@@ -125,7 +157,7 @@ class Exceptions {
 					entTbl.t[ind] = addExcept(val);
 				}
 			}
-			// entTbl.t = cast createWrapperTable(entTbl.t);
+			entTbl.t = cast createWrapperTable(entTbl.t);
 		}
 	}
 
@@ -154,6 +186,9 @@ class Exceptions {
 				Gmod.GAMEMODE[ind] = getOldFunc(gm);
 			}
 		}
+		if (G.oldGamemodeRegister != null) {
+			untyped GamemodeLib.Register = G.oldGamemodeRegister;
+		}
 	}
 
 	public static function unhookEntityHooks() {
@@ -175,6 +210,12 @@ private extern class G {
 
 	@:native("__oldFuncs")
 	static var oldFuncs:Array<Function>;
+
+	@:native("__oldGamemodeRegister")
+	static var oldGamemodeRegister:Any;
+
+	@:native("__oldInclude")
+	static var oldInclude:Any;
 
 	static function __gmdebugTraceback():Void;
 }
