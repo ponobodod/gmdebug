@@ -28,9 +28,13 @@ using gmdebug.composer.ComposeTools;
 import gmdebug.GmDebugMessage;
 import haxe.io.Path;
 import js.node.child_process.ChildProcess;
+import js.node.ChildProcess as NCP;
 
 using Lambda;
 
+typedef Programs = {
+	xdotool : Bool
+}
 @:keep @:await class LuaDebugger extends DebugSession {
 
 	public final commMethod:CommMethod;
@@ -42,6 +46,8 @@ using Lambda;
 	public var serverFolder:String;
 
 	public var clientsTaken:Map<Int, Bool>;
+
+	public var programs:Programs;
 
 	var requestRouter:RequestRouter;
 
@@ -60,11 +66,24 @@ using Lambda;
 		clientsTaken = [];
 		dapMode = ATTACH;
 		commMethod = Pipe;
+		programs = {
+			xdotool : false
+		}
 		bytesProcessor = new BytesProcessor();
 		prevRequests = new PreviousRequests();
 		clients = new ClientStorage(readGmodBuffer);
 		requestRouter = new RequestRouter(this,clients,prevRequests);
 		Node.process.on("uncaughtException", uncaughtException);
+		checkPrograms();
+	}
+
+	function checkPrograms() {
+		try {
+			NCP.execSync("xdotool");
+			programs.xdotool = true;
+		} catch (e) {
+			trace("Xdotool not found");
+		}
 	}
 
 	function uncaughtException(err:js.lib.Error, origin) {
@@ -193,7 +212,7 @@ using Lambda;
 			case Event:
 				final cmd = (cast debugeeMessage : Event<Dynamic>).event;
 				trace('recieved event from debugee, $cmd');
-				EventIntercepter.event(cast debugeeMessage, threadId);
+				EventIntercepter.event(cast debugeeMessage, threadId, this);
 				sendEvent(cast debugeeMessage);
 			case Response:
 				final cmd = (cast debugeeMessage : Response<Dynamic>).command;
@@ -204,6 +223,7 @@ using Lambda;
 				trace('recieved gmdebug from debugee, $cmd');
 				processCustomMessages(cast debugeeMessage);
 			default:
+				//NEVER ACCEPT A REVERSE REQUEST!!!
 				throw "unhandled";
 		}
 	}
