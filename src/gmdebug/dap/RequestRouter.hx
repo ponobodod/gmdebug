@@ -141,6 +141,7 @@ class RequestRouter {
 		response.body.supportsEvaluateForHovers = true;
 		response.body.supportsLoadedSourcesRequest = true;
 		response.body.supportsFunctionBreakpoints = true;
+		response.body.supportsDelayedStackTraceLoading = true;
 		response.body.supportsBreakpointLocationsRequest = false;
 		
 		luaDebug.sendResponse(response);

@@ -34,6 +34,7 @@ using gmod.helpers.WeakTools;
 
 #if client
 import gmod.libs.ChatLib;
+import gmod.libs.GuiLib;
 #end
 
 @:keep

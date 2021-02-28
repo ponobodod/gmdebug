@@ -21,6 +21,7 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 			}).send();
 			return WAIT;
 		}
+		final len = DebugLoop.debug_stack_len() - Debugee.baseDepth;
 		final firstFrame = switch (args.startFrame) {
 			case null:
 				Debugee.baseDepth.sure();
@@ -31,7 +32,7 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 			case null | 0:
 				9999;
 			case x:
-				firstFrame + (x - 1);
+				firstFrame + x;
 		}
 		final stackFrames:Array<StackFrame> = [];
 		for (i in firstFrame...lastFrame) {
@@ -90,13 +91,20 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 			var column;
 			var endLine:Null<Int> = null;
 			var endColumn:Null<Int> = null;
-			switch (src) {
-				case "=[C]":
+			switch [src,len] {
+				case ["=[C]",_]:
 					hint = Deemphasize;
 					path = null;
 					line = 0;
 					column = 0;
-				case x:
+				case [x,len] if ((len > 80 && i > 45 && (i - 5) < len - 40)):
+					path = Debugee.normalPath(x);
+					hint = Deemphasize;
+					line = info.currentline;
+					column = 1;
+					endLine = info.lastlinedefined;
+					endColumn = 99999;
+				case [x,_]:
 					path = Debugee.normalPath(x);
 					hint = null;
 					line = info.currentline;
@@ -141,7 +149,7 @@ class HStackTrace implements IHandler<StackTraceRequest> {
 		}
 		var response = x.compose(stackTrace, {
 			stackFrames: stackFrames,
-			totalFrames: stackFrames.length
+			totalFrames: len
 		});
 		final js = tink.Json.stringify((cast response : StackTraceResponse)); // in pratical terms they're the same
 		response.sendtink(js);
