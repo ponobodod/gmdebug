@@ -17,6 +17,7 @@ import haxe.io.BufferInput;
 import js.node.Buffer;
 import haxe.io.Bytes;
 import haxe.Json;
+import haxe.io.Path as HxPath;
 import js.node.net.Socket;
 import js.node.Net;
 import vscode.debugAdapter.DebugSession;
@@ -175,7 +176,7 @@ typedef Programs = {
 
 
 	@:async function pokeServerNamedPipes(attachReq:GmDebugAttachRequest) {
-		@:await clients.newServer(attachReq.arguments.serverFolder);
+		@:await clients.newServer(attachReq.arguments.serverFolder).eager();
 		clients.sendServer(new ComposedGmDebugMessage(clientID, {id: 0}));
 		switch (dapMode) {
 			case ATTACH:
@@ -236,6 +237,11 @@ typedef Programs = {
 			default:
 		}
 		clients.disconnectAll();
+		final dir = HxPath.join([serverFolder,"addons","debugee"]);
+		if (Fs.existsSync(dir)) {
+			(cast Fs.rmdirSync : (a:String,b:Dynamic) -> Void)(dir,{recursive : true});
+		}
+		
 		super.shutdown();
 	}
 

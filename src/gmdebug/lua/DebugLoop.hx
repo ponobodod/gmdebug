@@ -232,7 +232,7 @@ class DebugLoop {
 
 	static extern inline function debug_local_len(stack:Int) {
 		var min:Int = 0;
-		var max:Int = 200;
+		var max:Int = STACK_LIMIT_PER_FUNC;
 		var middle:Int = Math.floor((max - min) / 2);
 		while (true) {
 			final local = DebugLib.getlocal(stack,middle);
@@ -252,7 +252,7 @@ class DebugLoop {
 
 	static extern inline function debug_local_len2(stack:Int) {
 		var locals = 0;
-		for (lindex in 1...200) {
+		for (lindex in 1...STACK_LIMIT_PER_FUNC) {
 			final local = DebugLib.getlocal(stack,lindex);
 			if (local.a == null) {
 				break;
@@ -281,22 +281,22 @@ class DebugLoop {
 			if (len < previousLength) {
 				//decrease tail size
 				var stackDiff = previousLength - len;
-				var localDiff = debug_countLocals(500 - stackDiff,500);
+				var localDiff = debug_countLocals(STACK_DEBUG_TAIL - stackDiff,STACK_DEBUG_TAIL);
 				tailLength -= stackDiff;
 				tailLocals -= localDiff;
 				tailLocals;
 			} else {
 				//increase tail size
 				var stackDiff = len - previousLength;
-				var localDiff = debug_countLocals(500,500 + stackDiff);
+				var localDiff = debug_countLocals(STACK_DEBUG_TAIL,STACK_DEBUG_TAIL + stackDiff);
 				tailLength += stackDiff;
 				tailLocals += localDiff;
 				tailLocals;
 				
 			}
 		} else {
-			var stackDiff = len - 500;
-			var localDiff = debug_countLocals(500,500 + stackDiff);
+			var stackDiff = len - STACK_DEBUG_TAIL;
+			var localDiff = debug_countLocals(STACK_DEBUG_TAIL,STACK_DEBUG_TAIL + stackDiff);
 			tailLength = stackDiff;
 			tailLocals = localDiff;
 		}
@@ -309,18 +309,16 @@ class DebugLoop {
 			
 			if (curCheckStack >= nextCheckStack) {
 				final len = debug_stack_len();
-				final locals = if (len > 500) {
+				final locals = if (len > STACK_DEBUG_TAIL) {
 					debug_above500(len);
 				} else { 
 					previousLength = null;
-					debug_countLocals(1,500);
+					debug_countLocals(1,STACK_DEBUG_TAIL);
 				}
-				Lua.print(nextCheckStack,locals);
 				nextCheckStack = cast Math.max(Math.floor((STACK_DEBUG_LIMIT - locals) / STACK_LIMIT_PER_FUNC) - 1, 0);
 				if (nextCheckStack <= 5 && supressCheckStack == None) {
-					// Lua.print("WE REACHED IT HORRAH!!!");
 					Debugee.startHaltLoop(Exception,  StackConst.STEP_DEBUG_LOOP, "Possible stack overflow detected...");
-					supressCheckStack = Some(5);
+					supressCheckStack = Some(6);
 				}
 				switch (supressCheckStack) {
 					case Some(x) if (nextCheckStack > x):
@@ -328,11 +326,9 @@ class DebugLoop {
 					default:
 				}
 				curCheckStack = 0;
-				
 			} else {
 				curCheckStack++;
 			}
-			
 		}
 	}
 

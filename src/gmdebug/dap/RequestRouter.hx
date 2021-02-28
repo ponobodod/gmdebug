@@ -10,7 +10,7 @@ import gmdebug.composer.*;
 import vscode.debugProtocol.DebugProtocol;
 import gmdebug.VariableReference;
 import gmdebug.GmDebugMessage;
-
+import haxe.io.Path as HxPath;
 using gmdebug.composer.ComposeTools;
 using gmdebug.dap.DapFailure; 
 using Lambda;
@@ -20,17 +20,17 @@ using StringTools;
 
 class RequestRouter {
 
-	public function new(luaDebug:LuaDebugger,clients:ClientStorage,prevRequests:PreviousRequests) {
-		this.luaDebug = luaDebug;
-		this.clients = clients;
-		this.prevRequests = prevRequests;
-	}
-
 	var luaDebug:LuaDebugger;
 
 	var clients:ClientStorage;
 
 	var prevRequests:PreviousRequests;
+
+	public function new(luaDebug:LuaDebugger,clients:ClientStorage,prevRequests:PreviousRequests) {
+		this.luaDebug = luaDebug;
+		this.clients = clients;
+		this.prevRequests = prevRequests;
+	}
 
 	public function route(req:Request<Dynamic>) {
 		final command:AnyRequest = req.command;
@@ -81,7 +81,6 @@ class RequestRouter {
 		} 
 		req.compose(threads, {threads: threadArr}).send(luaDebug);
 	}
-
 
 	function h_disconnect(req:DisconnectRequest) {
 		clients.sendAll(req);
@@ -172,11 +171,14 @@ class RequestRouter {
 			programPathResult.sendError(req,luaDebug);
 			return;
 		}
-		
 		var childProcess = new LaunchProcess(programPath,luaDebug,req.arguments.programArgs);
-		
-
-		// nodebug?
+		if (req.arguments.noDebug) {
+			luaDebug.dapMode = LAUNCH(childProcess);
+			luaDebug.serverFolder = HxPath.addTrailingSlash(req.arguments.serverFolder);
+			final comp = (req : LaunchRequest).compose(launch,{});
+			comp.send(luaDebug);
+			return;
+		}
 		copyLuaFiles(serverFolder);
 		final clientFolders = req.arguments.clientFolders.or([]);
 		for (ind => client in clientFolders) {
@@ -185,9 +187,9 @@ class RequestRouter {
 				clientFolderResult.sendError(req,luaDebug);
 				return;
 			}
-			clientFolders[ind] = haxe.io.Path.addTrailingSlash(client);
+			clientFolders[ind] = HxPath.addTrailingSlash(client);
 		}
-		final serverSlash = haxe.io.Path.addTrailingSlash(req.arguments.serverFolder);
+		final serverSlash = HxPath.addTrailingSlash(req.arguments.serverFolder);
 		luaDebug.serverFolder = serverSlash;
 		luaDebug.setClientLocations(clientFolders);
 		luaDebug.dapMode = LAUNCH(childProcess);
@@ -200,10 +202,9 @@ class RequestRouter {
 	}
 
 	function copyLuaFiles(serverFolder:String) {
-		final addonFolder = haxe.io.Path.join([serverFolder, "addons"]);
-		final debugFolder = haxe.io.Path.join([addonFolder, "debugee"]);
-		js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: haxe.io.Path.directory(Sys.programPath())}); // todo fix for windows
-		
+		final addonFolder = HxPath.join([serverFolder, "addons"]);
+		final debugFolder = HxPath.join([addonFolder, "debugee"]);
+		js.node.ChildProcess.execSync('cp -r ../generated/debugee $addonFolder', {cwd: HxPath.directory(Sys.programPath())}); // todo fix for windows
 	}
 
 	function h_attach(req:GmDebugAttachRequest) {
@@ -220,9 +221,9 @@ class RequestRouter {
 				clientFolderResult.sendError(req,luaDebug);
 				return;
 			}
-			clientFolders[ind] = haxe.io.Path.addTrailingSlash(client);
+			clientFolders[ind] = HxPath.addTrailingSlash(client);
 		}
-		final serverSlash = haxe.io.Path.addTrailingSlash(req.arguments.serverFolder);
+		final serverSlash = HxPath.addTrailingSlash(req.arguments.serverFolder);
 		luaDebug.serverFolder = serverSlash;
 		luaDebug.setClientLocations(clientFolders);
 		luaDebug.startServer(req);
@@ -261,7 +262,7 @@ class RequestRouter {
 			});
 		} else {
 			final addonFolder = js.node.Path.join(serverFolder, "addons");
-			if (!haxe.io.Path.isAbsolute(serverFolder)) {
+			if (!HxPath.isAbsolute(serverFolder)) {
 				Some({
 					id : 3,
 					message : "Gmdebug requires the property \"serverFolder\" to be an absolute path (i.e from root folder)."
@@ -290,7 +291,7 @@ class RequestRouter {
 	function validateClientFolder(folder:String):haxe.ds.Option<DapFailure> {
 		final addonFolder = js.node.Path.join(folder, "addons");
 		final gmdebug = js.node.Path.join(folder, "data", "gmdebug");
-		return if (!haxe.io.Path.isAbsolute(folder)) {
+		return if (!HxPath.isAbsolute(folder)) {
 			Some({
 				id : 8,
 				message : 'Gmdebug requires client folder: $folder to be an absolute path (i.e from root folder).'

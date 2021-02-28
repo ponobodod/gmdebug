@@ -12,21 +12,22 @@ import vscode.debugProtocol.DebugProtocol.ProtocolMessage;
 import gmdebug.VariableReference;
 import haxe.Json;
 import haxe.io.Input;
+import haxe.io.Path as HxPath;
 
 class Cross {
 	public static final FOLDER = "gmdebug";
 
-	public static final INPUT = haxe.io.Path.join([FOLDER, "in.dat"]);
+	public static final INPUT = HxPath.join([FOLDER, "in.dat"]);
 
-	public static final OUTPUT = haxe.io.Path.join([FOLDER, "out.dat"]);
+	public static final OUTPUT = HxPath.join([FOLDER, "out.dat"]);
 
-	public static final READY = haxe.io.Path.join([FOLDER, "ready.dat"]);
+	public static final READY = HxPath.join([FOLDER, "ready.dat"]);
 
-	public static final CHECK = haxe.io.Path.join([FOLDER, "check.dat"]);
+	public static final CHECK = HxPath.join([FOLDER, "check.dat"]);
 
 	public static final DATA = "data";
 
-	public static final JIT = haxe.io.Path.join([FOLDER, "jitchoice.txt"]);
+	public static final JIT = HxPath.join([FOLDER, "jitchoice.txt"]);
 
 	@:nullSafety(Off)
 	public static function readHeader(x:Input) {

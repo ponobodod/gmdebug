@@ -6,6 +6,7 @@ import gmdebug.lua.handlers.IHandler;
 import gmod.Gmod;
 import gmod.stringtypes.Hook.GMHook;
 import gmod.libs.HookLib;
+import haxe.io.Path as HxPath;
 import gmdebug.lua.DebugLoop.SourceInfo;
 import gmdebug.composer.*;
 using gmod.helpers.WeakTools;
@@ -62,7 +63,7 @@ class SourceContainer {
 				null;
 			case x:
 				final pathStr = Debugee.normalPath(x);
-				final path = new haxe.io.Path(pathStr);
+				final path = new HxPath(pathStr);
 				{
 					name: path.file,
 					path: path.toString(),
