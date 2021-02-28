@@ -137,7 +137,7 @@ class HVariables implements IHandler<VariablesRequest> {
                 var info = DebugLib.getinfo(frame + 2, "f");
                 if (info != null && info.func != null) {
                     for (i in 1...9999) {
-                        var func = info.func; // otherwise _hx_bind..?
+                        var func = (info.func : Dynamic); // otherwise _hx_bind..?
                         var upv = DebugLib.getupvalue(func, i);
                         if (upv.a == null)
                             break;
@@ -147,7 +147,7 @@ class HVariables implements IHandler<VariablesRequest> {
             case Fenv:
                 var info = DebugLib.getinfo(frame + 2, "f");
                 if (info != null && info.func != null) {
-                    final func = info.func;
+                    final func = (info.func : Dynamic);
                     final tbl = DebugLib.getfenv(func);
                     for (i => p in tbl) {
                         addVars.push({name: i, value: p});
@@ -163,24 +163,29 @@ class HVariables implements IHandler<VariablesRequest> {
             case Globals:
                 var _g:AnyTable = untyped __lua__("_G");
                 var sort:Array<String> = [];
-                var enums:Array<String> = [];
                 addVars.push({name: "_G", value: ""});
                 for (i => x in _g) {
                     if (Lua.type(i) == "string") {
                         if (isEnum(i, x)) {
-                            enums.push(i);
                         } else {
                             sort.push(i);
                         }
                     }
                 }
-                // trace("made it past compare");
                 for (index in sort) {
                     if (Lua.type(index) == "string") {
                         addVars.push({name: index, value: Reflect.field(_g, index)});
                     }
                 }
-            // trace("addedvars");
+            case Enums:
+                var _g:AnyTable = untyped __lua__("_G");
+                for (i => x in _g) {
+                    if (Lua.type(i) == "string") {
+                        if (isEnum(i, x)) {
+                            addVars.push({name: i, value: x});
+                        } 
+                    }
+                }
             case Players:
                 for (i => ply in PlayerLib.GetAll()) {
                     trace('players $i $ply');
@@ -228,6 +233,7 @@ class HVariables implements IHandler<VariablesRequest> {
 			case Global(_, scope):
 				global(scope);
 		}
+        
 		final variablesArr = addVars.map(variableManager.genvar);
 		fixupNames(variablesArr);
 		var resp = req.compose(variables, {variables: variablesArr});

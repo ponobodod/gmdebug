@@ -15,14 +15,29 @@ class HScopes implements IHandler<ScopesRequest> {
 			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Arguments)),
 			expensive: false
 		}
-		var locals:Scope = {
-			name: "Locals",
-			presentationHint: Locals,
-			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Locals)),
-			expensive: false,
-			line: info.linedefined,
-			endLine: info.lastlinedefined
+		var locals:Scope = switch (info) {
+			case null:
+				null;
+			case {linedefined : null, lastlinedefined : null}:
+				{
+					name: "Locals",
+					presentationHint: Locals,
+					variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Locals)),
+					expensive: false,
+				};
+			case {linedefined : ld, lastlinedefined : lld}:
+				{
+					name: "Locals",
+					presentationHint: Locals,
+					variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Locals)),
+					expensive: false,
+					line: ld,
+					endLine: lld,
+					column: 1,
+					endColumn: 99999
+				};
 		};
+		
 		var upvalues:Scope = {
 			name: "Upvalues",
 			variablesReference: VariableReference.encode(FrameLocal(Debugee.clientID.unsafe(), frameInfo.actualFrame, Upvalues)),
@@ -61,15 +76,23 @@ class HScopes implements IHandler<ScopesRequest> {
 			false;
 		}
 		var resp = scopeReq.compose(scopes, {
-			scopes: switch (info.what) {
-				case C:
+			scopes: switch info {
+				case null:
+					Lua.print("No info?!", frameInfo.actualFrame + 1);
+					[globals, entities, players, enums];
+				case {what : C}:
 					[arguments, locals, globals, entities, players, enums];
-				case Lua:
+				case {what : Lua}:
 					if (hasFenv) {
 						[arguments, locals, upvalues, env, globals, entities, players, enums];
 					} else {
 						[arguments, locals, upvalues, globals, entities, players, enums];
 					}
+				case {what : main}:
+					[locals, upvalues, env, globals, entities, players, enums];
+				default:
+					Lua.print("OH GOD",info.what);
+					[globals, entities, players, enums];
 			}
 		});
 		final js = tink.Json.stringify((cast resp : ScopesResponse)); // in pratical terms they're the same

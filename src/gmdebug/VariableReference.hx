@@ -17,14 +17,14 @@ abstract VariableReference(Int) from Int to Int {
 
 	public function getValue():VariableReferenceVal {
 		final maskClientID = 0xF;
-		final maskFrameID = 0x7F;
+		final maskFrameID = 0x1FFFF;
 		final clientID = (this >>> 25) & maskClientID;
 		final ref:VariableRefBit = cast(this >>> 29 & 3);
 		return switch (ref) {
 			case Child:
 				Child(clientID, this & 0xFFFFFF); // shave 26 bits off, ignore first 2
 			case FrameLocal:
-				FrameLocal(clientID, (this >>> 18) & maskFrameID, this & 0x3FFFF);
+				FrameLocal(clientID, (this >>> 8) & maskFrameID, this & 0xFF);
 			case Global:
 				Global(clientID, this & 0xFFFFFF);
 		}
@@ -38,7 +38,7 @@ abstract VariableReference(Int) from Int to Int {
 				val | ref++;
 			case FrameLocal(clientID, frame, ref):
 				val |= clientID << 25;
-				val |= frame << 18;
+				val |= frame << 8;
 				val | ref++;
 			case Global(clientID, ref):
 				val |= clientID << 25;

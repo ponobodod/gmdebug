@@ -63,14 +63,7 @@ class LuaDebuggerTest extends LuaDebugger {
 				child.kill();
 			default:
 		}
-		for (ind => client in clients) {
-			client.writeS.write(composeMessage(new ComposedRequest(disconnect, {})));
-			client.readS.end();
-			client.writeS.end();
-			FileSystem.deleteFile(clientFiles[ind].read);
-			FileSystem.deleteFile(clientFiles[ind].write);
-		}
-		clients.resize(0);
+		clients.disconnectAll();
     }
 
     function _waitForEvent<T:Event<Dynamic>>(message:EventString<T>,listener:(event:T)->Void) {
