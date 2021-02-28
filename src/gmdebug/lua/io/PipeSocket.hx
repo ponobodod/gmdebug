@@ -73,10 +73,4 @@ class PipeOutput extends Output {
 		file.Write(s);
 	}
 
-	// override function writeByte(c:Int) {
-	//     file.WriteByte(c);
-	// }
-	// override function write(s:Bytes) {
-	//     super.write(s);
-	// }
 }

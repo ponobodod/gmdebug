@@ -40,6 +40,8 @@ import gmod.libs.GuiLib;
 @:keep
 class Debugee {
 
+	public static final POLL_TIME = 0.1;
+
 	public static var clientID:Int = 0; //go
 
 	public static var state:DebugState = WAIT; //go
@@ -200,9 +202,7 @@ class Debugee {
 				return _err;
 		}
 		#end
-		if (!hooksActive)
-			return _err;
-		if (!active)
+		if (!hooksActive || !active)
 			return _err;
 		tracing = true;
 		#if client
@@ -290,7 +290,6 @@ class Debugee {
 			} catch (ee) {
 				socket.run((sock) -> sock.close());
 				trace('closed socket on error ${ee.toString()}');
-				
 				throw ee;
 			}
 		});
@@ -300,7 +299,7 @@ class Debugee {
 		var pollTime = 0.0;
 		HookLib.Add(GMHook.Think, "gmdebug-poll", () -> {
 			if (Gmod.CurTime() > pollTime) {
-				pollTime = Gmod.CurTime() + 0.1;
+				pollTime = Gmod.CurTime() + POLL_TIME;
 				shouldDebug = false;
 				poll();
 				shouldDebug = true;
@@ -392,7 +391,6 @@ class Debugee {
 				case MESSAGE(msg):
 					msg;		
 				case ERROR(s):
-					trace("Errored");
 					throw s;
 			}
 			switch (chooseHandler(msg)) {
@@ -404,7 +402,6 @@ class Debugee {
 					break;
 			}
 		}
-		trace("exiting halt lopp");
 		Debugee.inpauseloop = false;
 	}
 
