@@ -1,5 +1,6 @@
 package gmdebug.lua;
 
+import gmod.libs.JitLib;
 import gmdebug.lua.managers.FunctionBreakpointManager;
 import gmdebug.lua.handlers.HEvaluate;
 import gmdebug.composer.*;
@@ -30,6 +31,34 @@ class DebugLoop {
 	static var prevStackHeight:Int = 0;
 
 	static var lineSteppin:Bool = false;
+
+	static var previousLength = null;
+
+	static var lastLocalCount = 0;
+
+	static var nextCheckStack = 1;
+
+	static var curCheckStack = 0;
+
+	static var tailLength = 0;
+
+	static var tailLocals = 0;
+
+	static var supressCheckStack:Option<Int> = None;
+
+	static final STACK_LIMIT_PER_FUNC = 200;
+
+	static final STACK_LIMIT = 65450; //could dynamically check this..
+
+	static final STACK_DEBUG_TAIL = 500; //the stack can change up to this.. if not problems
+
+	static final STACK_DEBUG_RELIEF_OURFUNCS = STACK_LIMIT_PER_FUNC * 2;
+
+	static final STACK_DEBUG_RELIEF_TOLERANCE = STACK_LIMIT_PER_FUNC * 4;
+
+	static final STACK_DEBUG_LIMIT = STACK_LIMIT - STACK_DEBUG_RELIEF_OURFUNCS - STACK_DEBUG_RELIEF_TOLERANCE;
+	
+	static final STACK_DEBUG_RESET_TOLERANCE = STACK_LIMIT_PER_FUNC * 10;
 
 	static var bm:Null<BreakpointManager>;
 
@@ -181,10 +210,137 @@ class DebugLoop {
 		}
 	}
 
+	public static extern inline function debug_stack_len() {
+		var min:Int = 0;
+		var max:Int = STACK_LIMIT;
+		var middle:Int = Math.floor((max - min) / 2);
+		while (true) {
+			final stack = DebugLib.getinfo(middle);
+			if (stack == null) {
+				max = middle;
+				middle = Math.floor((max - min) / 2) + min;
+			} else {
+				min = middle;
+				middle = Math.floor((max - min) / 2) + min;
+			}
+			if (middle == min) {
+				break;
+			}
+		}
+		return middle;
+	}
+
+	static extern inline function debug_local_len(stack:Int) {
+		var min:Int = 0;
+		var max:Int = 200;
+		var middle:Int = Math.floor((max - min) / 2);
+		while (true) {
+			final local = DebugLib.getlocal(stack,middle);
+			if (local.a == null) {
+				max = middle;
+				middle = Math.floor((max - min) / 2) + min;
+			} else {
+				min = middle;
+				middle = Math.floor((max - min) / 2) + min;
+			}
+			if (middle == min) {
+				break;
+			}
+		}
+		return middle;
+	}
+
+	static extern inline function debug_local_len2(stack:Int) {
+		var locals = 0;
+		for (lindex in 1...200) {
+			final local = DebugLib.getlocal(stack,lindex);
+			if (local.a == null) {
+				break;
+			} else if (local.a.charAt(0) != '(') { //temporary variables do not count
+				locals++;
+			}
+		}
+		return locals;
+	}
+	
+	static extern inline function debug_countLocals(start:Int,end:Int) {
+		var locals = 0;
+		for (sindex in start...end) {
+			final stack = DebugLib.getinfo(sindex);
+			if (stack == null) {
+				break;
+			}
+			locals += debug_local_len2(sindex);
+			locals++; //off by one :)
+		}
+		return locals;
+	}
+
+	static extern inline function debug_above500(len:Int) {
+		final locals = if (previousLength != null) {
+			if (len < previousLength) {
+				//decrease tail size
+				var stackDiff = previousLength - len;
+				var localDiff = debug_countLocals(500 - stackDiff,500);
+				tailLength -= stackDiff;
+				tailLocals -= localDiff;
+				tailLocals;
+			} else {
+				//increase tail size
+				var stackDiff = len - previousLength;
+				var localDiff = debug_countLocals(500,500 + stackDiff);
+				tailLength += stackDiff;
+				tailLocals += localDiff;
+				tailLocals;
+				
+			}
+		} else {
+			var stackDiff = len - 500;
+			var localDiff = debug_countLocals(500,500 + stackDiff);
+			tailLength = stackDiff;
+			tailLocals = localDiff;
+		}
+		previousLength = len;
+		return locals;
+	}
+
+	static extern inline function debug_checkBlownStack(cur:HookState) { 
+		if (cur == Call) {
+			
+			if (curCheckStack >= nextCheckStack) {
+				final len = debug_stack_len();
+				final locals = if (len > 500) {
+					debug_above500(len);
+				} else { 
+					previousLength = null;
+					debug_countLocals(1,500);
+				}
+				Lua.print(nextCheckStack,locals);
+				nextCheckStack = cast Math.max(Math.floor((STACK_DEBUG_LIMIT - locals) / STACK_LIMIT_PER_FUNC) - 1, 0);
+				if (nextCheckStack <= 5 && supressCheckStack == None) {
+					// Lua.print("WE REACHED IT HORRAH!!!");
+					Debugee.startHaltLoop(Exception,  StackConst.STEP_DEBUG_LOOP, "Possible stack overflow detected...");
+					supressCheckStack = Some(5);
+				}
+				switch (supressCheckStack) {
+					case Some(x) if (nextCheckStack > x):
+						supressCheckStack = None;
+					default:
+				}
+				curCheckStack = 0;
+				
+			} else {
+				curCheckStack++;
+			}
+			
+		}
+	}
+
 	// TODO if having inline breakpoints, only use instruction count when necessary (i.e when running the line to step through) also granuality ect.
 	public static function debugloop(cur:HookState, currentLine:Int) {
 		if (!Debugee.shouldDebug || Debugee.tracing)
 			return;
+		debug_checkBlownStack(cur);
 		DebugLoopProfile.profile("getinfo", true);
 		final func = DebugLib.getinfo(DebugHook.DEBUG_OFFSET, 'f').func;
 		final result = sc.sourceCache.get(func);
@@ -196,10 +352,10 @@ class DebugLoop {
 			tmp;
 		}
 		DebugLoopProfile.profile("step");
-		final stepping = debug_step(cur, func, currentLine);
-		DebugLoopProfile.profile("getbptable");
 		if (Exceptions.exceptFuncs != null && func != null && Exceptions.exceptFuncs.exists(func))
 			return;
+		final stepping = debug_step(cur, func, currentLine);
+		DebugLoopProfile.profile("getbptable");
 		final bpValid = if (bm != null && bm.valid())
 				true;
 			else
