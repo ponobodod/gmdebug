@@ -47,15 +47,19 @@ Do not run this on a public facing server. This debugger is for testing purposes
 Check releases, download and add to your vscode installation. From there, open any folder and goto the debug tab. From there, add a gmdebug launch sample configuration, and ensure you fill in the following properties
 
 `serverFolder`
+
 The path to your gmod dedicated server `garrysmod` folder. This folder should contain an `addons` folder for the debugger to add it's addon
 
 `programPath`
+
 If set to auto, will use the server path of `../srcds_linux` relative to `serverFolder`. If this is not how you launch your server, please set this manually.
 
 `programArgs`
+
 An array of arguments to added to your launch command. Each element is seperated with a space
 
 `clientFolders`
+
 An array of client gmod installation paths (pointing to the `garrysmod` folder). If you wish to debug clientside lua, this should contain one path pointing to your steam gmod installation.
 
 ### Building for vscode
