@@ -1057,18 +1057,19 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.requestRouter = new gmdebug_dap_RequestRouter(this,this.clients,this.prevRequests);
 		process.on("uncaughtException",$bind(this,this.uncaughtException));
 		this.checkPrograms();
+		this.shouldAutoConnect = false;
 	}
 	checkPrograms() {
 		try {
 			js_node_ChildProcess.execSync("xdotool");
 			this.programs.xdotool = true;
 		} catch( _g ) {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:86:","Xdotool not found");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:89:","Xdotool not found");
 		}
 	}
 	uncaughtException(err,origin) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:91:",err.message);
-		console.log("src/gmdebug/dap/LuaDebugger.hx:92:",err.stack);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:94:",err.message);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:95:",err.stack);
 		this.shutdown();
 	}
 	playerAddedMessage(x) {
@@ -1088,7 +1089,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 							success = true;
 							break;
 						} catch( _g ) {
-							console.log("src/gmdebug/dap/LuaDebugger.hx:106:","could not aquire in " + _g1_value);
+							console.log("src/gmdebug/dap/LuaDebugger.hx:109:","could not aquire in " + _g1_value);
 						}
 					}
 				}
@@ -1157,22 +1158,25 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.clientsTaken.remove(this.clients.getByGmodID(x.playerID).clID);
 	}
 	serverInfoMessage(x) {
+		if(!this.shouldAutoConnect) {
+			return;
+		}
 		let sp = x.ip.split(":");
 		let ip = x.isLan ? gmdebug_lib_js_Ip.address() : sp[0];
 		let port = sp[1];
 		js_node_ChildProcess.spawn("xdg-open steam://connect/" + ip + ":" + port,{ shell : true});
 	}
 	processCustomMessages(x) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:155:","custom message");
+		console.log("src/gmdebug/dap/LuaDebugger.hx:161:","custom message");
 		switch(x.msg) {
 		case 0:
 			this.playerAddedMessage(x.body).handle(function(out) {
 				switch(out._hx_index) {
 				case 0:
 					if(out.data) {
-						console.log("src/gmdebug/dap/LuaDebugger.hx:161:","Whater a sucess");
+						console.log("src/gmdebug/dap/LuaDebugger.hx:167:","Whater a sucess");
 					} else {
-						console.log("src/gmdebug/dap/LuaDebugger.hx:163:","Could not add a new player...");
+						console.log("src/gmdebug/dap/LuaDebugger.hx:169:","Could not add a new player...");
 					}
 					break;
 				case 1:
@@ -1253,18 +1257,18 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		switch(debugeeMessage.type) {
 		case "event":
 			let cmd = debugeeMessage.event;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:215:","recieved event from debugee, " + cmd);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:221:","recieved event from debugee, " + cmd);
 			gmdebug_dap_EventIntercepter.event(debugeeMessage,threadId,this);
 			this.sendEvent(debugeeMessage);
 			break;
 		case "gmdebug":
 			let cmd1 = debugeeMessage.msg;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:224:","recieved gmdebug from debugee, " + cmd1);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:230:","recieved gmdebug from debugee, " + cmd1);
 			this.processCustomMessages(debugeeMessage);
 			break;
 		case "response":
 			let cmd2 = debugeeMessage.command;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:220:","recieved response from debugee, " + cmd2);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:226:","recieved response from debugee, " + cmd2);
 			this.sendResponse(debugeeMessage);
 			break;
 		default:
@@ -1290,14 +1294,14 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.pokeServerNamedPipes(attachReq).handle(function(out) {
 			switch(out._hx_index) {
 			case 0:
-				console.log("src/gmdebug/dap/LuaDebugger.hx:256:","Attatch success");
+				console.log("src/gmdebug/dap/LuaDebugger.hx:262:","Attatch success");
 				let resp = gmdebug_composer_ComposeTools.compose(attachReq,"attach");
 				console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp.command);
 				_gthis.sendResponse(resp);
 				break;
 			case 1:
 				let _g = out.failure;
-				console.log("src/gmdebug/dap/LuaDebugger.hx:260:",_g.message);
+				console.log("src/gmdebug/dap/LuaDebugger.hx:266:",_g.message);
 				let resp1 = gmdebug_composer_ComposeTools.composeFail(attachReq,"attach fail " + _g.message,{ id : 1, format : "Failed to attach to server " + _g.message});
 				console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp1.command);
 				_gthis.sendResponse(resp1);
@@ -1310,10 +1314,10 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 	}
 	handleMessage(message) {
 		if(message.type == "request") {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:278:","recieved request from client " + message.command);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:284:","recieved request from client " + message.command);
 			this.requestRouter.route(message);
 		} else {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:281:","not a request from client");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:287:","not a request from client");
 		}
 	}
 }
@@ -1327,6 +1331,7 @@ Object.assign(gmdebug_dap_LuaDebugger.prototype, {
 	,serverFolder: null
 	,clientsTaken: null
 	,programs: null
+	,shouldAutoConnect: null
 	,requestRouter: null
 	,clientLocations: null
 	,bytesProcessor: null
@@ -1657,6 +1662,8 @@ class gmdebug_dap_RequestRouter {
 			gmdebug_dap_DapFailureTools.sendError(programPathResult,req,this.luaDebug);
 			return;
 		}
+		let value = req.arguments.autoConnectLocalGmodClient;
+		this.luaDebug.shouldAutoConnect = value == null ? false : value;
 		let childProcess = new gmdebug_dap_LaunchProcess(programPath,this.luaDebug,req.arguments.programArgs);
 		if(req.arguments.noDebug) {
 			this.luaDebug.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
@@ -1668,8 +1675,8 @@ class gmdebug_dap_RequestRouter {
 			return;
 		}
 		this.copyLuaFiles(serverFolder);
-		let value = req.arguments.clientFolders;
-		let clientFolders = value == null ? [] : value;
+		let value1 = req.arguments.clientFolders;
+		let clientFolders = value1 == null ? [] : value1;
 		let _g1_current = 0;
 		let _g1_array = clientFolders;
 		while(_g1_current < _g1_array.length) {

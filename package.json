@@ -3,6 +3,7 @@
 	"description": "gmod debugger using dap",
 	"version": "0.0.1",
 	"publisher": "ponobodod",
+	"repository": {"type": "github","url": "https://github.com/ponobodod/gmdebug"},
 	"dependencies": {
 		"ip": "^1.1.5",
 		"vscode-debugadapter": "^1.41.0",
@@ -64,7 +65,7 @@
 							},
 							"programPath" : {
 								"type": "string",
-								"description": "The path to server executable/config, or 'auto' to find and run the default server executable (srcds_run)",
+								"description": "The path to your server executable/config, or 'auto' to find and run the default server executable (srcds_run)",
 								"default" : "auto"
 							},
 							"programArgs" : {
@@ -72,6 +73,11 @@
 								"description": "Arguments to launch server. Fill out if using the option 'auto' for programPath",
 								"default": ["+map","gm_flatgrass","+sv_lan","1"]
 
+							},
+							"autoConnectLocalGmodClient" : {
+								"type": "bool",
+								"description": "For convinence, when the server has launched you can have your steam account autoconnect to it",
+								"default": true
 							}
 							
 
@@ -81,12 +87,6 @@
 				},
 				"initialConfigurations": [
 					{
-						"type": "gmdebug",
-						"request": "attach",
-						"name": "gmdebug: Attach to server",
-						"serverFolder": "/path_to_server_from_root/garrysmod"
-					},
-					{
 						"label": "gmdebug: Launch server",
 						"description": "Launch your garry's mod server.",
 						"body": {
@@ -94,22 +94,13 @@
 							"request": "launch",
 							"name": "gmdebug : Launch server",
 							"serverFolder": "/path_to_server_from_root/garrysmod",
-							"programPath": "Fill in the path to your server executable/config here, or delete and let gmdebug find your executable "
+							"programPath": "auto",
+							"autoConnectLocalGmodClient" : true
 						}
 					}
 				],
 				"configurationSnippets": [
 					{
-						"label": "gmdebug: Attach to server",
-						"description": "Attach gmdebug to your garry's mod server.",
-						"body": {
-							"type": "gmdebug",
-							"request": "attach",
-							"name": "gmdebug : Attach to server",
-							"serverFolder": "/path_to_server_from_root/garrysmod"
-						}
-					},
-					{
 						"label": "gmdebug: Launch server",
 						"description": "Launch your garry's mod server.",
 						"body": {
@@ -117,7 +108,8 @@
 							"request": "launch",
 							"name": "gmdebug : Launch server",
 							"serverFolder": "/path_to_server_from_root/garrysmod",
-							"programPath": "Fill in the path to your server executable/config here, or delete and let gmdebug find your executable "
+							"programPath": "auto",
+							"autoConnectLocalGmodClient" : true
 						}
 					}
 				]
