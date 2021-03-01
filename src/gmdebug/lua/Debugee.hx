@@ -181,7 +181,7 @@ class Debugee {
 	#end
 
 	@:expose("__gmdebugTraceback")
-	static function traceback(err:Dynamic) {
+	static function traceback(err:Any) {
 		final _err = err;
 		if (!shouldDebug) return err;
 		if (checkIgnoreError(err))
@@ -199,13 +199,19 @@ class Debugee {
 		#end
 		if (!hooksActive || !active)
 			return _err;
+		// Lua.print("tracing is now true");
 		tracing = true;
 		#if client
 		GuiLib.EnableScreenClicker(true);
 		GuiLib.ActivateGameUI();
 		#end
-		startHaltLoop(Exception,  StackConst.EXCEPT, err);
+		if (err is haxe.Exception) {
+			startHaltLoop(Exception,  StackConst.EXCEPT, (err : haxe.Exception).message);
+		} else {
+			startHaltLoop(Exception, StackConst.EXCEPT, Gmod.tostring(err));
+		}
 		tracing = false;
+		// Lua.print("tracing is now false...");
 		return DebugLib.traceback(err);
 	}
 
@@ -395,7 +401,7 @@ class Debugee {
 				case DISCONNECT:
 					abortDebugee();
 					break;
-			}
+			}		
 		}
 		Debugee.inpauseloop = false;
 	}
