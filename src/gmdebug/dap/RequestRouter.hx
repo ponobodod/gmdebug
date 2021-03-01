@@ -175,7 +175,8 @@ class RequestRouter {
 		var childProcess = new LaunchProcess(programPath,luaDebug,req.arguments.programArgs);
 		if (req.arguments.noDebug) {
 			luaDebug.dapMode = LAUNCH(childProcess);
-			luaDebug.serverFolder = HxPath.addTrailingSlash(req.arguments.serverFolder);
+			
+			luaDebug.serverFolder = HxPath.normalize(HxPath.addTrailingSlash(req.arguments.serverFolder));
 			final comp = (req : LaunchRequest).compose(launch,{});
 			comp.send(luaDebug);
 			return;
@@ -188,9 +189,9 @@ class RequestRouter {
 				clientFolderResult.sendError(req,luaDebug);
 				return;
 			}
-			clientFolders[ind] = HxPath.addTrailingSlash(client);
+			clientFolders[ind] = HxPath.normalize(HxPath.addTrailingSlash(client));
 		}
-		final serverSlash = HxPath.addTrailingSlash(req.arguments.serverFolder);
+		final serverSlash = HxPath.normalize(HxPath.addTrailingSlash(req.arguments.serverFolder));
 		luaDebug.serverFolder = serverSlash;
 		luaDebug.setClientLocations(clientFolders);
 		luaDebug.dapMode = LAUNCH(childProcess);

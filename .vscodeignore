@@ -8,4 +8,8 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 src/**
 out/**
-generated/**
+buildall.hxml
+extension.hxml
+lua_client.hxml
+lua_server.hxml
+main.hxml
