@@ -34,6 +34,16 @@ class HxOverrides {
 	}
 }
 HxOverrides.__name__ = true;
+class Lambda {
+	static iter(it,f) {
+		let x = $getIterator(it);
+		while(x.hasNext()) {
+			let x1 = x.next();
+			f(x1);
+		}
+	}
+}
+Lambda.__name__ = true;
 Math.__name__ = true;
 class Reflect {
 	static field(o,field) {
@@ -429,128 +439,6 @@ Object.assign(haxe_io_Path.prototype, {
 	,ext: null
 	,backslash: null
 });
-class js_Boot {
-	static getClass(o) {
-		if(o == null) {
-			return null;
-		} else if(((o) instanceof Array)) {
-			return Array;
-		} else {
-			let cl = o.__class__;
-			if(cl != null) {
-				return cl;
-			}
-			let name = js_Boot.__nativeClassName(o);
-			if(name != null) {
-				return js_Boot.__resolveNativeClass(name);
-			}
-			return null;
-		}
-	}
-	static __string_rec(o,s) {
-		if(o == null) {
-			return "null";
-		}
-		if(s.length >= 5) {
-			return "<...>";
-		}
-		let t = typeof(o);
-		if(t == "function" && (o.__name__ || o.__ename__)) {
-			t = "object";
-		}
-		switch(t) {
-		case "function":
-			return "<function>";
-		case "object":
-			if(o.__enum__) {
-				let e = $hxEnums[o.__enum__];
-				let con = e.__constructs__[o._hx_index];
-				let n = con._hx_name;
-				if(con.__params__) {
-					s = s + "\t";
-					return n + "(" + ((function($this) {
-						var $r;
-						let _g = [];
-						{
-							let _g1 = 0;
-							let _g2 = con.__params__;
-							while(true) {
-								if(!(_g1 < _g2.length)) {
-									break;
-								}
-								let p = _g2[_g1];
-								_g1 = _g1 + 1;
-								_g.push(js_Boot.__string_rec(o[p],s));
-							}
-						}
-						$r = _g;
-						return $r;
-					}(this))).join(",") + ")";
-				} else {
-					return n;
-				}
-			}
-			if(((o) instanceof Array)) {
-				let str = "[";
-				s += "\t";
-				let _g = 0;
-				let _g1 = o.length;
-				while(_g < _g1) {
-					let i = _g++;
-					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
-				}
-				str += "]";
-				return str;
-			}
-			let tostr;
-			try {
-				tostr = o.toString;
-			} catch( _g ) {
-				return "???";
-			}
-			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
-				let s2 = o.toString();
-				if(s2 != "[object Object]") {
-					return s2;
-				}
-			}
-			let str = "{\n";
-			s += "\t";
-			let hasp = o.hasOwnProperty != null;
-			let k = null;
-			for( k in o ) {
-			if(hasp && !o.hasOwnProperty(k)) {
-				continue;
-			}
-			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
-				continue;
-			}
-			if(str.length != 2) {
-				str += ", \n";
-			}
-			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
-			}
-			s = s.substring(1);
-			str += "\n" + s + "}";
-			return str;
-		case "string":
-			return o;
-		default:
-			return String(o);
-		}
-	}
-	static __nativeClassName(o) {
-		let name = js_Boot.__toStr.call(o).slice(8,-1);
-		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
-			return null;
-		}
-		return name;
-	}
-	static __resolveNativeClass(name) {
-		return $global[name];
-	}
-}
-js_Boot.__name__ = true;
 class gmdebug_Cross {
 	static readHeader(x) {
 		let content_length = x.readLine();
@@ -600,7 +488,7 @@ class gmdebug_VariableReference {
 		case 0:
 			return gmdebug_VariableReferenceVal.Child(clientID,this1 & 16777215);
 		case 1:
-			return gmdebug_VariableReferenceVal.FrameLocal(clientID,this1 >>> 18 & 127,this1 & 262143);
+			return gmdebug_VariableReferenceVal.FrameLocal(clientID,this1 >>> 8 & 131071,this1 & 255);
 		case 2:
 			return gmdebug_VariableReferenceVal.Global(clientID,this1 & 16777215);
 		}
@@ -702,6 +590,24 @@ Object.assign(gmdebug_composer_ComposedResponse.prototype, {
 	,command: null
 	,message: null
 	,body: null
+});
+class gmdebug_dap_BaseConnected {
+	constructor(fs,clID) {
+		this.socket = fs;
+		this.clID = clID;
+	}
+	sendRaw(x) {
+		this.socket.write(x);
+	}
+	disconnect() {
+		this.socket.end();
+	}
+}
+gmdebug_dap_BaseConnected.__name__ = true;
+Object.assign(gmdebug_dap_BaseConnected.prototype, {
+	__class__: gmdebug_dap_BaseConnected
+	,socket: null
+	,clID: null
 });
 class gmdebug_dap_BytesProcessor {
 	constructor() {
@@ -850,6 +756,184 @@ var gmdebug_dap_RecvMessageResponse = $hxEnums["gmdebug.dap.RecvMessageResponse"
 	,Unfinished: ($_=function(x,remaining) { return {_hx_index:1,x:x,remaining:remaining,__enum__:"gmdebug.dap.RecvMessageResponse",toString:$estr}; },$_._hx_name="Unfinished",$_.__params__ = ["x","remaining"],$_)
 };
 gmdebug_dap_RecvMessageResponse.__constructs__ = [gmdebug_dap_RecvMessageResponse.Completed,gmdebug_dap_RecvMessageResponse.Unfinished];
+class gmdebug_dap_Client extends gmdebug_dap_BaseConnected {
+	constructor(fs,clientID,gmodID,gmodName) {
+		super(fs,clientID);
+		this.gmodID = gmodID;
+		this.gmodName = gmodName;
+	}
+}
+gmdebug_dap_Client.__name__ = true;
+gmdebug_dap_Client.__super__ = gmdebug_dap_BaseConnected;
+Object.assign(gmdebug_dap_Client.prototype, {
+	__class__: gmdebug_dap_Client
+	,gmodID: null
+	,gmodName: null
+});
+class gmdebug_dap_ClientStorage {
+	constructor(readFunc) {
+		this.gmodIDMap = new haxe_ds_IntMap();
+		this.disconnect = false;
+		this.clients = [];
+		this.readFunc = readFunc;
+	}
+	makePipeSocket(loc,id) {
+		let _gthis = this;
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let data = haxe_io_Path.join([loc,gmdebug_Cross.DATA]);
+				let input = haxe_io_Path.join([data,gmdebug_Cross.INPUT]);
+				let output = haxe_io_Path.join([data,gmdebug_Cross.OUTPUT]);
+				let ready = haxe_io_Path.join([data,gmdebug_Cross.READY]);
+				let ps = new gmdebug_dap_PipeSocket({ read : output, write : input, ready : ready},function(buf) {
+					_gthis.readFunc(buf,id);
+				});
+				ps.aquire().handle(function(__t2) {
+					try {
+						let _g = tink_await_OutcomeTools.getOutcome(__t2);
+						switch(_g._hx_index) {
+						case 0:
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						console.log("src/gmdebug/dap/ClientStorage.hx:51:","mega aquired");
+						__return(tink_core_Outcome.Success(ps));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	newClient(clientLoc,gmodID,gmodName) {
+		let _gthis = this;
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let clID = _gthis.clients.length;
+				_gthis.makePipeSocket(clientLoc,clID).handle(function(__t3) {
+					try {
+						let __t3_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t3);
+						switch(_g._hx_index) {
+						case 0:
+							__t3_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						let pipesocket = __t3_result;
+						let client = new gmdebug_dap_Client(pipesocket,clID,gmodID,gmodName);
+						_gthis.clients.push(client);
+						console.log("src/gmdebug/dap/ClientStorage.hx:61:","client created");
+						_gthis.gmodIDMap.h[gmodID] = client;
+						__return(tink_core_Outcome.Success(client));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	newServer(serverLoc) {
+		let _gthis = this;
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let clID = gmdebug_dap_ClientStorage.SERVER_ID;
+				_gthis.makePipeSocket(serverLoc,clID).handle(function(__t4) {
+					try {
+						let __t4_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t4);
+						switch(_g._hx_index) {
+						case 0:
+							__t4_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						let pipesocket = __t4_result;
+						console.log("src/gmdebug/dap/ClientStorage.hx:69:","Server created");
+						let server = new gmdebug_dap_Server(pipesocket,clID);
+						_gthis.clients[gmdebug_dap_ClientStorage.SERVER_ID] = server;
+						__return(tink_core_Outcome.Success(server));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	sendServer(msg) {
+		let tmp = this.clients[gmdebug_dap_ClientStorage.SERVER_ID];
+		let json = haxe_format_JsonPrinter.print(msg,null,null);
+		let len = haxe_io_Bytes.ofString(json).length;
+		tmp.sendRaw("Content-Length: " + len + "\r\n\r\n" + json);
+	}
+	sendClient(id,msg) {
+		if(id == gmdebug_dap_ClientStorage.SERVER_ID) {
+			throw haxe_Exception.thrown("Attempt to send to server....");
+		}
+		let tmp = this.clients[id];
+		let json = haxe_format_JsonPrinter.print(msg,null,null);
+		let len = haxe_io_Bytes.ofString(json).length;
+		tmp.sendRaw("Content-Length: " + len + "\r\n\r\n" + json);
+	}
+	getClients() {
+		return this.clients.slice(1);
+	}
+	sendAll(msg) {
+		let json = haxe_format_JsonPrinter.print(msg,null,null);
+		let len = haxe_io_Bytes.ofString(json).length;
+		let comp = "Content-Length: " + len + "\r\n\r\n" + json;
+		Lambda.iter(this.clients,function(c) {
+			c.sendRaw(comp);
+		});
+	}
+	sendAny(id,msg) {
+		let tmp = this.clients[id];
+		let json = haxe_format_JsonPrinter.print(msg,null,null);
+		let len = haxe_io_Bytes.ofString(json).length;
+		tmp.sendRaw("Content-Length: " + len + "\r\n\r\n" + json);
+	}
+	sendAnyRaw(id,str) {
+		this.clients[id].sendRaw(str);
+	}
+	getByGmodID(id) {
+		return this.gmodIDMap.h[id];
+	}
+	disconnectAll() {
+		this.disconnect = true;
+		Lambda.iter(this.clients,function(c) {
+			c.disconnect();
+		});
+	}
+}
+gmdebug_dap_ClientStorage.__name__ = true;
+Object.assign(gmdebug_dap_ClientStorage.prototype, {
+	__class__: gmdebug_dap_ClientStorage
+	,clients: null
+	,disconnect: null
+	,gmodIDMap: null
+	,readFunc: null
+});
 class gmdebug_dap_DapFailureTools {
 	static sendError(opt,req,luaDebug) {
 		if(opt._hx_index == 0) {
@@ -865,7 +949,7 @@ class gmdebug_dap_DapFailureTools {
 }
 gmdebug_dap_DapFailureTools.__name__ = true;
 class gmdebug_dap_EventIntercepter {
-	static event(ceptedEvent,threadId) {
+	static event(ceptedEvent,threadId,luaDebug) {
 		switch(ceptedEvent.event) {
 		case "output":
 			let outputEvent = ceptedEvent;
@@ -874,7 +958,7 @@ class gmdebug_dap_EventIntercepter {
 			break;
 		case "stopped":
 			let stoppedEvent = ceptedEvent;
-			if(stoppedEvent.body.threadId > 0) {
+			if(luaDebug.programs.xdotool && stoppedEvent.body.threadId > 0) {
 				console.log("src/gmdebug/dap/EventIntercepter.hx:20:","free my mousepointer please!!");
 				js_node_ChildProcess.execSync("xdotool key XF86Ungrab");
 			}
@@ -964,126 +1048,113 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.clientLocations = [];
 		this.serverFolder = null;
 		this.clientsTaken = new haxe_ds_IntMap();
-		this.mapClientID = new haxe_ds_IntMap();
-		this.mapClientName = new haxe_ds_IntMap();
 		this.dapMode = gmdebug_dap_DapMode.ATTACH;
-		this.autoLaunch = true;
-		this.clientFiles = [];
-		this.clients = [];
 		this.commMethod = gmdebug_CommMethod.Pipe;
+		this.programs = { xdotool : false};
 		this.bytesProcessor = new gmdebug_dap_BytesProcessor();
 		this.prevRequests = new gmdebug_dap_PreviousRequests();
-		this.requestRouter = new gmdebug_dap_RequestRouter(this,this.prevRequests);
+		this.clients = new gmdebug_dap_ClientStorage($bind(this,this.readGmodBuffer));
+		this.requestRouter = new gmdebug_dap_RequestRouter(this,this.clients,this.prevRequests);
 		process.on("uncaughtException",$bind(this,this.uncaughtException));
+		this.checkPrograms();
+	}
+	checkPrograms() {
+		try {
+			js_node_ChildProcess.execSync("xdotool");
+			this.programs.xdotool = true;
+		} catch( _g ) {
+			console.log("src/gmdebug/dap/LuaDebugger.hx:86:","Xdotool not found");
+		}
 	}
 	uncaughtException(err,origin) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:82:",err.message);
-		console.log("src/gmdebug/dap/LuaDebugger.hx:83:",err.stack);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:91:",err.message);
+		console.log("src/gmdebug/dap/LuaDebugger.hx:92:",err.stack);
 		this.shutdown();
 	}
 	playerAddedMessage(x) {
-		let _this = this.clientLocations;
-		let _g_current = 0;
-		while(_g_current < _this.length) {
-			let _g1_value = _this[_g_current];
-			let _g1_key = _g_current++;
-			if(!this.clientsTaken.h.hasOwnProperty(_g1_key)) {
-				try {
-					this.playerTry(_g1_value,x.playerID,x.name);
-					this.clientsTaken.h[_g1_key] = true;
-					break;
-				} catch( _g ) {
-					console.log("src/gmdebug/dap/LuaDebugger.hx:95:","can't aquire in " + _g1_value);
-				}
-			}
-		}
-	}
-	playerTry(clientLoc,clientNo,playerName) {
 		let _gthis = this;
-		let data = haxe_io_Path.join([clientLoc,gmdebug_Cross.DATA]);
-		let input = haxe_io_Path.join([data,gmdebug_Cross.INPUT]);
-		let out = haxe_io_Path.join([data,gmdebug_Cross.OUTPUT]);
-		this.makeFifosIfNotExist(input,out);
-		let ready = haxe_io_Path.join([data,gmdebug_Cross.READY]);
-		this.aquireReadSocket(out).handle(function(__t0) {
-			let __t0_result;
-			let _g = tink_await_OutcomeTools.getOutcome(__t0);
-			switch(_g._hx_index) {
-			case 0:
-				__t0_result = _g.data;
-				break;
-			case 1:
-				throw haxe_Exception.thrown(_g.failure);
-			}
-			let read = __t0_result;
-			_gthis.aquireWriteSocket(input).handle(function(__t1) {
-				let __t1_result;
-				let _g = tink_await_OutcomeTools.getOutcome(__t1);
-				switch(_g._hx_index) {
-				case 0:
-					__t1_result = _g.data;
-					break;
-				case 1:
-					throw haxe_Exception.thrown(_g.failure);
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let success = false;
+				let _this = _gthis.clientLocations;
+				let _g_current = 0;
+				while(_g_current < _this.length) {
+					let _g1_value = _this[_g_current];
+					let _g1_key = _g_current++;
+					if(!_gthis.clientsTaken.h.hasOwnProperty(_g1_key)) {
+						try {
+							let this1 = _gthis.playerTry(_g1_value,x.playerID,x.name);
+							this1.eager();
+							success = true;
+							break;
+						} catch( _g ) {
+							console.log("src/gmdebug/dap/LuaDebugger.hx:106:","could not aquire in " + _g1_value);
+						}
+					}
 				}
-				let write = __t1_result;
-				let clientID = _gthis.clients.length;
-				read.on("data",function(x) {
-					_gthis.readGmodBuffer(x,clientID);
+				__return(tink_core_Outcome.Success(success));
+				return;
+			} catch( _g ) {
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(haxe_Exception.caught(_g).unwrap())));
+			}
+		});
+	}
+	playerTry(clientLoc,gmodID,playerName) {
+		let _gthis = this;
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				_gthis.clients.newClient(clientLoc,gmodID,playerName).handle(function(__t0) {
+					try {
+						let __t0_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t0);
+						switch(_g._hx_index) {
+						case 0:
+							__t0_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						let cl = __t0_result;
+						let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : cl.clID, reason : "started"});
+						console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
+						_gthis.sendEvent(_this);
+						_gthis.setupPlayer(cl.clID);
+						__return(tink_core_Outcome.Success(null));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
 				});
-				_gthis.clients.push({ readS : read, writeS : write});
-				_gthis.clientFiles[clientID] = { write : input, read : out};
-				js_node_Fs.writeFileSync(ready,"");
-				write.write("\x04\r\n");
-				let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : clientID, reason : "started"});
-				console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
-				_gthis.sendEvent(_this);
-				_gthis.mapClientName.h[clientID] = playerName;
-				_gthis.mapClientID.h[clientID] = clientNo;
-				_gthis.setupPlayer(clientID);
-			});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
 		});
 	}
 	setupPlayer(clientID) {
-		let tmp = this.clients[clientID].writeS;
-		let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : this.serverFolder, dapMode : "Launch"}),null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
-		let tmp1 = this.clients[clientID].writeS;
-		let json1 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(2,{ id : clientID}),null,null);
-		let len1 = haxe_io_Bytes.ofString(json1).length;
-		tmp1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+		this.clients.sendClient(clientID,new gmdebug_composer_ComposedGmDebugMessage(3,{ location : this.serverFolder, dapMode : "Launch"}));
+		this.clients.sendClient(clientID,new gmdebug_composer_ComposedGmDebugMessage(2,{ id : clientID}));
 		let value = this.prevRequests.get("setBreakpoints");
 		if(value != null) {
-			let _gthis = this.clients[clientID].writeS;
-			let json = haxe_format_JsonPrinter.print(value,null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			_gthis.write("Content-Length: " + len + "\r\n\r\n" + json);
+			this.clients.sendClient(clientID,value);
 		}
 		let value1 = this.prevRequests.get("setExceptionBreakpoints");
 		if(value1 != null) {
-			let _gthis = this.clients[clientID].writeS;
-			let json = haxe_format_JsonPrinter.print(value1,null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			_gthis.write("Content-Length: " + len + "\r\n\r\n" + json);
+			this.clients.sendClient(clientID,value1);
 		}
 		let value2 = this.prevRequests.get("setFunctionBreakpoints");
 		if(value2 != null) {
-			let _gthis = this.clients[clientID].writeS;
-			let json = haxe_format_JsonPrinter.print(value2,null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			_gthis.write("Content-Length: " + len + "\r\n\r\n" + json);
+			this.clients.sendClient(clientID,value2);
 		}
-		let tmp2 = this.clients[clientID].writeS;
-		let json2 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedRequest("configurationDone",{ }),null,null);
-		let len2 = haxe_io_Bytes.ofString(json2).length;
-		tmp2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
+		this.clients.sendClient(clientID,new gmdebug_composer_ComposedRequest("configurationDone",{ }));
 	}
 	playerRemovedMessage(x) {
-		let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : this.mapClientID.h[x.playerID], reason : "exited"});
+		let _this = new gmdebug_composer_ComposedEvent("thread",{ threadId : this.clients.getByGmodID(x.playerID).clID, reason : "exited"});
 		console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
 		this.sendEvent(_this);
-		this.clientsTaken.remove(this.mapClientID.h[x.playerID]);
+		this.clientsTaken.remove(this.clients.getByGmodID(x.playerID).clID);
 	}
 	serverInfoMessage(x) {
 		let sp = x.ip.split(":");
@@ -1092,10 +1163,22 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		js_node_ChildProcess.spawn("xdg-open steam://connect/" + ip + ":" + port,{ shell : true});
 	}
 	processCustomMessages(x) {
-		console.log("src/gmdebug/dap/LuaDebugger.hx:159:","custom message");
+		console.log("src/gmdebug/dap/LuaDebugger.hx:155:","custom message");
 		switch(x.msg) {
 		case 0:
-			this.playerAddedMessage(x.body);
+			this.playerAddedMessage(x.body).handle(function(out) {
+				switch(out._hx_index) {
+				case 0:
+					if(out.data) {
+						console.log("src/gmdebug/dap/LuaDebugger.hx:161:","Whater a sucess");
+					} else {
+						console.log("src/gmdebug/dap/LuaDebugger.hx:163:","Could not add a new player...");
+					}
+					break;
+				case 1:
+					throw haxe_Exception.thrown(out.failure);
+				}
+			});
 			break;
 		case 1:
 			this.playerRemovedMessage(x.body);
@@ -1107,132 +1190,33 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			break;
 		}
 	}
-	aquireReadSocket(out) {
-		return tink_core_Future.irreversible(function(__return) {
-			try {
-				let open = js_node_util_Promisify(js_node_Fs.open);
-				tink_core_Future.ofJsPromise(open(out,js_node_Fs.constants.O_RDONLY | js_node_Fs.constants.O_NONBLOCK)).handle(function(__t2) {
-					try {
-						let __t2_result;
-						let _g = tink_await_OutcomeTools.getOutcome(__t2);
-						switch(_g._hx_index) {
-						case 0:
-							__t2_result = _g.data;
-							break;
-						case 1:
-							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
-							return;
-						}
-						let fd = __t2_result;
-						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, writable : false})));
-						return;
-					} catch( _g ) {
-						let _g1 = haxe_Exception.caught(_g).unwrap();
-						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
-					}
-				});
-			} catch( _g ) {
-				let _g1 = haxe_Exception.caught(_g).unwrap();
-				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
-			}
-		});
-	}
-	aquireWriteSocket(inp) {
-		return tink_core_Future.irreversible(function(__return) {
-			try {
-				let open = js_node_util_Promisify(js_node_Fs.open);
-				tink_core_Future.ofJsPromise(open(inp,js_node_Fs.constants.O_RDWR | js_node_Fs.constants.O_NONBLOCK)).handle(function(__t3) {
-					try {
-						let __t3_result;
-						let _g = tink_await_OutcomeTools.getOutcome(__t3);
-						switch(_g._hx_index) {
-						case 0:
-							__t3_result = _g.data;
-							break;
-						case 1:
-							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
-							return;
-						}
-						let fd = __t3_result;
-						console.log("src/gmdebug/dap/LuaDebugger.hx:181:",fd);
-						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, readable : false})));
-						return;
-					} catch( _g ) {
-						let _g1 = haxe_Exception.caught(_g).unwrap();
-						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
-					}
-				});
-			} catch( _g ) {
-				let _g1 = haxe_Exception.caught(_g).unwrap();
-				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
-			}
-		});
-	}
 	pokeServerNamedPipes(attachReq) {
 		let _gthis = this;
 		return tink_core_Future.irreversible(function(__return) {
 			try {
-				let ready = haxe_io_Path.join([_gthis.serverFolder,gmdebug_Cross.DATA,gmdebug_Cross.READY]);
-				let input = haxe_io_Path.join([_gthis.serverFolder,gmdebug_Cross.DATA,gmdebug_Cross.INPUT]);
-				let output = haxe_io_Path.join([_gthis.serverFolder,gmdebug_Cross.DATA,gmdebug_Cross.OUTPUT]);
-				_gthis.makeFifosIfNotExist(input,output);
-				_gthis.aquireWriteSocket(input).handle(function(__t4) {
+				let this1 = _gthis.clients.newServer(attachReq.arguments.serverFolder);
+				this1.eager();
+				this1.handle(function(__t1) {
 					try {
-						let __t4_result;
-						let _g = tink_await_OutcomeTools.getOutcome(__t4);
+						let _g = tink_await_OutcomeTools.getOutcome(__t1);
 						switch(_g._hx_index) {
 						case 0:
-							__t4_result = _g.data;
 							break;
 						case 1:
 							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
 							return;
 						}
-						let gmodInput = __t4_result;
-						_gthis.aquireReadSocket(output).handle(function(__t5) {
-							try {
-								let __t5_result;
-								let _g = tink_await_OutcomeTools.getOutcome(__t5);
-								switch(_g._hx_index) {
-								case 0:
-									__t5_result = _g.data;
-									break;
-								case 1:
-									__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
-									return;
-								}
-								let gmodOutput = __t5_result;
-								_gthis.clients[0] = { writeS : gmodInput, readS : gmodOutput};
-								_gthis.clientFiles[0] = { write : input, read : output};
-								gmodOutput.on("data",function(x) {
-									_gthis.readGmodBuffer(x,0);
-								});
-								let _gthis1 = _gthis.clients[0].writeS;
-								let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(2,{ id : 0}),null,null);
-								let len = haxe_io_Bytes.ofString(json).length;
-								_gthis1.write("Content-Length: " + len + "\r\n\r\n" + json);
-								switch(_gthis.dapMode._hx_index) {
-								case 0:
-									let _gthis2 = _gthis.clients[0].writeS;
-									let json1 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Attach"}),null,null);
-									let len1 = haxe_io_Bytes.ofString(json1).length;
-									_gthis2.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
-									break;
-								case 1:
-									let _gthis3 = _gthis.clients[0].writeS;
-									let json2 = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Launch"}),null,null);
-									let len2 = haxe_io_Bytes.ofString(json2).length;
-									_gthis3.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
-									break;
-								}
-								js_node_Fs.writeFileSync(ready,"");
-								__return(tink_core_Outcome.Success(null));
-								return;
-							} catch( _g ) {
-								let _g1 = haxe_Exception.caught(_g).unwrap();
-								__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
-							}
-						});
+						_gthis.clients.sendServer(new gmdebug_composer_ComposedGmDebugMessage(2,{ id : 0}));
+						switch(_gthis.dapMode._hx_index) {
+						case 0:
+							_gthis.clients.sendServer(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Attach"}));
+							break;
+						case 1:
+							_gthis.clients.sendServer(new gmdebug_composer_ComposedGmDebugMessage(3,{ location : _gthis.serverFolder, dapMode : "Launch"}));
+							break;
+						}
+						__return(tink_core_Outcome.Success(null));
+						return;
 					} catch( _g ) {
 						let _g1 = haxe_Exception.caught(_g).unwrap();
 						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
@@ -1261,7 +1245,7 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			this.processDebugeeMessage(msg,clientNo);
 		}
 		if(this.bytesProcessor.fillRequested) {
-			this.clients[clientNo].writeS.write("\x04\r\n");
+			this.clients.sendAnyRaw(clientNo,"\x04\r\n");
 		}
 	}
 	processDebugeeMessage(debugeeMessage,threadId) {
@@ -1269,18 +1253,18 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		switch(debugeeMessage.type) {
 		case "event":
 			let cmd = debugeeMessage.event;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:240:","recieved event from debugee, " + cmd);
-			gmdebug_dap_EventIntercepter.event(debugeeMessage,threadId);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:215:","recieved event from debugee, " + cmd);
+			gmdebug_dap_EventIntercepter.event(debugeeMessage,threadId,this);
 			this.sendEvent(debugeeMessage);
 			break;
 		case "gmdebug":
 			let cmd1 = debugeeMessage.msg;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:249:","recieved gmdebug from debugee, " + cmd1);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:224:","recieved gmdebug from debugee, " + cmd1);
 			this.processCustomMessages(debugeeMessage);
 			break;
 		case "response":
 			let cmd2 = debugeeMessage.command;
-			console.log("src/gmdebug/dap/LuaDebugger.hx:245:","recieved response from debugee, " + cmd2);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:220:","recieved response from debugee, " + cmd2);
 			this.sendResponse(debugeeMessage);
 			break;
 		default:
@@ -1294,21 +1278,11 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			_g1.write("quit\n");
 			_g1.kill();
 		}
-		let _this = this.clients;
-		let _g2_current = 0;
-		while(_g2_current < _this.length) {
-			let _g3_value = _this[_g2_current];
-			let _g3_key = _g2_current++;
-			let client = _g3_value.writeS;
-			let json = haxe_format_JsonPrinter.print(new gmdebug_composer_ComposedRequest("disconnect",{ }),null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			client.write("Content-Length: " + len + "\r\n\r\n" + json);
-			_g3_value.readS.end();
-			_g3_value.writeS.end();
-			js_node_Fs.unlinkSync(this.clientFiles[_g3_key].read);
-			js_node_Fs.unlinkSync(this.clientFiles[_g3_key].write);
+		this.clients.disconnectAll();
+		let dir = haxe_io_Path.join([this.serverFolder,"addons","debugee"]);
+		if(js_node_Fs.existsSync(dir)) {
+			js_node_Fs.rmdirSync(dir,{ recursive : true});
 		}
-		this.clients.length = 0;
 		super.shutdown();
 	}
 	startServer(attachReq) {
@@ -1316,13 +1290,14 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 		this.pokeServerNamedPipes(attachReq).handle(function(out) {
 			switch(out._hx_index) {
 			case 0:
+				console.log("src/gmdebug/dap/LuaDebugger.hx:256:","Attatch success");
 				let resp = gmdebug_composer_ComposeTools.compose(attachReq,"attach");
 				console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp.command);
 				_gthis.sendResponse(resp);
 				break;
 			case 1:
 				let _g = out.failure;
-				console.log("src/gmdebug/dap/LuaDebugger.hx:286:",_g);
+				console.log("src/gmdebug/dap/LuaDebugger.hx:260:",_g.message);
 				let resp1 = gmdebug_composer_ComposeTools.composeFail(attachReq,"attach fail " + _g.message,{ id : 1, format : "Failed to attach to server " + _g.message});
 				console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + resp1.command);
 				_gthis.sendResponse(resp1);
@@ -1330,41 +1305,15 @@ class gmdebug_dap_LuaDebugger extends vscode_debugAdapter_DebugSession {
 			}
 		});
 	}
-	composeMessage(msg) {
-		let json = haxe_format_JsonPrinter.print(msg,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		return "Content-Length: " + len + "\r\n\r\n" + json;
-	}
-	sendToAll(msg) {
-		let json = haxe_format_JsonPrinter.print(msg,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		let msg1 = "Content-Length: " + len + "\r\n\r\n" + json;
-		let _g = 0;
-		let _g1 = this.clients;
-		while(_g < _g1.length) {
-			let client = _g1[_g];
-			++_g;
-			client.writeS.write(msg1);
-		}
-	}
-	sendToServer(msg) {
-		let tmp = this.clients[0].writeS;
-		let json = haxe_format_JsonPrinter.print(msg,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
-	}
-	sendToClient(client,msg) {
-		let tmp = this.clients[client].writeS;
-		let json = haxe_format_JsonPrinter.print(msg,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		tmp.write("Content-Length: " + len + "\r\n\r\n" + json);
+	setClientLocations(a) {
+		return this.clientLocations = a;
 	}
 	handleMessage(message) {
 		if(message.type == "request") {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:321:","recieved request from client " + message.command);
+			console.log("src/gmdebug/dap/LuaDebugger.hx:278:","recieved request from client " + message.command);
 			this.requestRouter.route(message);
 		} else {
-			console.log("src/gmdebug/dap/LuaDebugger.hx:324:","not a request from client");
+			console.log("src/gmdebug/dap/LuaDebugger.hx:281:","not a request from client");
 		}
 	}
 }
@@ -1373,24 +1322,170 @@ gmdebug_dap_LuaDebugger.__super__ = vscode_debugAdapter_DebugSession;
 Object.assign(gmdebug_dap_LuaDebugger.prototype, {
 	__class__: gmdebug_dap_LuaDebugger
 	,commMethod: null
-	,clients: null
 	,clientFiles: null
 	,dapMode: null
-	,autoLaunch: null
-	,mapClientName: null
-	,mapClientID: null
 	,serverFolder: null
-	,clientLocations: null
 	,clientsTaken: null
+	,programs: null
 	,requestRouter: null
+	,clientLocations: null
 	,bytesProcessor: null
 	,prevRequests: null
+	,clients: null
 });
 var gmdebug_dap_DapMode = $hxEnums["gmdebug.dap.DapMode"] = { __ename__:true,__constructs__:null
 	,ATTACH: {_hx_name:"ATTACH",_hx_index:0,__enum__:"gmdebug.dap.DapMode",toString:$estr}
 	,LAUNCH: ($_=function(child) { return {_hx_index:1,child:child,__enum__:"gmdebug.dap.DapMode",toString:$estr}; },$_._hx_name="LAUNCH",$_.__params__ = ["child"],$_)
 };
 gmdebug_dap_DapMode.__constructs__ = [gmdebug_dap_DapMode.ATTACH,gmdebug_dap_DapMode.LAUNCH];
+class gmdebug_dap_PipeSocket {
+	constructor(locs,readFunc) {
+		this.aquired = false;
+		this.locs = locs;
+		this.readFunc = readFunc;
+	}
+	aquire() {
+		let _gthis = this;
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				_gthis.makeFifosIfNotExist(_gthis.locs.read,_gthis.locs.write);
+				_gthis.aquireReadSocket(_gthis.locs.read).handle(function(__t5) {
+					try {
+						let __t5_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t5);
+						switch(_g._hx_index) {
+						case 0:
+							__t5_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						_gthis.readS = __t5_result;
+						_gthis.aquireWriteSocket(_gthis.locs.write).handle(function(__t6) {
+							try {
+								let __t6_result;
+								let _g = tink_await_OutcomeTools.getOutcome(__t6);
+								switch(_g._hx_index) {
+								case 0:
+									__t6_result = _g.data;
+									break;
+								case 1:
+									__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+									return;
+								}
+								_gthis.writeS = __t6_result;
+								js_node_Fs.writeFileSync(_gthis.locs.ready,"");
+								_gthis.writeS.write("\x04\r\n");
+								_gthis.readS.on("data",_gthis.readFunc);
+								_gthis.aquired = true;
+								console.log("src/gmdebug/dap/PipeSocket.hx:45:","Aquired socket...");
+								__return(tink_core_Outcome.Success(null));
+								return;
+							} catch( _g ) {
+								let _g1 = haxe_Exception.caught(_g).unwrap();
+								__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+							}
+						});
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	makeFifosIfNotExist(input,output) {
+		if(!sys_FileSystem.exists(input) && !sys_FileSystem.exists(output)) {
+			js_node_ChildProcess.execSync("mkfifo " + input);
+			js_node_ChildProcess.execSync("mkfifo " + output);
+			js_node_Fs.chmodSync(input,"744");
+			js_node_Fs.chmodSync(output,"722");
+		}
+	}
+	aquireReadSocket(out) {
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let open = js_node_util_Promisify(js_node_Fs.open);
+				tink_core_Future.ofJsPromise(open(out,js_node_Fs.constants.O_RDONLY | js_node_Fs.constants.O_NONBLOCK)).handle(function(__t7) {
+					try {
+						let __t7_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t7);
+						switch(_g._hx_index) {
+						case 0:
+							__t7_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						let fd = __t7_result;
+						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, writable : false})));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	aquireWriteSocket(inp) {
+		return tink_core_Future.irreversible(function(__return) {
+			try {
+				let open = js_node_util_Promisify(js_node_Fs.open);
+				tink_core_Future.ofJsPromise(open(inp,js_node_Fs.constants.O_RDWR | js_node_Fs.constants.O_NONBLOCK)).handle(function(__t8) {
+					try {
+						let __t8_result;
+						let _g = tink_await_OutcomeTools.getOutcome(__t8);
+						switch(_g._hx_index) {
+						case 0:
+							__t8_result = _g.data;
+							break;
+						case 1:
+							__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g.failure)));
+							return;
+						}
+						let fd = __t8_result;
+						console.log("src/gmdebug/dap/PipeSocket.hx:67:",fd);
+						__return(tink_core_Outcome.Success(new js_node_net_Socket({ fd : fd, readable : false})));
+						return;
+					} catch( _g ) {
+						let _g1 = haxe_Exception.caught(_g).unwrap();
+						__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+					}
+				});
+			} catch( _g ) {
+				let _g1 = haxe_Exception.caught(_g).unwrap();
+				__return(tink_core_Outcome.Failure(tink_core_TypedError.asError(_g1)));
+			}
+		});
+	}
+	write(chunk) {
+		this.writeS.write(chunk);
+	}
+	end() {
+		this.readS.end();
+		this.writeS.end();
+		js_node_Fs.unlinkSync(this.locs.read);
+		js_node_Fs.unlinkSync(this.locs.write);
+	}
+}
+gmdebug_dap_PipeSocket.__name__ = true;
+Object.assign(gmdebug_dap_PipeSocket.prototype, {
+	__class__: gmdebug_dap_PipeSocket
+	,writeS: null
+	,readS: null
+	,locs: null
+	,aquired: null
+	,readFunc: null
+});
 class gmdebug_dap_PreviousRequests {
 	constructor() {
 		this.prevRequestMap = new haxe_ds_StringMap();
@@ -1408,8 +1503,9 @@ Object.assign(gmdebug_dap_PreviousRequests.prototype, {
 	,prevRequestMap: null
 });
 class gmdebug_dap_RequestRouter {
-	constructor(luaDebug,prevRequests) {
+	constructor(luaDebug,clients,prevRequests) {
 		this.luaDebug = luaDebug;
+		this.clients = clients;
 		this.prevRequests = prevRequests;
 	}
 	route(req) {
@@ -1419,10 +1515,7 @@ class gmdebug_dap_RequestRouter {
 			this.h_attach(req);
 			break;
 		case "configurationDone":
-			let _this = this.luaDebug.clients[0].writeS;
-			let json = haxe_format_JsonPrinter.print(req,null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
+			this.clients.sendServer(req);
 			break;
 		case "disconnect":
 			this.h_disconnect(req);
@@ -1431,10 +1524,7 @@ class gmdebug_dap_RequestRouter {
 			this.h_evaluate(req);
 			break;
 		case "breakpointLocations":case "goto":case "gotoTargets":case "loadedSources":case "modules":
-			let _this1 = this.luaDebug.clients[0].writeS;
-			let json1 = haxe_format_JsonPrinter.print(req,null,null);
-			let len1 = haxe_io_Bytes.ofString(json1).length;
-			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+			this.clients.sendServer(req);
 			break;
 		case "initialize":
 			this.h_initialize(req);
@@ -1447,52 +1537,19 @@ class gmdebug_dap_RequestRouter {
 			break;
 		case "setBreakpoints":
 			this.prevRequests.update(req);
-			let _this2 = this.luaDebug;
-			let json2 = haxe_format_JsonPrinter.print(req,null,null);
-			let len2 = haxe_io_Bytes.ofString(json2).length;
-			let msg = "Content-Length: " + len2 + "\r\n\r\n" + json2;
-			let _g = 0;
-			let _g1 = _this2.clients;
-			while(_g < _g1.length) {
-				let client = _g1[_g];
-				++_g;
-				client.writeS.write(msg);
-			}
+			this.clients.sendAll(req);
 			break;
 		case "setExceptionBreakpoints":
 			this.prevRequests.update(req);
-			let _this3 = this.luaDebug;
-			let json3 = haxe_format_JsonPrinter.print(req,null,null);
-			let len3 = haxe_io_Bytes.ofString(json3).length;
-			let msg1 = "Content-Length: " + len3 + "\r\n\r\n" + json3;
-			let _g2 = 0;
-			let _g3 = _this3.clients;
-			while(_g2 < _g3.length) {
-				let client = _g3[_g2];
-				++_g2;
-				client.writeS.write(msg1);
-			}
+			this.clients.sendAll(req);
 			break;
 		case "setFunctionBreakpoints":
 			this.prevRequests.update(req);
-			let _this4 = this.luaDebug;
-			let json4 = haxe_format_JsonPrinter.print(req,null,null);
-			let len4 = haxe_io_Bytes.ofString(json4).length;
-			let msg2 = "Content-Length: " + len4 + "\r\n\r\n" + json4;
-			let _g4 = 0;
-			let _g5 = _this4.clients;
-			while(_g4 < _g5.length) {
-				let client = _g5[_g4];
-				++_g4;
-				client.writeS.write(msg2);
-			}
+			this.clients.sendAll(req);
 			break;
 		case "continue":case "next":case "pause":case "stackTrace":case "stepIn":case "stepOut":
 			let id = req.arguments.threadId;
-			let _this5 = this.luaDebug.clients[id].writeS;
-			let json5 = haxe_format_JsonPrinter.print(req,null,null);
-			let len5 = haxe_io_Bytes.ofString(json5).length;
-			_this5.write("Content-Length: " + len5 + "\r\n\r\n" + json5);
+			this.clients.sendAny(id,req);
 			break;
 		case "threads":
 			this.h_threads(req);
@@ -1504,11 +1561,12 @@ class gmdebug_dap_RequestRouter {
 	}
 	h_threads(req) {
 		let threadArr = [{ name : "Server", id : 0}];
-		let _g = 1;
-		let _g1 = this.luaDebug.clients.length;
-		while(_g < _g1) {
-			let i = _g++;
-			threadArr.push({ name : this.luaDebug.mapClientName.h[i], id : i});
+		let _g = 0;
+		let _g1 = this.clients.getClients();
+		while(_g < _g1.length) {
+			let cl = _g1[_g];
+			++_g;
+			threadArr.push({ name : cl.gmodName, id : cl.clID});
 		}
 		let _this = gmdebug_composer_ComposeTools.compose(req,"threads",{ threads : threadArr});
 		let luaDebug = this.luaDebug;
@@ -1516,27 +1574,17 @@ class gmdebug_dap_RequestRouter {
 		luaDebug.sendResponse(_this);
 	}
 	h_disconnect(req) {
-		let _this = this.luaDebug;
-		let json = haxe_format_JsonPrinter.print(req,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		let msg = "Content-Length: " + len + "\r\n\r\n" + json;
-		let _g = 0;
-		let _g1 = _this.clients;
-		while(_g < _g1.length) {
-			let client = _g1[_g];
-			++_g;
-			client.writeS.write(msg);
-		}
-		let _this1 = gmdebug_composer_ComposeTools.compose(req,"disconnect");
+		this.clients.sendAll(req);
+		let _this = gmdebug_composer_ComposeTools.compose(req,"disconnect");
 		let luaDebug = this.luaDebug;
-		console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + _this1.command);
-		luaDebug.sendResponse(_this1);
+		console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + _this.command);
+		luaDebug.sendResponse(_this);
 		this.luaDebug.shutdown();
 	}
 	h_variables(req) {
 		let ref = req.arguments.variablesReference;
 		if(ref <= 0) {
-			console.log("src/gmdebug/dap/RequestRouter.hx:92:","invalid variable reference");
+			console.log("src/gmdebug/dap/RequestRouter.hx:94:","invalid variable reference");
 			let _this = gmdebug_composer_ComposeTools.compose(req,"variables",{ variables : []});
 			let luaDebug = this.luaDebug;
 			console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + _this.command);
@@ -1546,22 +1594,13 @@ class gmdebug_dap_RequestRouter {
 		let _g = gmdebug_VariableReference.getValue(ref);
 		switch(_g._hx_index) {
 		case 0:
-			let _this = this.luaDebug.clients[_g.clientID].writeS;
-			let json = haxe_format_JsonPrinter.print(req,null,null);
-			let len = haxe_io_Bytes.ofString(json).length;
-			_this.write("Content-Length: " + len + "\r\n\r\n" + json);
+			this.clients.sendAny(_g.clientID,req);
 			break;
 		case 1:
-			let _this1 = this.luaDebug.clients[_g.clientID].writeS;
-			let json1 = haxe_format_JsonPrinter.print(req,null,null);
-			let len1 = haxe_io_Bytes.ofString(json1).length;
-			_this1.write("Content-Length: " + len1 + "\r\n\r\n" + json1);
+			this.clients.sendAny(_g.clientID,req);
 			break;
 		case 2:
-			let _this2 = this.luaDebug.clients[_g.clientID].writeS;
-			let json2 = haxe_format_JsonPrinter.print(req,null,null);
-			let len2 = haxe_io_Bytes.ofString(json2).length;
-			_this2.write("Content-Length: " + len2 + "\r\n\r\n" + json2);
+			this.clients.sendAny(_g.clientID,req);
 			break;
 		}
 	}
@@ -1581,10 +1620,7 @@ class gmdebug_dap_RequestRouter {
 		}
 		let _g = req.arguments.frameId;
 		let client = _g == null ? 0 : gmdebug_FrameID.getValue(_g).clientID;
-		let _this = this.luaDebug.clients[client].writeS;
-		let json = haxe_format_JsonPrinter.print(req,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
+		this.clients.sendAny(client,req);
 	}
 	h_initialize(req) {
 		let response = { seq : 0, request_seq : req.seq, command : "initialize", type : "response", body : { }, success : true};
@@ -1594,6 +1630,7 @@ class gmdebug_dap_RequestRouter {
 		response.body.supportsEvaluateForHovers = true;
 		response.body.supportsLoadedSourcesRequest = true;
 		response.body.supportsFunctionBreakpoints = true;
+		response.body.supportsDelayedStackTraceLoading = true;
 		response.body.supportsBreakpointLocationsRequest = false;
 		this.luaDebug.sendResponse(response);
 	}
@@ -1621,6 +1658,15 @@ class gmdebug_dap_RequestRouter {
 			return;
 		}
 		let childProcess = new gmdebug_dap_LaunchProcess(programPath,this.luaDebug,req.arguments.programArgs);
+		if(req.arguments.noDebug) {
+			this.luaDebug.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
+			this.luaDebug.serverFolder = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
+			let comp = gmdebug_composer_ComposeTools.compose(req,"launch",{ });
+			let luaDebug = this.luaDebug;
+			console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + comp.command);
+			luaDebug.sendResponse(comp);
+			return;
+		}
 		this.copyLuaFiles(serverFolder);
 		let value = req.arguments.clientFolders;
 		let clientFolders = value == null ? [] : value;
@@ -1638,16 +1684,13 @@ class gmdebug_dap_RequestRouter {
 		}
 		let serverSlash = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
 		this.luaDebug.serverFolder = serverSlash;
-		this.luaDebug.clientLocations = clientFolders;
+		this.luaDebug.setClientLocations(clientFolders);
 		this.luaDebug.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
 		this.luaDebug.startServer(req);
 	}
 	h_scopes(req) {
 		let client = gmdebug_FrameID.getValue(req.arguments.frameId).clientID;
-		let _this = this.luaDebug.clients[client].writeS;
-		let json = haxe_format_JsonPrinter.print(req,null,null);
-		let len = haxe_io_Bytes.ofString(json).length;
-		_this.write("Content-Length: " + len + "\r\n\r\n" + json);
+		this.clients.sendAny(client,req);
 	}
 	copyLuaFiles(serverFolder) {
 		let addonFolder = haxe_io_Path.join([serverFolder,"addons"]);
@@ -1677,7 +1720,7 @@ class gmdebug_dap_RequestRouter {
 		}
 		let serverSlash = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
 		this.luaDebug.serverFolder = serverSlash;
-		this.luaDebug.clientLocations = clientFolders;
+		this.luaDebug.setClientLocations(clientFolders);
 		this.luaDebug.startServer(req);
 	}
 	validateProgramPath(programPath) {
@@ -1729,7 +1772,18 @@ gmdebug_dap_RequestRouter.__name__ = true;
 Object.assign(gmdebug_dap_RequestRouter.prototype, {
 	__class__: gmdebug_dap_RequestRouter
 	,luaDebug: null
+	,clients: null
 	,prevRequests: null
+});
+class gmdebug_dap_Server extends gmdebug_dap_BaseConnected {
+	constructor(fs,clID) {
+		super(fs,clID);
+	}
+}
+gmdebug_dap_Server.__name__ = true;
+gmdebug_dap_Server.__super__ = gmdebug_dap_BaseConnected;
+Object.assign(gmdebug_dap_Server.prototype, {
+	__class__: gmdebug_dap_Server
 });
 var gmdebug_lib_js_Ip = require("ip");
 var haxe_StackItem = $hxEnums["haxe.StackItem"] = { __ename__:true,__constructs__:null
@@ -2620,6 +2674,128 @@ Object.assign(haxe_iterators_ArrayIterator.prototype, {
 	,array: null
 	,current: null
 });
+class js_Boot {
+	static getClass(o) {
+		if(o == null) {
+			return null;
+		} else if(((o) instanceof Array)) {
+			return Array;
+		} else {
+			let cl = o.__class__;
+			if(cl != null) {
+				return cl;
+			}
+			let name = js_Boot.__nativeClassName(o);
+			if(name != null) {
+				return js_Boot.__resolveNativeClass(name);
+			}
+			return null;
+		}
+	}
+	static __string_rec(o,s) {
+		if(o == null) {
+			return "null";
+		}
+		if(s.length >= 5) {
+			return "<...>";
+		}
+		let t = typeof(o);
+		if(t == "function" && (o.__name__ || o.__ename__)) {
+			t = "object";
+		}
+		switch(t) {
+		case "function":
+			return "<function>";
+		case "object":
+			if(o.__enum__) {
+				let e = $hxEnums[o.__enum__];
+				let con = e.__constructs__[o._hx_index];
+				let n = con._hx_name;
+				if(con.__params__) {
+					s = s + "\t";
+					return n + "(" + ((function($this) {
+						var $r;
+						let _g = [];
+						{
+							let _g1 = 0;
+							let _g2 = con.__params__;
+							while(true) {
+								if(!(_g1 < _g2.length)) {
+									break;
+								}
+								let p = _g2[_g1];
+								_g1 = _g1 + 1;
+								_g.push(js_Boot.__string_rec(o[p],s));
+							}
+						}
+						$r = _g;
+						return $r;
+					}(this))).join(",") + ")";
+				} else {
+					return n;
+				}
+			}
+			if(((o) instanceof Array)) {
+				let str = "[";
+				s += "\t";
+				let _g = 0;
+				let _g1 = o.length;
+				while(_g < _g1) {
+					let i = _g++;
+					str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
+				}
+				str += "]";
+				return str;
+			}
+			let tostr;
+			try {
+				tostr = o.toString;
+			} catch( _g ) {
+				return "???";
+			}
+			if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
+				let s2 = o.toString();
+				if(s2 != "[object Object]") {
+					return s2;
+				}
+			}
+			let str = "{\n";
+			s += "\t";
+			let hasp = o.hasOwnProperty != null;
+			let k = null;
+			for( k in o ) {
+			if(hasp && !o.hasOwnProperty(k)) {
+				continue;
+			}
+			if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
+				continue;
+			}
+			if(str.length != 2) {
+				str += ", \n";
+			}
+			str += s + k + " : " + js_Boot.__string_rec(o[k],s);
+			}
+			s = s.substring(1);
+			str += "\n" + s + "}";
+			return str;
+		case "string":
+			return o;
+		default:
+			return String(o);
+		}
+	}
+	static __nativeClassName(o) {
+		let name = js_Boot.__toStr.call(o).slice(8,-1);
+		if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
+			return null;
+		}
+		return name;
+	}
+	static __resolveNativeClass(name) {
+		return $global[name];
+	}
+}
+js_Boot.__name__ = true;
 var js_node_ChildProcess = require("child_process");
 var js_node_Fs = require("fs");
 var js_node_Path = require("path");
@@ -3096,6 +3272,18 @@ class tink_core__$Future_SuspendableFuture {
 			_gthis.trigger(x);
 		});
 	}
+	eager() {
+		switch(this.status._hx_index) {
+		case 0:
+			this.status = tink_core_FutureStatus.EagerlyAwaited;
+			this.arm();
+			break;
+		case 1:
+			this.status = tink_core_FutureStatus.EagerlyAwaited;
+			break;
+		default:
+		}
+	}
 }
 tink_core__$Future_SuspendableFuture.__name__ = true;
 Object.assign(tink_core__$Future_SuspendableFuture.prototype, {
@@ -3117,6 +3305,7 @@ var tink_core_Outcome = $hxEnums["tink.core.Outcome"] = { __ename__:true,__const
 };
 tink_core_Outcome.__constructs__ = [tink_core_Outcome.Success,tink_core_Outcome.Failure];
 var vscode_DebugAdapterInlineImplementation = require("vscode").DebugAdapterInlineImplementation;
+function $getIterator(o) { if( o instanceof Array ) return new haxe_iterators_ArrayIterator(o); else return o.iterator(); }
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $global.$haxeUID++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = m.bind(o); o.hx__closures__[m.__id__] = f; } return f; }
 $global.$haxeUID |= 0;
 if(typeof(performance) != "undefined" ? typeof(performance.now) == "function" : false) {
@@ -3137,6 +3326,7 @@ gmdebug_Cross.OUTPUT = haxe_io_Path.join([gmdebug_Cross.FOLDER,"out.dat"]);
 gmdebug_Cross.READY = haxe_io_Path.join([gmdebug_Cross.FOLDER,"ready.dat"]);
 gmdebug_Cross.DATA = "data";
 gmdebug_composer_ComposedProtocolMessage._hx_skip_constructor = false;
+gmdebug_dap_ClientStorage.SERVER_ID = 0;
 $hx_exports["runMode"] = gmdebug_dap_Extension.runMode = "inline";
 tink_core_Callback.depth = 0;
 tink_core_SimpleDisposable._hx_skip_constructor = false;

@@ -5,7 +5,6 @@
 -lib tink_json
 -lib tink_core
 -lib profiler
--D profile
 -D gmddebug
 -D addonName=debugee
 -D analyzer-optimize
