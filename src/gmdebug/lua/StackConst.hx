@@ -19,7 +19,7 @@ class StackConst {
 
     public static final STEP_DEBUG_LOOP = 5;
 
-    public static final EXCEPT = 5;
+    public static final EXCEPT = 4;
 
     public static final PAUSE = 5;
 #end
