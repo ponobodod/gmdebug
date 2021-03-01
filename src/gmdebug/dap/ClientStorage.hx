@@ -4,7 +4,7 @@ import haxe.io.Bytes;
 import haxe.Json;
 import js.node.Fs;
 import sys.FileSystem;
-
+import haxe.io.Path as HxPath;
 import js.node.Buffer;
 
 using Lambda;
@@ -40,10 +40,10 @@ class ClientStorage {
 	}
 
 	@:async function makePipeSocket(loc:String,id:Int) {
-		final data = haxe.io.Path.join([loc, Cross.DATA]);
-		final input = haxe.io.Path.join([data, Cross.INPUT]);
-		final output = haxe.io.Path.join([data, Cross.OUTPUT]);
-		final ready = haxe.io.Path.join([data, Cross.READY]);
+		final data = HxPath.join([loc, Cross.DATA]);
+		final input = HxPath.join([data, Cross.INPUT]);
+		final output = HxPath.join([data, Cross.OUTPUT]);
+		final ready = HxPath.join([data, Cross.READY]);
 		final ps = new PipeSocket({read : output, write : input, ready : ready},
 			(buf:Buffer) -> readFunc(buf,id)
 		);
