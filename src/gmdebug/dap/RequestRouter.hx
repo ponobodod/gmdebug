@@ -171,6 +171,7 @@ class RequestRouter {
 			programPathResult.sendError(req,luaDebug);
 			return;
 		}
+		luaDebug.shouldAutoConnect = req.arguments.autoConnectLocalGmodClient.or(false);
 		var childProcess = new LaunchProcess(programPath,luaDebug,req.arguments.programArgs);
 		if (req.arguments.noDebug) {
 			luaDebug.dapMode = LAUNCH(childProcess);

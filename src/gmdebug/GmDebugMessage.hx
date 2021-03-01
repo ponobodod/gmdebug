@@ -84,5 +84,9 @@ typedef GmDebugLaunchRequestArguments = LaunchRequestArguments &
 	/**
 		If you wish to log the output.
 	**/
-	?fileOutput:String
+	?fileOutput:String,
+	/**
+		Should the dap automatically connect your steam instance to the server?
+	**/
+	?autoConnectLocalGmodClient : Bool
 }

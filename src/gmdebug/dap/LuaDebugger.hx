@@ -50,6 +50,8 @@ typedef Programs = {
 
 	public var programs:Programs;
 
+	public var shouldAutoConnect:Bool;
+
 	var requestRouter:RequestRouter;
 
 	var clientLocations:Array<String>;
@@ -76,6 +78,7 @@ typedef Programs = {
 		requestRouter = new RequestRouter(this,clients,prevRequests);
 		Node.process.on("uncaughtException", uncaughtException);
 		checkPrograms();
+		shouldAutoConnect = false;
 	}
 
 	function checkPrograms() {
@@ -141,6 +144,9 @@ typedef Programs = {
 	}
 
 	function serverInfoMessage(x:GMServerInfoMessage) {
+		if (!shouldAutoConnect) {
+			return;
+		}
 		final sp = x.ip.split(":");
 		final ip = if (x.isLan) {
 			gmdebug.lib.js.Ip.address();
