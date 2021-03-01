@@ -1667,8 +1667,7 @@ class gmdebug_dap_RequestRouter {
 		let childProcess = new gmdebug_dap_LaunchProcess(programPath,this.luaDebug,req.arguments.programArgs);
 		if(req.arguments.noDebug) {
 			this.luaDebug.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
-			let tmp = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
-			this.luaDebug.serverFolder = haxe_io_Path.normalize(tmp);
+			this.luaDebug.serverFolder = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
 			let comp = gmdebug_composer_ComposeTools.compose(req,"launch",{ });
 			let luaDebug = this.luaDebug;
 			console.log("src/gmdebug/composer/ComposedResponse.hx:51:","sending from dap " + comp.command);
@@ -1688,9 +1687,9 @@ class gmdebug_dap_RequestRouter {
 				gmdebug_dap_DapFailureTools.sendError(clientFolderResult,req,this.luaDebug);
 				return;
 			}
-			clientFolders[_g2_key] = haxe_io_Path.normalize(haxe_io_Path.addTrailingSlash(_g2_value));
+			clientFolders[_g2_key] = haxe_io_Path.addTrailingSlash(_g2_value);
 		}
-		let serverSlash = haxe_io_Path.normalize(haxe_io_Path.addTrailingSlash(req.arguments.serverFolder));
+		let serverSlash = haxe_io_Path.addTrailingSlash(req.arguments.serverFolder);
 		this.luaDebug.serverFolder = serverSlash;
 		this.luaDebug.setClientLocations(clientFolders);
 		this.luaDebug.dapMode = gmdebug_dap_DapMode.LAUNCH(childProcess);
