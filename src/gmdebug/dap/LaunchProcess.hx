@@ -16,8 +16,7 @@ class LaunchProcess {
 		for (arg in programArgs) {
 			argString += arg + " ";
 		}
-        
-        childProcess = js.node.ChildProcess.spawn('script -c \'$programPath -norestart $argString +sv_hibernate_think 1\' /dev/null', {
+        childProcess = js.node.ChildProcess.spawn('script -c \'$programPath -norestart $argString +sv_lan 1 +sv_hibernate_think 1\' /dev/null', {
 			cwd: haxe.io.Path.directory(programPath),
 			env: Node.process.env,
 			shell: true

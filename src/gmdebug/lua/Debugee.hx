@@ -290,8 +290,9 @@ class Debugee {
 				start();
 			} catch (ee) {
 				socket.run((sock) -> sock.close());
+				socket = null;
 				trace('closed socket on error ${ee.toString()}');
-				throw ee;
+				trace(ee.details());
 			}
 		});
 		TimerLib.Create("report-profling", 3, 0, () -> {

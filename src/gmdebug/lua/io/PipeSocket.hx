@@ -37,7 +37,7 @@ class PipeInput extends Input {
 		if (!FileLib.Exists(Cross.INPUT, DATA)) {
 			throw "Input pipe does not exist";
 		}
-		final f = FileLib.Open(Cross.INPUT, FileOpenMode.read, DATA);
+		final f = FileLib.Open(Cross.INPUT, FileOpenMode.bin_read, DATA);
 		if (f == null)
 			throw "Cannot open Input pipe for reading";
 		file = f;
@@ -46,6 +46,7 @@ class PipeInput extends Input {
 	override function readByte():Int {
 		return file.ReadByte();
 	}
+
 }
 
 class PipeOutput extends Output {

@@ -1,11 +1,13 @@
 package gmdebug;
 
+
 import haxe.display.Protocol.InitializeParams;
 import haxe.io.BytesData;
 import haxe.io.Bytes;
 import tink.CoreApi.Ref;
 #if lua
 import gmdebug.lib.lua.Protocol.ProtocolMessage;
+import gmod.libs.FileLib;
 #elseif js
 import vscode.debugProtocol.DebugProtocol.ProtocolMessage;
 #end
@@ -31,11 +33,11 @@ class Cross {
 
 	@:nullSafety(Off)
 	public static function readHeader(x:Input) {
-		var content_length = x.readLine();
+		var raw_content = x.readLine();
 		var skip = 0;
 		var onlySkipped = true;
-		for (i in 0...content_length.length) {
-			if (content_length.charCodeAt(i) == 4) {
+		for (i in 0...raw_content.length) {
+			if (raw_content.charCodeAt(i) == 4) {
 				skip++;
 			} else {
 				onlySkipped = false;
@@ -49,10 +51,14 @@ class Cross {
 		#end
 		if (skip > 0) {
 			// skipped x
-			content_length = content_length.substr(skip);
+			raw_content = raw_content.substr(skip);
 		}
-		var content_length = Std.parseInt(@:nullSafety(Off) content_length.substr(15));
-		x.readLine();
+		var content_length = Std.parseInt(@:nullSafety(Off) raw_content.substr(15));
+		
+		final garbage = x.readLine();
+		#if (lua && jsonDump)
+		FileLib.Append(HxPath.join([FOLDER,"log.txt"]),raw_content + garbage + ';$content_length;');
+		#end
 		return content_length;
 	}
 
@@ -63,6 +69,9 @@ class Cross {
 			return ACK;
 		}
 		var dyn = x.readString(len, UTF8); // argh
+		#if (lua && jsonDump)
+		FileLib.Append(HxPath.join([FOLDER,"log.txt"]),dyn);
+		#end
 		return MESSAGE(Json.parse(dyn));
 	}
 }

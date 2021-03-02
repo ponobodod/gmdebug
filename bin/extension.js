@@ -441,24 +441,24 @@ Object.assign(haxe_io_Path.prototype, {
 });
 class gmdebug_Cross {
 	static readHeader(x) {
-		let content_length = x.readLine();
+		let raw_content = x.readLine();
 		let skip = 0;
 		let _g = 0;
-		let _g1 = content_length.length;
+		let _g1 = raw_content.length;
 		while(_g < _g1) {
 			let i = _g++;
-			if(HxOverrides.cca(content_length,i) == 4) {
+			if(HxOverrides.cca(raw_content,i) == 4) {
 				++skip;
 			} else {
 				break;
 			}
 		}
 		if(skip > 0) {
-			content_length = HxOverrides.substr(content_length,skip,null);
+			raw_content = HxOverrides.substr(raw_content,skip,null);
 		}
-		let content_length1 = Std.parseInt(HxOverrides.substr(content_length,15,null));
+		let content_length = Std.parseInt(HxOverrides.substr(raw_content,15,null));
 		x.readLine();
-		return content_length1;
+		return content_length;
 	}
 }
 gmdebug_Cross.__name__ = true;
@@ -1007,7 +1007,7 @@ class gmdebug_dap_LaunchProcess {
 			++_g;
 			argString += arg + " ";
 		}
-		this.childProcess = js_node_ChildProcess.spawn("script -c '" + programPath + " -norestart " + argString + " +sv_hibernate_think 1' /dev/null",{ cwd : haxe_io_Path.directory(programPath), env : process.env, shell : true});
+		this.childProcess = js_node_ChildProcess.spawn("script -c '" + programPath + " -norestart " + argString + " +sv_lan 1 +sv_hibernate_think 1' /dev/null",{ cwd : haxe_io_Path.directory(programPath), env : process.env, shell : true});
 		this.childProcess.stdout.on("data",function(str) {
 			let _this = new gmdebug_composer_ComposedEvent("output",{ category : "stdout", output : StringTools.replace(str.toString(),"\r",""), data : null});
 			console.log("src/gmdebug/composer/ComposedEvent.hx:26:","sending from dap " + _this.event);
